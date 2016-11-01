@@ -1,0 +1,13 @@
+//表单
+$('#form-btn').click(function(){
+   alert(1);
+    $.axForForm($('#login'),function(e){
+        alert(e);
+    });
+});
+$('#form-btn-webApi').click(function(){
+    alert(2);
+    $.axForForm($('#login-webApi'),function(e){
+        alert(e);
+    });
+});
