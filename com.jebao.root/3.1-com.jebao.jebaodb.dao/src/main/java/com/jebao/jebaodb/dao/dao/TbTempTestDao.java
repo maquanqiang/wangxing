@@ -1,5 +1,6 @@
 package com.jebao.jebaodb.dao.dao;
 
+import com.jebao.jebaodb.dao.conf.mybatis.annotation.ReadOnlyDB;
 import com.jebao.jebaodb.dao.mapper.TbTempTestMapper;
 import com.jebao.jebaodb.entity.TbTempTest;
 import com.jebao.jebaodb.entity.extEntity.PageWhere;
