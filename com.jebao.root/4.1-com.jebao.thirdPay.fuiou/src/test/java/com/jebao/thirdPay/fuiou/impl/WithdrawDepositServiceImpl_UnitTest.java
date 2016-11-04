@@ -1,25 +1,15 @@
 package com.jebao.thirdPay.fuiou.impl;
 
-import com.jebao.thirdPay.fuiou.http.WebFormUtils;
 import com.jebao.thirdPay.fuiou.model.withdrawDeposit.WithdrawDepositRequest;
 import com.jebao.thirdPay.fuiou.util.PrintUtil;
-import com.jebao.thirdPay.fuiou.util.SecurityUtils;
+import org.junit.Test;
 
 /**
- * 富友--商户P2P网站免登录提现接口
- * Created by Administrator on 2016/9/27.
+ * Created by Administrator on 2016/11/4.
  */
-public class WithdrawDepositServiceImpl {
-    public String post(String httpUrl, WithdrawDepositRequest reqData) throws Exception {
-        PrintUtil.printLn("Sign:" + reqData.requestSignPlain());
-        String signatureStr = SecurityUtils.sign(reqData.requestSignPlain());
-        reqData.setSignature(signatureStr);
-        String formHtml = WebFormUtils.createFormHtml(httpUrl, reqData);
-        return formHtml;
-    }
-
-    //测试
-    /*public static void main(String[] args) throws Exception {
+public class WithdrawDepositServiceImpl_UnitTest {
+    @Test
+    public void Test() throws Exception {
         WithdrawDepositRequest reqData = new WithdrawDepositRequest();
         reqData.setMchnt_cd("0002900F0041270");
         reqData.setMchnt_txn_ssn("11032302065863805738");
@@ -34,5 +24,5 @@ public class WithdrawDepositServiceImpl {
         if (result != null) {
             PrintUtil.printLn("[商户P2P网站免登录提现接口]-测试通过");
         }
-    }*/
+    }
 }

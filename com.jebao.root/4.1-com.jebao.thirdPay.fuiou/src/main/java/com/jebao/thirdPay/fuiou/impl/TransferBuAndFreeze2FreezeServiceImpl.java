@@ -29,7 +29,7 @@ public class TransferBuAndFreeze2FreezeServiceImpl {
         return regResponse;
     }
     //测试
-    public static void main(String[] args) throws Exception {
+/*    public static void main(String[] args) throws Exception {
         TransferBuAndFreeze2FreezeRequest reqData=new TransferBuAndFreeze2FreezeRequest();
         reqData.setMchnt_cd("0002900F0041077");
         reqData.setMchnt_txn_ssn("96f14200a794dbcc91cad69b50ef05");
@@ -45,5 +45,5 @@ public class TransferBuAndFreeze2FreezeServiceImpl {
         {
             PrintUtil.printLn("[冻结到冻结接口]-测试通过");
         }
-    }
+    }*/
 }

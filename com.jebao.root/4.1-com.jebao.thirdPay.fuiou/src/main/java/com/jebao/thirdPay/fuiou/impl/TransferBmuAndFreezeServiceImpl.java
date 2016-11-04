@@ -29,7 +29,7 @@ public class TransferBmuAndFreezeServiceImpl {
         return transferBmuAndFreezeResponse;
     }
     //测试
-    public static void main(String[] args) throws Exception {
+    /*public static void main(String[] args) throws Exception {
         TransferBmuAndFreezeRequest reqData = new TransferBmuAndFreezeRequest();
         reqData.setMchnt_cd("0002900F0041077");
         reqData.setMchnt_txn_ssn("96f14200a794dbcc91cad69b50ef05");
@@ -45,5 +45,5 @@ public class TransferBmuAndFreezeServiceImpl {
         {
             PrintUtil.printLn("[转账预冻结]-测试通过");
         }
-    }
+    }*/
 }

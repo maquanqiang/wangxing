@@ -29,7 +29,7 @@ public class QueryChangeCardServiceImpl {
         return regResponse;
     }
     //测试
-    public static void main(String[] args) throws Exception {
+    /*public static void main(String[] args) throws Exception {
         QueryChangeCardRequest reqData=new QueryChangeCardRequest();
         reqData.setMchnt_cd("0002900F0041077");
         reqData.setMchnt_txn_ssn("96f14200a794dbcc91cad69b50ef05");
@@ -43,6 +43,6 @@ public class QueryChangeCardServiceImpl {
         {
             PrintUtil.printLn("[用户更换银行卡查询接口]-测试通过");
         }
-    }
+    }*/
 
 }

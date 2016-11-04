@@ -1,25 +1,15 @@
 package com.jebao.thirdPay.fuiou.impl;
 
-import com.jebao.thirdPay.fuiou.http.WebFormUtils;
 import com.jebao.thirdPay.fuiou.model.gotoOnlineBankRecharge.GotoOnlineBankRechargeRequest;
 import com.jebao.thirdPay.fuiou.util.PrintUtil;
-import com.jebao.thirdPay.fuiou.util.SecurityUtils;
+import org.junit.Test;
 
 /**
- * 富友--P2P免登录直接跳转网银界面充值接口
- * Created by Administrator on 2016/9/27.
+ * Created by Administrator on 2016/11/4.
  */
-public class GotoOnlineBankRechargeServiceImpl {
-    public String post(String httpUrl, GotoOnlineBankRechargeRequest reqData) throws Exception {
-        PrintUtil.printLn("Sign:" + reqData.requestSignPlain());
-        String signatureStr = SecurityUtils.sign(reqData.requestSignPlain());
-        reqData.setSignature(signatureStr);
-        String formHtml = WebFormUtils.createFormHtml(httpUrl, reqData);
-        return formHtml;
-    }
-
-    //测试
-    /*public static void main(String[] args) throws Exception {
+public class GotoOnlineBankRechargeServiceImpl_UnitTest {
+    @Test
+    public void Test() throws Exception {
         GotoOnlineBankRechargeRequest reqData = new GotoOnlineBankRechargeRequest();
         reqData.setMchnt_cd("0002900F0041270");
         reqData.setMchnt_txn_ssn("11032302065863805738");
@@ -36,5 +26,5 @@ public class GotoOnlineBankRechargeServiceImpl {
         if (result != null) {
             PrintUtil.printLn("[P2P免登录直接跳转网银界面充值接口]-测试通过");
         }
-    }*/
+    }
 }

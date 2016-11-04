@@ -1,25 +1,15 @@
 package com.jebao.thirdPay.fuiou.impl;
 
-import com.jebao.thirdPay.fuiou.http.WebFormUtils;
 import com.jebao.thirdPay.fuiou.model.fastRecharge.FastRechargeRequest;
 import com.jebao.thirdPay.fuiou.util.PrintUtil;
-import com.jebao.thirdPay.fuiou.util.SecurityUtils;
+import org.junit.Test;
 
 /**
- * 富友--商户P2P网站免登录快速充值接口
- * Created by Administrator on 2016/9/27.
+ * Created by Administrator on 2016/11/4.
  */
-public class FastRechargeServiceImpl {
-    public String post(String httpUrl, FastRechargeRequest reqData) throws Exception {
-        PrintUtil.printLn("Sign:" + reqData.requestSignPlain());
-        String signatureStr = SecurityUtils.sign(reqData.requestSignPlain());
-        reqData.setSignature(signatureStr);
-        String formHtml = WebFormUtils.createFormHtml(httpUrl, reqData);
-        return formHtml;
-    }
-
-    //测试
-    /*public static void main(String[] args) throws Exception {
+public class FastRechargeServiceImpl_UnitTest {
+    @Test
+    public void Test() throws Exception {
         FastRechargeRequest reqData = new FastRechargeRequest();
         reqData.setMchnt_cd("0002900F0041270");
         reqData.setMchnt_txn_ssn("11032302065863805732");
@@ -34,5 +24,5 @@ public class FastRechargeServiceImpl {
         if (result != null) {
             PrintUtil.printLn("[商户P2P网站免登录快速充值接口]-测试通过");
         }
-    }*/
+    }
 }

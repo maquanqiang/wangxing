@@ -29,7 +29,7 @@ public class PreAuthServiceImpl {
         return preAuthResponse;
     }
     //测试
-    public static void main(String[] args) throws Exception {
+    /*public static void main(String[] args) throws Exception {
         PreAuthRequest reqData = new PreAuthRequest();
         reqData.setMchnt_cd("0006410F0026868");
         reqData.setMchnt_txn_ssn("11032302065863805732");
@@ -45,5 +45,5 @@ public class PreAuthServiceImpl {
         {
             PrintUtil.printLn("[预授权接口]-测试通过");
         }
-    }
+    }*/
 }

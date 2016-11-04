@@ -34,7 +34,7 @@ public class ArtifRegServiceImpl {
      * @param args
      * @throws Exception
      */
-    public static void main(String[] args) throws Exception {
+    /*public static void main(String[] args) throws Exception {
         ArtifRegRequest reqData = new ArtifRegRequest();
         reqData.setMchnt_cd("0001000F0342510");
         reqData.setMchnt_txn_ssn("96f14200a794dbcc91cad69b50ef05");
@@ -58,5 +58,5 @@ public class ArtifRegServiceImpl {
         {
             PrintUtil.printLn("[法人开户注册]-测试通过");
         }
-    }
+    }*/
 }

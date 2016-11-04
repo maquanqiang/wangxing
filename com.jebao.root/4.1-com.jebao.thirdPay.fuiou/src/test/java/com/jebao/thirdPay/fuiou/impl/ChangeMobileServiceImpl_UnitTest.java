@@ -1,25 +1,15 @@
 package com.jebao.thirdPay.fuiou.impl;
 
-import com.jebao.thirdPay.fuiou.http.WebFormUtils;
-
 import com.jebao.thirdPay.fuiou.model.changeMobile.ChangeMobileRequest;
 import com.jebao.thirdPay.fuiou.util.PrintUtil;
-import com.jebao.thirdPay.fuiou.util.SecurityUtils;
+import org.junit.Test;
 
 /**
- * 富友--个人PC端更换手机号
- * Created by Administrator on 2016/9/27.
+ * Created by Administrator on 2016/11/4.
  */
-public class ChangeMobileServiceImpl {
-    public String post(String httpUrl, ChangeMobileRequest reqData) throws Exception {
-        PrintUtil.printLn("Sign:" + reqData.requestSignPlain());
-        String signatureStr = SecurityUtils.sign(reqData.requestSignPlain());
-        reqData.setSignature(signatureStr);
-        String formHtml = WebFormUtils.createFormHtml(httpUrl, reqData);
-        return formHtml;
-    }
-    //测试
-    /*public static void main(String[] args) throws Exception {
+public class ChangeMobileServiceImpl_UnitTest {
+    @Test
+    public void Test() throws Exception {
         ChangeMobileRequest reqData = new ChangeMobileRequest();
         reqData.setMchnt_cd("0002900F0041270");
         reqData.setMchnt_txn_ssn("11032302065863805732");
@@ -35,5 +25,5 @@ public class ChangeMobileServiceImpl {
         if (result != null) {
             PrintUtil.printLn("[个人PC端更换手机号]-测试通过");
         }
-    }*/
+    }
 }

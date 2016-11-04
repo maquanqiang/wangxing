@@ -29,7 +29,7 @@ public class QuerycztxServiceImpl {
         return querycztxResponse;
     }
     //测试
-    public static void main(String[] args) throws Exception {
+    /*public static void main(String[] args) throws Exception {
         QuerycztxRequest reqData = new QuerycztxRequest();
         reqData.setVer("0.44");
         reqData.setMchnt_cd("0006510F0106121");
@@ -50,6 +50,6 @@ public class QuerycztxServiceImpl {
         {
             PrintUtil.printLn("[充值提现]-测试通过");
         }
-    }
+    }*/
 
 }

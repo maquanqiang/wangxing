@@ -29,7 +29,7 @@ public class PreAuthCancelServiceImpl {
         return preAuthCancelResponse;
     }
     //测试
-    public static void main(String[] args) throws Exception {
+    /*public static void main(String[] args) throws Exception {
         PreAuthCancelRequest reqData = new PreAuthCancelRequest();
         reqData.setMchnt_cd("0006510F0093601");
         reqData.setMchnt_txn_ssn("11032302065863805732");
@@ -45,5 +45,5 @@ public class PreAuthCancelServiceImpl {
         {
             PrintUtil.printLn("[预授权撤销接口]-测试通过");
         }
-    }
+    }*/
 }

@@ -19,20 +19,20 @@ public class OnlineBankRechargeServiceImpl {
     }
 
     //测试
-    public static void main(String[] args) throws Exception {
-        OnlineBankRechargeRequest reqData = new OnlineBankRechargeRequest();
-        reqData.setMchnt_cd("0002900F0041270");
-        reqData.setMchnt_txn_ssn("11032302065863805738");
-        reqData.setLogin_id("13678424821");
-        reqData.setAmt("10000");
-        reqData.setPage_notify_url("http://www.jebao.net/html/companySingle.do");
-        reqData.setBack_notify_url("");
-        String httpUrl = "https://jzh-test.fuiou.com/jzh/500002.action";
-        OnlineBankRechargeServiceImpl onlineBankRechargeService = new OnlineBankRechargeServiceImpl();
-        String result = onlineBankRechargeService.post(httpUrl, reqData);
-        PrintUtil.printLn(result);
-        if (result != null) {
-            PrintUtil.printLn("[商户P2P网站免登录网银充值接口]-测试通过");
-        }
-    }
+//    public static void main(String[] args) throws Exception {
+//        OnlineBankRechargeRequest reqData = new OnlineBankRechargeRequest();
+//        reqData.setMchnt_cd("0002900F0041270");
+//        reqData.setMchnt_txn_ssn("11032302065863805738");
+//        reqData.setLogin_id("13678424821");
+//        reqData.setAmt("10000");
+//        reqData.setPage_notify_url("http://www.jebao.net/html/companySingle.do");
+//        reqData.setBack_notify_url("");
+//        String httpUrl = "https://jzh-test.fuiou.com/jzh/500002.action";
+//        OnlineBankRechargeServiceImpl onlineBankRechargeService = new OnlineBankRechargeServiceImpl();
+//        String result = onlineBankRechargeService.post(httpUrl, reqData);
+//        PrintUtil.printLn(result);
+//        if (result != null) {
+//            PrintUtil.printLn("[商户P2P网站免登录网银充值接口]-测试通过");
+//        }
+//    }
 }

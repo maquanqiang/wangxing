@@ -29,7 +29,7 @@ public class TransferBuServiceImpl {
         return transferBuResponse;
     }
     //测试
-    public static void main(String[] args) throws Exception {
+    /*public static void main(String[] args) throws Exception {
         TransferBuRequest reqData=new TransferBuRequest();
         reqData.setMchnt_cd("0002900F0041077");
         reqData.setMchnt_txn_ssn("96f14200a794dbcc91cad69b50ef05");
@@ -46,6 +46,6 @@ public class TransferBuServiceImpl {
         {
             PrintUtil.printLn("[划拨(个人与个人之间)]-测试通过");
         }
-    }
+    }*/
 
 }

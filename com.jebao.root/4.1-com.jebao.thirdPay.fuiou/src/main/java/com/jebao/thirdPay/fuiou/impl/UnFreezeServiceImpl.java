@@ -28,7 +28,7 @@ public class UnFreezeServiceImpl {
         return regResponse;
     }
     //测试
-    public static void main(String[] args) throws Exception {
+    /*public static void main(String[] args) throws Exception {
         UnFreezeRequest reqData=new UnFreezeRequest();
         reqData.setMchnt_cd("0002900F0041077");
         reqData.setMchnt_txn_ssn("96f14200a794dbcc91cad69b50ef05");
@@ -43,5 +43,5 @@ public class UnFreezeServiceImpl {
         {
             PrintUtil.printLn("[解冻（7，8，9，10的冻结资金解冻]-测试通过");
         }
-    }
+    }*/
 }

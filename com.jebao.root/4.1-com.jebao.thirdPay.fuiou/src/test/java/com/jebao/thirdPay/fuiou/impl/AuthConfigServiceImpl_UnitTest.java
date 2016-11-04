@@ -1,25 +1,15 @@
 package com.jebao.thirdPay.fuiou.impl;
 
-import com.jebao.thirdPay.fuiou.http.WebFormUtils;
 import com.jebao.thirdPay.fuiou.model.authConfig.AuthConfigRequest;
-import com.jebao.thirdPay.fuiou.model.webReg.WebRegRequest;
 import com.jebao.thirdPay.fuiou.util.PrintUtil;
-import com.jebao.thirdPay.fuiou.util.SecurityUtils;
+import org.junit.Test;
 
 /**
- * 富友--PC金账户免登陆授权配置（短信通知+委托交易）（网页版）
- * Created by Administrator on 2016/9/27.
+ * Created by Administrator on 2016/11/4.
  */
-public class AuthConfigServiceImpl {
-    public String post(String httpUrl, AuthConfigRequest reqData) throws Exception {
-        PrintUtil.printLn("Sign:" + reqData.requestSignPlain());
-        String signatureStr = SecurityUtils.sign(reqData.requestSignPlain());
-        reqData.setSignature(signatureStr);
-        String formHtml = WebFormUtils.createFormHtml(httpUrl, reqData);
-        return formHtml;
-    }
-    //测试
-    /*public static void main(String[] args) throws Exception {
+public class AuthConfigServiceImpl_UnitTest {
+    @Test
+    public void Test() throws Exception {
         AuthConfigRequest reqData = new AuthConfigRequest();
         reqData.setMchnt_cd("0002900F0041270");
         reqData.setMchnt_txn_ssn("11032302065863805732");
@@ -35,5 +25,5 @@ public class AuthConfigServiceImpl {
         if (result != null) {
             PrintUtil.printLn("[PC金账户免登陆授权配置（短信通知+委托交易）（网页版）]-测试通过");
         }
-    }*/
+    }
 }

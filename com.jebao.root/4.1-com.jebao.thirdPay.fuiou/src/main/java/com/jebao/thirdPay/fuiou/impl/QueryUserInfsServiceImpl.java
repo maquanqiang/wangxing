@@ -29,7 +29,7 @@ public class QueryUserInfsServiceImpl {
         return queryUserInfsResponse;
     }
     //测试
-    public static void main(String[] args) throws Exception {
+    /*public static void main(String[] args) throws Exception {
         QueryUserInfsRequest reqData = new QueryUserInfsRequest();
         reqData.setVer("0.44");
         reqData.setMchnt_cd("0002900F0041077");
@@ -44,5 +44,5 @@ public class QueryUserInfsServiceImpl {
         {
             PrintUtil.printLn("[用户信息查询]-测试通过");
         }
-    }
+    }*/
 }

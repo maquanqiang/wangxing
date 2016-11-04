@@ -29,7 +29,7 @@ public class TransferBmuServiceImpl {
         return transferBmuResponse;
     }
     //测试
-    public static void main(String[] args) throws Exception {
+   /* public static void main(String[] args) throws Exception {
         TransferBmuRequest reqData = new TransferBmuRequest();
         reqData.setMchnt_cd("0006530F0082654");
         reqData.setMchnt_txn_ssn("11032302065863805732");
@@ -46,5 +46,5 @@ public class TransferBmuServiceImpl {
         {
             PrintUtil.printLn("[转账(商户与个人之间)接口]-测试通过");
         }
-    }
+    }*/
 }

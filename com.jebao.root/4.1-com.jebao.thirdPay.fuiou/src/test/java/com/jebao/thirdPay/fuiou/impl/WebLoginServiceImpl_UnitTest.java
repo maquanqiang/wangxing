@@ -1,25 +1,15 @@
 package com.jebao.thirdPay.fuiou.impl;
 
-import com.jebao.thirdPay.fuiou.http.WebFormUtils;
 import com.jebao.thirdPay.fuiou.model.webLogin.WebLoginRequest;
 import com.jebao.thirdPay.fuiou.util.PrintUtil;
-import com.jebao.thirdPay.fuiou.util.SecurityUtils;
+import org.junit.Test;
 
 /**
- * 富友--商户端个人用户跳转登录页面（网页版）
- * Created by Administrator on 2016/9/27.
+ * Created by Administrator on 2016/11/4.
  */
-public class WebLoginServiceImpl {
-    public String post(String httpUrl, WebLoginRequest reqData) throws Exception {
-        PrintUtil.printLn("Sign:" + reqData.requestSignPlain());
-        String signatureStr = SecurityUtils.sign(reqData.requestSignPlain());
-        reqData.setSignature(signatureStr);
-        String formHtml = WebFormUtils.createFormHtml(httpUrl, reqData);
-        return formHtml;
-    }
-
-    //测试
-    /*public static void main(String[] args) throws Exception {
+public class WebLoginServiceImpl_UnitTest {
+    @Test
+    public void Test() throws Exception {
         WebLoginRequest reqData = new WebLoginRequest();
         reqData.setMchnt_cd("0002900F0041270");
         reqData.setMchnt_txn_ssn("11032302065863805732");
@@ -33,5 +23,5 @@ public class WebLoginServiceImpl {
         if (result != null) {
             PrintUtil.printLn("[商户端个人用户跳转登录页面（网页版）]-测试通过");
         }
-    }*/
+    }
 }

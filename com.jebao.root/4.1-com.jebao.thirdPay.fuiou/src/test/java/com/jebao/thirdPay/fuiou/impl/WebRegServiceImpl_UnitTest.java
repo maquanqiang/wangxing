@@ -1,26 +1,15 @@
 package com.jebao.thirdPay.fuiou.impl;
 
-import com.jebao.thirdPay.fuiou.http.WebFormUtils;
 import com.jebao.thirdPay.fuiou.model.webReg.WebRegRequest;
 import com.jebao.thirdPay.fuiou.util.PrintUtil;
-import com.jebao.thirdPay.fuiou.util.SecurityUtils;
+import org.junit.Test;
 
 /**
- * 富友--个人用户自助开户注册（网页版）
- * Created by Administrator on 2016/9/26.
+ * Created by Administrator on 2016/11/4.
  */
-public class WebRegServiceImpl {
-    public String post(String httpUrl, WebRegRequest reqData) throws Exception {
-        PrintUtil.printLn("Sign:" + reqData.requestSignPlain());
-        String signatureStr = SecurityUtils.sign(reqData.requestSignPlain());
-        PrintUtil.printLn(signatureStr);
-        reqData.setSignature(signatureStr);
-        String formHtml = WebFormUtils.createFormHtml(httpUrl, reqData);
-        return formHtml;
-    }
-
-    //测试
-    /*public static void main(String[] args) throws Exception {
+public class WebRegServiceImpl_UnitTest {
+    @Test
+    public void Test() throws Exception {
         WebRegRequest reqData = new WebRegRequest();
         reqData.setVer("0.44");
         reqData.setMchnt_cd("0002900F0041077");
@@ -45,5 +34,5 @@ public class WebRegServiceImpl {
         if (result != null) {
             PrintUtil.printLn("[个人用户自助开户注册（网页版）]-测试通过");
         }
-    }*/
+    }
 }
