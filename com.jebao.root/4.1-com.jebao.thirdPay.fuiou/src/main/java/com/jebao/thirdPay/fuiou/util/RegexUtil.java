@@ -95,8 +95,8 @@ public class RegexUtil {
         }
     }
 
-    public static void main(String[] args) {
+/*    public static void main(String[] args) {
         System.out.println(matches("2016", "\\d{4}"));
         System.out.println(matches("2016-03-15 20:50:00", "^\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}$"));
-    }
+    }*/
 }
