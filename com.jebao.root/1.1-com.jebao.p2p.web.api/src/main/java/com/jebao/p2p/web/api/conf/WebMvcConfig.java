@@ -29,12 +29,15 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
     /**
      * SpringMvc_@RequestMapping设置Router Url大小写不敏感
      * http://www.cnblogs.com/gossip/p/5441358.html
+     * 如何取消 /index.*映射
+     * http://www.oschina.net/question/190714_116949
      * */
     @Override
     public void configurePathMatch(PathMatchConfigurer configurer) {
         AntPathMatcher matcher = new AntPathMatcher();
         matcher.setCaseSensitive(false);
         configurer.setPathMatcher(matcher);
+        configurer.setUseSuffixPatternMatch(false);
     }
     @Bean
     public EmbeddedServletContainerFactory createEmbeddedServletContainerFactory()

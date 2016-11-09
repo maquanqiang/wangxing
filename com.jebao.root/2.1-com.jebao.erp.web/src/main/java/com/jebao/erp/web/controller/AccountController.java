@@ -5,6 +5,8 @@ import com.jebao.erp.web.responseModel.base.JsonResult;
 import com.jebao.erp.web.responseModel.base.JsonResultError;
 import com.jebao.erp.web.responseModel.base.JsonResultOk;
 import com.jebao.erp.web.utils.captcha.CaptchaUtil;
+import com.jebao.erp.web.utils.session.CurrentUser;
+import com.jebao.erp.web.utils.session.LoginSessionUtil;
 import com.jebao.erp.web.utils.validation.ValidationResult;
 import com.jebao.erp.web.utils.validation.ValidationUtil;
 import org.apache.commons.lang.StringUtils;
@@ -38,6 +40,11 @@ public class AccountController extends _BaseController {
             return new JsonResultError("验证码不正确");
         }
         //todo 登录逻辑实现
+        //todo 实际的业务逻辑
+        CurrentUser currentUser = new CurrentUser();
+        currentUser.setId(50);
+        currentUser.setName(form.getName());
+        LoginSessionUtil.setLogin(currentUser, request, response);
         //
         return new JsonResultOk("登录成功");
     }

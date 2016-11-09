@@ -5,5 +5,5 @@ import com.jebao.erp.web.requestModel.base._BaseForm;
 /**
  * Created by Administrator on 2016/10/19.
  */
-public class UserForm extends _BaseForm {
+public class UserForm {
 }
