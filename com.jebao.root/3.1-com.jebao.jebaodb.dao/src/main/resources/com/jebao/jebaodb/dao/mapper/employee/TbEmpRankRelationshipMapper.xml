@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jebao.jebaodb.dao.mapper.employee.TbEmpRankRelationshipMapper" >
+  <resultMap id="BaseResultMap" type="com.jebao.jebaodb.entity.employee.TbEmpRankRelationship" >
+    <id column="err_id" property="errId" jdbcType="INTEGER" />
+    <result column="err_emp_code" property="errEmpCode" jdbcType="VARCHAR" />
+    <result column="err_rank_id" property="errRankId" jdbcType="INTEGER" />
+    <result column="err_effect_date" property="errEffectDate" jdbcType="DATE" />
+    <result column="err_expiry_date" property="errExpiryDate" jdbcType="DATE" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    err_id, err_emp_code, err_rank_id, err_effect_date, err_expiry_date
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_emp_rank_relationship
+    where err_id = #{errId,jdbcType=INTEGER}
+  </select>
+  <insert id="insert" parameterType="com.jebao.jebaodb.entity.employee.TbEmpRankRelationship" >
+    <selectKey resultType="java.lang.Integer" keyProperty="errId" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into tb_emp_rank_relationship (err_emp_code, err_rank_id, err_effect_date, 
+      err_expiry_date)
+    values (#{errEmpCode,jdbcType=VARCHAR}, #{errRankId,jdbcType=INTEGER}, #{errEffectDate,jdbcType=DATE}, 
+      #{errExpiryDate,jdbcType=DATE})
+  </insert>
+  <insert id="insertSelective" parameterType="com.jebao.jebaodb.entity.employee.TbEmpRankRelationship" >
+    <selectKey resultType="java.lang.Integer" keyProperty="errId" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into tb_emp_rank_relationship
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="errEmpCode != null" >
+        err_emp_code,
+      </if>
+      <if test="errRankId != null" >
+        err_rank_id,
+      </if>
+      <if test="errEffectDate != null" >
+        err_effect_date,
+      </if>
+      <if test="errExpiryDate != null" >
+        err_expiry_date,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="errEmpCode != null" >
+        #{errEmpCode,jdbcType=VARCHAR},
+      </if>
+      <if test="errRankId != null" >
+        #{errRankId,jdbcType=INTEGER},
+      </if>
+      <if test="errEffectDate != null" >
+        #{errEffectDate,jdbcType=DATE},
+      </if>
+      <if test="errExpiryDate != null" >
+        #{errExpiryDate,jdbcType=DATE},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.jebao.jebaodb.entity.employee.TbEmpRankRelationship" >
+    update tb_emp_rank_relationship
+    <set >
+      <if test="errEmpCode != null" >
+        err_emp_code = #{errEmpCode,jdbcType=VARCHAR},
+      </if>
+      <if test="errRankId != null" >
+        err_rank_id = #{errRankId,jdbcType=INTEGER},
+      </if>
+      <if test="errEffectDate != null" >
+        err_effect_date = #{errEffectDate,jdbcType=DATE},
+      </if>
+      <if test="errExpiryDate != null" >
+        err_expiry_date = #{errExpiryDate,jdbcType=DATE},
+      </if>
+    </set>
+    where err_id = #{errId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.jebao.jebaodb.entity.employee.TbEmpRankRelationship" >
+    update tb_emp_rank_relationship
+    set err_emp_code = #{errEmpCode,jdbcType=VARCHAR},
+      err_rank_id = #{errRankId,jdbcType=INTEGER},
+      err_effect_date = #{errEffectDate,jdbcType=DATE},
+      err_expiry_date = #{errExpiryDate,jdbcType=DATE}
+    where err_id = #{errId,jdbcType=INTEGER}
+  </update>
+</mapper>
