@@ -19,6 +19,11 @@
         <module>3.1-com.jebao.jebaodb.dao</module>
         <module>2.1-com.jebao.erp.web</module>
         <module>4.1-com.jebao.thirdPay.fuiou</module>
+        <module>2.2-com.jebao.erp.service.inf</module>
+        <module>com.jebao.erp.service.inf</module>
+        <module>2.2-com.jebao.erp.service.inf</module>
+        <module>2.2-com.jebao.erp.service.impl</module>
+        <module>2.1-com.jebao.erp.web.api</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>
