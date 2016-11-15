@@ -173,7 +173,7 @@
     <update id="deleteByPrimaryKey" parameterType="java.lang.Long" >
         update tb_risk_control_project_template
         set rcpt_is_del = 2
-        where rcpt_id = #{rcpt_id,jdbcType=BIGINT}
+        where rcpt_id = #{rcptId,jdbcType=BIGINT}
     </update>
     <select id="selectForPage" resultMap="BaseResultMap">
         select
@@ -188,7 +188,7 @@
         from tb_risk_control_project_template
         WHERE
         <include refid="selectByLoanerId_Where_Clause"/>
-        order by rcpt_id DESC
+        order by l_id DESC
         LIMIT #{pageWhere.begin},#{pageWhere.pageSize}
     </select>
     <select id="selectByLoanerIdForPageCount" resultType="java.lang.Integer">
@@ -199,6 +199,6 @@
     </select>
     <sql id="selectByLoanerId_Where_Clause">
         1=1
-        and rcpt_loaner_id=#{record.rcpt_loaner_id}
+        and rcpt_loaner_id = #{record.rcptLoanerId}
     </sql>
 </mapper>

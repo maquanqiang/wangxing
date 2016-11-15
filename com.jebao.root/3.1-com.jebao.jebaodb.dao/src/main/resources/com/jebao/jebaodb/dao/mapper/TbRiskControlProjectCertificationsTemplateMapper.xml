@@ -137,7 +137,7 @@
     <update id="deleteByPrimaryKey" parameterType="java.lang.Long" >
         update tb_risk_control_project_certifications_template
         set rcpct_is_del = 2
-        where rcpct_id = #{rcpct_id,jdbcType=BIGINT}
+        where rcpct_id = #{rcpctId,jdbcType=BIGINT}
     </update>
     <select id="selectForPage" resultMap="BaseResultMap">
         select
@@ -163,6 +163,6 @@
     </select>
     <sql id="selectByProjectId_Where_Clause">
         1=1
-        and rcpct_project_id=#{record.rcpct_project_id}
+        and rcpct_project_id=#{record.rcpctProjectId}
     </sql>
 </mapper>

@@ -412,7 +412,7 @@
     <update id="deleteByPrimaryKey" parameterType="java.lang.Long" >
         update tb_loaner
         set l_is_del = 2
-        where l_id = #{l_id,jdbcType=BIGINT}
+        where l_id = #{lId,jdbcType=BIGINT}
     </update>
     <select id="selectForPage" resultMap="BaseResultMap">
         select
@@ -438,8 +438,8 @@
     </select>
     <sql id="selectByParameters_Where_Clause">
         1=1
-        or l_nick_name=#{record.l_nick_name}
-        or l_phone=#{record.l_phone}
-        or l_true_name=#{record.l_true_name}
+        or l_nick_name=#{record.lNickName}
+        or l_phone=#{record.lPhone}
+        or l_true_name=#{record.lTrueName}
     </sql>
 </mapper>

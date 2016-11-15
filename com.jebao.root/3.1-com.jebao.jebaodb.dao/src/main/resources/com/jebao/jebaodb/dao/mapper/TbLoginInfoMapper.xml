@@ -13,7 +13,7 @@
     li_id, li_login_name, li_password, li_create_time, li_last_login_time, li_is_del
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
-    select 
+    select
     <include refid="Base_Column_List" />
     from tb_login_info
     where li_id = #{liId,jdbcType=BIGINT}
@@ -22,9 +22,9 @@
     <selectKey resultType="java.lang.Long" keyProperty="liId" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_login_info (li_login_name, li_password, li_create_time, 
+    insert into tb_login_info (li_login_name, li_password, li_create_time,
       li_last_login_time, li_is_del)
-    values (#{liLoginName,jdbcType=VARCHAR}, #{liPassword,jdbcType=VARCHAR}, #{liCreateTime,jdbcType=TIMESTAMP}, 
+    values (#{liLoginName,jdbcType=VARCHAR}, #{liPassword,jdbcType=VARCHAR}, #{liCreateTime,jdbcType=TIMESTAMP},
       #{liLastLoginTime,jdbcType=TIMESTAMP}, #{liIsDel,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.jebao.jebaodb.entity.TbLoginInfo" >
@@ -97,4 +97,24 @@
       li_is_del = #{liIsDel,jdbcType=INTEGER}
     where li_id = #{liId,jdbcType=BIGINT}
   </update>
+    <!--==================================================华丽分割线==================================================-->
+    <update id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        update tb_login_info
+        set li_is_del = 2
+        where li_id = #{liId,jdbcType=BIGINT}
+    </update>
+    <select id="selectForPage" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from tb_login_info
+        order by li_id DESC
+        LIMIT #{pageWhere.begin},#{pageWhere.pageSize}
+    </select>
+    <select id="selectByLoginName" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List" />
+        from tb_login_info
+        WHERE
+        li_login_name=#{liLoginName,jdbcType=VARCHAR}
+    </select>
 </mapper>
