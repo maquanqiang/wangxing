@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jebao.jebaodb.dao.mapper.employee.TbEmployeeMapper" >
+  <resultMap id="BaseResultMap" type="com.jebao.jebaodb.entity.employee.TbEmployee" >
+    <id column="emp_id" property="empId" jdbcType="INTEGER" />
+    <result column="emp_code" property="empCode" jdbcType="VARCHAR" />
+    <result column="emp_name" property="empName" jdbcType="VARCHAR" />
+    <result column="emp_mobilephone" property="empMobilephone" jdbcType="VARCHAR" />
+    <result column="emp_card_no" property="empCardNo" jdbcType="VARCHAR" />
+    <result column="emp_sex" property="empSex" jdbcType="TINYINT" />
+    <result column="emp_birthday" property="empBirthday" jdbcType="DATE" />
+    <result column="emp_status" property="empStatus" jdbcType="INTEGER" />
+    <result column="emp_entry_date" property="empEntryDate" jdbcType="DATE" />
+    <result column="emp_dimission_date" property="empDimissionDate" jdbcType="DATE" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    emp_id, emp_code, emp_name, emp_mobilephone, emp_card_no, emp_sex, emp_birthday, 
+    emp_status, emp_entry_date, emp_dimission_date
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_employee
+    where emp_id = #{empId,jdbcType=INTEGER}
+  </select>
+  <insert id="insert" parameterType="com.jebao.jebaodb.entity.employee.TbEmployee" >
+    <selectKey resultType="java.lang.Integer" keyProperty="empId" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into tb_employee (emp_code, emp_name, emp_mobilephone, 
+      emp_card_no, emp_sex, emp_birthday, 
+      emp_status, emp_entry_date, emp_dimission_date
+      )
+    values (#{empCode,jdbcType=VARCHAR}, #{empName,jdbcType=VARCHAR}, #{empMobilephone,jdbcType=VARCHAR}, 
+      #{empCardNo,jdbcType=VARCHAR}, #{empSex,jdbcType=TINYINT}, #{empBirthday,jdbcType=DATE}, 
+      #{empStatus,jdbcType=INTEGER}, #{empEntryDate,jdbcType=DATE}, #{empDimissionDate,jdbcType=DATE}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.jebao.jebaodb.entity.employee.TbEmployee" >
+    <selectKey resultType="java.lang.Integer" keyProperty="empId" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into tb_employee
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="empCode != null" >
+        emp_code,
+      </if>
+      <if test="empName != null" >
+        emp_name,
+      </if>
+      <if test="empMobilephone != null" >
+        emp_mobilephone,
+      </if>
+      <if test="empCardNo != null" >
+        emp_card_no,
+      </if>
+      <if test="empSex != null" >
+        emp_sex,
+      </if>
+      <if test="empBirthday != null" >
+        emp_birthday,
+      </if>
+      <if test="empStatus != null" >
+        emp_status,
+      </if>
+      <if test="empEntryDate != null" >
+        emp_entry_date,
+      </if>
+      <if test="empDimissionDate != null" >
+        emp_dimission_date,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="empCode != null" >
+        #{empCode,jdbcType=VARCHAR},
+      </if>
+      <if test="empName != null" >
+        #{empName,jdbcType=VARCHAR},
+      </if>
+      <if test="empMobilephone != null" >
+        #{empMobilephone,jdbcType=VARCHAR},
+      </if>
+      <if test="empCardNo != null" >
+        #{empCardNo,jdbcType=VARCHAR},
+      </if>
+      <if test="empSex != null" >
+        #{empSex,jdbcType=TINYINT},
+      </if>
+      <if test="empBirthday != null" >
+        #{empBirthday,jdbcType=DATE},
+      </if>
+      <if test="empStatus != null" >
+        #{empStatus,jdbcType=INTEGER},
+      </if>
+      <if test="empEntryDate != null" >
+        #{empEntryDate,jdbcType=DATE},
+      </if>
+      <if test="empDimissionDate != null" >
+        #{empDimissionDate,jdbcType=DATE},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.jebao.jebaodb.entity.employee.TbEmployee" >
+    update tb_employee
+    <set >
+      <if test="empCode != null" >
+        emp_code = #{empCode,jdbcType=VARCHAR},
+      </if>
+      <if test="empName != null" >
+        emp_name = #{empName,jdbcType=VARCHAR},
+      </if>
+      <if test="empMobilephone != null" >
+        emp_mobilephone = #{empMobilephone,jdbcType=VARCHAR},
+      </if>
+      <if test="empCardNo != null" >
+        emp_card_no = #{empCardNo,jdbcType=VARCHAR},
+      </if>
+      <if test="empSex != null" >
+        emp_sex = #{empSex,jdbcType=TINYINT},
+      </if>
+      <if test="empBirthday != null" >
+        emp_birthday = #{empBirthday,jdbcType=DATE},
+      </if>
+      <if test="empStatus != null" >
+        emp_status = #{empStatus,jdbcType=INTEGER},
+      </if>
+      <if test="empEntryDate != null" >
+        emp_entry_date = #{empEntryDate,jdbcType=DATE},
+      </if>
+      <if test="empDimissionDate != null" >
+        emp_dimission_date = #{empDimissionDate,jdbcType=DATE},
+      </if>
+    </set>
+    where emp_id = #{empId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.jebao.jebaodb.entity.employee.TbEmployee" >
+    update tb_employee
+    set emp_code = #{empCode,jdbcType=VARCHAR},
+      emp_name = #{empName,jdbcType=VARCHAR},
+      emp_mobilephone = #{empMobilephone,jdbcType=VARCHAR},
+      emp_card_no = #{empCardNo,jdbcType=VARCHAR},
+      emp_sex = #{empSex,jdbcType=TINYINT},
+      emp_birthday = #{empBirthday,jdbcType=DATE},
+      emp_status = #{empStatus,jdbcType=INTEGER},
+      emp_entry_date = #{empEntryDate,jdbcType=DATE},
+      emp_dimission_date = #{empDimissionDate,jdbcType=DATE}
+    where emp_id = #{empId,jdbcType=INTEGER}
+  </update>
+</mapper>
