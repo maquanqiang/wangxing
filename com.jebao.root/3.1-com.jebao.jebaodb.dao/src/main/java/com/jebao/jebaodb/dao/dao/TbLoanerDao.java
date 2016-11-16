@@ -43,13 +43,13 @@ public class TbLoanerDao {
     {
         return tbLoanerMapper.selectForPage(pageWhere);
     }
-    public List<TbLoaner> selectByParametersForPage(TbLoaner record,PageWhere pageWhere)
+    public List<TbLoaner> selectByParamsForPage(TbLoaner record,PageWhere pageWhere)
     {
-        return tbLoanerMapper.selectByParametersForPage(record, pageWhere);
+        return tbLoanerMapper.selectByParamsForPage(record, pageWhere);
     }
-    public int selectByParametersForPageCount(TbLoaner record)
+    public int selectByParamsForPageCount(TbLoaner record)
     {
-        return tbLoanerMapper.selectByParametersForPageCount(record);
+        return tbLoanerMapper.selectByParamsForPageCount(record);
     }
     @Transactional
     public int insertForTransactional(TbLoaner record) {

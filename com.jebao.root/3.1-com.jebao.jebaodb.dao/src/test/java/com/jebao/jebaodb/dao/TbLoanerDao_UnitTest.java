@@ -45,14 +45,14 @@ public class TbLoanerDao_UnitTest extends _BaseUnitTest {
         record.setlLoginId((long)1);
         record.setlMaritalStatus(1);
         record.setlMonthlySalary(1);
-        record.setlNickName("");
-        record.setlPhone("");
+        record.setlNickName("三刀");
+        record.setlPhone("15901048116");
         record.setlPoliticsStatus(1);
         record.setlSex(1);
         record.setlThirdAccount("");
         record.setlThirdLoginPassword("");
         record.setlThirdPayPassword("");
-        record.setlTrueName("");
+        record.setlTrueName("王伟");
         record.setlWorkCity("");
         int result= tbLoanerDao.insert(record);
         assertThat(result).isEqualTo(1);
@@ -107,12 +107,10 @@ public class TbLoanerDao_UnitTest extends _BaseUnitTest {
         assertThat(result).isNotEqualTo(null);*/
     }
     @Test
-    public void selectByUserNameForPageCountExample() {
-/*        TbLoaner record = new TbLoaner();
-        record.setUsername("us2016102001");
-        int result = tbLoanerDao.selectByUserNameForPageCount(record);
+    public void selectByParamsForPageCountExample() {
+        int result = tbLoanerDao.selectByParamsForPageCount(null);
         assertThat(result).isNotEqualTo(null);
-        System.out.println(result);*/
+        System.out.println("result:"+result);
     }
     /**
      * Spring Boot中的事务管理

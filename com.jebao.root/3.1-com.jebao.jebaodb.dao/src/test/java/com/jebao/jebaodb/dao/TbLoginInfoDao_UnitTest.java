@@ -3,10 +3,12 @@ package com.jebao.jebaodb.dao;
 import com.jebao.jebaodb.dao.base._BaseUnitTest;
 import com.jebao.jebaodb.dao.dao.TbLoginInfoDao;
 import com.jebao.jebaodb.entity.TbLoginInfo;
+import com.jebao.jebaodb.entity.extEntity.PageWhere;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Date;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -59,6 +61,30 @@ public class TbLoginInfoDao_UnitTest extends _BaseUnitTest {
         record.setLiPassword("654321");
         int result= tbLoginInfoDao.updateByPrimaryKey(record);
         assertThat(result).isNotEqualTo(null);
+    }
+    @Test
+    public void deleteByPrimaryKeyExample()
+    {
+        int result= tbLoginInfoDao.deleteByPrimaryKey((long)2);
+        assertThat(result).isNotEqualTo(null);
+    }
+    @Test
+    public void selectForPageExample()
+    {
+        PageWhere pageWhere=new PageWhere(1,10);
+        List<TbLoginInfo> result = tbLoginInfoDao.selectForPage(pageWhere);
+        assertThat(result).isNotEqualTo(null);
+    }
+    @Test
+    public void selectByLoginNameExample()
+    {
+        TbLoginInfo result = tbLoginInfoDao.selectByLoginName("15901048116");
+        assertThat(result).isNotEqualTo(null);
+        if(result == null){
+            System.out.println("wu");
+        }else{
+            System.out.println(result.getLiLoginName());
+        }
     }
     /**
      * Spring Boot中的事务管理
