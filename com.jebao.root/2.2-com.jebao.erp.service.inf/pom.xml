@@ -9,9 +9,13 @@
         <relativePath>../pom.xml</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-
     <artifactId>com.jebao.erp.service.inf</artifactId>
     <packaging>jar</packaging>
-
-
+    <dependencies>
+        <dependency>
+            <groupId>com.jebao</groupId>
+            <artifactId>com.jebao.jebaodb.entity</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
 </project>
