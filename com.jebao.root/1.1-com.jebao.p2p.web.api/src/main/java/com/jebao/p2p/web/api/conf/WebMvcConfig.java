@@ -21,10 +21,10 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
      * @author yzd
      */
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(new AuthorizeInterceptor())
-                .addPathPatterns("/api/**")
-                .excludePathPatterns("/api/tempTest/*")
-                .excludePathPatterns("/api/account/doLogin");
+//        registry.addInterceptor(new AuthorizeInterceptor())
+//                .addPathPatterns("/api/**")
+//                .excludePathPatterns("/api/tempTest/*")
+//                .excludePathPatterns("/api/account/doLogin");
     }
     /**
      * SpringMvc_@RequestMapping设置Router Url大小写不敏感
