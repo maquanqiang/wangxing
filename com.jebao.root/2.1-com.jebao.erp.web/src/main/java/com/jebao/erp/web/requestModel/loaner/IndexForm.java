@@ -6,17 +6,31 @@ import com.jebao.erp.web.requestModel.base._BaseForm;
  * Created by Administrator on 2016/11/14.
  */
 public class IndexForm extends _BaseForm {
-    //转为数据库实体数据
-    public static Object toEntity(IndexForm form)
-    {
-        /**
-         TbTempTest result=new TbTempTest();
-         result.setUsername(form.getName());
-         result.setPassword(form.getPassword());
-         return result;
-         */
-        return null;
-    }
-    //===================================================
+    private String nickName;
+    private String phone;
+    private String trueName;
 
+    public String getNickName() {
+        return nickName;
+    }
+
+    public void setNickName(String nickName) {
+        this.nickName = nickName;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getTrueName() {
+        return trueName;
+    }
+
+    public void setTrueName(String trueName) {
+        this.trueName = trueName;
+    }
 }

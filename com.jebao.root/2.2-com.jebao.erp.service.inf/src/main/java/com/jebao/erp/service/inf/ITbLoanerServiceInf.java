@@ -8,7 +8,7 @@ import java.util.List;
  * Created by Administrator on 2016/11/16.
  */
 public interface ITbLoanerServiceInf {
-    int add(TbLoaner record);
+    int add(String phone);
     int update(TbLoaner record);
     int deleteById(Long lId);
     TbLoaner findById(Long lId);
