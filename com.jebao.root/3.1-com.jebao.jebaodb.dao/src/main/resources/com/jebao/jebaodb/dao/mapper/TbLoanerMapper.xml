@@ -421,22 +421,22 @@
         order by l_id DESC
         LIMIT #{pageWhere.begin},#{pageWhere.pageSize}
     </select>
-    <select id="selectByParametersForPage" resultMap="BaseResultMap">
+    <select id="selectByParamsForPage" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from tb_loaner
         WHERE
-        <include refid="selectByParameters_Where_Clause"/>
+        <include refid="selectByParams_Where_Clause"/>
         order by l_id DESC
         LIMIT #{pageWhere.begin},#{pageWhere.pageSize}
     </select>
-    <select id="selectByParametersForPageCount" resultType="java.lang.Integer">
+    <select id="selectByParamsForPageCount" resultType="java.lang.Integer">
         select count(*)
         from tb_loaner
         WHERE
-        <include refid="selectByParameters_Where_Clause"/>
+        <include refid="selectByParams_Where_Clause"/>
     </select>
-    <sql id="selectByParameters_Where_Clause">
+    <sql id="selectByParams_Where_Clause">
         1=1
         or l_nick_name=#{record.lNickName}
         or l_phone=#{record.lPhone}

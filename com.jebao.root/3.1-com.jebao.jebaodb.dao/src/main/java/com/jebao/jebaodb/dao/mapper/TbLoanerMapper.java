@@ -22,7 +22,7 @@ public interface TbLoanerMapper {
 
     List<TbLoaner> selectForPage(@Param("pageWhere") PageWhere pageWhere);
 
-    List<TbLoaner> selectByParametersForPage(@Param("record") TbLoaner record, @Param("pageWhere") PageWhere pageWhere);
+    List<TbLoaner> selectByParamsForPage(@Param("record") TbLoaner record, @Param("pageWhere") PageWhere pageWhere);
 
-    int selectByParametersForPageCount(@Param("record") TbLoaner record);
+    int selectByParamsForPageCount(@Param("record") TbLoaner record);
 }

@@ -80,11 +80,11 @@ public class TbLoginInfoDao_UnitTest extends _BaseUnitTest {
     {
         TbLoginInfo result = tbLoginInfoDao.selectByLoginName("15901048116");
         assertThat(result).isNotEqualTo(null);
-/*        if(result == null){
+        if(result == null){
             System.out.println("wu");
         }else{
             System.out.println(result.getLiLoginName());
-        }*/
+        }
     }
     /**
      * Spring Boot中的事务管理
