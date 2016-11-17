@@ -13,7 +13,7 @@ public class TbEmployee {
 
     private String empCardNo;
 
-    private Byte empSex;
+    private Integer empSex;
 
     private Date empBirthday;
 
@@ -63,11 +63,11 @@ public class TbEmployee {
         this.empCardNo = empCardNo == null ? null : empCardNo.trim();
     }
 
-    public Byte getEmpSex() {
+    public Integer getEmpSex() {
         return empSex;
     }
 
-    public void setEmpSex(Byte empSex) {
+    public void setEmpSex(Integer empSex) {
         this.empSex = empSex;
     }
 
