@@ -10,9 +10,13 @@ public class TbBidPlan {
 
     private String bpNumber;
 
+    private Integer bpPeriodsDisplay;
+
     private Integer bpPeriods;
 
-    private Long bpCycle;
+    private Integer bpCycleType;
+
+    private Integer bpCycleSize;
 
     private BigDecimal bpSurplusMoney;
 
@@ -50,11 +54,11 @@ public class TbBidPlan {
 
     private Long bpLoginId;
 
-    private Long bpLoanerType;
+    private Integer bpLoanerType;
 
-    private Long bpInterestPayType;
+    private Integer bpInterestPayType;
 
-    private Long bpOpenTime;
+    private Integer bpOpenTime;
 
     private Date bpInterestSt;
 
@@ -62,7 +66,9 @@ public class TbBidPlan {
 
     private String bpRemark;
 
-    private Date bpExpectLoanTime;
+    private Date bpExpectLoanDate;
+
+    private Date bpExpectRepayDate;
 
     private BigDecimal bpServiceChargeRate;
 
@@ -110,6 +116,14 @@ public class TbBidPlan {
         this.bpNumber = bpNumber == null ? null : bpNumber.trim();
     }
 
+    public Integer getBpPeriodsDisplay() {
+        return bpPeriodsDisplay;
+    }
+
+    public void setBpPeriodsDisplay(Integer bpPeriodsDisplay) {
+        this.bpPeriodsDisplay = bpPeriodsDisplay;
+    }
+
     public Integer getBpPeriods() {
         return bpPeriods;
     }
@@ -118,12 +132,20 @@ public class TbBidPlan {
         this.bpPeriods = bpPeriods;
     }
 
-    public Long getBpCycle() {
-        return bpCycle;
+    public Integer getBpCycleType() {
+        return bpCycleType;
     }
 
-    public void setBpCycle(Long bpCycle) {
-        this.bpCycle = bpCycle;
+    public void setBpCycleType(Integer bpCycleType) {
+        this.bpCycleType = bpCycleType;
+    }
+
+    public Integer getBpCycleSize() {
+        return bpCycleSize;
+    }
+
+    public void setBpCycleSize(Integer bpCycleSize) {
+        this.bpCycleSize = bpCycleSize;
     }
 
     public BigDecimal getBpSurplusMoney() {
@@ -270,27 +292,27 @@ public class TbBidPlan {
         this.bpLoginId = bpLoginId;
     }
 
-    public Long getBpLoanerType() {
+    public Integer getBpLoanerType() {
         return bpLoanerType;
     }
 
-    public void setBpLoanerType(Long bpLoanerType) {
+    public void setBpLoanerType(Integer bpLoanerType) {
         this.bpLoanerType = bpLoanerType;
     }
 
-    public Long getBpInterestPayType() {
+    public Integer getBpInterestPayType() {
         return bpInterestPayType;
     }
 
-    public void setBpInterestPayType(Long bpInterestPayType) {
+    public void setBpInterestPayType(Integer bpInterestPayType) {
         this.bpInterestPayType = bpInterestPayType;
     }
 
-    public Long getBpOpenTime() {
+    public Integer getBpOpenTime() {
         return bpOpenTime;
     }
 
-    public void setBpOpenTime(Long bpOpenTime) {
+    public void setBpOpenTime(Integer bpOpenTime) {
         this.bpOpenTime = bpOpenTime;
     }
 
@@ -318,12 +340,20 @@ public class TbBidPlan {
         this.bpRemark = bpRemark == null ? null : bpRemark.trim();
     }
 
-    public Date getBpExpectLoanTime() {
-        return bpExpectLoanTime;
+    public Date getBpExpectLoanDate() {
+        return bpExpectLoanDate;
     }
 
-    public void setBpExpectLoanTime(Date bpExpectLoanTime) {
-        this.bpExpectLoanTime = bpExpectLoanTime;
+    public void setBpExpectLoanDate(Date bpExpectLoanDate) {
+        this.bpExpectLoanDate = bpExpectLoanDate;
+    }
+
+    public Date getBpExpectRepayDate() {
+        return bpExpectRepayDate;
+    }
+
+    public void setBpExpectRepayDate(Date bpExpectRepayDate) {
+        this.bpExpectRepayDate = bpExpectRepayDate;
     }
 
     public BigDecimal getBpServiceChargeRate() {

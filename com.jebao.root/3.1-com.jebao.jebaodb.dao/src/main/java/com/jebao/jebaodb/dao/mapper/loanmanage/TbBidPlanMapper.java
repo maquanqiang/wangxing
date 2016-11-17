@@ -17,7 +17,9 @@ public interface TbBidPlanMapper {
 
     int updateByPrimaryKey(TbBidPlan record);
 
-    List<TbBidPlan> selectForPage(@Param("pageWhere")PageWhere pageWhere);
+    List<TbBidPlan> selectForPage(@Param("pageWhere") PageWhere pageWhere);
 
-    List<TbBidPlan> selectByConditionForPage(@Param("record")TbBidPlan record, @Param("pageWhere")PageWhere pageWhere);
+    List<TbBidPlan> selectByConditionForPage(@Param("record") TbBidPlan record, @Param("pageWhere") PageWhere pageWhere, @Param("orderByCon") String orderByCondition);
+
+    int selectByConditionCount(@Param("record") TbBidPlan record);
 }
