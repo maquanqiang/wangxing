@@ -9,6 +9,7 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -25,8 +26,11 @@ public class TbBidPlanDao_UnitTest extends _BaseUnitTest {
     public void insertExample()
     {
         TbBidPlan record = new TbBidPlan();
+        record.setBpCreateTime(new Date());
         record.setBpBidMoney(BigDecimal.ONE);
-        record.setBpBorrowDesc("第二条非常好");
+        record.setBpBorrowDesc("非常好");
+        record.setBpCycleSize(1);
+        record.setBpRiskOpinion("可控");
         int result= tbBidPlanDao.insert(record);
         assertThat(result).isEqualTo(1);
         System.out.println(record.getBpId());
@@ -36,8 +40,16 @@ public class TbBidPlanDao_UnitTest extends _BaseUnitTest {
     public void selectByConditionForPage(){
         TbBidPlan record = new TbBidPlan();
         record.setBpBorrowDesc("非常好");
-        PageWhere pageWhere = new PageWhere(1,1);
-        List<TbBidPlan> planList = tbBidPlanDao.selectByConditionForPage(record, pageWhere);
+        String orderByCondition = "bp_id desc";
+        PageWhere pageWhere = new PageWhere(0,1);
+        List<TbBidPlan> planList = tbBidPlanDao.selectByConditionForPage(record, pageWhere,orderByCondition);
         System.out.println(planList);
+    }
+
+    @Test
+    public void selectByConditionCount(){
+        TbBidPlan plan = new TbBidPlan();
+        plan.setBpBorrowDesc("非常好");
+        System.out.println(tbBidPlanDao.selectByConditionCount(plan));
     }
 }
