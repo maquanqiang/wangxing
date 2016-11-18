@@ -13,7 +13,7 @@ public class TbEmployee {
 
     private String empCardNo;
 
-    private Byte empSex;
+    private Integer empSex;
 
     private Date empBirthday;
 
@@ -22,6 +22,12 @@ public class TbEmployee {
     private Date empEntryDate;
 
     private Date empDimissionDate;
+
+    private Boolean empIsDeleted;
+
+    private Date empCreateTime;
+
+    private Integer empCreateUser;
 
     public Integer getEmpId() {
         return empId;
@@ -63,11 +69,11 @@ public class TbEmployee {
         this.empCardNo = empCardNo == null ? null : empCardNo.trim();
     }
 
-    public Byte getEmpSex() {
+    public Integer getEmpSex() {
         return empSex;
     }
 
-    public void setEmpSex(Byte empSex) {
+    public void setEmpSex(Integer empSex) {
         this.empSex = empSex;
     }
 
@@ -101,5 +107,29 @@ public class TbEmployee {
 
     public void setEmpDimissionDate(Date empDimissionDate) {
         this.empDimissionDate = empDimissionDate;
+    }
+
+    public Boolean getEmpIsDeleted() {
+        return empIsDeleted;
+    }
+
+    public void setEmpIsDeleted(Boolean empIsDeleted) {
+        this.empIsDeleted = empIsDeleted;
+    }
+
+    public Date getEmpCreateTime() {
+        return empCreateTime;
+    }
+
+    public void setEmpCreateTime(Date empCreateTime) {
+        this.empCreateTime = empCreateTime;
+    }
+
+    public Integer getEmpCreateUser() {
+        return empCreateUser;
+    }
+
+    public void setEmpCreateUser(Integer empCreateUser) {
+        this.empCreateUser = empCreateUser;
     }
 }

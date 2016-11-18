@@ -5,14 +5,13 @@ import com.jebao.jebaodb.dao.dao.TbTempTestDao;
 import com.jebao.jebaodb.entity.TbTempTest;
 import com.jebao.jebaodb.entity.extEntity.PageWhere;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 /**
  * Created by Administrator on 2016/11/15.
  */
-@Service
+
 public class TempTestServiceImpl implements ITempTestServiceInf {
 
     @Autowired

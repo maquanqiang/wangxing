@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>员工管理 - 信投资本综合管理系统</title>
+    #include("common/head.html")
+</head>
+<body class="skin-blue sidebar-mini">
+<div class="wrapper">
+    <!-- 头部菜单 -->
+    #parse("common/main-header.html")
+    <!-- 左侧菜单 -->
+    #parse("common/main-sidebar.html")
+    <!-- 页面主内容 -->
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+            <h1>员工管理</h1>
+        </section>
+        <!-- Main content -->
+        <section class="content">
+            <!-- 查询条件块 -->
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="box box-primary">
+                        <form action="" class="form-inline" id="order_search_form" method="post" novalidate="novalidate">
+                            <div class="box-body">
+                                <div class="row">
+
+                                </div>
+                                <div class="form-group">
+                                    <div class="input-group margin">
+                                        <div class="input-group-addon">姓名</div>
+                                        <input type="text" class="form-control" placeholder="" name="">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="input-group margin">
+                                        <div class="input-group-addon">手机号</div>
+                                        <input type="text" class="form-control" placeholder="" name="">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="input-group margin">
+                                        <div class="input-group-addon">所属团队</div>
+                                        <input type="text" class="form-control" placeholder="" name="">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="input-group margin">
+                                        <div class="input-group-addon">级别</div>
+                                        <input type="text" class="form-control" placeholder="" name="">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="input-group margin">
+                                        <div class="input-group-addon">所属部门</div>
+                                        <input type="text" class="form-control" placeholder="" name="">
+                                    </div>
+                                </div>
+                                <div class="form-group ">
+                                    <div class="input-group  margin">
+                                        <a href="javascript:;" class="btn btn-primary " role="button" target="_blank">搜索</a>
+                                    </div>
+                                </div><br>
+
+                                <div class="form-group ">
+                                    <div class="input-group  margin">
+                                        <a href="javascript:;" class="btn btn-primary " role="button" target="_blank" id="add-people">添加</a>
+                                    </div>
+                                </div>
+                                <div class="form-group ">
+                                    <div class="input-group  margin">
+                                        <a href="javascript:;" class="btn btn-primary " role="button" target="_blank" id="modifyInformation">修改</a>
+                                    </div>
+                                </div>
+                                <div class="form-group ">
+                                    <div class="input-group  margin">
+                                        <a href="javascript:;" class="btn btn-primary " role="button" target="_blank" id="remove-msg">删除</a>
+                                    </div>
+                                </div>
+                                <div class="form-group ">
+                                    <div class="input-group  margin">
+                                        <a href="javascript:;" class="btn btn-primary " role="button" target="_blank">导出Excel</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <!--表格内容-->
+            <div class="row">
+                <div class="col-xs-12">
+                    <!-- 内容框 -->
+                    <div class="box box-primary">
+                        <!-- 内容头部 -->
+                        <div class="box-header with-border no-padding" style="border-bottom-color:#ccc">
+                            <div class="mailbox-controls">
+                                <div class="btn-group">
+                                    <button class="btn btn-default btn-sm"><i class="fa fa-trash-o"></i></button>
+                                    <button class="btn btn-default btn-sm"><i class="fa fa-reply"></i></button>
+                                    <button class="btn btn-default btn-sm"><i class="fa fa-share"></i></button>
+                                </div><!-- /.btn-group -->
+                                <button class="btn btn-default btn-sm"><i class="fa fa-refresh"></i></button>
+                            </div>
+                        </div>
+
+                        <div class="box-body no-padding">
+                            <div id="orderlist_table_wrapper" class="dataTables_wrapper">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <table id="orderlist_table" class="table table-bordered table-hover dataTable" role="grid" aria-describedby="orderlist_table_info">
+                                            <thead>
+                                            <tr role="row">
+                                                <th width="10%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">操作</th>
+                                                <th width="10%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">资金ID</th>
+                                                <th width="10%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">姓名</th>
+                                                <th width="10%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">手机号</th>
+                                                <th width="10%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">员工级别</th>
+                                                <th width="10%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">所属团队</th>
+                                                <th width="10%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">所属部门</th>
+                                                <th width="10%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">公司</th>
+                                                <th width="10%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">集团</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr role="row" class="odd">
+                                                <td>abcd123</td>
+                                                <td>0920183</td>
+                                                <td>张三</td>
+                                                <td>13601254554</td>
+                                                <td>经理</td>
+                                                <td>一团</td>
+                                                <td>一部</td>
+                                                <td></td>
+                                                <td></td>
+                                            </tr>
+                                            <tr role="row" class="even">
+                                                <td>abcd123</td>
+                                                <td>0920183</td>
+                                                <td>张三</td>
+                                                <td>13601254554</td>
+                                                <td>经理</td>
+                                                <td>一团</td>
+                                                <td>一部</td>
+                                                <td></td>
+                                                <td></td>
+                                            </tr>
+                                            <tr role="row" class="odd">
+                                                <td>abcd123</td>
+                                                <td>0920183</td>
+                                                <td>张三</td>
+                                                <td>13601254554</td>
+                                                <td>经理</td>
+                                                <td>一团</td>
+                                                <td>一部</td>
+                                                <td></td>
+                                                <td></td>
+                                            </tr>
+                                            <tr role="row" class="even">
+                                                <td>abcd123</td>
+                                                <td>0920183</td>
+                                                <td>张三</td>
+                                                <td>13601254554</td>
+                                                <td>经理</td>
+                                                <td>一团</td>
+                                                <td>一部</td>
+                                                <td></td>
+                                                <td></td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12 pagination">
+                                        <div id="pageNum"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+    <!-- /.content-wrapper -->
+    <div class="control-sidebar-bg"></div>
+</div><!-- ./wrapper -->
+<!--提示框-->
+<!--添加个人借款用户-->
+<div class="modal col-xs-12" id="addInforModal">
+    <form class="form-horizontal">
+        <div class="box-body">
+            <div class="form-group">
+                <label class="col-sm-3 control-label">姓名</label>
+                <div class="col-sm-8">
+                    <input type="text" class="form-control" placeholder="" name="user">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">手机号</label>
+                <div class="col-sm-8">
+                    <input type="text" class="form-control" placeholder="" name="tel">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">身份证号</label>
+                <div class="col-sm-8">
+                    <input type="text" class="form-control" placeholder="" name="ID">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">部门</label>
+                <div class="col-sm-8">
+                    <select class="form-control" style="width:100%;height: 34px;border-color: #d2d6de;"  name="department">
+                        <option value="0">行政</option>
+                        <option value="1">财务</option>
+                        <option value="2">人事</option>
+                        <option value="3">金额宝互联网</option>
+                        <option value="4">销售一部</option>
+                        <option value="5">销售二部</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">员工级别</label>
+                <div class="col-sm-8">
+                    <select class="form-control" style="width:100%;height: 34px;border-color: #d2d6de;"  name="staffLevel">
+                        <option value="0">理财顾问</option>
+                        <option value="1">团队经理</option>
+                        <option value="2">总监</option>
+                        <option value="3">副总经理</option>
+                        <option value="4">经理</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">所属团队</label>
+                <div class="col-sm-8">
+                    <input type="text" class="form-control" placeholder="" name="team">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">所属部门</label>
+                <div class="col-sm-8">
+                    <input type="text" class="form-control" placeholder="" name="inDepartment">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">公司</label>
+                <div class="col-sm-8">
+                    <input type="text" class="form-control" placeholder="" name="company">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">集团</label>
+                <div class="col-sm-8">
+                    <input type="text" class="form-control" placeholder="" name="group">
+                </div>
+            </div>
+        </div><!-- /.box-body -->
+    </form>
+</div>
+<!--修改个人借款用户-->
+<div class="modal col-xs-12"  id="modInforInfModal">
+    <form class="form-horizontal">
+        <div class="box-body">
+            <div class="form-group">
+                <label class="col-sm-3 control-label">姓名:</label>
+                <div class="col-sm-8">
+                    <input type="text" class="form-control" placeholder="" value="张三" name="user">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">性别:</label>
+                <div class="col-sm-8">
+                    <input type="text" class="form-control" placeholder="" value="男" name="sex">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">身份证号:</label>
+                <div class="col-sm-8">
+                    <input type="text" class="form-control" placeholder="" value="130406256547895451" name="ID">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">部门</label>
+                <div class="col-sm-8">
+                    <select class="form-control" style="width:100%;height: 34px;border-color: #d2d6de;"  name="department">
+                        <option value="0">行政</option>
+                        <option value="1">财务</option>
+                        <option value="2">人事</option>
+                        <option value="3"  selected>金额宝互联网</option>
+                        <option value="4">销售一部</option>
+                        <option value="5">销售二部</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">员工级别</label>
+                <div class="col-sm-8">
+                    <select class="form-control" style="width:100%;height: 34px;border-color: #d2d6de;"  name="staffLevel">
+                        <option value="0"  selected>理财顾问</option>
+                        <option value="1">团队经理</option>
+                        <option value="2">总监</option>
+                        <option value="3">副总经理</option>
+                        <option value="4">经理</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">所属团队</label>
+                <div class="col-sm-8">
+                    <input type="text" class="form-control" placeholder="" name="team" value="互联网">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">所属部门</label>
+                <div class="col-sm-8">
+                    <input type="text" class="form-control" placeholder="" name="inDepartment" value="金额宝">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">公司</label>
+                <div class="col-sm-8">
+                    <input type="text" class="form-control" placeholder="" name="company" value="信投资本">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">集团</label>
+                <div class="col-sm-8">
+                    <input type="text" class="form-control" placeholder="" name="group" value="安盛信投">
+                </div>
+            </div>
+        </div><!-- /.box-body -->
+    </form>
+</div>
+
+#include("common/footer.html")
+<!--pagination-->
+<script>
+    $(function(){
+        //添加个人
+        $('#add-people').on('click',function(){
+            var tempObj= $('#addInforModal').clone();
+            tempObj.find('form').attr('id','insertFormId');
+            var tempHtml=tempObj.html();
+            layer.open({
+                title:'添加业务员信息',
+                content:tempHtml,
+                btn: ['添加', '重置'],
+                area:['500px'],
+                btn1: function(){
+                    initValidateForm($('#insertFormId'));
+                    var bootstrapValidator = $("#insertFormId").data('bootstrapValidator').validate();
+                    if(!bootstrapValidator.isValid()){
+                        return false;
+                    }else{
+                        layer.alert('添加成功！',function(){
+                            layer.closeAll();
+                        });
+                    }
+                },
+                btn2: function(){
+                    $("#insertFormId input").val("");
+                    return false;
+                }
+            });
+        });
+        //删除信息
+        $('.remove-msg').on('click',function(){
+            _this=$(this);
+            layer.open({
+                content:'您是否删除信息?',
+                btn: ['取消', '删除'],
+                yes: function(){
+                    layer.closeAll();
+                },
+                btn2: function(){
+                    _this.parent().parent().remove();
+                    layer.msg('删除成功！', {icon: 1});
+                }
+            });
+        });
+        //修改信息
+        $('#modifyInformation').on('click',function(){
+            var tempObj= $('#modInforInfModal').clone();
+            tempObj.find('form').attr('id','ModifyFormId');
+            var tempHtml=tempObj.html();
+            layer.open({
+                title:'修改业务员信息',
+                content:tempHtml,
+                area:['500px'],
+                btn: ['修改', '重置'],
+                btn1: function(){
+                    initValidateForm($('#ModifyFormId'));
+                    var bootstrapValidator = $("#ModifyFormId").data('bootstrapValidator').validate();
+                    if(!bootstrapValidator.isValid()){
+                        return false;
+                    }else{
+                        layer.alert('修改成功！',function(){
+                            layer.closeAll();
+                        });
+                    }
+                },
+                btn2: function(){
+                    $("#ModifyFormId input").val("");
+                    return false;
+                }
+            });
+        });
+        //调用分页
+        laypage({
+            cont:$('#pageNum'), //容器。值支持id名、原生dom对象，jquery对象,
+            pages: 100, //总页数
+            groups: 7 //连续显示分页数
+        });
+    });
+</script>
+</body>
+</html>
