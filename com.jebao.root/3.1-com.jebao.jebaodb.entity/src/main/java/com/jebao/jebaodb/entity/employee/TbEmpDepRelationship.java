@@ -13,6 +13,10 @@ public class TbEmpDepRelationship {
 
     private Date edrExpiryDate;
 
+    private Date edrCreateTime;
+
+    private Integer edrCreateUser;
+
     public Integer getEdrId() {
         return edrId;
     }
@@ -51,5 +55,21 @@ public class TbEmpDepRelationship {
 
     public void setEdrExpiryDate(Date edrExpiryDate) {
         this.edrExpiryDate = edrExpiryDate;
+    }
+
+    public Date getEdrCreateTime() {
+        return edrCreateTime;
+    }
+
+    public void setEdrCreateTime(Date edrCreateTime) {
+        this.edrCreateTime = edrCreateTime;
+    }
+
+    public Integer getEdrCreateUser() {
+        return edrCreateUser;
+    }
+
+    public void setEdrCreateUser(Integer edrCreateUser) {
+        this.edrCreateUser = edrCreateUser;
     }
 }

@@ -13,6 +13,10 @@ public class TbEmpRankRelationship {
 
     private Date errExpiryDate;
 
+    private Date errCreateTime;
+
+    private Integer errCreateUser;
+
     public Integer getErrId() {
         return errId;
     }
@@ -51,5 +55,21 @@ public class TbEmpRankRelationship {
 
     public void setErrExpiryDate(Date errExpiryDate) {
         this.errExpiryDate = errExpiryDate;
+    }
+
+    public Date getErrCreateTime() {
+        return errCreateTime;
+    }
+
+    public void setErrCreateTime(Date errCreateTime) {
+        this.errCreateTime = errCreateTime;
+    }
+
+    public Integer getErrCreateUser() {
+        return errCreateUser;
+    }
+
+    public void setErrCreateUser(Integer errCreateUser) {
+        this.errCreateUser = errCreateUser;
     }
 }

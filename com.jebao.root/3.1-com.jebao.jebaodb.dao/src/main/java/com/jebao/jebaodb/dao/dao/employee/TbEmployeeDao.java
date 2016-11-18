@@ -29,6 +29,19 @@ public class TbEmployeeDao {
         if (pageWhere==null){
             pageWhere = new PageWhere(0,10);
         }
-        return mapper.selectEmployeeDetailsInfo(model,pageWhere);
+        List<EmployeeInfo> list = mapper.selectEmployeeDetailsInfo(model,pageWhere);
+        return list;
+    }
+
+    /**
+     * 逻辑删除员工
+     * @param id emp_id
+     * @return 执行结果 true or false
+     */
+    public boolean delete(Integer id){
+        TbEmployee entity = new TbEmployee();
+        entity.setEmpId(id);
+        entity.setEmpIsDeleted(true);
+        return mapper.updateByPrimaryKeySelective(entity) > 0;
     }
 }

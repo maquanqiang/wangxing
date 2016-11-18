@@ -23,6 +23,12 @@ public class TbEmployee {
 
     private Date empDimissionDate;
 
+    private Boolean empIsDeleted;
+
+    private Date empCreateTime;
+
+    private Integer empCreateUser;
+
     public Integer getEmpId() {
         return empId;
     }
@@ -101,5 +107,29 @@ public class TbEmployee {
 
     public void setEmpDimissionDate(Date empDimissionDate) {
         this.empDimissionDate = empDimissionDate;
+    }
+
+    public Boolean getEmpIsDeleted() {
+        return empIsDeleted;
+    }
+
+    public void setEmpIsDeleted(Boolean empIsDeleted) {
+        this.empIsDeleted = empIsDeleted;
+    }
+
+    public Date getEmpCreateTime() {
+        return empCreateTime;
+    }
+
+    public void setEmpCreateTime(Date empCreateTime) {
+        this.empCreateTime = empCreateTime;
+    }
+
+    public Integer getEmpCreateUser() {
+        return empCreateUser;
+    }
+
+    public void setEmpCreateUser(Integer empCreateUser) {
+        this.empCreateUser = empCreateUser;
     }
 }
