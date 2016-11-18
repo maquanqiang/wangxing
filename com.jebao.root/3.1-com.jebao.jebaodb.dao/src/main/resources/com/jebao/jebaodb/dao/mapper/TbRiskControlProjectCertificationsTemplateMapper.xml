@@ -4,17 +4,17 @@
   <resultMap id="BaseResultMap" type="com.jebao.jebaodb.entity.TbRiskControlProjectCertificationsTemplate" >
     <id column="rcpct_id" property="rcpctId" jdbcType="BIGINT" />
     <result column="rcpct_project_id" property="rcpctProjectId" jdbcType="BIGINT" />
+    <result column="rcpct_no" property="rcpctNo" jdbcType="VARCHAR" />
     <result column="rcpct_name" property="rcpctName" jdbcType="VARCHAR" />
-    <result column="rcpct_number" property="rcpctNumber" jdbcType="INTEGER" />
+    <result column="rcpct_remark" property="rcpctRemark" jdbcType="VARCHAR" />
     <result column="rcpct_path" property="rcpctPath" jdbcType="VARCHAR" />
     <result column="rcpct_url" property="rcpctUrl" jdbcType="VARCHAR" />
     <result column="rcpct_create_time" property="rcpctCreateTime" jdbcType="TIMESTAMP" />
-    <result column="rcpct_remark" property="rcpctRemark" jdbcType="VARCHAR" />
     <result column="rcpct_is_del" property="rcpctIsDel" jdbcType="INTEGER" />
   </resultMap>
   <sql id="Base_Column_List" >
-    rcpct_id, rcpct_project_id, rcpct_name, rcpct_number, rcpct_path, rcpct_url, rcpct_create_time, 
-    rcpct_remark, rcpct_is_del
+    rcpct_id, rcpct_project_id, rcpct_no, rcpct_name, rcpct_remark, rcpct_path, rcpct_url, 
+    rcpct_create_time, rcpct_is_del
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select 
@@ -26,12 +26,12 @@
     <selectKey resultType="java.lang.Long" keyProperty="rcpctId" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_risk_control_project_certifications_template (rcpct_project_id, rcpct_name, rcpct_number, 
-      rcpct_path, rcpct_url, rcpct_create_time, 
-      rcpct_remark, rcpct_is_del)
-    values (#{rcpctProjectId,jdbcType=BIGINT}, #{rcpctName,jdbcType=VARCHAR}, #{rcpctNumber,jdbcType=INTEGER}, 
-      #{rcpctPath,jdbcType=VARCHAR}, #{rcpctUrl,jdbcType=VARCHAR}, #{rcpctCreateTime,jdbcType=TIMESTAMP}, 
-      #{rcpctRemark,jdbcType=VARCHAR}, #{rcpctIsDel,jdbcType=INTEGER})
+    insert into tb_risk_control_project_certifications_template (rcpct_project_id, rcpct_no, rcpct_name, 
+      rcpct_remark, rcpct_path, rcpct_url, 
+      rcpct_create_time, rcpct_is_del)
+    values (#{rcpctProjectId,jdbcType=BIGINT}, #{rcpctNo,jdbcType=VARCHAR}, #{rcpctName,jdbcType=VARCHAR}, 
+      #{rcpctRemark,jdbcType=VARCHAR}, #{rcpctPath,jdbcType=VARCHAR}, #{rcpctUrl,jdbcType=VARCHAR}, 
+      #{rcpctCreateTime,jdbcType=TIMESTAMP}, #{rcpctIsDel,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.jebao.jebaodb.entity.TbRiskControlProjectCertificationsTemplate" >
     <selectKey resultType="java.lang.Long" keyProperty="rcpctId" order="AFTER" >
@@ -42,11 +42,14 @@
       <if test="rcpctProjectId != null" >
         rcpct_project_id,
       </if>
+      <if test="rcpctNo != null" >
+        rcpct_no,
+      </if>
       <if test="rcpctName != null" >
         rcpct_name,
       </if>
-      <if test="rcpctNumber != null" >
-        rcpct_number,
+      <if test="rcpctRemark != null" >
+        rcpct_remark,
       </if>
       <if test="rcpctPath != null" >
         rcpct_path,
@@ -57,9 +60,6 @@
       <if test="rcpctCreateTime != null" >
         rcpct_create_time,
       </if>
-      <if test="rcpctRemark != null" >
-        rcpct_remark,
-      </if>
       <if test="rcpctIsDel != null" >
         rcpct_is_del,
       </if>
@@ -68,11 +68,14 @@
       <if test="rcpctProjectId != null" >
         #{rcpctProjectId,jdbcType=BIGINT},
       </if>
+      <if test="rcpctNo != null" >
+        #{rcpctNo,jdbcType=VARCHAR},
+      </if>
       <if test="rcpctName != null" >
         #{rcpctName,jdbcType=VARCHAR},
       </if>
-      <if test="rcpctNumber != null" >
-        #{rcpctNumber,jdbcType=INTEGER},
+      <if test="rcpctRemark != null" >
+        #{rcpctRemark,jdbcType=VARCHAR},
       </if>
       <if test="rcpctPath != null" >
         #{rcpctPath,jdbcType=VARCHAR},
@@ -82,9 +85,6 @@
       </if>
       <if test="rcpctCreateTime != null" >
         #{rcpctCreateTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="rcpctRemark != null" >
-        #{rcpctRemark,jdbcType=VARCHAR},
       </if>
       <if test="rcpctIsDel != null" >
         #{rcpctIsDel,jdbcType=INTEGER},
@@ -97,11 +97,14 @@
       <if test="rcpctProjectId != null" >
         rcpct_project_id = #{rcpctProjectId,jdbcType=BIGINT},
       </if>
+      <if test="rcpctNo != null" >
+        rcpct_no = #{rcpctNo,jdbcType=VARCHAR},
+      </if>
       <if test="rcpctName != null" >
         rcpct_name = #{rcpctName,jdbcType=VARCHAR},
       </if>
-      <if test="rcpctNumber != null" >
-        rcpct_number = #{rcpctNumber,jdbcType=INTEGER},
+      <if test="rcpctRemark != null" >
+        rcpct_remark = #{rcpctRemark,jdbcType=VARCHAR},
       </if>
       <if test="rcpctPath != null" >
         rcpct_path = #{rcpctPath,jdbcType=VARCHAR},
@@ -112,9 +115,6 @@
       <if test="rcpctCreateTime != null" >
         rcpct_create_time = #{rcpctCreateTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="rcpctRemark != null" >
-        rcpct_remark = #{rcpctRemark,jdbcType=VARCHAR},
-      </if>
       <if test="rcpctIsDel != null" >
         rcpct_is_del = #{rcpctIsDel,jdbcType=INTEGER},
       </if>
@@ -124,12 +124,12 @@
   <update id="updateByPrimaryKey" parameterType="com.jebao.jebaodb.entity.TbRiskControlProjectCertificationsTemplate" >
     update tb_risk_control_project_certifications_template
     set rcpct_project_id = #{rcpctProjectId,jdbcType=BIGINT},
+      rcpct_no = #{rcpctNo,jdbcType=VARCHAR},
       rcpct_name = #{rcpctName,jdbcType=VARCHAR},
-      rcpct_number = #{rcpctNumber,jdbcType=INTEGER},
+      rcpct_remark = #{rcpctRemark,jdbcType=VARCHAR},
       rcpct_path = #{rcpctPath,jdbcType=VARCHAR},
       rcpct_url = #{rcpctUrl,jdbcType=VARCHAR},
       rcpct_create_time = #{rcpctCreateTime,jdbcType=TIMESTAMP},
-      rcpct_remark = #{rcpctRemark,jdbcType=VARCHAR},
       rcpct_is_del = #{rcpctIsDel,jdbcType=INTEGER}
     where rcpct_id = #{rcpctId,jdbcType=BIGINT}
   </update>
@@ -162,7 +162,7 @@
         <include refid="selectByProjectId_Where_Clause"/>
     </select>
     <sql id="selectByProjectId_Where_Clause">
-        1=1
+        rcpct_is_del=1
         and rcpct_project_id=#{record.rcpctProjectId}
     </sql>
 </mapper>

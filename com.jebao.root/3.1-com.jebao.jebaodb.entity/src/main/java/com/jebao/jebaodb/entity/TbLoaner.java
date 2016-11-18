@@ -21,7 +21,7 @@ public class TbLoaner {
 
     private Integer lAge;
 
-    private Date lCreateTime;
+    private Date lRegisterTime;
 
     private Date lLastLoginTime;
 
@@ -62,6 +62,10 @@ public class TbLoaner {
     private String lBankParentBankCode;
 
     private String lBankParentBankName;
+
+    private Date lCreateTime;
+
+    private Date lUpdateTime;
 
     private String lBankCardNo;
 
@@ -139,12 +143,12 @@ public class TbLoaner {
         this.lAge = lAge;
     }
 
-    public Date getlCreateTime() {
-        return lCreateTime;
+    public Date getlRegisterTime() {
+        return lRegisterTime;
     }
 
-    public void setlCreateTime(Date lCreateTime) {
-        this.lCreateTime = lCreateTime;
+    public void setlRegisterTime(Date lRegisterTime) {
+        this.lRegisterTime = lRegisterTime;
     }
 
     public Date getlLastLoginTime() {
@@ -305,6 +309,22 @@ public class TbLoaner {
 
     public void setlBankParentBankName(String lBankParentBankName) {
         this.lBankParentBankName = lBankParentBankName == null ? null : lBankParentBankName.trim();
+    }
+
+    public Date getlCreateTime() {
+        return lCreateTime;
+    }
+
+    public void setlCreateTime(Date lCreateTime) {
+        this.lCreateTime = lCreateTime;
+    }
+
+    public Date getlUpdateTime() {
+        return lUpdateTime;
+    }
+
+    public void setlUpdateTime(Date lUpdateTime) {
+        this.lUpdateTime = lUpdateTime;
     }
 
     public String getlBankCardNo() {

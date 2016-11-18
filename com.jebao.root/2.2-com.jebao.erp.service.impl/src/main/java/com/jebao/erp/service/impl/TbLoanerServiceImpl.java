@@ -1,9 +1,12 @@
 package com.jebao.erp.service.impl;
 
+import com.jebao.common.utils.idcard.IdCardUtil;
 import com.jebao.erp.service.inf.ITbLoanerServiceInf;
+import com.jebao.jebaodb.dao.dao.TbFundsDetailsDao;
 import com.jebao.jebaodb.dao.dao.TbLoanerDao;
 import com.jebao.jebaodb.dao.dao.TbLoginInfoDao;
 import com.jebao.jebaodb.dao.dao.TbUserDetailsDao;
+import com.jebao.jebaodb.entity.TbFundsDetails;
 import com.jebao.jebaodb.entity.TbLoaner;
 import com.jebao.jebaodb.entity.TbLoginInfo;
 import com.jebao.jebaodb.entity.TbUserDetails;
@@ -11,6 +14,7 @@ import com.jebao.jebaodb.entity.extEntity.PageWhere;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -24,6 +28,8 @@ public class TbLoanerServiceImpl implements ITbLoanerServiceInf {
     private TbLoginInfoDao tbLoginInfoDao;
     @Autowired
     private TbUserDetailsDao tbUserDetailsDao;
+    @Autowired
+    private TbFundsDetailsDao tbFundsDetailsDao;
 
     @Override
     public int add(String phone) {
@@ -36,14 +42,27 @@ public class TbLoanerServiceImpl implements ITbLoanerServiceInf {
             return 0;
         }
         TbLoaner loaner = new TbLoaner();
-        loaner.setlPhone(loginInfo.getLiLoginName());
+        loaner.setlLoginId(loginInfo.getLiId());
+        loaner.setlNickName(userDetails.getUdNickName());
         loaner.setlTrueName(userDetails.getUdTrueName());
+        loaner.setlRegisterTime(loginInfo.getLiCreateTime());
+        loaner.setlLastLoginTime(loginInfo.getLiLastLoginTime());
+        loaner.setlEmail(userDetails.getUdEmail());
+        loaner.setlIdNumber(userDetails.getUdIdNumber());
+        loaner.setlSex(IdCardUtil.getGenderByIdCard(userDetails.getUdIdNumber()));
+        loaner.setlAge(IdCardUtil.getAgeByIdCard(userDetails.getUdIdNumber()));
+        loaner.setlPhone(loginInfo.getLiLoginName());
+        loaner.setlThirdAccount(userDetails.getUdThirdAccount());
         loaner.setlThirdPayPassword(userDetails.getUdThirdPayPassword());
         loaner.setlThirdLoginPassword(userDetails.getUdThirdLoginPassword());
-       // loaner.setlSex();
-        //loaner.setlAge();
         loaner.setlBankCardNo(userDetails.getUdBankCardNo());
         loaner.setlBankCityName(userDetails.getUdBankCityName());
+        loaner.setlBankCityCode(userDetails.getUdBankCityCode());
+        loaner.setlBankParentBankCode(userDetails.getUdBankParentBankCode());
+        loaner.setlBankParentBankName(userDetails.getUdBankParentBankName());
+        loaner.setlCreateTime(new Date());
+        loaner.setlUpdateTime(new Date());
+        loaner.setlIsDel(1);
         return tbLoanerDao.insertSelective(loaner);
     }
 
@@ -71,5 +90,16 @@ public class TbLoanerServiceImpl implements ITbLoanerServiceInf {
     public List<TbLoaner> selectByParamsForPage(TbLoaner record, int pageIndex, int pageSize) {
         PageWhere page = new PageWhere(pageIndex, pageSize);
         return tbLoanerDao.selectByParamsForPage(record, page);
+    }
+
+    @Override
+    public List<TbFundsDetails> selectFundsDetailsForPage(TbFundsDetails record,int pageIndex,int pageSize){
+        PageWhere page = new PageWhere(pageIndex, pageSize);
+        return tbFundsDetailsDao.selectByParamsForPage(record, page);
+    }
+
+    @Override
+    public int selectFundsDetailsForPageCount(TbFundsDetails record){
+        return tbFundsDetailsDao.selectByParamsForPageCount(record);
     }
 }

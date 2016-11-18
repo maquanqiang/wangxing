@@ -7,6 +7,7 @@ import com.jebao.jebaodb.entity.extEntity.PageWhere;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.Date;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -34,10 +35,13 @@ public class TbUserDetailsDao_UnitTest extends _BaseUnitTest {
     public void insertSelectiveExample() {
         TbUserDetails record = new TbUserDetails();
         record.setUdIsDel(1);
-        record.setUdLoginId((long) 2);
-        record.setUdNickName("五刀");
+        record.setUdLoginId((long)1);
+        record.setUdNickName("三刀");
         record.setUdTrueName("王五");
-        record.setUdThirdAccount("15901048115");
+        record.setUdThirdAccount("15901048116");
+        record.setUdIdNumber("412824198402074715");
+        record.setUdCreateTime(new Date());
+        record.setUdUpdateTime(new Date());
         int result= tbUserDetailsDao.insertSelective(record);
         assertThat(result).isEqualTo(1);
         System.out.println(record.getUdId());

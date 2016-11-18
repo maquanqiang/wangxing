@@ -7,17 +7,17 @@ public class TbRiskControlProjectCertificationsTemplate {
 
     private Long rcpctProjectId;
 
+    private String rcpctNo;
+
     private String rcpctName;
 
-    private Integer rcpctNumber;
+    private String rcpctRemark;
 
     private String rcpctPath;
 
     private String rcpctUrl;
 
     private Date rcpctCreateTime;
-
-    private String rcpctRemark;
 
     private Integer rcpctIsDel;
 
@@ -37,6 +37,14 @@ public class TbRiskControlProjectCertificationsTemplate {
         this.rcpctProjectId = rcpctProjectId;
     }
 
+    public String getRcpctNo() {
+        return rcpctNo;
+    }
+
+    public void setRcpctNo(String rcpctNo) {
+        this.rcpctNo = rcpctNo == null ? null : rcpctNo.trim();
+    }
+
     public String getRcpctName() {
         return rcpctName;
     }
@@ -45,12 +53,12 @@ public class TbRiskControlProjectCertificationsTemplate {
         this.rcpctName = rcpctName == null ? null : rcpctName.trim();
     }
 
-    public Integer getRcpctNumber() {
-        return rcpctNumber;
+    public String getRcpctRemark() {
+        return rcpctRemark;
     }
 
-    public void setRcpctNumber(Integer rcpctNumber) {
-        this.rcpctNumber = rcpctNumber;
+    public void setRcpctRemark(String rcpctRemark) {
+        this.rcpctRemark = rcpctRemark == null ? null : rcpctRemark.trim();
     }
 
     public String getRcpctPath() {
@@ -75,14 +83,6 @@ public class TbRiskControlProjectCertificationsTemplate {
 
     public void setRcpctCreateTime(Date rcpctCreateTime) {
         this.rcpctCreateTime = rcpctCreateTime;
-    }
-
-    public String getRcpctRemark() {
-        return rcpctRemark;
-    }
-
-    public void setRcpctRemark(String rcpctRemark) {
-        this.rcpctRemark = rcpctRemark == null ? null : rcpctRemark.trim();
     }
 
     public Integer getRcpctIsDel() {

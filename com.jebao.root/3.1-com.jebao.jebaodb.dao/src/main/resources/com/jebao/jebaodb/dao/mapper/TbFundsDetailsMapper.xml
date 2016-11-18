@@ -146,4 +146,33 @@
       fd_serial_status = #{fdSerialStatus,jdbcType=INTEGER}
     where fd_id = #{fdId,jdbcType=BIGINT}
   </update>
+    <!--==================================================华丽分割线==================================================-->
+    <select id="selectForPage" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_funds_details
+        order by fd_id DESC
+        LIMIT #{pageWhere.begin},#{pageWhere.pageSize}
+    </select>
+    <select id="selectByParamsForPage" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_funds_details
+        WHERE
+        <include refid="selectByParams_Where_Clause" />
+        order by fd_id DESC
+        LIMIT #{pageWhere.begin},#{pageWhere.pageSize}
+    </select>
+    <select id="selectByParamsForPageCount" resultType="java.lang.Integer">
+        select count(*)
+        from tb_funds_details
+        WHERE
+        <include refid="selectByParams_Where_Clause" />
+    </select>
+    <sql id="selectByParams_Where_Clause">
+        fd_login_id=#{record.fdLoginId}
+        <if test="record.fdSerialStatus != null" >
+            AND fd_serial_status = #{record.fdSerialStatus}
+        </if>
+    </sql>
 </mapper>

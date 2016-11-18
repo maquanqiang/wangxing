@@ -27,6 +27,8 @@ public class TbRiskControlProjectTemplate {
 
     private Integer rcptIsDel;
 
+    private String rcptDesc;
+
     public Long getRcptId() {
         return rcptId;
     }
@@ -121,5 +123,13 @@ public class TbRiskControlProjectTemplate {
 
     public void setRcptIsDel(Integer rcptIsDel) {
         this.rcptIsDel = rcptIsDel;
+    }
+
+    public String getRcptDesc() {
+        return rcptDesc;
+    }
+
+    public void setRcptDesc(String rcptDesc) {
+        this.rcptDesc = rcptDesc == null ? null : rcptDesc.trim();
     }
 }
