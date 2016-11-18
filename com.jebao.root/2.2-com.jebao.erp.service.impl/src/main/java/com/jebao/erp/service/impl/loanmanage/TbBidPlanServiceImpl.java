@@ -24,11 +24,15 @@ public class TbBidPlanServiceImpl implements ITbBidPlanServiceInf {
     private TbBidRiskDataDao bidRiskDataDao;
 
     @Override
-    public int add(TbBidPlan plan, TbBidRiskData riskData) {
+    public int add(TbBidPlan plan, List<TbBidRiskData> riskDatas) {
 
         bidPlanDao.insert(plan);
-        riskData.setBrdBpId(plan.getBpId());
-        bidRiskDataDao.insert(riskData);
+        if(riskDatas!=null && riskDatas.size()>0){
+            for (TbBidRiskData riskData: riskDatas) {
+                riskData.setBrdBpId(plan.getBpId());
+                bidRiskDataDao.insert(riskData);
+            }
+        }
         return 0;
     }
 

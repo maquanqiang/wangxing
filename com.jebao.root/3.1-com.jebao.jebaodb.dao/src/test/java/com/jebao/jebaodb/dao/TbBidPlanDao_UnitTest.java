@@ -67,6 +67,7 @@ public class TbBidPlanDao_UnitTest extends _BaseUnitTest {
         TbBidRiskData riskData = new TbBidRiskData();
         riskData.setBrdBpId(bidPlan.getBpId());
         riskData.setBrdRemark("测试");
+        riskData.setBrdNo("99999");
         riskData.setBrdUrl("http://baidu.com");
         riskDataDao.insert(riskData);
     }

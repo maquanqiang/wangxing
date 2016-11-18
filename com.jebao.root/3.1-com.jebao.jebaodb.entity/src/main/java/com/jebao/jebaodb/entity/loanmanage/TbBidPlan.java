@@ -74,8 +74,6 @@ public class TbBidPlan {
 
     private BigDecimal bpLateRate;
 
-    private Long bpRcptId;
-
     private String bpBorrowDesc;
 
     private String bpFundsPurpose;
@@ -91,6 +89,8 @@ public class TbBidPlan {
     private Integer bpRepayedPeriods;
 
     private Integer bpIsDel;
+
+    private String bpDesc;
 
     public Long getBpId() {
         return bpId;
@@ -372,14 +372,6 @@ public class TbBidPlan {
         this.bpLateRate = bpLateRate;
     }
 
-    public Long getBpRcptId() {
-        return bpRcptId;
-    }
-
-    public void setBpRcptId(Long bpRcptId) {
-        this.bpRcptId = bpRcptId;
-    }
-
     public String getBpBorrowDesc() {
         return bpBorrowDesc;
     }
@@ -442,5 +434,13 @@ public class TbBidPlan {
 
     public void setBpIsDel(Integer bpIsDel) {
         this.bpIsDel = bpIsDel;
+    }
+
+    public String getBpDesc() {
+        return bpDesc;
+    }
+
+    public void setBpDesc(String bpDesc) {
+        this.bpDesc = bpDesc;
     }
 }

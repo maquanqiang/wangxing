@@ -5,7 +5,7 @@
     <id column="brd_id" property="brdId" jdbcType="BIGINT" />
     <result column="brd_bp_id" property="brdBpId" jdbcType="BIGINT" />
     <result column="brd_name" property="brdName" jdbcType="VARCHAR" />
-    <result column="brd_number" property="brdNumber" jdbcType="INTEGER" />
+    <result column="brd_no" property="brdNo" jdbcType="VARCHAR" />
     <result column="brd_path" property="brdPath" jdbcType="VARCHAR" />
     <result column="brd_url" property="brdUrl" jdbcType="VARCHAR" />
     <result column="brd_create_time" property="brdCreateTime" jdbcType="TIMESTAMP" />
@@ -14,7 +14,7 @@
     <result column="brd_is_del" property="brdIsDel" jdbcType="INTEGER" />
   </resultMap>
   <sql id="Base_Column_List" >
-    brd_id, brd_bp_id, brd_name, brd_number, brd_path, brd_url, brd_create_time, brd_update_time, 
+    brd_id, brd_bp_id, brd_name, brd_no, brd_path, brd_url, brd_create_time, brd_update_time,
     brd_remark, brd_is_del
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
@@ -25,11 +25,11 @@
   </select>
   <insert id="insert" parameterType="com.jebao.jebaodb.entity.loanmanage.TbBidRiskData" >
     insert into tb_bid_risk_data (brd_id, brd_bp_id, brd_name, 
-      brd_number, brd_path, brd_url, 
+      brd_no, brd_path, brd_url,
       brd_create_time, brd_update_time, brd_remark, 
       brd_is_del)
     values (#{brdId,jdbcType=BIGINT}, #{brdBpId,jdbcType=BIGINT}, #{brdName,jdbcType=VARCHAR}, 
-      #{brdNumber,jdbcType=INTEGER}, #{brdPath,jdbcType=VARCHAR}, #{brdUrl,jdbcType=VARCHAR}, 
+      #{brdNo,jdbcType=VARCHAR}, #{brdPath,jdbcType=VARCHAR}, #{brdUrl,jdbcType=VARCHAR},
       #{brdCreateTime,jdbcType=TIMESTAMP}, #{brdUpdateTime,jdbcType=TIMESTAMP}, #{brdRemark,jdbcType=VARCHAR}, 
       #{brdIsDel,jdbcType=INTEGER})
   </insert>
@@ -45,8 +45,8 @@
       <if test="brdName != null" >
         brd_name,
       </if>
-      <if test="brdNumber != null" >
-        brd_number,
+      <if test="brdNo != null" >
+        brd_no,
       </if>
       <if test="brdPath != null" >
         brd_path,
@@ -77,8 +77,8 @@
       <if test="brdName != null" >
         #{brdName,jdbcType=VARCHAR},
       </if>
-      <if test="brdNumber != null" >
-        #{brdNumber,jdbcType=INTEGER},
+      <if test="brdNo != null" >
+        #{brdNo,jdbcType=VARCHAR},
       </if>
       <if test="brdPath != null" >
         #{brdPath,jdbcType=VARCHAR},
@@ -109,8 +109,8 @@
       <if test="brdName != null" >
         brd_name = #{brdName,jdbcType=VARCHAR},
       </if>
-      <if test="brdNumber != null" >
-        brd_number = #{brdNumber,jdbcType=INTEGER},
+      <if test="brdNo != null" >
+        brd_no = #{brdNo,jdbcType=VARCHAR},
       </if>
       <if test="brdPath != null" >
         brd_path = #{brdPath,jdbcType=VARCHAR},
@@ -137,7 +137,7 @@
     update tb_bid_risk_data
     set brd_bp_id = #{brdBpId,jdbcType=BIGINT},
       brd_name = #{brdName,jdbcType=VARCHAR},
-      brd_number = #{brdNumber,jdbcType=INTEGER},
+      brd_no = #{brdNo,jdbcType=VARCHAR},
       brd_path = #{brdPath,jdbcType=VARCHAR},
       brd_url = #{brdUrl,jdbcType=VARCHAR},
       brd_create_time = #{brdCreateTime,jdbcType=TIMESTAMP},
@@ -154,8 +154,8 @@
         <if test="record.brdName != null" >
            AND brd_name = #{record.brdName,jdbcType=VARCHAR}
         </if>
-        <if test="record.brdNumber != null" >
-           AND brd_number = #{record.brdNumber,jdbcType=INTEGER}
+        <if test="record.brdNo != null" >
+           AND brd_no = #{record.brdNo,jdbcType=VARCHAR}
         </if>
         <if test="record.brdPath != null" >
            AND brd_path = #{record.brdPath,jdbcType=VARCHAR}

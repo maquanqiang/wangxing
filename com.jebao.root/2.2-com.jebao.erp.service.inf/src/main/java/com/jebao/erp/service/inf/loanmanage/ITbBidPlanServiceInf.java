@@ -11,7 +11,7 @@ import java.util.List;
  */
 public interface ITbBidPlanServiceInf {
 
-    int add(TbBidPlan plan, TbBidRiskData riskData);
+    int add(TbBidPlan plan, List<TbBidRiskData> riskDatas);
 
     TbBidPlan selectByBpId(Long bpId);
 

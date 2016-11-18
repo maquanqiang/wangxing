@@ -9,7 +9,7 @@ public class TbBidRiskData {
 
     private String brdName;
 
-    private Integer brdNumber;
+    private String brdNo;
 
     private String brdPath;
 
@@ -31,6 +31,7 @@ public class TbBidRiskData {
         this.brdId = brdId;
     }
 
+
     public Long getBrdBpId() {
         return brdBpId;
     }
@@ -45,14 +46,6 @@ public class TbBidRiskData {
 
     public void setBrdName(String brdName) {
         this.brdName = brdName == null ? null : brdName.trim();
-    }
-
-    public Integer getBrdNumber() {
-        return brdNumber;
-    }
-
-    public void setBrdNumber(Integer brdNumber) {
-        this.brdNumber = brdNumber;
     }
 
     public String getBrdPath() {
@@ -101,5 +94,13 @@ public class TbBidRiskData {
 
     public void setBrdIsDel(Integer brdIsDel) {
         this.brdIsDel = brdIsDel;
+    }
+
+    public String getBrdNo() {
+        return brdNo;
+    }
+
+    public void setBrdNo(String brdNo) {
+        this.brdNo = brdNo;
     }
 }
