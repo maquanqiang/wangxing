@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.jebao.jebaodb.dao.mapper.TbLoanerMapper" >
-  <resultMap id="BaseResultMap" type="com.jebao.jebaodb.entity.TbLoaner" >
+<mapper namespace="com.jebao.jebaodb.dao.mapper.loaner.TbLoanerMapper" >
+  <resultMap id="BaseResultMap" type="com.jebao.jebaodb.entity.loaner.TbLoaner" >
     <id column="l_id" property="lId" jdbcType="BIGINT" />
     <result column="l_login_id" property="lLoginId" jdbcType="BIGINT" />
     <result column="l_nick_name" property="lNickName" jdbcType="VARCHAR" />
@@ -52,7 +52,7 @@
     from tb_loaner
     where l_id = #{lId,jdbcType=BIGINT}
   </select>
-  <insert id="insert" parameterType="com.jebao.jebaodb.entity.TbLoaner" >
+  <insert id="insert" parameterType="com.jebao.jebaodb.entity.loaner.TbLoaner" >
     <selectKey resultType="java.lang.Long" keyProperty="lId" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
@@ -81,7 +81,7 @@
       #{lBankParentBankName,jdbcType=VARCHAR}, #{lCreateTime,jdbcType=TIMESTAMP}, #{lUpdateTime,jdbcType=TIMESTAMP}, 
       #{lBankCardNo,jdbcType=VARCHAR}, #{lIsDel,jdbcType=INTEGER})
   </insert>
-  <insert id="insertSelective" parameterType="com.jebao.jebaodb.entity.TbLoaner" >
+  <insert id="insertSelective" parameterType="com.jebao.jebaodb.entity.loaner.TbLoaner" >
     <selectKey resultType="java.lang.Long" keyProperty="lId" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
@@ -289,7 +289,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.jebao.jebaodb.entity.TbLoaner" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.jebao.jebaodb.entity.loaner.TbLoaner" >
     update tb_loaner
     <set >
       <if test="lLoginId != null" >
@@ -394,7 +394,7 @@
     </set>
     where l_id = #{lId,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.jebao.jebaodb.entity.TbLoaner" >
+  <update id="updateByPrimaryKey" parameterType="com.jebao.jebaodb.entity.loaner.TbLoaner" >
     update tb_loaner
     set l_login_id = #{lLoginId,jdbcType=BIGINT},
       l_nick_name = #{lNickName,jdbcType=VARCHAR},

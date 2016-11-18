@@ -1,4 +1,4 @@
-package com.jebao.jebaodb.entity;
+package com.jebao.jebaodb.entity.loaner;
 
 import java.util.Date;
 

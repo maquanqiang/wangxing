@@ -1,8 +1,8 @@
-package com.jebao.jebaodb.entity;
+package com.jebao.jebaodb.entity.loaner;
 
 import java.util.Date;
 
-public class TbRiskControlProjectTemplate {
+public class TbRiskCtlPrjTemp {
     private Long rcptId;
 
     private Long rcptLoanerId;

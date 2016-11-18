@@ -1,7 +1,7 @@
-package com.jebao.jebaodb.dao.mapper;
+package com.jebao.jebaodb.dao.mapper.loaner;
 
-import com.jebao.jebaodb.entity.TbLoaner;
 import com.jebao.jebaodb.entity.extEntity.PageWhere;
+import com.jebao.jebaodb.entity.loaner.TbLoaner;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
