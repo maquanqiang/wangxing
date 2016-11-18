@@ -29,11 +29,12 @@ public class employeeController extends _BaseController {
     {
         EmployeeModel model = new EmployeeModel();
         TbEmployee employeeModel = new TbEmployee();
-        //employeeModel.setEmpCode("bj001");
-        employeeModel.setEmpSex(1);
+//        employeeModel.setEmpCode("bj001");
+//        employeeModel.setEmpSex(1);
         model.setEmployee(employeeModel);
         TbDepartment departmentModel = new TbDepartment();
-        departmentModel.setDepName("%一部%");
+        //departmentModel.setDepName("%一部%");
+        model.setDepartment(departmentModel);
 
         PageWhere pageWhere = new PageWhere(0,10);
         List<EmployeeInfo> employeeInfoList = employeeService.getEmployeeInfoList(model,pageWhere);

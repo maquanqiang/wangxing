@@ -18,7 +18,6 @@ public interface TbEmployeeMapper {
 
     int updateByPrimaryKey(TbEmployee record);
     //==================================================华丽分割线==================================================
-
     /**
      * 获取员工详细信息
      */
