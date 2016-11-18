@@ -1,8 +1,9 @@
-package com.jebao.jebaodb.dao.dao;
+package com.jebao.jebaodb.dao.dao.loaner;
 
-import com.jebao.jebaodb.dao.mapper.TbLoanerMapper;
-import com.jebao.jebaodb.entity.TbLoaner;
+import com.jebao.jebaodb.dao.mapper.loaner.TbLoanerMapper;
+
 import com.jebao.jebaodb.entity.extEntity.PageWhere;
+import com.jebao.jebaodb.entity.loaner.TbLoaner;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;

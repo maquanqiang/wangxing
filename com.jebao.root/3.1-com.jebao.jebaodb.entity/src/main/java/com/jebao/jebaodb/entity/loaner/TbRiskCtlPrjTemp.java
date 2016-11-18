@@ -1,8 +1,8 @@
-package com.jebao.jebaodb.entity;
+package com.jebao.jebaodb.entity.loaner;
 
 import java.util.Date;
 
-public class TbRiskControlProjectTemplate {
+public class TbRiskCtlPrjTemp {
     private Long rcptId;
 
     private Long rcptLoanerId;
@@ -26,6 +26,8 @@ public class TbRiskControlProjectTemplate {
     private Date rcptUpdateTime;
 
     private Integer rcptIsDel;
+
+    private String rcptDesc;
 
     public Long getRcptId() {
         return rcptId;
@@ -121,5 +123,13 @@ public class TbRiskControlProjectTemplate {
 
     public void setRcptIsDel(Integer rcptIsDel) {
         this.rcptIsDel = rcptIsDel;
+    }
+
+    public String getRcptDesc() {
+        return rcptDesc;
+    }
+
+    public void setRcptDesc(String rcptDesc) {
+        this.rcptDesc = rcptDesc == null ? null : rcptDesc.trim();
     }
 }

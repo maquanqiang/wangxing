@@ -1,9 +1,9 @@
 package com.jebao.jebaodb.dao;
 
 import com.jebao.jebaodb.dao.base._BaseUnitTest;
-import com.jebao.jebaodb.dao.dao.TbLoanerDao;
-import com.jebao.jebaodb.entity.TbLoaner;
+import com.jebao.jebaodb.dao.dao.loaner.TbLoanerDao;
 import com.jebao.jebaodb.entity.extEntity.PageWhere;
+import com.jebao.jebaodb.entity.loaner.TbLoaner;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -108,7 +108,9 @@ public class TbLoanerDao_UnitTest extends _BaseUnitTest {
     }
     @Test
     public void selectByParamsForPageCountExample() {
-        int result = tbLoanerDao.selectByParamsForPageCount(null);
+        TbLoaner record = new TbLoaner();
+       // record.setlPhone("15901048116");
+        int result = tbLoanerDao.selectByParamsForPageCount(record);
         assertThat(result).isNotEqualTo(null);
         System.out.println("result:"+result);
     }

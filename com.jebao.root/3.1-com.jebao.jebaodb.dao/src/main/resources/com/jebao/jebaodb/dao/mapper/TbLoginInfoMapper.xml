@@ -115,6 +115,6 @@
         <include refid="Base_Column_List" />
         from tb_login_info
         WHERE
-        li_login_name=#{liLoginName,jdbcType=VARCHAR}
+        li_login_name=#{liLoginName,jdbcType=VARCHAR} AND li_is_del=1
     </select>
 </mapper>

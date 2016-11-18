@@ -1,5 +1,7 @@
 package com.jebao.jebaodb.entity;
 
+import java.util.Date;
+
 public class TbUserDetails {
     private Long udId;
 
@@ -36,6 +38,10 @@ public class TbUserDetails {
     private String udBankParentBankName;
 
     private String udBankCardNo;
+
+    private Date udCreateTime;
+
+    private Date udUpdateTime;
 
     private Integer udIsDel;
 
@@ -181,6 +187,22 @@ public class TbUserDetails {
 
     public void setUdBankCardNo(String udBankCardNo) {
         this.udBankCardNo = udBankCardNo == null ? null : udBankCardNo.trim();
+    }
+
+    public Date getUdCreateTime() {
+        return udCreateTime;
+    }
+
+    public void setUdCreateTime(Date udCreateTime) {
+        this.udCreateTime = udCreateTime;
+    }
+
+    public Date getUdUpdateTime() {
+        return udUpdateTime;
+    }
+
+    public void setUdUpdateTime(Date udUpdateTime) {
+        this.udUpdateTime = udUpdateTime;
     }
 
     public Integer getUdIsDel() {
