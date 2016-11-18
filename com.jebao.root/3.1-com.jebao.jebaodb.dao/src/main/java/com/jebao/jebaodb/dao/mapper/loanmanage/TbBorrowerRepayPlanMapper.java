@@ -19,7 +19,7 @@ public interface TbBorrowerRepayPlanMapper {
 
     List<TbBorrowerRepayPlan> selectForPage(@Param("pageWhere") PageWhere pageWhere);
 
-    List<TbBorrowerRepayPlan> selectByConditionForPage(@Param("record") TbBorrowerRepayPlan record, @Param("pageWhere") PageWhere pageWhere, @Param("orderByCon") String orderByCondition);
+    List<TbBorrowerRepayPlan> selectByConditionForPage(@Param("record") TbBorrowerRepayPlan record, @Param("pageWhere") PageWhere pageWhere);
 
     int selectByConditionCount(@Param("record") TbBorrowerRepayPlan record);
 }

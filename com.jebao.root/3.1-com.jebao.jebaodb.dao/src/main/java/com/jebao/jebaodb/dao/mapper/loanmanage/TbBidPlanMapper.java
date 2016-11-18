@@ -19,7 +19,7 @@ public interface TbBidPlanMapper {
 
     List<TbBidPlan> selectForPage(@Param("pageWhere") PageWhere pageWhere);
 
-    List<TbBidPlan> selectByConditionForPage(@Param("record") TbBidPlan record, @Param("pageWhere") PageWhere pageWhere, @Param("orderByCon") String orderByCondition);
+    List<TbBidPlan> selectByConditionForPage(@Param("record") TbBidPlan record, @Param("pageWhere") PageWhere pageWhere);
 
     int selectByConditionCount(@Param("record") TbBidPlan record);
 }

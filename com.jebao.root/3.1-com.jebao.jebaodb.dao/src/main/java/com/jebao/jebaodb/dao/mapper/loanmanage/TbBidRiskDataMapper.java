@@ -19,7 +19,7 @@ public interface TbBidRiskDataMapper {
 
     List<TbBidRiskData> selectForPage(@Param("pageWhere") PageWhere pageWhere);
 
-    List<TbBidRiskData> selectByConditionForPage(@Param("record") TbBidRiskData record, @Param("pageWhere") PageWhere pageWhere, @Param("orderByCon") String orderByCondition);
+    List<TbBidRiskData> selectByConditionForPage(@Param("record") TbBidRiskData record, @Param("pageWhere") PageWhere pageWhere);
 
     int selectByConditionCount(@Param("record") TbBidRiskData record);
 }

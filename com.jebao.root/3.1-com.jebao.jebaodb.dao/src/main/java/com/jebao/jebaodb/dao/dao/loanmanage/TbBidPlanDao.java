@@ -1,6 +1,7 @@
 package com.jebao.jebaodb.dao.dao.loanmanage;
 
 import com.jebao.jebaodb.dao.mapper.loanmanage.TbBidPlanMapper;
+import com.jebao.jebaodb.entity.TbLoaner;
 import com.jebao.jebaodb.entity.extEntity.PageWhere;
 import com.jebao.jebaodb.entity.loanmanage.TbBidPlan;
 import org.apache.ibatis.annotations.Param;
@@ -16,29 +17,29 @@ import java.util.List;
 @Repository
 public class TbBidPlanDao {
     @Autowired
-    private TbBidPlanMapper TbBidPlanMapper;
+    private TbBidPlanMapper tbBidPlanMapper;
 
     public int insert(TbBidPlan record) {
-        return TbBidPlanMapper.insert(record);
+        return tbBidPlanMapper.insert(record);
     }
     public int insertSelective(TbBidPlan record) {
-        return TbBidPlanMapper.insertSelective(record);
+        return tbBidPlanMapper.insertSelective(record);
     }
     public TbBidPlan selectByPrimaryKey(Long bpId)
     {
-        return TbBidPlanMapper.selectByPrimaryKey(bpId);
+        return tbBidPlanMapper.selectByPrimaryKey(bpId);
     }
     public int updateByPrimaryKeySelective(TbBidPlan record)
     {
-        return TbBidPlanMapper.updateByPrimaryKeySelective(record);
+        return tbBidPlanMapper.updateByPrimaryKeySelective(record);
     }
     public int updateByPrimaryKey(TbBidPlan record)
     {
-        return TbBidPlanMapper.updateByPrimaryKey(record);
+        return tbBidPlanMapper.updateByPrimaryKey(record);
     }
     public List<TbBidPlan> selectForPage(PageWhere pageWhere)
     {
-        return TbBidPlanMapper.selectForPage(pageWhere);
+        return tbBidPlanMapper.selectForPage(pageWhere);
     }
 
     /**
@@ -47,8 +48,8 @@ public class TbBidPlanDao {
      * @param pageWhere
      * @return
      */
-    public List<TbBidPlan> selectByConditionForPage(@Param("record")TbBidPlan record, @Param("pageWhere")PageWhere pageWhere, @Param("orderByCon")String orderByCondition){
-        return TbBidPlanMapper.selectByConditionForPage(record, pageWhere, orderByCondition);
+    public List<TbBidPlan> selectByConditionForPage(@Param("record")TbBidPlan record, @Param("pageWhere")PageWhere pageWhere){
+        return tbBidPlanMapper.selectByConditionForPage(record, pageWhere);
     }
 
     /**
@@ -57,6 +58,11 @@ public class TbBidPlanDao {
      * @return
      */
     public int selectByConditionCount(@Param("record")TbBidPlan record){
-        return TbBidPlanMapper.selectByConditionCount(record);
+        return tbBidPlanMapper.selectByConditionCount(record);
+    }
+
+    @Transactional
+    public int insertForTransactional(TbBidPlan record) {
+        return tbBidPlanMapper.insert(record);
     }
 }

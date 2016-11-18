@@ -3,10 +3,12 @@ package com.jebao.jebaodb.dao.dao.loanmanage;
 import com.jebao.jebaodb.dao.mapper.loanmanage.TbBorrowerRepayPlanMapper;
 import com.jebao.jebaodb.dao.mapper.loanmanage.TbBorrowerRepayPlanMapper;
 import com.jebao.jebaodb.entity.extEntity.PageWhere;
+import com.jebao.jebaodb.entity.loanmanage.TbBidRiskData;
 import com.jebao.jebaodb.entity.loanmanage.TbBorrowerRepayPlan;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -47,8 +49,8 @@ public class TbBorrowerRepayPlanDao {
      * @param pageWhere
      * @return
      */
-    public List<TbBorrowerRepayPlan> selectByConditionForPage(@Param("record")TbBorrowerRepayPlan record, @Param("pageWhere")PageWhere pageWhere, @Param("orderByCon")String orderByCondition){
-        return mapper.selectByConditionForPage(record, pageWhere, orderByCondition);
+    public List<TbBorrowerRepayPlan> selectByConditionForPage(@Param("record")TbBorrowerRepayPlan record, @Param("pageWhere")PageWhere pageWhere){
+        return mapper.selectByConditionForPage(record, pageWhere);
     }
 
     /**
@@ -58,5 +60,10 @@ public class TbBorrowerRepayPlanDao {
      */
     public int selectByConditionCount(@Param("record")TbBorrowerRepayPlan record){
         return mapper.selectByConditionCount(record);
+    }
+
+    @Transactional
+    public int insertForTransactional(TbBorrowerRepayPlan record) {
+        return mapper.insert(record);
     }
 }

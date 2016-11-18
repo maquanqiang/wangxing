@@ -6,6 +6,7 @@ import com.jebao.jebaodb.entity.loanmanage.TbBidRiskData;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -46,8 +47,8 @@ public class TbBidRiskDataDao {
      * @param pageWhere
      * @return
      */
-    public List<TbBidRiskData> selectByConditionForPage(@Param("record")TbBidRiskData record, @Param("pageWhere")PageWhere pageWhere, @Param("orderByCon")String orderByCondition){
-        return mapper.selectByConditionForPage(record, pageWhere, orderByCondition);
+    public List<TbBidRiskData> selectByConditionForPage(@Param("record")TbBidRiskData record, @Param("pageWhere")PageWhere pageWhere){
+        return mapper.selectByConditionForPage(record, pageWhere);
     }
 
     /**
@@ -57,5 +58,10 @@ public class TbBidRiskDataDao {
      */
     public int selectByConditionCount(@Param("record")TbBidRiskData record){
         return mapper.selectByConditionCount(record);
+    }
+
+    @Transactional
+    public int insertForTransactional(TbBidRiskData record) {
+        return mapper.insert(record);
     }
 }

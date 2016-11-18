@@ -226,7 +226,9 @@
         select
         <include refid="Base_Column_List" />
         from Tb_borrower_repay_plan
-        order by bp_id DESC
+        <if test="pageWhere.orderBy!=null">
+            ${pageWhere.orderBy}
+        </if>
         LIMIT #{pageWhere.begin},#{pageWhere.pageSize}
     </select>
     <select id="selectByConditionForPage" resultMap="BaseResultMap">
@@ -236,7 +238,9 @@
         <where>
             <include refid="selectByCondition_Where_Clause" />
         </where>
-        order by ${orderByCon}
+        <if test="pageWhere.orderBy!=null">
+            ${pageWhere.orderBy}
+        </if>
         LIMIT #{pageWhere.begin},#{pageWhere.pageSize}
     </select>
     <select id="selectByConditionCount" resultType="java.lang.Integer">
