@@ -5,7 +5,7 @@
 $(function() {
     $.ajax({
         type: "POST",
-        url: "/bidplan/plan/getlist",
+        url: "/bidplan/dplan/getloanerlist",
         dataType: 'json',
         contentType: 'application/json',
         success: function (data) {

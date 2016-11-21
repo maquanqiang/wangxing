@@ -20,6 +20,4 @@ public interface ITbBidPlanServiceInf {
     int selectByConditionCount(TbBidPlan record);
 
     int updateByBidIdSelective(TbBidPlan record);
-
-    int updateByBidId(TbBidPlan record);
 }

@@ -121,9 +121,10 @@
       <if test="brdCreateTime != null" >
         brd_create_time = #{brdCreateTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="brdUpdateTime != null" >
-        brd_update_time = #{brdUpdateTime,jdbcType=TIMESTAMP},
-      </if>
+        brd_update_time = now(),
+        <!--<if test="brdUpdateTime != null" >-->
+        <!--brd_update_time = #{brdUpdateTime,jdbcType=TIMESTAMP},-->
+      <!--</if>-->
       <if test="brdRemark != null" >
         brd_remark = #{brdRemark,jdbcType=VARCHAR},
       </if>

@@ -4,6 +4,7 @@ import com.jebao.jebaodb.dao.base._BaseUnitTest;
 import com.jebao.jebaodb.dao.dao.loanmanage.TbBidPlanDao;
 import com.jebao.jebaodb.dao.dao.loanmanage.TbBidRiskDataDao;
 import com.jebao.jebaodb.entity.extEntity.PageWhere;
+import com.jebao.jebaodb.entity.loaner.TbRiskCtlPrjTemp;
 import com.jebao.jebaodb.entity.loanmanage.TbBidPlan;
 import com.jebao.jebaodb.entity.loanmanage.TbBidRiskData;
 import org.apache.ibatis.annotations.Param;
@@ -71,4 +72,16 @@ public class TbBidPlanDao_UnitTest extends _BaseUnitTest {
         riskData.setBrdUrl("http://baidu.com");
         riskDataDao.insert(riskData);
     }
+
+    @Test
+    public void updatePlan(){
+        TbBidPlan plan = new TbBidPlan();
+        plan.setBpId(1L);
+        plan.setBpBorrowDesc("还可以");
+
+        tbBidPlanDao.updateByPrimaryKeySelective(plan);
+
+
+    }
+
 }

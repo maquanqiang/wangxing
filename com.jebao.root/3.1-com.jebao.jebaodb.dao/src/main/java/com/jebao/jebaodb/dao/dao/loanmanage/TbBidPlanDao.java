@@ -1,7 +1,6 @@
 package com.jebao.jebaodb.dao.dao.loanmanage;
 
 import com.jebao.jebaodb.dao.mapper.loanmanage.TbBidPlanMapper;
-import com.jebao.jebaodb.entity.TbLoaner;
 import com.jebao.jebaodb.entity.extEntity.PageWhere;
 import com.jebao.jebaodb.entity.loanmanage.TbBidPlan;
 import org.apache.ibatis.annotations.Param;

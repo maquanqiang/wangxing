@@ -430,9 +430,10 @@
             <if test="bpCreateTime != null" >
                 bp_create_time = #{bpCreateTime,jdbcType=TIMESTAMP},
             </if>
-            <if test="bpUpdateTime != null" >
-                bp_update_time = #{bpUpdateTime,jdbcType=TIMESTAMP},
-            </if>
+            bp_update_time = now(),
+            <!--<if test="bpUpdateTime != null" >-->
+                <!--bp_update_time = #{bpUpdateTime,jdbcType=TIMESTAMP},-->
+            <!--</if>-->
             <if test="bpLoanTime != null" >
                 bp_loan_time = #{bpLoanTime,jdbcType=TIMESTAMP},
             </if>
@@ -575,7 +576,6 @@
       bp_full_time = #{bpFullTime,jdbcType=TIMESTAMP},
       bp_status = #{bpStatus,jdbcType=INTEGER},
       bp_create_time = #{bpCreateTime,jdbcType=TIMESTAMP},
-      bp_update_time = #{bpUpdateTime,jdbcType=TIMESTAMP},
       bp_loan_time = #{bpLoanTime,jdbcType=TIMESTAMP},
       bp_repay_time = #{bpRepayTime,jdbcType=TIMESTAMP},
       bp_loaner_id = #{bpLoanerId,jdbcType=BIGINT},
@@ -599,7 +599,7 @@
       bp_risk_opinion = #{bpRiskOpinion,jdbcType=VARCHAR},
       bp_repayed_periods = #{bpRepayedPeriods,jdbcType=INTEGER},
       bp_is_del = #{bpIsDel,jdbcType=INTEGER}
-    where bp_id = #{bpId,jdbcType=BIGINT}
+    where bp_id = #{bpId,jdbcType=BIGINT} AND bp_update_time = #{bpUpdateTime,jdbcType=TIMESTAMP}
   </update>
 
     <!--==================================================华丽分割线==================================================-->
@@ -735,6 +735,9 @@
         select
         <include refid="Base_Column_List" />
         from tb_bid_plan
+        <where>
+            bp_is_del = 1
+        </where>
         <if test="pageWhere.orderBy!=null">
             ${pageWhere.orderBy}
         </if>

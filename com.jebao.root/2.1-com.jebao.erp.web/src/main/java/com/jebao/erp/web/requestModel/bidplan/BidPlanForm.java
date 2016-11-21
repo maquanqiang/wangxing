@@ -41,6 +41,7 @@ public class BidPlanForm {
         bidPlan.setBpMortgageInfo(planForm.getBpMortgageInfo());
         bidPlan.setBpRiskOpinion(planForm.getBpRiskOpinion());
         bidPlan.setBpRepayedPeriods(planForm.getBpRepayedPeriods());
+        bidPlan.setBpLoanMoney(planForm.getBpLoanMoney());
         return bidPlan;
     }
 
@@ -61,7 +62,7 @@ public class BidPlanForm {
 
 //    private BigDecimal bpSurplusMoney;
 
-//    private BigDecimal bpLoanMoney;
+    private BigDecimal bpLoanMoney;             //实际放款金额
 
     private BigDecimal bpBidMoney;
 
@@ -130,6 +131,8 @@ public class BidPlanForm {
     private String bpRiskOpinion;
 
     private Integer bpRepayedPeriods;
+
+    private String bpDesc;
 
 //    private Integer bpIsDel;
 
@@ -381,5 +384,21 @@ public class BidPlanForm {
 
     public void setDataJson(String dataJson) {
         this.dataJson = dataJson;
+    }
+
+    public String getBpDesc() {
+        return bpDesc;
+    }
+
+    public void setBpDesc(String bpDesc) {
+        this.bpDesc = bpDesc;
+    }
+
+    public BigDecimal getBpLoanMoney() {
+        return bpLoanMoney;
+    }
+
+    public void setBpLoanMoney(BigDecimal bpLoanMoney) {
+        this.bpLoanMoney = bpLoanMoney;
     }
 }

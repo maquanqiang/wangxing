@@ -59,10 +59,4 @@ public class TbBidPlanServiceImpl implements ITbBidPlanServiceInf {
         int intCount = bidPlanDao.updateByPrimaryKey(record);
         return intCount;
     }
-
-    @Override
-    public int updateByBidId(TbBidPlan record) {
-        int intCount = bidPlanDao.updateByPrimaryKeySelective(record);
-        return intCount;
-    }
 }
