@@ -39,6 +39,10 @@ public class TbRcpMaterialsTempDao {
     {
         return tbRcpMaterialsTempMapper.deleteByPrimaryKey(rcpmtId);
     }
+    public int deleteByProjectId(Long projectId)
+    {
+        return tbRcpMaterialsTempMapper.deleteByProjectId(projectId);
+    }
     public List<TbRcpMaterialsTemp> selectForPage(PageWhere pageWhere)
     {
         return tbRcpMaterialsTempMapper.selectForPage(pageWhere);

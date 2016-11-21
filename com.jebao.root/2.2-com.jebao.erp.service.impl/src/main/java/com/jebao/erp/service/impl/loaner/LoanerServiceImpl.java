@@ -81,7 +81,19 @@ public class LoanerServiceImpl implements ILoanerServiceInf {
 
     @Override
     public int deleteLoanerById(Long lId) {
-        return tbLoanerDao.deleteByPrimaryKey(lId);
+        int result = tbLoanerDao.deleteByPrimaryKey(lId);
+        if(result > 0){
+            int pageSize = selectRiskCtlPrjTempByLoanerIdForPageCount(lId);
+            if(pageSize > 0){
+                List<TbRiskCtlPrjTemp> rcptList = selectRiskCtlPrjTempByLoanerIdForPage(lId, 0, pageSize);
+
+                for (TbRiskCtlPrjTemp item : rcptList) {
+                    tbRcpMaterialsTempDao.deleteByProjectId(item.getRcptId());
+                }
+                tbRiskCtlPrjTempDao.deleteByLoanerId(lId);
+            }
+        }
+        return result;
     }
 
     @Override
@@ -123,7 +135,18 @@ public class LoanerServiceImpl implements ILoanerServiceInf {
 
     @Override
     public int deleteRiskCtlPrjTempById(Long rcptId) {
-        return tbRiskCtlPrjTempDao.deleteByPrimaryKey(rcptId);
+        int result = tbRiskCtlPrjTempDao.deleteByPrimaryKey(rcptId);
+        if(result>0){
+            int pageSize = selectRcpMaterialsTempByPrjIdForPageCount(rcptId);
+            if(pageSize>0){
+                List<TbRcpMaterialsTemp> rcpmList = selectRcpMaterialsTempByPrjIdForPage(rcptId,0,pageSize);
+                for (TbRcpMaterialsTemp item : rcpmList) {
+                    tbRcpMaterialsTempDao.deleteByProjectId(item.getRcpmtProjectId());
+                }
+            }
+
+        }
+        return result;
     }
 
     @Override

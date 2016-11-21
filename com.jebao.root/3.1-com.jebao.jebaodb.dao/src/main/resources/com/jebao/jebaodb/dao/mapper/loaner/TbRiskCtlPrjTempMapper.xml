@@ -210,6 +210,11 @@
         set rcpt_is_del = 2
         where rcpt_id = #{rcptId,jdbcType=BIGINT}
     </update>
+    <update id="deleteByLoanerId" parameterType="java.lang.Long" >
+        update tb_risk_ctl_prj_temp
+        set rcpt_is_del = 2
+        where rcpt_loaner_id = #{rcptLoanerId,jdbcType=BIGINT}
+    </update>
     <select id="selectForPage" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>

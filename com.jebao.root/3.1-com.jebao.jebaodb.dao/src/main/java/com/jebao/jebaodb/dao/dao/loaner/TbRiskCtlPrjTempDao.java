@@ -39,6 +39,10 @@ public class TbRiskCtlPrjTempDao {
     {
         return tbRiskCtlPrjTempMapper.deleteByPrimaryKey(rcptId);
     }
+    public int deleteByLoanerId(Long loanerId)
+    {
+        return tbRiskCtlPrjTempMapper.deleteByLoanerId(loanerId);
+    }
     public List<TbRiskCtlPrjTemp> selectForPage(PageWhere pageWhere)
     {
         return tbRiskCtlPrjTempMapper.selectForPage(pageWhere);
