@@ -3,7 +3,7 @@ package com.jebao.jebaodb.dao.dao.employee;
 import com.jebao.jebaodb.dao.mapper.employee.TbEmployeeMapper;
 import com.jebao.jebaodb.entity.employee.EmployeeInfo;
 import com.jebao.jebaodb.entity.employee.TbEmployee;
-import com.jebao.jebaodb.entity.search.EmployeeModel;
+import com.jebao.jebaodb.entity.search.EmployeeSM;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -24,9 +24,15 @@ public class TbEmployeeDao {
     /**
      * 获取员工详细信息
      */
-    public List<EmployeeInfo> selectEmployeeDetailsInfo(EmployeeModel model){
+    public List<EmployeeInfo> selectEmployeeDetailsInfo(EmployeeSM model){
+        if (model==null){model=new EmployeeSM();}
         List<EmployeeInfo> list = mapper.selectEmployeeDetailsInfo(model);
         return list;
+    }
+    public Integer selectEmployeeDetailsInfoCount(EmployeeSM model){
+        if (model==null){model=new EmployeeSM();}
+        int count = mapper.selectEmployeeDetailsInfoCount(model);
+        return count;
     }
 
     /**
