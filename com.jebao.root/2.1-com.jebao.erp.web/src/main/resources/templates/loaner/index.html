@@ -8,9 +8,368 @@
 #parse("common/main-sidebar.html")
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
-    ================================内容================================
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h1>借款人管理</h1>
+    </section>
+    <!-- Main content -->
+    <section class="content">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box box-primary">
+                    <form action="" class="form-inline" id="order_search_form" method="post" novalidate="novalidate">
+                        <div class="box-body">
+                            <div class="form-group">
+                                <div class="input-group ">
+                                    <div class="input-group-addon">用户名</div>
+                                    <input type="text" class="form-control" placeholder="" name="">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group ">
+                                    <div class="input-group-addon">手机号</div>
+                                    <input type="text" class="form-control" placeholder="" name="">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group ">
+                                    <div class="input-group-addon">姓名</div>
+                                    <input type="text" class="form-control" placeholder="" name="">
+                                </div>
+                            </div>
+                            <div class="form-group ">
+                                <div class="input-group  margin">
+                                    <a href="javascript:;" class="btn btn-primary " role="button" target="_blank">搜索</a>
+                                </div>
+                            </div>
+                            <div class="form-group ">
+                                <a href="javascript:;" class="btn btn-primary " role="button" target="_blank" id="add-people">添加借款人</a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!--表格内容-->
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box box-primary">
+                    <div class="box-body">
+                        <div id="orderlist_table_wrapper" class="dataTables_wrapper">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <table id="orderlist_table" class="table table-bordered table-hover dataTable" role="grid" aria-describedby="orderlist_table_info">
+                                        <thead>
+                                        <tr role="row">
+                                            <th width="10%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">用户名</th>
+                                            <th width="10%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">姓名</th>
+                                            <th width="10%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">手机号</th>
+                                            <th width="15%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">注册时间</th>
+                                            <th width="10%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">实际借款数笔</th>
+                                            <th width="10%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">实际借款金额</th>
+                                            <th width="25%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">操作</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr role="row" class="odd">
+                                            <td>abcd123</td>
+                                            <td>张三</td>
+                                            <td>13888888888</td>
+                                            <td>2015/03/03 8:49</td>
+                                            <td>5</td>
+                                            <td>10000.00</td>
+                                            <td>
+                                                <a href="javascript:;" class="btn btn-default btn-xs" role="button" target="_blank"  id="modifyInformation">修改</a>
+                                                <a href="基本信息.html" class="btn btn-default btn-xs" role="button" target="_blank">查看详情</a>
+                                                <a href="资金信息.html" class="btn btn-default btn-xs" role="button" target="_blank">资金信息</a>
+                                                <a href="借款信息.html" class="btn btn-default btn-xs" role="button" target="_blank">借款信息</a>
+                                                <a href="风控信息.html" class="btn btn-default btn-xs" role="button" target="_blank">风控信息</a>
+                                                <a href="javascript:;" class="btn btn-default btn-xs remove-msg" role="button" target="_blank">删除</a>
+                                            </td>
+                                        </tr>
+                                        <tr role="row" class="even">
+                                            <td>abcd123</td>
+                                            <td>张三</td>
+                                            <td>13888888888</td>
+                                            <td>2015/03/03 8:49</td>
+                                            <td>5</td>
+                                            <td>10000.00</td>
+                                            <td>
+                                                <a href="javascript:;" class="btn btn-default btn-xs" role="button" target="_blank">修改</a>
+                                                <a href="基本信息.html" class="btn btn-default btn-xs" role="button" target="_blank">查看详情</a>
+                                                <a href="资金信息.html" class="btn btn-default btn-xs" role="button" target="_blank">资金信息</a>
+                                                <a href="借款信息.html" class="btn btn-default btn-xs" role="button" target="_blank">借款信息</a>
+                                                <a href="风控信息.html" class="btn btn-default btn-xs" role="button" target="_blank">风控信息</a>
+                                                <a href="javascript:;" class="btn btn-default btn-xs remove-msg" role="button" target="_blank">删除</a>
+                                            </td>
+                                        </tr>
+                                        <tr role="row" class="odd">
+                                            <td>abcd123</td>
+                                            <td>张三</td>
+                                            <td>13888888888</td>
+                                            <td>2015/03/03 8:49</td>
+                                            <td>5</td>
+                                            <td>10000.00</td>
+                                            <td>
+                                                <a href="javascript:;" class="btn btn-default btn-xs" role="button" target="_blank">修改</a>
+                                                <a href="基本信息.html" class="btn btn-default btn-xs" role="button" target="_blank">查看详情</a>
+                                                <a href="资金信息.html" class="btn btn-default btn-xs" role="button" target="_blank">资金信息</a>
+                                                <a href="借款信息.html" class="btn btn-default btn-xs" role="button" target="_blank">借款信息</a>
+                                                <a href="风控信息.html" class="btn btn-default btn-xs" role="button" target="_blank">风控信息</a>
+                                                <a href="javascript:;" class="btn btn-default btn-xs remove-msg" role="button" target="_blank">删除</a>
+                                            </td>
+                                        </tr>
+                                        <tr role="row" class="even">
+                                            <td>abcd123</td>
+                                            <td>张三</td>
+                                            <td>13888888888</td>
+                                            <td>2015/03/03 8:49</td>
+                                            <td>5</td>
+                                            <td>10000.00</td>
+                                            <td>
+                                                <a href="javascript:;" class="btn btn-default btn-xs" role="button" target="_blank">修改</a>
+                                                <a href="基本信息.html" class="btn btn-default btn-xs" role="button" target="_blank">查看详情</a>
+                                                <a href="资金信息.html" class="btn btn-default btn-xs" role="button" target="_blank">资金信息</a>
+                                                <a href="借款信息.html" class="btn btn-default btn-xs" role="button" target="_blank">借款信息</a>
+                                                <a href="风控信息.html" class="btn btn-default btn-xs" role="button" target="_blank">风控信息</a>
+                                                <a href="javascript:;" class="btn btn-default btn-xs remove-msg" role="button" target="_blank">删除</a>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 </div>
 <!-- /.content-wrapper -->
 #parse("common/footer.html")
+<!--提示框-->
+<!--添加个人借款用户-->
+<div class="modal col-xs-12" id="addInforModal">
+    <form class="form-horizontal">
+        <div class="box-title">
+            <h5>基本资料</h5>
+        </div>
+        <div class="box-body">
+            <div class="row form-group">
+                <label class="col-sm-4 control-label"><span class="text-red">*</span>注册手机号:</label>
+                <div class="col-sm-4">
+                    <input type="text" class="form-control" placeholder="" name="tel">
+                </div>
+                <div class="col-sm-4">
+                    <input type="button" class="" placeholder="" value="导入用户信息">
+                </div>
+            </div>
+            <div class="row form-group">
+                <label class="col-sm-2 control-label">用户名</label>
+                <div class="col-sm-4">
+                    <input type="text" class="form-control" placeholder="" name="username" value="" readonly>
+                </div>
+                <label class="col-sm-2 control-label"><span class="text-red">*</span>真实姓名</label>
+                <div class="col-sm-4">
+                    <input type="text" class="form-control" placeholder="" name="user"  value="" readonly>
+                </div>
+            </div>
+            <div class="row form-group">
+                <label class="col-sm-2 control-label"><span class="text-red">*</span>身份证号</label>
+                <div class="col-sm-4">
+                    <input type="text" class="form-control" placeholder="" name="ID" value="" readonly>
+                </div>
+                <label class="col-sm-2 control-label"><span class="text-red">*</span>性别</label>
+                <div class="col-sm-4">
+                    <input type="text" class="form-control" placeholder="" name="sex" value="" readonly>
+                </div>
+            </div>
+            <div class="row form-group">
+                <label class="col-sm-2 control-label"><span class="text-red">*</span>年龄</label>
+                <div class="col-sm-4">
+                    <input type="text" class="form-control" placeholder="" name="age" value="" readonly>
+                </div>
+                <label class="col-sm-2 control-label">邮箱</label>
+                <div class="col-sm-4">
+                    <input type="text" class="form-control" placeholder="" name="email" value="" readonly>
+                </div>
+            </div>
+        </div>
+        <div class="box-title">
+            <h5>详细资料</h5>
+        </div>
+        <div class="box-body">
+            <div class="row form-group">
+                <label class="col-sm-2 control-label">婚姻状况</label>
+                <div class="col-sm-4">
+                    <input type="text" class="form-control" placeholder="">
+                </div>
+                <label class="col-sm-2 control-label">常住地址</label>
+                <div class="col-sm-4">
+                    <input type="text" class="form-control" placeholder="">
+                </div>
+            </div>
+
+            <div class="row form-group">
+                <label class="col-sm-2 control-label">户口所在地</label>
+                <div class="col-sm-4">
+                    <input type="text" class="form-control" placeholder="">
+                </div>
+                <label class="col-sm-2 control-label">政治面貌</label>
+                <div class="col-sm-4">
+                    <input type="text" class="form-control" placeholder="">
+                </div>
+            </div>
+
+            <div class="row form-group">
+                <label class="col-sm-2 control-label">学历</label>
+                <div class="col-sm-4">
+                    <input type="text" class="form-control" placeholder="" >
+                </div>
+                <label class="col-sm-2 control-label">信用状况</label>
+                <div class="col-sm-4">
+                    <input type="text" class="form-control" placeholder="">
+                </div>
+            </div>
+            <div class="row form-group">
+                <label class="col-sm-2 control-label">月收入</label>
+                <div class="col-sm-4">
+                    <input type="text" class="form-control" placeholder="">
+                </div>
+                <label class="col-sm-2 control-label">工作城市</label>
+                <div class="col-sm-4">
+                    <input type="text" class="form-control" placeholder="">
+                </div>
+            </div>
+            <div class="row form-group">
+                <label class="col-sm-2 control-label">名下是否有房</label>
+                <div class="col-sm-4">
+                    <input type="text" class="form-control" placeholder="">
+                </div>
+                <label class="col-sm-2 control-label">是否有车</label>
+                <div class="col-sm-4">
+                    <input type="text" class="form-control" placeholder="">
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<!--修改个人借款用户-->
+<div class="modal col-xs-12"  id="modInforInfModal">
+    <form class="form-horizontal">
+        <div class="box-title">
+            <h5>基本资料</h5>
+        </div>
+        <div class="box-body">
+            <div class="row form-group">
+                <label class="col-sm-2 control-label">手机号</label>
+                <div class="col-sm-4">
+                    <input type="text" class="form-control" placeholder="" name="" value="15632589658" readonly>
+                </div>
+                <label class="col-sm-2 control-label">角色</label>
+                <div class="col-sm-4">
+                    <input type="text" class="form-control" placeholder="" name="" value="借款人" readonly>
+                </div>
+            </div>
+            <div class="row form-group">
+                <label class="col-sm-2 control-label">用户名</label>
+                <div class="col-sm-4">
+                    <input type="text" class="form-control" placeholder="" name="" value="jsldjs" readonly>
+                </div>
+                <label class="col-sm-2 control-label"><span class="text-red">*</span>真实姓名</label>
+                <div class="col-sm-4">
+                    <input type="text" class="form-control" placeholder="" name="" value="张三" readonly>
+                </div>
+            </div>
+            <div class="row form-group">
+                <label class="col-sm-2 control-label"><span class="text-red">*</span>身份证号</label>
+                <div class="col-sm-4">
+                    <input type="text" class="form-control" placeholder=""  name="" value="130406555599995555" readonly>
+                </div>
+                <label class="col-sm-2 control-label"><span class="text-red">*</span>性别</label>
+                <div class="col-sm-4">
+                    <input type="text" class="form-control" placeholder="" name="" value="男" readonly>
+                </div>
+            </div>
+            <div class="row form-group">
+                <label class="col-sm-2 control-label"><span class="text-red">*</span>年龄</label>
+                <div class="col-sm-4">
+                    <input type="text" class="form-control" placeholder="" name="" value="23" readonly>
+                </div>
+                <label class="col-sm-2 control-label">邮箱</label>
+                <div class="col-sm-4">
+                    <input type="text" class="form-control" placeholder="" name="" value="5878797@163.com" readonly>
+                </div>
+            </div>
+            <div class="row form-group">
+                <label class="col-sm-2 control-label">注册时间</label>
+                <div class="col-sm-4">
+                    <input type="text" class="form-control" placeholder="" name="" value="2016/10/8" readonly>
+                </div>
+                <label class="col-sm-2 control-label">最后一次登录</label>
+                <div class="col-sm-4">
+                    <input type="text" class="form-control" placeholder="" name="" value="2016/10/10" readonly>
+                </div>
+            </div>
+        </div>
+        <div class="box-title">
+            <h5>详细资料</h5>
+        </div>
+        <div class="box-body">
+            <div class="row form-group">
+                <label class="col-sm-2 control-label">婚姻状况</label>
+                <div class="col-sm-4">
+                    <input type="text" class="form-control" placeholder="">
+                </div>
+                <label class="col-sm-2 control-label">常住地址</label>
+                <div class="col-sm-4">
+                    <input type="text" class="form-control" placeholder="">
+                </div>
+            </div>
+            <div class="row form-group">
+                <label class="col-sm-2 control-label">户口所在地</label>
+                <div class="col-sm-4">
+                    <input type="text" class="form-control" placeholder="">
+                </div>
+                <label class="col-sm-2 control-label">政治面貌</label>
+                <div class="col-sm-4">
+                    <input type="text" class="form-control" placeholder="">
+                </div>
+            </div>
+            <div class="row form-group">
+                <label class="col-sm-2 control-label">学历</label>
+                <div class="col-sm-4">
+                    <input type="text" class="form-control" placeholder="" >
+                </div>
+                <label class="col-sm-2 control-label">信用状况</label>
+                <div class="col-sm-4">
+                    <input type="text" class="form-control" placeholder="">
+                </div>
+            </div>
+
+            <div class="row form-group">
+                <label class="col-sm-2 control-label">月收入</label>
+                <div class="col-sm-4">
+                    <input type="text" class="form-control" placeholder="">
+                </div>
+                <label class="col-sm-2 control-label">工作城市</label>
+                <div class="col-sm-4">
+                    <input type="text" class="form-control" placeholder="">
+                </div>
+            </div>
+            <div class="row form-group">
+                <label class="col-sm-2 control-label">名下是否有房</label>
+                <div class="col-sm-4">
+                    <input type="text" class="form-control" placeholder="">
+                </div>
+                <label class="col-sm-2 control-label">是否有车</label>
+                <div class="col-sm-4">
+                    <input type="text" class="form-control" placeholder="">
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
 </body>
 </html>
