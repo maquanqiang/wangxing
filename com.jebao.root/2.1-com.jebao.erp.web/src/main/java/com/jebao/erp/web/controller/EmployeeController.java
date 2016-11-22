@@ -20,7 +20,7 @@ public class EmployeeController {
 
     @RequestMapping("")
     public String index(Model model) {
-        List<EmployeeInfo> list = employeeService.getEmployeeInfoList(null,null);
+        List<EmployeeInfo> list = employeeService.getEmployeeInfoList(null);
         model.addAttribute("employeeList",list);
         //model.addAttribute("name","jack");
         return "employee/index";

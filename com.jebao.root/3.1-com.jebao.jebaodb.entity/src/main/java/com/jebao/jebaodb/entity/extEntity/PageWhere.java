@@ -53,6 +53,9 @@ public class PageWhere {
     }
 
     public int getPageSize() {
+        if (pageSize==0){
+            pageSize=10;
+        }
         return pageSize;
     }
 

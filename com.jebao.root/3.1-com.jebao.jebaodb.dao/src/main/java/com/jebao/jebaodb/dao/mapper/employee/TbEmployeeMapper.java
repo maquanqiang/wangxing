@@ -2,8 +2,7 @@ package com.jebao.jebaodb.dao.mapper.employee;
 
 import com.jebao.jebaodb.entity.employee.EmployeeInfo;
 import com.jebao.jebaodb.entity.employee.TbEmployee;
-import com.jebao.jebaodb.entity.extEntity.PageWhere;
-import org.apache.ibatis.annotations.Param;
+import com.jebao.jebaodb.entity.search.EmployeeModel;
 
 import java.util.List;
 
@@ -21,5 +20,5 @@ public interface TbEmployeeMapper {
     /**
      * 获取员工详细信息
      */
-    List<EmployeeInfo> selectEmployeeDetailsInfo(@Param("model")EmployeeInfo model,@Param("pageWhere")PageWhere pageWhere);
+    List<EmployeeInfo> selectEmployeeDetailsInfo(EmployeeModel model);
 }
