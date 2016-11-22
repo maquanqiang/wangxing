@@ -35,6 +35,7 @@ public class EmployeeController extends _BaseController {
         List<EmployeeInfo> employeeInfoList = employeeService.getEmployeeInfoList(searchModel, pageWhere);
         List<EmployeeVM> viewModelList = new ArrayList<>();
         employeeInfoList.forEach(o -> viewModelList.add(new EmployeeVM(o)));
+        
         return new JsonResultList<>(viewModelList);
     }
 
