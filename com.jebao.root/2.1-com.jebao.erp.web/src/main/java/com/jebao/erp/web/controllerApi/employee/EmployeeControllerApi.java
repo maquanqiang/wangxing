@@ -2,13 +2,15 @@ package com.jebao.erp.web.controllerApi.employee;
 
 import com.jebao.erp.service.inf.employee.IEmployeeServiceInf;
 import com.jebao.erp.web.controller._BaseController;
+import com.jebao.erp.web.requestModel.employee.EmployeePM;
 import com.jebao.erp.web.responseModel.base.JsonResult;
 import com.jebao.erp.web.responseModel.base.JsonResultList;
 import com.jebao.erp.web.responseModel.employee.EmployeeVM;
 import com.jebao.jebaodb.entity.employee.EmployeeInfo;
-import com.jebao.jebaodb.entity.search.EmployeeModel;
+import com.jebao.jebaodb.entity.search.EmployeeSM;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
@@ -25,15 +27,23 @@ public class EmployeeControllerApi extends _BaseController {
     private IEmployeeServiceInf employeeService;
 
     @RequestMapping("list")
-    public JsonResult list(EmployeeModel model) {
+    public JsonResult list(EmployeeSM model) {
         if (model==null){return new JsonResultList<>(null);}
 
         List<EmployeeInfo> employeeInfoList = employeeService.getEmployeeInfoList(model);
-        System.out.println("employeeApi.list:"+employeeInfoList.size());
         List<EmployeeVM> viewModelList = new ArrayList<>();
         employeeInfoList.forEach(o -> viewModelList.add(new EmployeeVM(o)));
 
-        return new JsonResultList<>(viewModelList);
+        int count=0;
+        if (model.getPageIndex()==0){
+            count = employeeService.getEmployeeInfoListCount(model);
+        }
+
+        return new JsonResultList<>(viewModelList,count);
+    }
+    @RequestMapping(value = "post",method = RequestMethod.POST)
+    public JsonResult post(EmployeePM model){
+        return null;
     }
 
 }

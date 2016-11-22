@@ -2,7 +2,7 @@ package com.jebao.jebaodb.dao.mapper.employee;
 
 import com.jebao.jebaodb.entity.employee.EmployeeInfo;
 import com.jebao.jebaodb.entity.employee.TbEmployee;
-import com.jebao.jebaodb.entity.search.EmployeeModel;
+import com.jebao.jebaodb.entity.search.EmployeeSM;
 
 import java.util.List;
 
@@ -20,5 +20,6 @@ public interface TbEmployeeMapper {
     /**
      * 获取员工详细信息
      */
-    List<EmployeeInfo> selectEmployeeDetailsInfo(EmployeeModel model);
+    List<EmployeeInfo> selectEmployeeDetailsInfo(EmployeeSM model);
+    Integer selectEmployeeDetailsInfoCount(EmployeeSM model);
 }

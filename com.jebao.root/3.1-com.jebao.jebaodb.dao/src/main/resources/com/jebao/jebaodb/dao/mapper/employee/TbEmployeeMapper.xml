@@ -194,14 +194,22 @@
                      resultMap="BaseResultMap"/>
         <association column="dep_id" property="department" javaType="com.jebao.jebaodb.entity.employee.TbDepartment"
                      resultMap="com.jebao.jebaodb.dao.mapper.employee.TbDepartmentMapper.BaseResultMap" />
+        <association column="rank_id" property="rank" javaType="com.jebao.jebaodb.entity.employee.TbRank"
+                     resultMap="com.jebao.jebaodb.dao.mapper.employee.TbRankMapper.BaseResultMap" />
     </resultMap>
 
-    <select id="selectEmployeeDetailsInfo" resultMap="EmployeeResultMap" parameterType="com.jebao.jebaodb.entity.search.EmployeeModel">
+    <select id="selectEmployeeDetailsInfo" resultMap="EmployeeResultMap" parameterType="com.jebao.jebaodb.entity.search.EmployeeSM">
         SELECT * FROM v_employee
         <where>
             <include refid="dynamicJoinWehre"/>
         </where>
         order by emp_id DESC LIMIT #{begin},#{pageSize}
+    </select>
+    <select id="selectEmployeeDetailsInfoCount" resultType="integer" parameterType="com.jebao.jebaodb.entity.search.EmployeeSM">
+        SELECT COUNT(1) FROM v_employee
+        <where>
+            <include refid="dynamicJoinWehre"/>
+        </where>
     </select>
     <sql id="dynamicWehre">
         <if test="empCode != null">
@@ -242,10 +250,10 @@
         <if test="mobile != null and mobile != ''">
             AND  emp_mobilephone = #{mobile,jdbcType=VARCHAR}
         </if>
-        <if test="teamId != null">
+        <if test="teamId > 0">
             AND  dep_id = #{teamId,jdbcType=INTEGER}
         </if>
-        <if test="rankId != null">
+        <if test="rankId > 0">
             AND  rank_id = #{rankId,jdbcType=INTEGER}
         </if>
 

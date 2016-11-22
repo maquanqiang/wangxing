@@ -32,10 +32,14 @@ public class PageWhere {
     }
 
     private int begin;
+    private int pageIndex;
     private int pageSize;
     private String orderBy;
 
     public int getBegin() {
+        if (begin==0 && pageIndex>0){
+            this.setBegin(pageIndex*pageSize);
+        }
         return begin;
     }
 
@@ -61,5 +65,13 @@ public class PageWhere {
 
     public void setPageSize(int pageSize) {
         this.pageSize = pageSize;
+    }
+
+    public int getPageIndex() {
+        return pageIndex;
+    }
+
+    public void setPageIndex(int pageIndex) {
+        this.pageIndex = pageIndex;
     }
 }

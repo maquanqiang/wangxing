@@ -3,7 +3,7 @@ package com.jebao.erp.service.impl.employee;
 import com.jebao.erp.service.inf.employee.IEmployeeServiceInf;
 import com.jebao.jebaodb.dao.dao.employee.TbEmployeeDao;
 import com.jebao.jebaodb.entity.employee.EmployeeInfo;
-import com.jebao.jebaodb.entity.search.EmployeeModel;
+import com.jebao.jebaodb.entity.search.EmployeeSM;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,8 +23,12 @@ public class EmployeeServiceImpl implements IEmployeeServiceInf {
      * @return
      */
     @Override
-    public List<EmployeeInfo> getEmployeeInfoList(EmployeeModel model) {
-
+    public List<EmployeeInfo> getEmployeeInfoList(EmployeeSM model) {
         return employeeDao.selectEmployeeDetailsInfo(model);
+    }
+
+    @Override
+    public int getEmployeeInfoListCount(EmployeeSM model) {
+        return employeeDao.selectEmployeeDetailsInfoCount(model);
     }
 }
