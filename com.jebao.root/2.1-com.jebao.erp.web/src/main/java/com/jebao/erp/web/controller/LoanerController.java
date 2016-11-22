@@ -25,7 +25,8 @@ public class LoanerController extends _BaseController {
 
     @RequestMapping("index")
     public String index(Model model){
-        List<TbLoaner> list = loanerService.selectLoanerByParamsForPage(null,0,100);
+        TbLoaner record = new TbLoaner();
+        List<TbLoaner> list = loanerService.selectLoanerByParamsForPage(record,0,100);
         model.addAttribute("list",list);
         return "loaner/index";
     }
