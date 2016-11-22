@@ -30,7 +30,7 @@ public class LoanerController extends _BaseController {
         return "loaner/index";
     }
 
-    @RequestMapping("index")
+/*    @RequestMapping("index")
     public String doSeach(@ModelAttribute("form") SearchForm form,Model model){
         TbLoaner record = new TbLoaner();
         String phone = form.getPhone();
@@ -43,7 +43,7 @@ public class LoanerController extends _BaseController {
             model.addAttribute("list",list);
         }
         return "loaner/index";
-    }
+    }*/
 
     @RequestMapping(value="/details/{id}",method = RequestMethod.GET)
     public String details(@PathVariable Long id, Model model){
