@@ -1,16 +1,17 @@
-package com.jebao.p2p.web.api.responseModel.employee;
+package com.jebao.erp.web.responseModel.employee;
 
-import com.jebao.jebaodb.entity.employee.TbRank;
-import com.jebao.p2p.web.api.responseModel.ViewModel;
+import com.jebao.erp.web.responseModel.ViewModel;
+import com.jebao.jebaodb.entity.employee.TbDepartment;
 
 /**
  * Created by Jack on 2016/11/21.
  */
-public class RankVM extends ViewModel {
-    public RankVM(TbRank entity) {
-        this.id = entity.getRankId();
-        this.name = entity.getRankName();
-        this.parentId = entity.getRankParentId();
+public class DepartmentVM extends ViewModel {
+
+    public DepartmentVM(TbDepartment entity) {
+        this.id = entity.getDepId();
+        this.name = entity.getDepName();
+        this.parentId = entity.getDepParentId();
     }
 
     private int id;

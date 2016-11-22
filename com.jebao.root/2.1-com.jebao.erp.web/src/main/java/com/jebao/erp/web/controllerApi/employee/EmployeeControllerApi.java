@@ -1,14 +1,14 @@
-package com.jebao.p2p.web.api.controllerApi.employee;
+package com.jebao.erp.web.controllerApi.employee;
 
 import com.jebao.erp.service.inf.employee.IEmployeeServiceInf;
+import com.jebao.erp.web.controller._BaseController;
+import com.jebao.erp.web.requestModel.employee.EmployeeSearchPM;
+import com.jebao.erp.web.responseModel.base.JsonResult;
+import com.jebao.erp.web.responseModel.base.JsonResultList;
+import com.jebao.erp.web.responseModel.employee.EmployeeVM;
 import com.jebao.jebaodb.entity.employee.EmployeeInfo;
 import com.jebao.jebaodb.entity.extEntity.PageWhere;
 import com.jebao.jebaodb.entity.search.EmployeeModel;
-import com.jebao.p2p.web.api.controllerApi._BaseController;
-import com.jebao.p2p.web.api.requestModel.employee.EmployeeSearchPM;
-import com.jebao.p2p.web.api.responseModel.base.JsonResult;
-import com.jebao.p2p.web.api.responseModel.base.JsonResultList;
-import com.jebao.p2p.web.api.responseModel.employee.EmployeeVM;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,7 +21,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("api/employee/")
-public class EmployeeController extends _BaseController {
+public class EmployeeControllerApi extends _BaseController {
 
     @Autowired
     private IEmployeeServiceInf employeeService;

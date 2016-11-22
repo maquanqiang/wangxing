@@ -1,11 +1,11 @@
-package com.jebao.p2p.web.api.responseModel.employee;
+package com.jebao.erp.web.responseModel.employee;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.jebao.erp.web.responseModel.ViewModel;
 import com.jebao.jebaodb.entity.employee.EmployeeInfo;
 import com.jebao.jebaodb.entity.employee.TbDepartment;
 import com.jebao.jebaodb.entity.employee.TbEmployee;
 import com.jebao.jebaodb.entity.employee.TbRank;
-import com.jebao.p2p.web.api.responseModel.ViewModel;
 
 import java.util.Date;
 

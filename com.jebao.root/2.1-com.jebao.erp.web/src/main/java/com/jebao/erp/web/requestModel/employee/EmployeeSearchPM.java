@@ -1,4 +1,4 @@
-package com.jebao.p2p.web.api.requestModel.employee;
+package com.jebao.erp.web.requestModel.employee;
 
 import com.jebao.jebaodb.entity.employee.TbDepartment;
 import com.jebao.jebaodb.entity.employee.TbEmployee;
