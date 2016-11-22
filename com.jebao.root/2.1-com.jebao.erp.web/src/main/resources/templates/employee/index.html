@@ -17,65 +17,50 @@
             <h1>员工管理</h1>
         </section>
         <!-- Main content -->
-        <section class="content">
+        <section class="content" id="content">
             <!-- 查询条件块 -->
             <div class="row">
                 <div class="col-xs-12">
                     <div class="box box-primary">
-                        <form action="" class="form-inline" id="order_search_form" method="post" novalidate="novalidate">
+                        <form class="form-inline" id="search_form" novalidate="novalidate">
                             <div class="box-body">
-                                <div class="row">
-
-                                </div>
                                 <div class="form-group">
                                     <div class="input-group margin">
                                         <div class="input-group-addon">姓名</div>
-                                        <input type="text" class="form-control" placeholder="" name="">
+                                        <input type="text" class="form-control" placeholder="" name="name" v-model="search.name">
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <div class="input-group margin">
                                         <div class="input-group-addon">手机号</div>
-                                        <input type="text" class="form-control" placeholder="" name="">
+                                        <input type="tel" class="form-control" placeholder="" name="mobile" v-model="search.mobile">
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <div class="input-group margin">
                                         <div class="input-group-addon">所属团队</div>
-                                        <input type="text" class="form-control" placeholder="" name="">
+                                        <select class="select2" id="teamId" name="teamId" style="width: 15rem;" v-model="search.teamId">
+                                            <option v-for="item in teams" :value="item.id">{{ item.name }}</option>
+                                        </select>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <div class="input-group margin">
                                         <div class="input-group-addon">级别</div>
-                                        <input type="text" class="form-control" placeholder="" name="">
+                                        <div id="tree"></div>
+                                        <select class="select2"  id="rankId" name="rankId" style="width: 15rem;" v-model="search.rankId">
+                                            <option v-for="item in ranks" :value="item.id">{{ item.name }}</option>
+                                        </select>
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <div class="input-group margin">
-                                        <div class="input-group-addon">所属部门</div>
-                                        <input type="text" class="form-control" placeholder="" name="">
-                                    </div>
-                                </div>
-                                <div class="form-group ">
                                     <div class="input-group  margin">
                                         <a href="javascript:;" class="btn btn-primary " role="button" target="_blank">搜索</a>
                                     </div>
-                                </div><br>
-
+                                </div>
                                 <div class="form-group ">
                                     <div class="input-group  margin">
                                         <a href="javascript:;" class="btn btn-primary " role="button" target="_blank" id="add-people">添加</a>
-                                    </div>
-                                </div>
-                                <div class="form-group ">
-                                    <div class="input-group  margin">
-                                        <a href="javascript:;" class="btn btn-primary " role="button" target="_blank" id="modifyInformation">修改</a>
-                                    </div>
-                                </div>
-                                <div class="form-group ">
-                                    <div class="input-group  margin">
-                                        <a href="javascript:;" class="btn btn-primary " role="button" target="_blank" id="remove-msg">删除</a>
                                     </div>
                                 </div>
                                 <div class="form-group ">
@@ -91,82 +76,76 @@
             <!--表格内容-->
             <div class="row">
                 <div class="col-xs-12">
-                    <!-- 内容框 -->
                     <div class="box box-primary">
-                        <!-- 内容头部 -->
-                        <div class="box-header with-border no-padding" style="border-bottom-color:#ccc">
-                            <div class="mailbox-controls">
-                                <div class="btn-group">
-                                    <button class="btn btn-default btn-sm"><i class="fa fa-trash-o"></i></button>
-                                    <button class="btn btn-default btn-sm"><i class="fa fa-reply"></i></button>
-                                    <button class="btn btn-default btn-sm"><i class="fa fa-share"></i></button>
-                                </div><!-- /.btn-group -->
-                                <button class="btn btn-default btn-sm"><i class="fa fa-refresh"></i></button>
-                            </div>
-                        </div>
-
-                        <div class="box-body no-padding">
+                        <div class="box-body">
                             <div id="orderlist_table_wrapper" class="dataTables_wrapper">
                                 <div class="row">
-                                    <div class="col-sm-12">
+                                    <div class="col-xs-12">
                                         <table id="orderlist_table" class="table table-bordered table-hover dataTable" role="grid" aria-describedby="orderlist_table_info">
                                             <thead>
                                             <tr role="row">
-                                                <th width="10%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">操作</th>
                                                 <th width="10%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">资金ID</th>
                                                 <th width="10%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">姓名</th>
                                                 <th width="10%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">手机号</th>
                                                 <th width="10%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">员工级别</th>
                                                 <th width="10%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">所属团队</th>
                                                 <th width="10%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">所属部门</th>
-                                                <th width="10%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">公司</th>
-                                                <th width="10%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">集团</th>
+                                                <th width="10%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">是否在职</th>
+                                                <th width="10%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">操作</th>
                                             </tr>
                                             </thead>
                                             <tbody>
                                             <tr role="row" class="odd">
-                                                <td>abcd123</td>
                                                 <td>0920183</td>
                                                 <td>张三</td>
                                                 <td>13601254554</td>
                                                 <td>经理</td>
                                                 <td>一团</td>
-                                                <td>一部</td>
                                                 <td></td>
                                                 <td></td>
+                                                <td>
+                                                    <a href="javascript:;" class="btn btn-default btn-xs" role="button" target="_blank" id="modifyInformation">修改</a>
+                                                    <a href="javascript:;" class="btn btn-default btn-xs remove-msg" role="button" target="_blank">删除</a>
+                                                </td>
                                             </tr>
                                             <tr role="row" class="even">
-                                                <td>abcd123</td>
                                                 <td>0920183</td>
                                                 <td>张三</td>
                                                 <td>13601254554</td>
                                                 <td>经理</td>
                                                 <td>一团</td>
-                                                <td>一部</td>
                                                 <td></td>
                                                 <td></td>
+                                                <td>
+                                                    <a href="javascript:;" class="btn btn-default btn-xs" role="button" target="_blank" id="modifyInformation">修改</a>
+                                                    <a href="javascript:;" class="btn btn-default btn-xs remove-msg" role="button" target="_blank">删除</a>
+                                                </td>
                                             </tr>
                                             <tr role="row" class="odd">
-                                                <td>abcd123</td>
                                                 <td>0920183</td>
                                                 <td>张三</td>
                                                 <td>13601254554</td>
                                                 <td>经理</td>
                                                 <td>一团</td>
-                                                <td>一部</td>
                                                 <td></td>
                                                 <td></td>
+                                                <td>
+                                                    <a href="javascript:;" class="btn btn-default btn-xs" role="button" target="_blank" id="modifyInformation">修改</a>
+                                                    <a href="javascript:;" class="btn btn-default btn-xs remove-msg" role="button" target="_blank">删除</a>
+                                                </td>
                                             </tr>
                                             <tr role="row" class="even">
-                                                <td>abcd123</td>
                                                 <td>0920183</td>
                                                 <td>张三</td>
                                                 <td>13601254554</td>
                                                 <td>经理</td>
                                                 <td>一团</td>
-                                                <td>一部</td>
                                                 <td></td>
                                                 <td></td>
+                                                <td>
+                                                    <a href="javascript:;" class="btn btn-default btn-xs" role="button" target="_blank" id="modifyInformation">修改</a>
+                                                    <a href="javascript:;" class="btn btn-default btn-xs remove-msg" role="button" target="_blank">删除</a>
+                                                </td>
                                             </tr>
                                             </tbody>
                                         </table>
@@ -178,7 +157,6 @@
                                     </div>
                                 </div>
                             </div>
-
                         </div>
                     </div>
                 </div>
@@ -194,70 +172,44 @@
     <form class="form-horizontal">
         <div class="box-body">
             <div class="form-group">
-                <label class="col-sm-3 control-label">姓名</label>
+                <label class="col-sm-3 control-label">姓名:</label>
                 <div class="col-sm-8">
-                    <input type="text" class="form-control" placeholder="" name="user">
+                    <input type="text" class="form-control" placeholder="" value="" name="user">
                 </div>
             </div>
             <div class="form-group">
-                <label class="col-sm-3 control-label">手机号</label>
+                <label class="col-sm-3 control-label">手机号:</label>
                 <div class="col-sm-8">
-                    <input type="text" class="form-control" placeholder="" name="tel">
+                    <input type="text" class="form-control" placeholder="" value="" name="tel">
                 </div>
             </div>
             <div class="form-group">
-                <label class="col-sm-3 control-label">身份证号</label>
+                <label class="col-sm-3 control-label">身份证号:</label>
                 <div class="col-sm-8">
-                    <input type="text" class="form-control" placeholder="" name="ID">
+                    <input type="text" class="form-control" placeholder="" value="" name="ID" >
                 </div>
             </div>
             <div class="form-group">
-                <label class="col-sm-3 control-label">部门</label>
+                <label class="col-sm-3 control-label">员工级别:</label>
                 <div class="col-sm-8">
-                    <select class="form-control" style="width:100%;height: 34px;border-color: #d2d6de;"  name="department">
-                        <option value="0">行政</option>
-                        <option value="1">财务</option>
-                        <option value="2">人事</option>
-                        <option value="3">金额宝互联网</option>
-                        <option value="4">销售一部</option>
-                        <option value="5">销售二部</option>
+                    <select class="form-control staffLevel" style="width:100%;height: 34px;border-color: #d2d6de;"  name="staffLevel">
+                        <option value="">请选择</option>
+                        <option value="理财顾问">理财顾问</option>
+                        <option value="团队经理">团队经理</option>
+                        <option value="总监">总监</option>
                     </select>
                 </div>
             </div>
             <div class="form-group">
-                <label class="col-sm-3 control-label">员工级别</label>
+                <label class="col-sm-3 control-label">所属部门:</label>
                 <div class="col-sm-8">
-                    <select class="form-control" style="width:100%;height: 34px;border-color: #d2d6de;"  name="staffLevel">
-                        <option value="0">理财顾问</option>
-                        <option value="1">团队经理</option>
-                        <option value="2">总监</option>
-                        <option value="3">副总经理</option>
-                        <option value="4">经理</option>
-                    </select>
+                    <input type="text" class="form-control" placeholder="" name="inDepartment" value="">
                 </div>
             </div>
-            <div class="form-group">
-                <label class="col-sm-3 control-label">所属团队</label>
+            <div class="form-group team">
+                <label class="col-sm-3 control-label">所属团队:</label>
                 <div class="col-sm-8">
-                    <input type="text" class="form-control" placeholder="" name="team">
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="col-sm-3 control-label">所属部门</label>
-                <div class="col-sm-8">
-                    <input type="text" class="form-control" placeholder="" name="inDepartment">
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="col-sm-3 control-label">公司</label>
-                <div class="col-sm-8">
-                    <input type="text" class="form-control" placeholder="" name="company">
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="col-sm-3 control-label">集团</label>
-                <div class="col-sm-8">
-                    <input type="text" class="form-control" placeholder="" name="group">
+                    <input type="text" class="form-control" placeholder="" name="team" value="">
                 </div>
             </div>
         </div><!-- /.box-body -->
@@ -270,68 +222,52 @@
             <div class="form-group">
                 <label class="col-sm-3 control-label">姓名:</label>
                 <div class="col-sm-8">
-                    <input type="text" class="form-control" placeholder="" value="张三" name="user">
+                    <input type="text" class="form-control" placeholder="" value="张三" name="user" readonly>
                 </div>
             </div>
             <div class="form-group">
-                <label class="col-sm-3 control-label">性别:</label>
+                <label class="col-sm-3 control-label">手机号:</label>
                 <div class="col-sm-8">
-                    <input type="text" class="form-control" placeholder="" value="男" name="sex">
+                    <input type="text" class="form-control" placeholder="" value="13056987898" name="tel" readonly>
                 </div>
             </div>
             <div class="form-group">
                 <label class="col-sm-3 control-label">身份证号:</label>
                 <div class="col-sm-8">
-                    <input type="text" class="form-control" placeholder="" value="130406256547895451" name="ID">
+                    <input type="text" class="form-control" placeholder="" value="130406256547895451" name="ID" readonly>
                 </div>
             </div>
             <div class="form-group">
-                <label class="col-sm-3 control-label">部门</label>
+                <label class="col-sm-3 control-label">员工级别:</label>
                 <div class="col-sm-8">
-                    <select class="form-control" style="width:100%;height: 34px;border-color: #d2d6de;"  name="department">
-                        <option value="0">行政</option>
-                        <option value="1">财务</option>
-                        <option value="2">人事</option>
-                        <option value="3"  selected>金额宝互联网</option>
-                        <option value="4">销售一部</option>
-                        <option value="5">销售二部</option>
+                    <select class="form-control staffLevel" style="width:100%;height: 34px;border-color: #d2d6de;"  name="staffLevel">
+                        <option value="">请选择</option>
+                        <option value="理财顾问" selected>理财顾问</option>
+                        <option value="团队经理">团队经理</option>
+                        <option value="总监">总监</option>
                     </select>
                 </div>
             </div>
             <div class="form-group">
-                <label class="col-sm-3 control-label">员工级别</label>
+                <label class="col-sm-3 control-label">是否在职:</label>
                 <div class="col-sm-8">
-                    <select class="form-control" style="width:100%;height: 34px;border-color: #d2d6de;"  name="staffLevel">
-                        <option value="0"  selected>理财顾问</option>
-                        <option value="1">团队经理</option>
-                        <option value="2">总监</option>
-                        <option value="3">副总经理</option>
-                        <option value="4">经理</option>
+                    <select class="form-control" style="width:100%;height: 34px;border-color: #d2d6de;"  name="work">
+                        <option value="">请选择</option>
+                        <option value="在职" selected>在职</option>
+                        <option value="离职">离职</option>
                     </select>
                 </div>
             </div>
             <div class="form-group">
-                <label class="col-sm-3 control-label">所属团队</label>
-                <div class="col-sm-8">
-                    <input type="text" class="form-control" placeholder="" name="team" value="互联网">
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="col-sm-3 control-label">所属部门</label>
+                <label class="col-sm-3 control-label">所属部门:</label>
                 <div class="col-sm-8">
                     <input type="text" class="form-control" placeholder="" name="inDepartment" value="金额宝">
                 </div>
             </div>
-            <div class="form-group">
-                <label class="col-sm-3 control-label">公司</label>
+            <div class="form-group team">
+                <label class="col-sm-3 control-label">所属团队:</label>
                 <div class="col-sm-8">
-                    <input type="text" class="form-control" placeholder="" name="company" value="信投资本">
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="col-sm-3 control-label">集团</label>
-                <div class="col-sm-8">
-                    <input type="text" class="form-control" placeholder="" name="group" value="安盛信投">
+                    <input type="text" class="form-control" placeholder="" name="team" value="互联网">
                 </div>
             </div>
         </div><!-- /.box-body -->
@@ -339,6 +275,7 @@
 </div>
 
 #include("common/footer.html")
+
 <!--pagination-->
 <script>
     $(function(){
@@ -419,5 +356,7 @@
         });
     });
 </script>
+<script src="/content/script/employee/index.js"></script>
+
 </body>
 </html>
