@@ -1,6 +1,7 @@
 package com.jebao.p2p.web.api.responseModel.tempTest;
 
 import com.jebao.jebaodb.entity.TbTempTest;
+import com.jebao.p2p.web.api.responseModel.ViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,7 +10,7 @@ import java.util.List;
  * Dto的概念
  * Created by Administrator on 2016/10/21.
  */
-public class TempTestData {
+public class TempTestData extends ViewModel {
 
     //转为数据库实体数据转为响应数据
     public static TempTestData toViewData(TbTempTest entity)

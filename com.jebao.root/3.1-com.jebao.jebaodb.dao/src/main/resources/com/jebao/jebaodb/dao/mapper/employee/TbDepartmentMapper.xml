@@ -75,4 +75,10 @@
       dep_parent_id = #{depParentId,jdbcType=INTEGER}
     where dep_id = #{depId,jdbcType=INTEGER}
   </update>
+
+  <!--==================================================华丽分割线==================================================-->
+  <select id="selectList" resultMap="BaseResultMap">
+    SELECT <include refid="Base_Column_List"></include> FROM tb_department order by dep_parent_id LIMIT #{pageWhere.begin},#{pageWhere.pageSize}
+  </select>
+
 </mapper>
