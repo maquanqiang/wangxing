@@ -75,4 +75,10 @@
       rank_brokerage_percent = #{rankBrokeragePercent,jdbcType=DECIMAL}
     where rank_id = #{rankId,jdbcType=INTEGER}
   </update>
+
+  <!--==================================================华丽分割线==================================================-->
+  <select id="selectList" resultMap="BaseResultMap">
+    SELECT <include refid="Base_Column_List"></include> FROM tb_rank order by rank_parent_id LIMIT #{pageWhere.begin},#{pageWhere.pageSize}
+  </select>
+
 </mapper>
