@@ -28,11 +28,13 @@ public class EmployeeControllerApi extends _BaseController {
 
     @RequestMapping("list")
     public JsonResult list(EmployeeSearchPM model) {
+
         if (model==null){return new JsonResultList<>(null);}
         EmployeeModel searchModel = model.toEntity();
         PageWhere pageWhere = new PageWhere(model.getPageIndex(), model.getPageSize());
 
         List<EmployeeInfo> employeeInfoList = employeeService.getEmployeeInfoList(searchModel, pageWhere);
+        System.out.println("employeeApi.list:"+employeeInfoList.size());
         List<EmployeeVM> viewModelList = new ArrayList<>();
         employeeInfoList.forEach(o -> viewModelList.add(new EmployeeVM(o)));
 

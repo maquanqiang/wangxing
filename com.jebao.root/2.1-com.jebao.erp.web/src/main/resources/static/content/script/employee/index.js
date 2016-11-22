@@ -61,7 +61,7 @@ $(function () {
 //Model
 var model = {
     //查询条件
-    search: {},
+    searchObj: $("#search_form").serializeObject(),
     //所属团队
     teams: [],
     //销售级别
@@ -73,10 +73,6 @@ var model = {
 var vm = new Vue({
     el: "#content",
     data: model,
-    beforeCreate:function(){
-        //初始化本地数据
-        model.search = $("#search_form").serializeObject(); //初始化 model.search 对象
-    },
     //初始化远程数据
     created:function(){
         //团队
@@ -95,7 +91,12 @@ var vm = new Vue({
     //方法，可用于绑定事件或直接调用
     methods: {
         search:function(event){
+            $(event.target).addClass("disabled");//禁用按钮
+            $.get("/api/employee/list",model.searchObj,function(response){
 
+
+                $(event.target).removeClass("disabled");//解除禁用
+            });
         }
     }
 });

@@ -100,8 +100,8 @@ Date.prototype.toFormatString = function (format) {
         //序列化表单元素为一个对象
         serializeObject: function () {
             var obj = {};
-            $(this).serializeArray().map(function (item) {
-                obj[item.name]= item.value;
+            $(this).find("input[name]:not([type='button']),textarea[name],select[name]").map(function (index,item) {
+                obj[item.name] = $(item).val();
             });
             return obj;
         },

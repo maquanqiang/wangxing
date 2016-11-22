@@ -235,16 +235,16 @@
     <sql id="dynamicJoinWehre">
         <if test="model != null">
             <if test="model.employee != null">
-                <if test="model.employee.empCode != null">
+                <if test="model.employee.empCode != null and model.employee.empCode != ''">
                    AND emp_code = #{model.employee.empCode,jdbcType=VARCHAR}
                 </if>
-                <if test="model.employee.empName != null">
+                <if test="model.employee.empName != null and model.employee.empName != ''">
                     AND emp_name = #{model.employee.empName,jdbcType=VARCHAR}
                 </if>
-                <if test="model.employee.empMobilephone != null">
+                <if test="model.employee.empMobilephone != null and model.employee.empMobilephone != ''">
                     AND  emp_mobilephone = #{model.employee.empMobilephone,jdbcType=VARCHAR}
                 </if>
-                <if test="model.employee.empCardNo != null">
+                <if test="model.employee.empCardNo != null and model.employee.empCardNo != ''">
                     AND  emp_card_no = #{model.employee.empCardNo,jdbcType=VARCHAR}
                 </if>
                 <if test="model.employee.empSex != null">

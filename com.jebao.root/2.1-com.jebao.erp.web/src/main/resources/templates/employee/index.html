@@ -27,19 +27,20 @@
                                 <div class="form-group">
                                     <div class="input-group margin">
                                         <div class="input-group-addon">姓名</div>
-                                        <input type="text" class="form-control" placeholder="" name="name" v-model="search.name">
+                                        <input type="text" class="form-control" placeholder="" name="name" v-model="searchObj.name">
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <div class="input-group margin">
                                         <div class="input-group-addon">手机号</div>
-                                        <input type="tel" class="form-control" placeholder="" name="mobile" v-model="search.mobile">
+                                        <input type="tel" class="form-control" placeholder="" name="mobile" v-model="searchObj.mobile">
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <div class="input-group margin">
                                         <div class="input-group-addon">所属团队</div>
-                                        <select class="select2" id="teamId" name="teamId" style="width: 15rem;" v-model="search.teamId">
+                                        <select class="select2" id="teamId" name="teamId" style="width: 15rem;" v-model="searchObj.teamId">
+                                            <option value="0">全部</option>
                                             <option v-for="item in teams" :value="item.id">{{ item.name }}</option>
                                         </select>
                                     </div>
@@ -48,14 +49,15 @@
                                     <div class="input-group margin">
                                         <div class="input-group-addon">级别</div>
                                         <div id="tree"></div>
-                                        <select class="select2"  id="rankId" name="rankId" style="width: 15rem;" v-model="search.rankId">
+                                        <select class="select2"  id="rankId" name="rankId" style="width: 15rem;" v-model="searchObj.rankId">
+                                            <option value="0">全部</option>
                                             <option v-for="item in ranks" :value="item.id">{{ item.name }}</option>
                                         </select>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <div class="input-group  margin">
-                                        <a href="javascript:;" class="btn btn-primary " role="button" @click="" >搜索</a>
+                                        <a href="javascript:;" class="btn btn-primary " role="button" @click="search" >搜索</a>
                                     </div>
                                 </div>
                                 <div class="form-group ">
