@@ -10,7 +10,7 @@
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <section class="content-header">
-        <h1>前台用户管理-借款个人列表</h1>
+        <h1>借款信息-建标</h1>
     </section>
     <!-- Main content -->
     <section class="content">
@@ -20,30 +20,19 @@
                     <form action="" class="form-inline" id="order_search_form" method="post" novalidate="novalidate">
                         <div class="box-body">
                             <div class="form-group">
-                                <div class="input-group ">
+                                <div class="input-group margin">
                                     <div class="input-group-addon">用户名</div>
                                     <input type="text" class="form-control" placeholder="" name="">
                                 </div>
                             </div>
                             <div class="form-group">
-                                <div class="input-group ">
+                                <div class="input-group margin">
                                     <div class="input-group-addon">手机号</div>
                                     <input type="text" class="form-control" placeholder="" name="">
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <div class="input-group ">
-                                    <div class="input-group-addon">姓名</div>
-                                    <input type="text" class="form-control" placeholder="" name="">
-                                </div>
-                            </div>
-                            <div class="form-group ">
-                                <div class="input-group  margin">
-                                    <a href="javascript:;" class="btn btn-primary " role="button" target="_blank">搜索</a>
-                                </div>
-                            </div>
-                            <div class="form-group ">
-                                <a href="javascript:;" class="btn btn-primary " role="button" target="_blank" id="add-people">添加借款个人</a>
+                            <div class="input-group  margin">
+                                <a href="javascript:;" class="btn btn-primary " role="button" target="_blank">搜索</a>
                             </div>
                         </div>
                     </form>
@@ -57,59 +46,69 @@
                     <div class="box-body">
                         <div id="orderlist_table_wrapper" class="dataTables_wrapper">
                             <div class="row">
-                                <div class="col-sm-12">
+                                <div class="col-xs-12">
                                     <table id="orderlist_table" class="table table-bordered table-hover dataTable" role="grid" aria-describedby="orderlist_table_info">
                                         <thead>
                                         <tr role="row">
                                             <th width="10%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">用户名</th>
                                             <th width="10%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">姓名</th>
                                             <th width="10%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">手机号</th>
-                                            <th width="20%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">注册时间</th>
-                                            <th width="10%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">借款数笔</th>
-                                            <th width="10%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">借款总金额</th>
-                                            <th width="20%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">操作</th>
+                                            <th width="10%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">注册时间</th>
+                                            <th width="10%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">借款笔数</th>
+                                            <th width="10%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">借款金额</th>
+                                            <th width="10%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">操作</th>
                                         </tr>
                                         </thead>
-                                        <tfoot>
-
-                                        </tfoot>
                                         <tbody>
-                                        <tr role="row" class="odd" v-for="plan in planlist" track-by="$index">
-                                            <td>{{plan.bpBorrowDesc}}</td>
-                                            <td>{{plan.bpBorrowDesc}}</td>
-                                            <td>{{plan.bpBorrowDesc}}</td>
-                                            <td>{{plan.bpBorrowDesc}}</td>
-                                            <td>{{plan.bpBorrowDesc}}</td>
-                                            <td>{{plan.bpBorrowDesc}}</td>
-
-                                            <td>
-                                                <a href="javascript:;" class="btn btn-default btn-xs" role="button" target="_blank"  id="modifyInformation">添加借款</a>
-                                                <a href="借款信息.html" class="btn btn-default btn-xs" role="button" target="_blank">查看借款</a>
-                                            </td>
-                                        </tr>
-                                       <!-- <tr role="row" class="even">
-                                            <td>abcd123</td>
+                                        <tr role="row" class="odd">
+                                            <td>0920183</td>
                                             <td>张三</td>
-                                            <td>13888888888</td>
+                                            <td>13601254554</td>
                                             <td>2015/03/03 8:49</td>
                                             <td>5</td>
                                             <td>10000.00</td>
                                             <td>
-                                                <a href="javascript:;" class="btn btn-default btn-xs" role="button" target="_blank">修改</a>
-                                                <a href="javascript:;" class="btn btn-default btn-xs" role="button" target="_blank">查看详情</a>
-                                                <a href="借款信息.html" class="btn btn-default btn-xs" role="button" target="_blank">借款信息</a>
-                                                <a href="javascript:;" class="btn btn-default btn-xs remove-msg" role="button" target="_blank">删除</a>
+                                                <a href="/bidplan/plan/toaddplan?bpLoanerId=1" class="btn btn-default btn-xs" role="button" target="_blank">添加借款</a>
                                             </td>
-                                        </tr>-->
-
-
+                                        </tr>
+                                        <tr role="row" class="even">
+                                            <td>0920183</td>
+                                            <td>张三</td>
+                                            <td>13601254554</td>
+                                            <td>2015/03/03 8:49</td>
+                                            <td>5</td>
+                                            <td>10000.00</td>
+                                            <td>
+                                                <a href="建标--添加借款.html" class="btn btn-default btn-xs" role="button" target="_blank">添加借款</a>
+                                            </td>
+                                        </tr>
+                                        <tr role="row" class="odd">
+                                            <td>0920183</td>
+                                            <td>张三</td>
+                                            <td>13601254554</td>
+                                            <td>2015/03/03 8:49</td>
+                                            <td>5</td>
+                                            <td>10000.00</td>
+                                            <td>
+                                                <a href="建标--添加借款.html" class="btn btn-default btn-xs" role="button" target="_blank">添加借款</a>
+                                            </td>
+                                        </tr>
+                                        <tr role="row" class="even">
+                                            <td>0920183</td>
+                                            <td>张三</td>
+                                            <td>13601254554</td>
+                                            <td>2015/03/03 8:49</td>
+                                            <td>5</td>
+                                            <td>10000.00</td>
+                                            <td>
+                                                <a href="建标--添加借款.html" class="btn btn-default btn-xs" role="button" target="_blank">添加借款</a>
+                                            </td>
+                                        </tr>
                                         </tbody>
                                     </table>
-                                    <div id="orderlist_table_processing" class="dataTables_processing" style="display: none;">Processing...</div>
                                 </div>
                             </div>
                         </div>
-
                     </div>
                 </div>
             </div>
@@ -118,156 +117,5 @@
 </div>
 <!-- /.content-wrapper -->
 #parse("common/footer.html")
-<!--提示框-->
-<!--添加个人借款用户-->
-<div class="modal col-xs-12" id="addInforModal">
-    <form class="form-horizontal">
-        <div class="box-body">
-            <div class="form-group">
-                <label class="col-sm-3 control-label">姓名</label>
-                <div class="col-sm-8">
-                    <input type="text" class="form-control" placeholder="" name="user">
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="col-sm-3 control-label">性别</label>
-                <div class="col-sm-8">
-                    <input type="text" class="form-control" placeholder="" name="sex">
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="col-sm-3 control-label">身份证号</label>
-                <div class="col-sm-8">
-                    <input type="text" class="form-control" placeholder="" name="ID">
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="col-sm-3 control-label">户口所在地</label>
-                <div class="col-sm-8">
-                    <input type="text" class="form-control" placeholder="" name="residence">
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="col-sm-3 control-label">家庭住址</label>
-                <div class="col-sm-8">
-                    <input type="text" class="form-control" placeholder="" name="address">
-                </div>
-            </div>
-        </div><!-- /.box-body -->
-    </form>
-</div>
-<!--修改个人借款用户-->
-<div class="modal col-xs-12"  id="modInforInfModal">
-    <form class="form-horizontal">
-        <div class="box-body">
-            <div class="form-group">
-                <label class="col-sm-3 control-label">姓名:</label>
-                <div class="col-sm-8">
-                    <input type="text" class="form-control" placeholder="" value="张三" name="user">
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="col-sm-3 control-label">性别:</label>
-                <div class="col-sm-8">
-                    <input type="text" class="form-control" placeholder="" value="男" name="sex">
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="col-sm-3 control-label">身份证号:</label>
-                <div class="col-sm-8">
-                    <input type="text" class="form-control" placeholder="" value="130406256547895451" name="ID">
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="col-sm-3 control-label">户口所在地:</label>
-                <div class="col-sm-8">
-                    <input type="text" class="form-control" placeholder="" value="北京海淀区xx小区7号楼2028室" name="residence">
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="col-sm-3 control-label">家庭住址:</label>
-                <div class="col-sm-8">
-                    <input type="text" class="form-control" placeholder="" value="北京海淀区xx小区7号楼2028室" name="address">
-                </div>
-            </div>
-        </div><!-- /.box-body -->
-    </form>
-</div>
-<script src="/content/js/lib/vue.js"></script>
-<script src="/content/js/lib/common.js"></script>
-<script src="/content/script/bidplan/bidplan.js"></script>
-<script>
-    $(function(){
-        //添加个人借款用户
-        $('#add-people').on('click',function(){
-            var tempObj= $('#addInforModal').clone();
-            tempObj.find('form').attr('id','insertFormId');
-            var tempHtml=tempObj.html();
-            layer.open({
-                title:'添加个人借款用户',
-                content:tempHtml,
-                btn: ['保存', '重置'],
-                area:['500px'],
-                btn1: function(){
-                    initValidateForm($('#insertFormId'));
-                    var bootstrapValidator = $("#insertFormId").data('bootstrapValidator').validate();
-                    if(!bootstrapValidator.isValid()){
-                        return false;
-                    }else{
-                        layer.alert('添加成功！',function(){
-                            layer.closeAll();
-                        });
-                    }
-                },
-                btn2: function(){
-                    $("#insertFormId input").val("");
-                    return false;
-                }
-            });
-        });
-        //删除信息
-        $('.remove-msg').on('click',function(){
-            _this=$(this);
-            layer.open({
-                content:'您是否删除信息?',
-                btn: ['取消', '删除'],
-                yes: function(){
-                    layer.closeAll();
-                },
-                btn2: function(){
-                    _this.parent().parent().remove();
-                    layer.msg('删除成功！', {icon: 1});
-                }
-            });
-        });
-        //修改信息
-        $('#modifyInformation').on('click',function(){
-            var tempObj= $('#modInforInfModal').clone();
-            tempObj.find('form').attr('id','ModifyFormId');
-            var tempHtml=tempObj.html();
-            layer.open({
-                title:'添加个人借款用户',
-                content:tempHtml,
-                area:['500px'],
-                btn: ['保存', '重置'],
-                btn1: function(){
-                    initValidateForm($('#ModifyFormId'));
-                    var bootstrapValidator = $("#ModifyFormId").data('bootstrapValidator').validate();
-                    if(!bootstrapValidator.isValid()){
-                        return false;
-                    }else{
-                        layer.alert('修改成功！',function(){
-                            layer.closeAll();
-                        });
-                    }
-                },
-                btn2: function(){
-                    $("#ModifyFormId input").val("");
-                    return false;
-                }
-            });
-        });
-    });
-</script>
 </body>
 </html>

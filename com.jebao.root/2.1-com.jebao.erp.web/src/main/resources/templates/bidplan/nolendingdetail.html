@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html>
+<head>#parse("common/head.html")
+</head>
+<body class="skin-blue sidebar-mini">
+#parse("common/main-header.html")
+<!-- Left side column. contains the logo and sidebar -->
+#parse("common/main-sidebar.html")
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h1>借款管理-未放款标的详情</h1>
+    </section>
+    <!-- Main content -->
+    <section class="content">
+        <!--基本信息-->
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box-title">
+                    <h5>基本信息</h5>
+                </div>
+                <div class="box box-primary">
+                    <form action="" class="form-inline" id="order_search_form" method="post" novalidate="novalidate">
+                        <div class="box-body">
+                            <div class="form-group">
+                                <div class="input-group margin">
+                                    <div class="input-group-addon">项目编号</div>
+                                    <input type="text" class="form-control" placeholder="" name="" value="ZE03161101" readonly>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group margin">
+                                    <div class="input-group-addon">标的名称</div>
+                                    <input type="text" class="form-control" placeholder="" name="" value="涨额三月001期1608" readonly>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group margin">
+                                    <div class="input-group-addon">产品类型</div>
+                                    <input type="text" class="form-control" placeholder="" name="" value="普通理财" readonly>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group margin">
+                                    <div class="input-group-addon">募集时间</div>
+                                    <input type="text" class="form-control" placeholder="" name="" value="2016/11/11 9:00:00" readonly>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group margin">
+                                    <div class="input-group-addon">募集期限</div>
+                                    <input type="text"  placeholder="" class="form-control" value="72小时" readonly>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group margin">
+                                    <div class="input-group-addon">募集时间</div>
+                                    <input type="text"  placeholder="" class="form-control" value="2016/11/14 9:00:00" readonly>
+                                </div>
+                            </div>
+                            <div class="form-group ">
+                                <div class="input-group margin">
+                                    <div class="input-group-addon">起投金额</div>
+                                    <input type="text"  placeholder="" class="form-control" value="100元" readonly>
+                                </div>
+                            </div>
+                            <div class="form-group ">
+                                <div class="input-group margin">
+                                    <div class="input-group-addon">递增金额</div>
+                                    <input type="text"  placeholder="" class="form-control" value="100元" readonly>
+                                </div>
+                            </div>
+                            <div class="form-group ">
+                                <div class="input-group margin">
+                                    <div class="input-group-addon">投资上限</div>
+                                    <input type="text"  placeholder="" class="form-control" value="10000元" readonly>
+                                </div>
+                            </div>
+                            <div class="form-group ">
+                                <div class="input-group margin">
+                                    <div class="input-group-addon">募集金额</div>
+                                    <input type="text"  placeholder="" class="form-control" value="10000元" readonly>
+                                </div>
+                            </div>
+                            <div class="form-group ">
+                                <div class="input-group margin">
+                                    <div class="input-group-addon">借款利率</div>
+                                    <input type="text"  placeholder="" class="form-control" value="12%" readonly>
+                                </div>
+                            </div>
+                            <div class="form-group margin">
+                                <div class="input-group">
+                                    <div class="input-group-addon">借款期限</div>
+                                    <input type="text"  placeholder="" class="form-control" value="3期" readonly>
+                                </div>
+                            </div>
+                            <div class="form-group margin">
+                                <div class="input-group">
+                                    <div class="input-group-addon">周期选项</div>
+                                    <input type="text"  placeholder="" class="form-control" value="1周" readonly>
+                                </div>
+                            </div>
+                            <div class="form-group margin">
+                                <div class="input-group">
+                                    <div class="input-group-addon">预期放款日期</div>
+                                    <input type="text"  placeholder="" class="form-control" value="2016/11/14" readonly>
+                                </div>
+                            </div>
+                            <div class="form-group margin">
+                                <div class="input-group">
+                                    <div class="input-group-addon">预期还款日期</div>
+                                    <input type="text"  placeholder="" class="form-control" value="2016/11/17" readonly>
+                                </div>
+                            </div>
+                            <div class="form-group margin">
+                                <div class="input-group">
+                                    <div class="input-group-addon">还款方式</div>
+                                    <input type="text"  placeholder="" class="form-control" value="一次性还本付息" readonly>
+                                </div>
+                            </div>
+                            <div class="form-group margin">
+                                <div class="input-group">
+                                    <div class="input-group-addon">平台服务费</div>
+                                    <input type="text"  placeholder="" class="form-control" value="3%" readonly>
+                                </div>
+                            </div>
+                            <div class="form-group margin">
+                                <div class="input-group">
+                                    <div class="input-group-addon">逾期罚息</div>
+                                    <input type="text"  placeholder="" class="form-control" value="130%" readonly>
+                                    <div class="input-group-addon">*借款利率</div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!--预期还款计划-->
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box-title">
+                    <h5>预期放款计划</h5>
+                </div>
+                <div class="form-group ">
+                    <a href="javascript:;" class="btn btn-primary " role="button" target="_blank" >生成</a>
+                </div>
+                <div class="box box-primary">
+                    <div class="box-body">
+                        <div id="orderlist_table_wrapper" class="dataTables_wrapper">
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <table id="orderlist_table" class="table table-bordered table-hover dataTable" role="grid" aria-describedby="orderlist_table_info">
+                                        <thead>
+                                        <tr role="row">
+                                            <th width="20%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">期次</th>
+                                            <th width="20%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">还款日期</th>
+                                            <th width="20%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">还款本金</th>
+                                            <th width="20%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">还款利息</th>
+                                            <th width="20%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">还款金额</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr role="row" class="odd">
+                                            <td>1</td>
+                                            <td>2016-12-01</td>
+                                            <td>0</td>
+                                            <td>400</td>
+                                            <td>400</td>
+                                        </tr>
+                                        <tr role="row" class="even">
+                                            <td>2</td>
+                                            <td>2017-01-01</td>
+                                            <td>0</td>
+                                            <td>400</td>
+                                            <td>400</td>
+                                        </tr>
+                                        <tr role="row" class="odd">
+                                            <td>3</td>
+                                            <td>2017-02-01</td>
+                                            <td>10000</td>
+                                            <td>100400</td>
+                                            <td>400</td>
+                                        </tr>
+                                        <tr role="row" class="even">
+                                            <td>总计</td>
+                                            <td></td>
+                                            <td>10000</td>
+                                            <td>1200</td>
+                                            <td>101200</td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--认证材料-->
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box-title">
+                    <h5>认证材料</h5>
+                </div>
+                <div class="box box-primary">
+                    <div class="box-body">
+                        <div class="dataTables_wrapper">
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <table class="table table-bordered table-hover dataTable" role="grid" aria-describedby="orderlist_table_info">
+                                        <thead>
+                                        <tr role="row">
+                                            <th width="25%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">材料名称</th>
+                                            <th width="25%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">备注</th>
+                                            <th width="25%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">操作</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr role="row">
+                                            <td>认证材料</td>
+                                            <td>认证材料</td>
+                                            <td>
+                                                <a href="javascript:;" class="btn btn-default btn-xs" role="button">预览</a>
+                                                <a href="javascript:;" class="btn btn-default btn-xs remove-msg" role="button">删除</a>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--放款信息-->
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box-title">
+                    <h5>放款信息</h5>
+                </div>
+                <div class="box box-primary">
+                    <form action="" class="form-inline" method="post" novalidate="novalidate">
+                        <div class="box-body">
+                            <div class="form-group">
+                                <div class="input-group margin">
+                                    <div class="input-group-addon"><span class="text-red">*</span>放款金额</div>
+                                    <input type="text" class="form-control" placeholder="" name="" value="5000" readonly>
+                                    <div class="input-group-addon">元</div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <div class="input-group-addon"><span class="text-red">*</span>起息时间</div>
+                                    <input type="text" value="2016-10-21" placeholder="" class="form-control" id="chooseDate" name="chooseDate">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group margin">
+                                    <div class="input-group-addon"><span class="text-red">*</span>还款日期</div>
+                                    <input type="text" class="form-control" placeholder="" name="" value="2017-10-21" readonly>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!--合同模板-->
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box-title">
+                    <h5>合同模板</h5>
+                </div>
+                <div class="form-group ">
+                    <a href="javascript:;" class="btn btn-primary " role="button" target="_blank" id="add-material">合同生成</a>
+                </div>
+                <div class="box box-primary">
+                    <div class="box-body">
+                        <div class="dataTables_wrapper">
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <table class="table table-bordered table-hover dataTable" role="grid" aria-describedby="orderlist_table_info">
+                                        <thead>
+                                        <tr role="row">
+                                            <th width="14%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">资金来源</th>
+                                            <th width="14%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">投资方姓名</th>
+                                            <th width="14%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">投资人电话</th>
+                                            <th width="14%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">投资金额</th>
+                                            <th width="14%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">投资比例</th>
+                                            <th width="14%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">款项计划表</th>
+                                            <th width="14%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">操作</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr role="row">
+                                            <td>个人</td>
+                                            <td>常寒梅</td>
+                                            <td>15966356987</td>
+                                            <td>50000元</td>
+                                            <td>100%</td>
+                                            <td>款项计划表</td>
+                                            <td>
+                                                <a href="javascript:;" class="btn btn-default btn-xs" role="button" target="_blank">查看</a>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--标的投资记录-->
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box-title">
+                    <h5>标的投资记录</h5>
+                </div>
+                <div class="box box-primary">
+                    <div class="box-body">
+                        <div class="dataTables_wrapper">
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <table class="table table-bordered table-hover dataTable" role="grid" aria-describedby="orderlist_table_info">
+                                        <thead>
+                                        <tr role="row">
+                                            <th width="16%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">用户名</th>
+                                            <th width="16%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">真实姓名</th>
+                                            <th width="16%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">手机号</th>
+                                            <th width="16%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">投资时间</th>
+                                            <th width="16%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">投资金额</th>
+                                            <th width="16%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">投资来源</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr role="row">
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                        <tr role="row">
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--按钮-->
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box-body">
+                    <a href="javascript:;" class="btn btn-primary btn-lg" role="button" target="_blank">放款</a>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+<!-- /.content-wrapper -->
+#parse("common/footer.html")
+</body>
+<script>
+    $(function () {
+        $(".select2").select2();
+        //添加材料
+        $('#add-material').on('click', function () {
+            var tempObj = $('#addMaterialModal').clone();
+            tempObj.find('form').prop('id', 'insertFormId');
+            var tempHtml = tempObj.html();
+            layer.open({
+                title: '添加材料',
+                content: tempHtml,
+                btn: ['添加', '取消'],
+                area: ['500px'],
+                btn1: function () {
+                    initValidateForm($('#insertFormId'));
+                    var bootstrapValidator = $("#insertFormId").data('bootstrapValidator').validate();
+                    if (!bootstrapValidator.isValid()) {
+                        return false;
+                    } else {
+                        layer.alert('添加成功！', function () {
+                            layer.closeAll();
+                        });
+                    }
+                },
+                btn2: function () {
+                    layer.close();
+                }
+            });
+            $("#insertFormId #fileupload").wrap("<form id='_myUpload_' action='/filePlugin/uploadFile?dir=image'method='post' enctype='multipart/form-data'></form>");
+            $("#insertFormId #fileupload").change(function () {
+                var fileUploadUrl = $('#uploadFileUrl');
+                $("#_myUpload_").ajaxSubmit({
+                    dataType: 'json', //数据格式为json
+                    success: function (data) {
+                        if (data) {
+                            if (data.error == 0) {
+                                alert(data.url);
+                                fileUploadUrl.val(data.url);
+                                return;
+                            }
+                            alert(data.message)
+                            return;
+                        }
+                        alert("--上传失败---")
+                        return;
+                    },
+                    error: function (xhr) {
+                        alert(fileUploadUrl.html());
+                        alert(xhr.responseText);
+                    }
+                });
+            });
+        });
+        /*时间选择*/
+        $('.chooseDate').datepicker({
+            format: 'yyyy-mm-dd',
+            weekStart: 1,
+            autoclose: true,
+            todayBtn: 'linked',
+            language: 'cn'
+        });
+        //删除信息
+        $('.remove-msg').on('click', function () {
+            _this = $(this);
+            layer.open({
+                content: '您是否删除信息?',
+                btn: ['取消', '删除'],
+                yes: function () {
+                    layer.closeAll();
+                },
+                btn2: function () {
+                    _this.parent().parent().remove();
+                    layer.msg('删除成功！', {icon: 1});
+                }
+            });
+        });
+    });
+</script>
+
+</html>

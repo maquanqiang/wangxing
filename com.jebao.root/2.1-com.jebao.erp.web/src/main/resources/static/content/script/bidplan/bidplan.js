@@ -5,14 +5,14 @@
 $(function() {
     $.ajax({
         type: "POST",
-        url: "/bidplan/dplan/getloanerlist",
+        url: "/bidplan/dplan/getlist",
         dataType: 'json',
         contentType: 'application/json',
-        success: function (data) {
+        success: function (result) {
             new Vue({
                 el: '#orderlist_table',
                 data: {
-                    planlist: data
+                    planlist: result.data
                 }
             })
         }

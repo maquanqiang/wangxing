@@ -13,7 +13,9 @@ import com.jebao.jebaodb.entity.loanmanage.TbBidRiskData;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Date;
 import java.util.List;
@@ -29,22 +31,27 @@ public class BidPlanController {
     private ITbBidPlanServiceInf bidPlanService;
     @Autowired
     private ILoanerServiceInf loanerService;
-    @Autowired
-    private ITbInvestInfoServiceInf investInfoService;
 
-    @RequestMapping(value = "{pageName}")
-    public String reqpath(@PathVariable("pageName") String pageName) {
+    @RequestMapping("{pageName}")
+    public String reqPath(@PathVariable("pageName") String pageName) {
         return "bidplan/" + pageName;
+    }
+
+    @RequestMapping("plan/toaddplan")
+    public String toAddPlan(Long bpLoanerId, Model model) {
+        model.addAttribute("bpLoanerId", bpLoanerId);
+        return "bidplan/addplan";
     }
 
     /**
      * 建标
+     *
      * @param planForm
      * @return
      */
     @RequestMapping(value = "plan/addplan")
-    public JsonResult addPlan(@ModelAttribute("planform")BidPlanForm planForm) {
-        try{
+    public JsonResult addPlan(@ModelAttribute("planform") BidPlanForm planForm) {
+        try {
             TbBidPlan bidPlan = BidPlanForm.toEntity(planForm);
 
             TbLoaner loaner = loanerService.findLoanerById(planForm.getBpLoanerId());
@@ -62,14 +69,17 @@ public class BidPlanController {
             List<TbBidRiskData> tbBidRiskDatas = JSON.parseArray(planForm.getDataJson(), TbBidRiskData.class);
             bidPlanService.add(bidPlan, tbBidRiskDatas);
             return new JsonResultOk("标的创建成功");
-        }catch (Exception e){
+        } catch (Exception e) {
             return new JsonResultError("标的创建失败");
         }
 
     }
 
     @RequestMapping("dplan/getlist")
-    public @ResponseBody JsonResultList<TbBidPlan> getPlanListForPage(Integer page, Integer rows, TbBidPlan plan) {
+    public
+    @ResponseBody
+    JsonResultList<TbBidPlan> getPlanListForPage(@RequestParam(value = "page", defaultValue = "0") Integer page,
+                                                 @RequestParam(value = "rows", defaultValue = "10") Integer rows, TbBidPlan plan) {
 
         PageWhere pw = new PageWhere(page, rows);
         List<TbBidPlan> tbBidPlans = bidPlanService.selectByConditionForPage(plan, pw);
@@ -77,7 +87,8 @@ public class BidPlanController {
     }
 
     @RequestMapping(value = "dplan/getone")
-    public @ResponseBody
+    public
+    @ResponseBody
     JsonResultData<TbBidPlan> getBidPlanById(Long bpId) {
         TbBidPlan bidPlan = bidPlanService.selectByBpId(bpId);
         return new JsonResultData<TbBidPlan>(bidPlan);
@@ -85,16 +96,19 @@ public class BidPlanController {
 
     /**
      * 审核通过/拒绝
+     *
      * @param bpId
      * @return
      */
     @RequestMapping("dplan/reviewed")
-    public @ResponseBody JsonResult reviewedBidPlan(Long bpId, Integer status, String remark){
+    public
+    @ResponseBody
+    JsonResult reviewedBidPlan(Long bpId, Integer status, String remark) {
         TbBidPlan bidPlan = bidPlanService.selectByBpId(bpId);
         bidPlan.setBpStatus(status);
         bidPlan.setBpRemark(remark);
         Date date = new Date();
-        if(status==1){                  //审核被拒  创建时间即为申请时间
+        if (status == 1) {                  //审核被拒  创建时间即为申请时间
             bidPlan.setBpCreateTime(date);
         }
         bidPlanService.updateByBidIdSelective(bidPlan);
@@ -104,23 +118,26 @@ public class BidPlanController {
 
     /**
      * 获取借款人信息列表
+     *
      * @param lphone
      * @param page
      * @param rows
      * @return
      */
     @RequestMapping("dplan/loanerlist")
-    public @ResponseBody JsonResultList<TbLoaner> getLoanerList(String lphone, Integer page, Integer rows){
+    public
+    @ResponseBody
+    JsonResultList<TbLoaner> getLoanerList(String lphone, Integer page, Integer rows) {
         TbLoaner loaner = new TbLoaner();
         loaner.setlIsDel(1);
         loaner.setlPhone(lphone);
-        System.out.println(lphone+"---"+page+"---"+rows);
+        System.out.println(lphone + "---" + page + "---" + rows);
         List<TbLoaner> tbLoaners = loanerService.selectLoanerByParamsForPage(loaner, page, rows);
         return new JsonResultList<TbLoaner>(tbLoaners);
     }
 
     @RequestMapping("dplan/doloan")
-    public JsonResult doLoan(@ModelAttribute("planform")BidPlanForm planForm){
+    public JsonResult doLoan(@ModelAttribute("planform") BidPlanForm planForm) {
         //调用第三方放款
 
         //修改标的信息

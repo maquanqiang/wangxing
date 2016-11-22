@@ -92,6 +92,8 @@ public class TbBidPlan {
 
     private String bpDesc;
 
+    private Integer bpType;
+
     public Long getBpId() {
         return bpId;
     }
@@ -442,5 +444,13 @@ public class TbBidPlan {
 
     public void setBpDesc(String bpDesc) {
         this.bpDesc = bpDesc;
+    }
+
+    public Integer getBpType() {
+        return bpType;
+    }
+
+    public void setBpType(Integer bpType) {
+        this.bpType = bpType;
     }
 }

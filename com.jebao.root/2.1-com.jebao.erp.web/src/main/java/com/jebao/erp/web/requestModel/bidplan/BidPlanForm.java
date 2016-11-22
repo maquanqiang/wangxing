@@ -42,6 +42,7 @@ public class BidPlanForm {
         bidPlan.setBpRiskOpinion(planForm.getBpRiskOpinion());
         bidPlan.setBpRepayedPeriods(planForm.getBpRepayedPeriods());
         bidPlan.setBpLoanMoney(planForm.getBpLoanMoney());
+        bidPlan.setBpType(planForm.getBpType());
         return bidPlan;
     }
 
@@ -133,6 +134,8 @@ public class BidPlanForm {
     private Integer bpRepayedPeriods;
 
     private String bpDesc;
+
+    private Integer bpType;
 
 //    private Integer bpIsDel;
 
@@ -400,5 +403,13 @@ public class BidPlanForm {
 
     public void setBpLoanMoney(BigDecimal bpLoanMoney) {
         this.bpLoanMoney = bpLoanMoney;
+    }
+
+    public Integer getBpType() {
+        return bpType;
+    }
+
+    public void setBpType(Integer bpType) {
+        this.bpType = bpType;
     }
 }

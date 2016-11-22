@@ -45,6 +45,7 @@
         <result column="bp_risk_opinion" property="bpRiskOpinion" jdbcType="VARCHAR" />
         <result column="bp_repayed_periods" property="bpRepayedPeriods" jdbcType="INTEGER" />
         <result column="bp_is_del" property="bpIsDel" jdbcType="INTEGER" />
+        <result column="bp_type" property="bpType" jdbcType="INTEGER" />
     </resultMap>
     <resultMap id="ResultMapWithBLOBs" type="com.jebao.jebaodb.entity.loanmanage.TbBidPlan" extends="BaseResultMap" >
         <result column="bp_desc" property="bpDesc" jdbcType="LONGVARCHAR" />
@@ -57,7 +58,7 @@
         bp_loaner_type, bp_interest_pay_type, bp_open_time, bp_interest_st, bp_interest_et,
         bp_remark, bp_expect_loan_date, bp_expect_repay_date, bp_service_charge_rate, bp_late_rate,
         bp_borrow_desc, bp_funds_purpose, bp_repaying_source, bp_personal_credit, bp_mortgage_info,
-        bp_risk_opinion, bp_repayed_periods, bp_is_del
+        bp_risk_opinion, bp_repayed_periods, bp_is_del, bp_type
     </sql>
     <sql id="Blob_Column_List" >
         bp_desc
@@ -85,7 +86,7 @@
         bp_service_charge_rate, bp_late_rate, bp_borrow_desc,
         bp_funds_purpose, bp_repaying_source, bp_personal_credit,
         bp_mortgage_info, bp_risk_opinion, bp_repayed_periods,
-        bp_is_del, bp_desc)
+        bp_is_del, bp_desc, bp_type)
         values (#{bpId,jdbcType=BIGINT}, #{bpName,jdbcType=VARCHAR}, #{bpNumber,jdbcType=VARCHAR},
         #{bpPeriodsDisplay,jdbcType=INTEGER}, #{bpPeriods,jdbcType=INTEGER}, #{bpCycleType,jdbcType=INTEGER},
         #{bpCycleSize,jdbcType=INTEGER}, #{bpSurplusMoney,jdbcType=DECIMAL}, #{bpLoanMoney,jdbcType=DECIMAL},
@@ -100,7 +101,7 @@
         #{bpServiceChargeRate,jdbcType=DECIMAL}, #{bpLateRate,jdbcType=DECIMAL}, #{bpBorrowDesc,jdbcType=VARCHAR},
         #{bpFundsPurpose,jdbcType=VARCHAR}, #{bpRepayingSource,jdbcType=VARCHAR}, #{bpPersonalCredit,jdbcType=VARCHAR},
         #{bpMortgageInfo,jdbcType=VARCHAR}, #{bpRiskOpinion,jdbcType=VARCHAR}, #{bpRepayedPeriods,jdbcType=INTEGER},
-        #{bpIsDel,jdbcType=INTEGER}, #{bpDesc,jdbcType=LONGVARCHAR})
+        #{bpIsDel,jdbcType=INTEGER}, #{bpDesc,jdbcType=LONGVARCHAR}, #{bpType,jdbcType=INTEGER})
     </insert>
     <insert id="insertSelective" parameterType="com.jebao.jebaodb.entity.loanmanage.TbBidPlan" >
         insert into tb_bid_plan
@@ -237,6 +238,9 @@
             <if test="bpDesc != null" >
                 bp_desc,
             </if>
+            <if test="bpType != null" >
+                bp_type,
+            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides="," >
             <if test="bpId != null" >
@@ -370,6 +374,9 @@
             </if>
             <if test="bpDesc != null" >
                 #{bpDesc,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="bpType != null" >
+                #{bpType,jdbcType=INTEGER},
             </if>
         </trim>
     </insert>
@@ -506,6 +513,9 @@
             <if test="bpDesc != null" >
                 bp_desc = #{bpDesc,jdbcType=LONGVARCHAR},
             </if>
+            <if test="bpType != null" >
+                #{bpType,jdbcType=INTEGER},
+            </if>
         </set>
         where bp_id = #{bpId,jdbcType=BIGINT}
     </update>
@@ -553,7 +563,8 @@
         bp_risk_opinion = #{bpRiskOpinion,jdbcType=VARCHAR},
         bp_repayed_periods = #{bpRepayedPeriods,jdbcType=INTEGER},
         bp_is_del = #{bpIsDel,jdbcType=INTEGER},
-        bp_desc = #{bpDesc,jdbcType=LONGVARCHAR}
+        bp_desc = #{bpDesc,jdbcType=LONGVARCHAR},
+        bp_type = #{bpType,jdbcType=INTEGER}
         where bp_id = #{bpId,jdbcType=BIGINT}
     </update>
     <update id="updateByPrimaryKey" parameterType="com.jebao.jebaodb.entity.loanmanage.TbBidPlan" >
@@ -598,7 +609,8 @@
       bp_mortgage_info = #{bpMortgageInfo,jdbcType=VARCHAR},
       bp_risk_opinion = #{bpRiskOpinion,jdbcType=VARCHAR},
       bp_repayed_periods = #{bpRepayedPeriods,jdbcType=INTEGER},
-      bp_is_del = #{bpIsDel,jdbcType=INTEGER}
+      bp_is_del = #{bpIsDel,jdbcType=INTEGER},
+      bp_type = #{bpType,jdbcType=INTEGER}
     where bp_id = #{bpId,jdbcType=BIGINT} AND bp_update_time = #{bpUpdateTime,jdbcType=TIMESTAMP}
   </update>
 
@@ -729,6 +741,9 @@
         </if>
         <if test="record.bpIsDel != null" >
           AND bp_is_del = #{record.bpIsDel,jdbcType=INTEGER}
+        </if>
+        <if test="record.bpType != null" >
+            AND bp_type = #{record.bpType,jdbcType=INTEGER}
         </if>
     </sql>
     <select id="selectForPage" resultMap="BaseResultMap">
