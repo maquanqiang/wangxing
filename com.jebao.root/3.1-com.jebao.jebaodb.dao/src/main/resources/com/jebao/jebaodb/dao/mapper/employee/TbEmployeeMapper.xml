@@ -196,12 +196,12 @@
                      resultMap="com.jebao.jebaodb.dao.mapper.employee.TbDepartmentMapper.BaseResultMap" />
     </resultMap>
 
-    <select id="selectEmployeeDetailsInfo" resultMap="EmployeeResultMap">
+    <select id="selectEmployeeDetailsInfo" resultMap="EmployeeResultMap" parameterType="com.jebao.jebaodb.entity.search.EmployeeModel">
         SELECT * FROM v_employee
         <where>
             <include refid="dynamicJoinWehre"/>
         </where>
-        order by emp_id DESC LIMIT #{pageWhere.begin},#{pageWhere.pageSize}
+        order by emp_id DESC LIMIT #{begin},#{pageSize}
     </select>
     <sql id="dynamicWehre">
         <if test="empCode != null">
@@ -233,41 +233,22 @@
         </if>
     </sql>
     <sql id="dynamicJoinWehre">
-        <if test="model != null">
-            <if test="model.employee != null">
-                <if test="model.employee.empCode != null">
-                   AND emp_code = #{model.employee.empCode,jdbcType=VARCHAR}
-                </if>
-                <if test="model.employee.empName != null">
-                    AND emp_name = #{model.employee.empName,jdbcType=VARCHAR}
-                </if>
-                <if test="model.employee.empMobilephone != null">
-                    AND  emp_mobilephone = #{model.employee.empMobilephone,jdbcType=VARCHAR}
-                </if>
-                <if test="model.employee.empCardNo != null">
-                    AND  emp_card_no = #{model.employee.empCardNo,jdbcType=VARCHAR}
-                </if>
-                <if test="model.employee.empSex != null">
-                    AND  emp_sex = #{model.employee.empSex,jdbcType=TINYINT}
-                </if>
-                <if test="model.employee.empStatus != null">
-                    AND  emp_status = #{model.employee.empStatus,jdbcType=INTEGER}
-                </if>
-            </if>
-
-            <if test="model.department != null">
-                <if test="model.department.depName != null">
-                    AND  dep_name like #{model.department.depName,jdbcType=VARCHAR}
-                </if>
-            </if>
-
-            <if test="model.rank != null">
-                <if test="model.rank.rankName != null">
-                    AND  rank_name like #{model.rank.rankName,jdbcType=VARCHAR}
-                </if>
-            </if>
-
+        <if test="empCode != null and empCode != ''">
+            AND emp_code = #{empCode,jdbcType=VARCHAR}
         </if>
+        <if test="name != null and name != ''">
+            AND emp_name = #{name,jdbcType=VARCHAR}
+        </if>
+        <if test="mobile != null and mobile != ''">
+            AND  emp_mobilephone = #{mobile,jdbcType=VARCHAR}
+        </if>
+        <if test="teamId != null">
+            AND  dep_id = #{teamId,jdbcType=INTEGER}
+        </if>
+        <if test="rankId != null">
+            AND  rank_id = #{rankId,jdbcType=INTEGER}
+        </if>
+
     </sql>
 
 

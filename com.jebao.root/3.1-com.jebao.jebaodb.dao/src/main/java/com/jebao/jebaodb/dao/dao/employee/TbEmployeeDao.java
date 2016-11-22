@@ -3,7 +3,7 @@ package com.jebao.jebaodb.dao.dao.employee;
 import com.jebao.jebaodb.dao.mapper.employee.TbEmployeeMapper;
 import com.jebao.jebaodb.entity.employee.EmployeeInfo;
 import com.jebao.jebaodb.entity.employee.TbEmployee;
-import com.jebao.jebaodb.entity.extEntity.PageWhere;
+import com.jebao.jebaodb.entity.search.EmployeeModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -24,12 +24,8 @@ public class TbEmployeeDao {
     /**
      * 获取员工详细信息
      */
-    public List<EmployeeInfo> selectEmployeeDetailsInfo(EmployeeInfo model,PageWhere pageWhere){
-
-        if (pageWhere==null){
-            pageWhere = new PageWhere(0,10);
-        }
-        List<EmployeeInfo> list = mapper.selectEmployeeDetailsInfo(model,pageWhere);
+    public List<EmployeeInfo> selectEmployeeDetailsInfo(EmployeeModel model){
+        List<EmployeeInfo> list = mapper.selectEmployeeDetailsInfo(model);
         return list;
     }
 
