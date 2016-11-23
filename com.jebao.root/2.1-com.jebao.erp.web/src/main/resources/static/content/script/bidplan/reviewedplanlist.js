@@ -67,9 +67,7 @@ var model = {
     //查询条件
     search: {},
     //列表
-    planlist: [],
-    //销售级别
-    ranks: []
+    planlist: []
 
 };
 
@@ -83,7 +81,8 @@ var vm = new Vue({
     },
     //初始化远程数据
     created:function(){
-        $.get("/bidplan/dplan/getlist",function(response){
+        var model = $("#order_search_form").serializeObject();
+        $.get("/bidplan/dplan/getlist",model,function(response){
             if (response.success_is_ok){
                 vm.planlist=response.data;
             }
@@ -99,9 +98,6 @@ var vm = new Vue({
                     vm.planlist=response.data;
                 }
             })
-        },
-        remove:function(event, id){
-
         }
     }
 });

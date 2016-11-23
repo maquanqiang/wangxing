@@ -6,6 +6,7 @@ import com.jebao.erp.service.inf.loanmanage.ITbBidPlanServiceInf;
 import com.jebao.erp.service.inf.loanmanage.ITbInvestInfoServiceInf;
 import com.jebao.erp.web.requestModel.bidplan.BidPlanForm;
 import com.jebao.erp.web.responseModel.base.*;
+import com.jebao.erp.web.responseModel.bidplan.BidPlanVM;
 import com.jebao.jebaodb.entity.extEntity.PageWhere;
 import com.jebao.jebaodb.entity.loaner.TbLoaner;
 import com.jebao.jebaodb.entity.loanmanage.TbBidPlan;
@@ -17,6 +18,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -78,20 +80,25 @@ public class BidPlanController {
     @RequestMapping("dplan/getlist")
     public
     @ResponseBody
-    JsonResultList<TbBidPlan> getPlanListForPage(@RequestParam(value = "page", defaultValue = "0") Integer page,
-                                                 @RequestParam(value = "rows", defaultValue = "10") Integer rows, TbBidPlan plan) {
-
+    JsonResult getPlanListForPage(@RequestParam(value = "page", defaultValue = "0") Integer page,
+                                  @RequestParam(value = "rows", defaultValue = "10") Integer rows, BidPlanForm planForm) {
+        TbBidPlan plan = BidPlanForm.toEntity(planForm);
         PageWhere pw = new PageWhere(page, rows);
         List<TbBidPlan> tbBidPlans = bidPlanService.selectByConditionForPage(plan, pw);
-        return new JsonResultList<TbBidPlan>(tbBidPlans);
+        System.out.println(tbBidPlans.size());
+        List<BidPlanVM> viewModelList = new ArrayList<BidPlanVM>();
+        tbBidPlans.forEach(o -> viewModelList.add(new BidPlanVM(o)));
+        return new JsonResultList<>(viewModelList);
     }
 
     @RequestMapping(value = "dplan/getone")
     public
     @ResponseBody
-    JsonResultData<TbBidPlan> getBidPlanById(Long bpId) {
+    JsonResult getBidPlanById(Long bpId) {
+        System.out.println(bpId);
         TbBidPlan bidPlan = bidPlanService.selectByBpId(bpId);
-        return new JsonResultData<TbBidPlan>(bidPlan);
+        BidPlanVM viewModel = new BidPlanVM(bidPlan);
+        return new JsonResultData<>(viewModel);
     }
 
     /**
@@ -116,25 +123,17 @@ public class BidPlanController {
         return new JsonResultOk("标的创建成功");
     }
 
-    /**
-     * 获取借款人信息列表
-     *
-     * @param lphone
-     * @param page
-     * @param rows
-     * @return
-     */
-    @RequestMapping("dplan/loanerlist")
-    public
-    @ResponseBody
-    JsonResultList<TbLoaner> getLoanerList(String lphone, Integer page, Integer rows) {
-        TbLoaner loaner = new TbLoaner();
-        loaner.setlIsDel(1);
-        loaner.setlPhone(lphone);
-        System.out.println(lphone + "---" + page + "---" + rows);
-        List<TbLoaner> tbLoaners = loanerService.selectLoanerByParamsForPage(loaner, page, rows);
-        return new JsonResultList<TbLoaner>(tbLoaners);
-    }
+//    @RequestMapping("dplan/loanerlist")
+//    public
+//    @ResponseBody
+//    JsonResult getLoanerList(String lphone, Integer page, Integer rows) {
+//        TbLoaner loaner = new TbLoaner();
+//        loaner.setlIsDel(1);
+//        loaner.setlPhone(lphone);
+//        List<TbLoaner> tbLoaners = loanerService.selectLoanerByParamsForPage(loaner, page, rows);
+//        List<BidPlanVM> viewModelList = new ArrayList<BidPlanVM>();
+//        return new JsonResultList<>(tbLoaners);
+//    }
 
     @RequestMapping("dplan/doloan")
     public JsonResult doLoan(@ModelAttribute("planform") BidPlanForm planForm) {
@@ -147,5 +146,15 @@ public class BidPlanController {
 
 
         return new JsonResultOk("放款成功");
+    }
+
+    @RequestMapping("dplan/remove")
+    public String remove(Long bpId) {
+        TbBidPlan plan = bidPlanService.selectByBpId(bpId);
+        plan.setBpId(bpId);
+        plan.setBpIsDel(2);
+        int num = bidPlanService.updateByBidIdSelective(plan);
+        return "redirect:/bidplan/notpasslist";
+
     }
 }

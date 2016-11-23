@@ -395,7 +395,7 @@ public class TbBidPlan {
     }
 
     public void setBpRepayingSource(String bpRepayingSource) {
-        this.bpRepayingSource = bpRepayingSource == null ? null : bpRepayingSource.trim();
+        this.bpRepayingSource = bpRepayingSource;
     }
 
     public String getBpPersonalCredit() {
@@ -403,7 +403,7 @@ public class TbBidPlan {
     }
 
     public void setBpPersonalCredit(String bpPersonalCredit) {
-        this.bpPersonalCredit = bpPersonalCredit == null ? null : bpPersonalCredit.trim();
+        this.bpPersonalCredit = bpPersonalCredit;
     }
 
     public String getBpMortgageInfo() {
@@ -411,7 +411,7 @@ public class TbBidPlan {
     }
 
     public void setBpMortgageInfo(String bpMortgageInfo) {
-        this.bpMortgageInfo = bpMortgageInfo == null ? null : bpMortgageInfo.trim();
+        this.bpMortgageInfo = bpMortgageInfo;
     }
 
     public String getBpRiskOpinion() {
@@ -419,7 +419,7 @@ public class TbBidPlan {
     }
 
     public void setBpRiskOpinion(String bpRiskOpinion) {
-        this.bpRiskOpinion = bpRiskOpinion == null ? null : bpRiskOpinion.trim();
+        this.bpRiskOpinion = bpRiskOpinion;
     }
 
     public Integer getBpRepayedPeriods() {
@@ -453,4 +453,6 @@ public class TbBidPlan {
     public void setBpType(Integer bpType) {
         this.bpType = bpType;
     }
+
+
 }

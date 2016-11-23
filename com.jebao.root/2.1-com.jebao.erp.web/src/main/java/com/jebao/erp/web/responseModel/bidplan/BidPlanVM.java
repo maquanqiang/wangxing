@@ -1,55 +1,65 @@
-package com.jebao.erp.web.requestModel.bidplan;
+package com.jebao.erp.web.responseModel.bidplan;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.jebao.erp.web.responseModel.ViewModel;
+import com.jebao.jebaodb.entity.employee.TbRank;
 import com.jebao.jebaodb.entity.loanmanage.TbBidPlan;
 
 import java.math.BigDecimal;
 import java.util.Date;
 
 /**
- * Created by Lee on 2016/11/17.
+ * Created by Jack on 2016/11/21.
  */
-public class BidPlanForm {
+public class BidPlanVM extends ViewModel {
+    public BidPlanVM(TbBidPlan entity) {
+        this.bpId = entity.getBpId();
+        this.bpName = entity.getBpName();
+        this.bpNumber = entity.getBpNumber();
+        this.bpPeriodsDisplay = entity.getBpPeriodsDisplay();
+        this.bpPeriods = entity.getBpPeriods();
+        this.bpCycleType = entity.getBpCycleType();
+        this.bpCycleSize = entity.getBpCycleSize();
+        this.bpSurplusMoney = entity.getBpSurplusMoney();
+        this.bpLoanMoney = entity.getBpLoanMoney();
+        this.bpBidMoney = entity.getBpBidMoney();
+        this.bpRate = entity.getBpRate();
+        this.bpStartTime = entity.getBpStartTime();
+        this.bpEndTime = entity.getBpEndTime();
+        this.bpStartMoney = entity.getBpStartMoney();
+        this.bpRiseMoney = entity.getBpRiseMoney();
+        this.bpTopMoney = entity.getBpTopMoney();
+        this.bpFullTime = entity.getBpFullTime();
+        this.bpStatus = entity.getBpStatus();
+        this.bpCreateTime = entity.getBpCreateTime();
+        this.bpUpdateTime = entity.getBpUpdateTime();
+        this.bpLoanTime = entity.getBpLoanTime();
+        this.bpRepayTime = entity.getBpRepayTime();
+        this.bpTrueName = entity.getBpTrueName();
+        this.bpLoanerType = entity.getBpLoanerType();
+        this.bpInterestPayType = entity.getBpInterestPayType();
+        this.bpOpenTime = entity.getBpOpenTime();
+        this.bpInterestSt = entity.getBpInterestSt();
+        this.bpInterestEt = entity.getBpInterestEt();
+        this.bpRemark = entity.getBpRemark();
+        this.bpExpectLoanDate = entity.getBpExpectLoanDate();
+        this.bpExpectRepayDate = entity.getBpExpectRepayDate();
+        this.bpServiceChargeRate = entity.getBpServiceChargeRate();
+        this.bpLateRate = entity.getBpLateRate();
+        this.bpBorrowDesc = entity.getBpBorrowDesc();
+        this.bpFundsPurpose = entity.getBpFundsPurpose();
+        this.bpRepayingSource = entity.getBpRepayingSource();
+        this.bpPersonalCredit = entity.getBpPersonalCredit();
+        this.bpMortgageInfo = entity.getBpMortgageInfo();
+        this.bpRiskOpinion = entity.getBpRiskOpinion();
+        this.bpRepayedPeriods = entity.getBpRepayedPeriods();
+        this.bpDesc = entity.getBpDesc();
+        this.bpType = entity.getBpType();
 
-    public static TbBidPlan toEntity(BidPlanForm planForm) {
-
-        TbBidPlan bidPlan = new TbBidPlan();
-        bidPlan.setBpName(planForm.getBpName());
-        bidPlan.setBpNumber(planForm.getBpNumber());
-        bidPlan.setBpPeriodsDisplay(planForm.getBpPeriodsDisplay());
-        bidPlan.setBpPeriods(planForm.getBpPeriods());
-        bidPlan.setBpCycleType(planForm.getBpCycleType());
-        bidPlan.setBpCycleSize(planForm.getBpCycleSize());
-        bidPlan.setBpBidMoney(planForm.getBpBidMoney());
-        bidPlan.setBpRate(planForm.getBpRate());
-        bidPlan.setBpStartTime(planForm.getBpStartTime());
-        bidPlan.setBpEndTime(planForm.getBpEndTime());
-        bidPlan.setBpStartMoney(planForm.getBpStartMoney());
-        bidPlan.setBpRiseMoney(planForm.getBpRiseMoney());
-        bidPlan.setBpTopMoney(planForm.getBpTopMoney());
-        bidPlan.setBpLoanerId(planForm.getBpLoanerId());
-        bidPlan.setBpLoanerType(planForm.getBpLoanerType());
-        bidPlan.setBpInterestPayType(planForm.getBpInterestPayType());
-        bidPlan.setBpOpenTime(planForm.getBpOpenTime());
-        bidPlan.setBpExpectLoanDate(planForm.getBpExpectLoanDate());
-        bidPlan.setBpExpectRepayDate(planForm.getBpExpectRepayDate());
-        bidPlan.setBpServiceChargeRate(planForm.getBpServiceChargeRate());
-        bidPlan.setBpLateRate(planForm.getBpLateRate());
-        bidPlan.setBpBorrowDesc(planForm.getBpBorrowDesc());
-        bidPlan.setBpFundsPurpose(planForm.getBpFundsPurpose());
-        bidPlan.setBpRepayingSource(planForm.getBpRepayingSource());
-        bidPlan.setBpPersonalCredit(planForm.getBpPersonalCredit());
-        bidPlan.setBpMortgageInfo(planForm.getBpMortgageInfo());
-        bidPlan.setBpRiskOpinion(planForm.getBpRiskOpinion());
-        bidPlan.setBpRepayedPeriods(planForm.getBpRepayedPeriods());
-        bidPlan.setBpLoanMoney(planForm.getBpLoanMoney());
-        bidPlan.setBpType(planForm.getBpType());
-        bidPlan.setBpStatus(planForm.getBpStatus());
-        return bidPlan;
     }
 
-//    private Long bpId;
+    private Long bpId;
 
-    private String dataJson;    //风控信息json数组
     private String bpName;
 
     private String bpNumber;
@@ -62,16 +72,16 @@ public class BidPlanForm {
 
     private Integer bpCycleSize;
 
-//    private BigDecimal bpSurplusMoney;
+    private BigDecimal bpSurplusMoney;
 
-    private BigDecimal bpLoanMoney;             //实际放款金额
+    private BigDecimal bpLoanMoney;
 
     private BigDecimal bpBidMoney;
 
     private BigDecimal bpRate;
-
+    @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
     private Date bpStartTime;
-
+    @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
     private Date bpEndTime;
 
     private BigDecimal bpStartMoney;
@@ -79,46 +89,44 @@ public class BidPlanForm {
     private BigDecimal bpRiseMoney;
 
     private BigDecimal bpTopMoney;
-
-//    private Date bpFullTime;
+    @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
+    private Date bpFullTime;
 
     private Integer bpStatus;
-
-//    private Date bpCreateTime;
-
-//    private Date bpUpdateTime;
-
-//    private Date bpLoanTime;
-
-//    private Date bpRepayTime;
+    @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
+    private Date bpCreateTime;
+    @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
+    private Date bpUpdateTime;
+    @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
+    private Date bpLoanTime;
+    @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
+    private Date bpRepayTime;
 
     private Long bpLoanerId;
 
-//    private String bpTrueName;
+    private String bpTrueName;
 
-//    private Long bpLoginId;
+    private Long bpLoginId;
 
     private Integer bpLoanerType;
 
     private Integer bpInterestPayType;
 
     private Integer bpOpenTime;
-
-//    private Date bpInterestSt;
-
-//    private Date bpInterestEt;
+    @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
+    private Date bpInterestSt;
+    @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
+    private Date bpInterestEt;
 
     private String bpRemark;
-
+    @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
     private Date bpExpectLoanDate;
-
+    @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
     private Date bpExpectRepayDate;
 
     private BigDecimal bpServiceChargeRate;
 
     private BigDecimal bpLateRate;
-
-    private Long bpRcptId;
 
     private String bpBorrowDesc;
 
@@ -138,8 +146,22 @@ public class BidPlanForm {
 
     private Integer bpType;
 
-//    private Integer bpIsDel;
 
+    public String getBpDesc() {
+        return bpDesc;
+    }
+
+    public void setBpDesc(String bpDesc) {
+        this.bpDesc = bpDesc;
+    }
+
+    public Long getBpId() {
+        return bpId;
+    }
+
+    public void setBpId(Long bpId) {
+        this.bpId = bpId;
+    }
 
     public String getBpName() {
         return bpName;
@@ -189,6 +211,21 @@ public class BidPlanForm {
         this.bpCycleSize = bpCycleSize;
     }
 
+    public BigDecimal getBpSurplusMoney() {
+        return bpSurplusMoney;
+    }
+
+    public void setBpSurplusMoney(BigDecimal bpSurplusMoney) {
+        this.bpSurplusMoney = bpSurplusMoney;
+    }
+
+    public BigDecimal getBpLoanMoney() {
+        return bpLoanMoney;
+    }
+
+    public void setBpLoanMoney(BigDecimal bpLoanMoney) {
+        this.bpLoanMoney = bpLoanMoney;
+    }
 
     public BigDecimal getBpBidMoney() {
         return bpBidMoney;
@@ -246,12 +283,76 @@ public class BidPlanForm {
         this.bpTopMoney = bpTopMoney;
     }
 
+    public Date getBpFullTime() {
+        return bpFullTime;
+    }
+
+    public void setBpFullTime(Date bpFullTime) {
+        this.bpFullTime = bpFullTime;
+    }
+
+    public Integer getBpStatus() {
+        return bpStatus;
+    }
+
+    public void setBpStatus(Integer bpStatus) {
+        this.bpStatus = bpStatus;
+    }
+
+    public Date getBpCreateTime() {
+        return bpCreateTime;
+    }
+
+    public void setBpCreateTime(Date bpCreateTime) {
+        this.bpCreateTime = bpCreateTime;
+    }
+
+    public Date getBpUpdateTime() {
+        return bpUpdateTime;
+    }
+
+    public void setBpUpdateTime(Date bpUpdateTime) {
+        this.bpUpdateTime = bpUpdateTime;
+    }
+
+    public Date getBpLoanTime() {
+        return bpLoanTime;
+    }
+
+    public void setBpLoanTime(Date bpLoanTime) {
+        this.bpLoanTime = bpLoanTime;
+    }
+
+    public Date getBpRepayTime() {
+        return bpRepayTime;
+    }
+
+    public void setBpRepayTime(Date bpRepayTime) {
+        this.bpRepayTime = bpRepayTime;
+    }
+
     public Long getBpLoanerId() {
         return bpLoanerId;
     }
 
     public void setBpLoanerId(Long bpLoanerId) {
         this.bpLoanerId = bpLoanerId;
+    }
+
+    public String getBpTrueName() {
+        return bpTrueName;
+    }
+
+    public void setBpTrueName(String bpTrueName) {
+        this.bpTrueName = bpTrueName;
+    }
+
+    public Long getBpLoginId() {
+        return bpLoginId;
+    }
+
+    public void setBpLoginId(Long bpLoginId) {
+        this.bpLoginId = bpLoginId;
     }
 
     public Integer getBpLoanerType() {
@@ -276,6 +377,22 @@ public class BidPlanForm {
 
     public void setBpOpenTime(Integer bpOpenTime) {
         this.bpOpenTime = bpOpenTime;
+    }
+
+    public Date getBpInterestSt() {
+        return bpInterestSt;
+    }
+
+    public void setBpInterestSt(Date bpInterestSt) {
+        this.bpInterestSt = bpInterestSt;
+    }
+
+    public Date getBpInterestEt() {
+        return bpInterestEt;
+    }
+
+    public void setBpInterestEt(Date bpInterestEt) {
+        this.bpInterestEt = bpInterestEt;
     }
 
     public String getBpRemark() {
@@ -316,14 +433,6 @@ public class BidPlanForm {
 
     public void setBpLateRate(BigDecimal bpLateRate) {
         this.bpLateRate = bpLateRate;
-    }
-
-    public Long getBpRcptId() {
-        return bpRcptId;
-    }
-
-    public void setBpRcptId(Long bpRcptId) {
-        this.bpRcptId = bpRcptId;
     }
 
     public String getBpBorrowDesc() {
@@ -382,43 +491,11 @@ public class BidPlanForm {
         this.bpRepayedPeriods = bpRepayedPeriods;
     }
 
-    public String getDataJson() {
-        return dataJson;
-    }
-
-    public void setDataJson(String dataJson) {
-        this.dataJson = dataJson;
-    }
-
-    public String getBpDesc() {
-        return bpDesc;
-    }
-
-    public void setBpDesc(String bpDesc) {
-        this.bpDesc = bpDesc;
-    }
-
-    public BigDecimal getBpLoanMoney() {
-        return bpLoanMoney;
-    }
-
-    public void setBpLoanMoney(BigDecimal bpLoanMoney) {
-        this.bpLoanMoney = bpLoanMoney;
-    }
-
     public Integer getBpType() {
         return bpType;
     }
 
     public void setBpType(Integer bpType) {
         this.bpType = bpType;
-    }
-
-    public Integer getBpStatus() {
-        return bpStatus;
-    }
-
-    public void setBpStatus(Integer bpStatus) {
-        this.bpStatus = bpStatus;
     }
 }

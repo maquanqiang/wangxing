@@ -83,11 +83,27 @@ var vm = new Vue({
     },
     //初始化远程数据
     created:function(){
-        $.get("/bidplan/dplan/getlist",function(response){
+        var model = $("#order_search_form").serializeObject();
+        $.get("/bidplan/dplan/getlist",model,function(response){
             if (response.success_is_ok){
                 vm.planlist=response.data;
             }
         });
+
+        /*$.get('/bidplan/dplan/getlist', model, function(response){ //从第1页开始请求。返回的json格式可以任意定义
+            laypage({
+                cont: $('#pageNum'), //容器。值支持id名、原生dom对象，jquery对象。【如该容器为】：<div id="page1"></div>
+                pages: response.pages, //通过后台拿到的总页数
+                curr: 1, //初始化当前页
+                jump: function(e){ //触发分页后的回调
+                    $.get('/bidplan/dplan/getlist', {curr: e.curr}, function(response){
+                        e.pages = e.last = response.pages; //重新获取总页数，一般不用写
+                        //渲染
+                        vm.planlist=response.data;
+                    });
+                }
+            });
+        });*/
     },
     //方法，可用于绑定事件或直接调用
     methods: {
@@ -99,11 +115,24 @@ var vm = new Vue({
                     vm.planlist=response.data;
                 }
             })
-        },
-        remove:function(event, id){
-
         }
     }
+});
+
+$("#orderlist_table").on("click",'.cmd-delete',function(){
+    var that = $(this); //解决方案
+    var dataVal=that.attr('data-val');//自定义属性
+    layer.open({
+        content:'您是否删除信息?',
+        btn: ['取消', '删除'],
+        btn1: function(){
+            layer.closeAll();
+        },
+        btn2: function(){
+            window.location.href = "/bidplan/dplan/remove?bpId="+dataVal
+            layer.msg('删除成功!');
+        }
+    });
 });
 
 

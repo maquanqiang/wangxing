@@ -18,33 +18,33 @@
             <div class="col-xs-12">
                 <div class="box box-primary">
                     <form action="" class="form-inline" id="order_search_form" method="post" novalidate="novalidate">
+                        <input name="bpStatus" value="7" type="hidden">
                         <div class="box-body">
                             <div class="form-group">
                                 <div class="input-group margin">
                                     <div class="input-group-addon">项目编号</div>
-                                    <input type="text" class="form-control" placeholder="" name="">
+                                    <input type="text" class="form-control" placeholder="" name="bpNumber">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="input-group margin">
                                     <div class="input-group-addon">标的名称</div>
-                                    <input type="text" class="form-control" placeholder="" name="">
+                                    <input type="text" class="form-control" placeholder="" name="bpName">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="input-group margin">
                                     <div class="input-group-addon">借款人</div>
-                                    <input type="text" class="form-control" placeholder="" name="">
+                                    <input type="text" class="form-control" placeholder="" name="bpTrueName">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="input-group margin">
                                     <div class="input-group-addon">标的状态</div>
-                                    <select  class="select2  select2-hidden-accessible" style="width: 120px;">
-                                        <option value="0">请选择</option>
-                                        <option value="1">还款中</option>
-                                        <option value="2">已还款</option>
-                                        <option value="3">已逾期</option>
+                                    <select name="bpStatus"  class="select2  select2-hidden-accessible" style="width: 120px;">
+                                        <option value="">请选择</option>
+                                        <option value="7">还款中</option>
+                                        <option value="10">已还款</option>
                                     </select>
                                 </div>
                             </div>
@@ -70,7 +70,7 @@
                             </div>
                             <div class="form-group ">
                                 <div class="input-group  margin">
-                                    <a href="javascript:;" class="btn btn-primary " role="button" target="_blank">搜索</a>
+                                    <div class="btn btn-primary " role="button" target="_self" @click="search">搜索</div>
                                 </div>
                             </div>
                             <div class="form-group ">
@@ -101,10 +101,10 @@
                                             <th width="8%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">募集总额</th>
                                             <th width="5%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">利率</th>
                                             <th width="5%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">期限</th>
-                                            <th width="9%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">募集开始时间</th>
-                                            <th width="9%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">募集结束时间</th>
+                                            <!--<th width="9%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">募集开始时间</th>-->
+                                            <!--<th width="9%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">募集结束时间</th>-->
                                             <th width="9%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">满标/计息</th>
-                                            <th width="7%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">到期时间</th>
+                                            <th width="9%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">到期时间</th>
                                             <th width="6%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">状态</th>
                                             <th width="9%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">操作</th>
                                         </tr>
@@ -113,19 +113,27 @@
                                         <tr role="row" class="odd" v-for="plan in planlist" track-by="$index">
                                             <td>{{plan.bpNumber}}</td>
                                             <td>{{plan.bpName}}</td>
-                                            <td>{{plan.bpType}}</td>
+                                            <td>
+                                                <div v-if="plan.bpType == 1">普通标</div>
+                                                <div v-if="plan.bpType == 2">专享标</div>
+                                            </td>
                                             <td>{{plan.bpTrueName}}</td>
                                             <td>{{plan.bpLoanMoney}}</td>
                                             <td>{{plan.bpBidMoney}}</td>
                                             <td>{{plan.bpRate}}%</td>
-                                            <td>{{plan.bpPeriods}}{{plan.bpCycleType}}</td>
-                                            <td>{{plan.bpStartTime}}</td>
-                                            <td>{{plan.bpEndTime}}</td>
+                                            <td>
+                                                <div v-if="plan.bpCycleType == 1">{{plan.bpPeriods}}日</div>
+                                                <div v-if="plan.bpCycleType == 2">{{plan.bpPeriods}}月</div>
+                                                <div v-if="plan.bpCycleType == 3">{{plan.bpPeriods}}季</div>
+                                                <div v-if="plan.bpCycleType == 4">{{plan.bpPeriods}}年</div>
+                                            </td>
+                                            <!--<td>{{plan.bpStartTime}}</td>-->
+                                            <!--<td>{{plan.bpEndTime}}</td>-->
                                             <td>{{plan.bpFullTime}}</td>
                                             <td>{{plan.bpRepayTime}}</td>
                                             <td>{{plan.bpStatus}}</td>
                                             <td>
-                                                <a href="开标被拒-修改.html" class="btn btn-default btn-xs" role="button" target="_blank" id="modifyInformation">查看详情</a>
+                                                <a :href="/bidplan/dplan/getone?bpId=plan.bpId" class="btn btn-default btn-xs" role="button" target="_blank" id="modifyInformation">查看详情</a>
                                             </td>
                                         </tr>
                                         </tbody>
@@ -147,12 +155,85 @@
 <!-- /.content-wrapper -->
 #parse("common/footer.html")
 </body>
-<script src="/content/js/lib/vue.js"></script>
-<script src="/content/js/lib/common.js"></script>
-<script src="/content/script/bidplan/bidplan.js"></script>
+<script src=$UrlHelperTool.href("/content/script/bidplan/alreadyloanlist.js")></script>
+<!--pagination-->
 <script>
-    $(function () {
-        $(".select2").select2();
-    })
+    $(function(){
+        //添加个人
+        $('#add-people').on('click',function(){
+            var tempObj= $('#addInforModal').clone();
+            tempObj.find('form').attr('id','insertFormId');
+            var tempHtml=tempObj.html();
+            layer.open({
+                title:'添加业务员信息',
+                content:tempHtml,
+                btn: ['添加', '重置'],
+                area:['500px'],
+                btn1: function(){
+                    initValidateForm($('#insertFormId'));
+                    var bootstrapValidator = $("#insertFormId").data('bootstrapValidator').validate();
+                    if(!bootstrapValidator.isValid()){
+                        return false;
+                    }else{
+                        layer.alert('添加成功！',function(){
+                            layer.closeAll();
+                        });
+                    }
+                },
+                btn2: function(){
+                    $("#insertFormId input").val("");
+                    return false;
+                }
+            });
+        });
+        //删除信息
+        $('.remove-msg').on('click',function(){
+            _this=$(this);
+            layer.open({
+                content:'您是否删除信息?',
+                btn: ['取消', '删除'],
+                yes: function(){
+                    layer.closeAll();
+                },
+                btn2: function(){
+                    _this.parent().parent().remove();
+                    layer.msg('删除成功！', {icon: 1});
+                }
+            });
+        });
+        //修改信息
+        $('#modifyInformation').on('click',function(){
+            var tempObj= $('#modInforInfModal').clone();
+            tempObj.find('form').attr('id','ModifyFormId');
+            var tempHtml=tempObj.html();
+            layer.open({
+                title:'修改业务员信息',
+                content:tempHtml,
+                area:['500px'],
+                btn: ['修改', '重置'],
+                btn1: function(){
+                    initValidateForm($('#ModifyFormId'));
+                    var bootstrapValidator = $("#ModifyFormId").data('bootstrapValidator').validate();
+                    if(!bootstrapValidator.isValid()){
+                        return false;
+                    }else{
+                        layer.alert('修改成功！',function(){
+                            layer.closeAll();
+                        });
+                    }
+                },
+                btn2: function(){
+                    $("#ModifyFormId input").val("");
+                    return false;
+                }
+            });
+        });
+        //调用分页
+        laypage({
+            cont:$('#pageNum'), //容器。值支持id名、原生dom对象，jquery对象,
+            pages: 100, //总页数
+            groups: 7 //连续显示分页数
+        });
+    });
 </script>
 </html>

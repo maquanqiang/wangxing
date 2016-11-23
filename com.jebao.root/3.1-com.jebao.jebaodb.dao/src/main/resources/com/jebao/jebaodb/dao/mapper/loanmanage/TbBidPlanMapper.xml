@@ -611,12 +611,12 @@
       bp_repayed_periods = #{bpRepayedPeriods,jdbcType=INTEGER},
       bp_is_del = #{bpIsDel,jdbcType=INTEGER},
       bp_type = #{bpType,jdbcType=INTEGER}
-    where bp_id = #{bpId,jdbcType=BIGINT} AND bp_update_time = #{bpUpdateTime,jdbcType=TIMESTAMP}
+    where bp_id = #{bpId,jdbcType=BIGINT}
   </update>
 
     <!--==================================================华丽分割线==================================================-->
     <sql id="selectByCondition_Where_Clause">
-        <if test="record.bpName != null" >
+        <if test="record.bpName != null and record.bpName != ''" >
           AND bp_name = #{record.bpName,jdbcType=VARCHAR}
         </if>
         <if test="record.bpNumber != null" >
@@ -739,12 +739,13 @@
         <if test="record.bpRepayedPeriods != null" >
           AND bp_repayed_periods = #{record.bpRepayedPeriods,jdbcType=INTEGER}
         </if>
-        <if test="record.bpIsDel != null" >
-          AND bp_is_del = #{record.bpIsDel,jdbcType=INTEGER}
-        </if>
+        <!--<if test="record.bpIsDel != null" >-->
+          <!--AND bp_is_del = #{record.bpIsDel,jdbcType=INTEGER}-->
+        <!--</if>-->
         <if test="record.bpType != null" >
             AND bp_type = #{record.bpType,jdbcType=INTEGER}
         </if>
+        AND bp_is_del = 1
     </sql>
     <select id="selectForPage" resultMap="BaseResultMap">
         select
