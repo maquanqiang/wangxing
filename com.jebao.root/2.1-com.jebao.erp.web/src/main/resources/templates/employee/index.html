@@ -27,19 +27,23 @@
                                 <div class="form-group">
                                     <div class="input-group margin">
                                         <div class="input-group-addon">姓名</div>
-                                        <input type="text" class="form-control" placeholder="" name="name" v-model="search.name">
+                                        <input type="text" class="form-control" placeholder="" name="name"
+                                               v-model="searchObj.name">
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <div class="input-group margin">
                                         <div class="input-group-addon">手机号</div>
-                                        <input type="tel" class="form-control" placeholder="" name="mobile" v-model="search.mobile">
+                                        <input type="tel" class="form-control" placeholder="" name="mobile"
+                                               v-model="searchObj.mobile">
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <div class="input-group margin">
                                         <div class="input-group-addon">所属团队</div>
-                                        <select class="select2" id="teamId" name="teamId" style="width: 15rem;" v-model="search.teamId">
+                                        <select class="select2" id="teamId" name="teamId" style="width: 15rem;"
+                                                v-model="searchObj.teamId">
+                                            <option value="0">全部</option>
                                             <option v-for="item in teams" :value="item.id">{{ item.name }}</option>
                                         </select>
                                     </div>
@@ -48,19 +52,23 @@
                                     <div class="input-group margin">
                                         <div class="input-group-addon">级别</div>
                                         <div id="tree"></div>
-                                        <select class="select2"  id="rankId" name="rankId" style="width: 15rem;" v-model="search.rankId">
+                                        <select class="select2" id="rankId" name="rankId" style="width: 15rem;"
+                                                v-model="searchObj.rankId">
+                                            <option value="0">全部</option>
                                             <option v-for="item in ranks" :value="item.id">{{ item.name }}</option>
                                         </select>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <div class="input-group  margin">
-                                        <a href="javascript:;" class="btn btn-primary " role="button" @click="" >搜索</a>
+                                        <a href="javascript:;" class="btn btn-primary" role="button" id="btnSearch"
+                                           @click="search">搜索</a>
                                     </div>
                                 </div>
                                 <div class="form-group ">
                                     <div class="input-group  margin">
-                                        <a href="javascript:;" class="btn btn-primary " role="button" target="_blank" id="add-people">添加</a>
+                                        <a href="javascript:;" class="btn btn-primary " role="button" target="_blank"
+                                           id="add-people">添加</a>
                                     </div>
                                 </div>
                                 <div class="form-group ">
@@ -81,72 +89,35 @@
                             <div id="orderlist_table_wrapper" class="dataTables_wrapper">
                                 <div class="row">
                                     <div class="col-xs-12">
-                                        <table id="orderlist_table" class="table table-bordered table-hover dataTable" role="grid" aria-describedby="orderlist_table_info">
+                                        <table id="orderlist_table" class="table table-bordered table-hover dataTable"
+                                               role="grid" aria-describedby="orderlist_table_info">
                                             <thead>
                                             <tr role="row">
-                                                <th width="10%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">资金ID</th>
-                                                <th width="10%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">姓名</th>
-                                                <th width="10%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">手机号</th>
-                                                <th width="10%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">员工级别</th>
-                                                <th width="10%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">所属团队</th>
-                                                <th width="10%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">所属部门</th>
-                                                <th width="10%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">是否在职</th>
-                                                <th width="10%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">操作</th>
+                                                <th>员工姓名</th>
+                                                <th>员工编号</th>
+                                                <th>手机号</th>
+                                                <th>员工级别</th>
+                                                <th>所属团队</th>
+                                                <th>操作</th>
                                             </tr>
                                             </thead>
                                             <tbody>
-                                            <tr role="row" class="odd">
-                                                <td>0920183</td>
-                                                <td>张三</td>
-                                                <td>13601254554</td>
-                                                <td>经理</td>
-                                                <td>一团</td>
-                                                <td></td>
-                                                <td></td>
-                                                <td>
-                                                    <a href="javascript:;" class="btn btn-default btn-xs" role="button" target="_blank" id="modifyInformation">修改</a>
-                                                    <a href="javascript:;" class="btn btn-default btn-xs remove-msg" role="button" target="_blank">删除</a>
-                                                </td>
-                                            </tr>
-                                            <tr role="row" class="even">
-                                                <td>0920183</td>
-                                                <td>张三</td>
-                                                <td>13601254554</td>
-                                                <td>经理</td>
-                                                <td>一团</td>
-                                                <td></td>
-                                                <td></td>
-                                                <td>
-                                                    <a href="javascript:;" class="btn btn-default btn-xs" role="button" target="_blank" id="modifyInformation">修改</a>
-                                                    <a href="javascript:;" class="btn btn-default btn-xs remove-msg" role="button" target="_blank">删除</a>
-                                                </td>
-                                            </tr>
-                                            <tr role="row" class="odd">
-                                                <td>0920183</td>
-                                                <td>张三</td>
-                                                <td>13601254554</td>
-                                                <td>经理</td>
-                                                <td>一团</td>
-                                                <td></td>
-                                                <td></td>
-                                                <td>
-                                                    <a href="javascript:;" class="btn btn-default btn-xs" role="button" target="_blank" id="modifyInformation">修改</a>
-                                                    <a href="javascript:;" class="btn btn-default btn-xs remove-msg" role="button" target="_blank">删除</a>
-                                                </td>
-                                            </tr>
-                                            <tr role="row" class="even">
-                                                <td>0920183</td>
-                                                <td>张三</td>
-                                                <td>13601254554</td>
-                                                <td>经理</td>
-                                                <td>一团</td>
-                                                <td></td>
-                                                <td></td>
-                                                <td>
-                                                    <a href="javascript:;" class="btn btn-default btn-xs" role="button" target="_blank" id="modifyInformation">修改</a>
-                                                    <a href="javascript:;" class="btn btn-default btn-xs remove-msg" role="button" target="_blank">删除</a>
-                                                </td>
-                                            </tr>
+
+                                            <template v-for="item in employees">
+                                                <tr>
+                                                    <td>{{item.name}}</td>
+                                                    <td>{{item.code}}</td>
+                                                    <td>{{item.mobile}}</td>
+                                                    <td>{{item.rankName}}</td>
+                                                    <td>{{item.departmentName}}</td>
+                                                    <td>
+                                                        <a href="javascript:;" class="btn btn-default btn-xs"
+                                                           role="button">修改</a>
+                                                        <a href="javascript:;" class="btn btn-default btn-xs remove-msg"
+                                                           role="button">删除</a>
+                                                    </td>
+                                                </tr>
+                                            </template>
                                             </tbody>
                                         </table>
                                     </div>
@@ -186,13 +157,14 @@
             <div class="form-group">
                 <label class="col-sm-3 control-label">身份证号:</label>
                 <div class="col-sm-8">
-                    <input type="text" class="form-control" placeholder="" value="" name="ID" >
+                    <input type="text" class="form-control" placeholder="" value="" name="ID">
                 </div>
             </div>
             <div class="form-group">
                 <label class="col-sm-3 control-label">员工级别:</label>
                 <div class="col-sm-8">
-                    <select class="form-control staffLevel" style="width:100%;height: 34px;border-color: #d2d6de;"  name="staffLevel">
+                    <select class="form-control staffLevel" style="width:100%;height: 34px;border-color: #d2d6de;"
+                            name="staffLevel">
                         <option value="">请选择</option>
                         <option value="理财顾问">理财顾问</option>
                         <option value="团队经理">团队经理</option>
@@ -216,7 +188,7 @@
     </form>
 </div>
 <!--修改个人借款用户-->
-<div class="modal col-xs-12"  id="modInforInfModal">
+<div class="modal col-xs-12" id="modInforInfModal">
     <form class="form-horizontal">
         <div class="box-body">
             <div class="form-group">
@@ -234,13 +206,15 @@
             <div class="form-group">
                 <label class="col-sm-3 control-label">身份证号:</label>
                 <div class="col-sm-8">
-                    <input type="text" class="form-control" placeholder="" value="130406256547895451" name="ID" readonly>
+                    <input type="text" class="form-control" placeholder="" value="130406256547895451" name="ID"
+                           readonly>
                 </div>
             </div>
             <div class="form-group">
                 <label class="col-sm-3 control-label">员工级别:</label>
                 <div class="col-sm-8">
-                    <select class="form-control staffLevel" style="width:100%;height: 34px;border-color: #d2d6de;"  name="staffLevel">
+                    <select class="form-control staffLevel" style="width:100%;height: 34px;border-color: #d2d6de;"
+                            name="staffLevel">
                         <option value="">请选择</option>
                         <option value="理财顾问" selected>理财顾问</option>
                         <option value="团队经理">团队经理</option>
@@ -251,7 +225,7 @@
             <div class="form-group">
                 <label class="col-sm-3 control-label">是否在职:</label>
                 <div class="col-sm-8">
-                    <select class="form-control" style="width:100%;height: 34px;border-color: #d2d6de;"  name="work">
+                    <select class="form-control" style="width:100%;height: 34px;border-color: #d2d6de;" name="work">
                         <option value="">请选择</option>
                         <option value="在职" selected>在职</option>
                         <option value="离职">离职</option>
@@ -278,82 +252,77 @@
 
 <!--pagination-->
 <script>
-    $(function(){
+    $(function () {
         //添加个人
-        $('#add-people').on('click',function(){
-            var tempObj= $('#addInforModal').clone();
-            tempObj.find('form').attr('id','insertFormId');
-            var tempHtml=tempObj.html();
+        $('#add-people').on('click', function () {
+            var tempObj = $('#addInforModal').clone();
+            tempObj.find('form').attr('id', 'insertFormId');
+            var tempHtml = tempObj.html();
             layer.open({
-                title:'添加业务员信息',
-                content:tempHtml,
+                title: '添加业务员信息',
+                content: tempHtml,
                 btn: ['添加', '重置'],
-                area:['500px'],
-                btn1: function(){
+                area: ['500px'],
+                btn1: function () {
                     initValidateForm($('#insertFormId'));
                     var bootstrapValidator = $("#insertFormId").data('bootstrapValidator').validate();
-                    if(!bootstrapValidator.isValid()){
+                    if (!bootstrapValidator.isValid()) {
                         return false;
-                    }else{
-                        layer.alert('添加成功！',function(){
+                    } else {
+                        layer.alert('添加成功！', function () {
                             layer.closeAll();
                         });
                     }
                 },
-                btn2: function(){
+                btn2: function () {
                     $("#insertFormId input").val("");
                     return false;
                 }
             });
         });
         //删除信息
-        $('.remove-msg').on('click',function(){
-            _this=$(this);
+        $('.remove-msg').on('click', function () {
+            _this = $(this);
             layer.open({
-                content:'您是否删除信息?',
+                content: '您是否删除信息?',
                 btn: ['取消', '删除'],
-                yes: function(){
+                yes: function () {
                     layer.closeAll();
                 },
-                btn2: function(){
+                btn2: function () {
                     _this.parent().parent().remove();
                     layer.msg('删除成功！', {icon: 1});
                 }
             });
         });
         //修改信息
-        $('#modifyInformation').on('click',function(){
-            var tempObj= $('#modInforInfModal').clone();
-            tempObj.find('form').attr('id','ModifyFormId');
-            var tempHtml=tempObj.html();
+        $('#modifyInformation').on('click', function () {
+            var tempObj = $('#modInforInfModal').clone();
+            tempObj.find('form').attr('id', 'ModifyFormId');
+            var tempHtml = tempObj.html();
             layer.open({
-                title:'修改业务员信息',
-                content:tempHtml,
-                area:['500px'],
+                title: '修改业务员信息',
+                content: tempHtml,
+                area: ['500px'],
                 btn: ['修改', '重置'],
-                btn1: function(){
+                btn1: function () {
                     initValidateForm($('#ModifyFormId'));
                     var bootstrapValidator = $("#ModifyFormId").data('bootstrapValidator').validate();
-                    if(!bootstrapValidator.isValid()){
+                    if (!bootstrapValidator.isValid()) {
                         return false;
-                    }else{
-                        layer.alert('修改成功！',function(){
+                    } else {
+                        layer.alert('修改成功！', function () {
                             layer.closeAll();
                         });
                     }
                 },
-                btn2: function(){
+                btn2: function () {
                     $("#ModifyFormId input").val("");
                     return false;
                 }
             });
         });
-        //调用分页
-        laypage({
-            cont:$('#pageNum'), //容器。值支持id名、原生dom对象，jquery对象,
-            pages: 100, //总页数
-            groups: 7 //连续显示分页数
-        });
+
     });
 </script>
 <script src="/content/script/employee/index.js"></script>

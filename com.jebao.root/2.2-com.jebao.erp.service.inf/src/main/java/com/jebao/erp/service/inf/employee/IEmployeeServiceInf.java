@@ -1,7 +1,7 @@
 package com.jebao.erp.service.inf.employee;
 
 import com.jebao.jebaodb.entity.employee.EmployeeInfo;
-import com.jebao.jebaodb.entity.extEntity.PageWhere;
+import com.jebao.jebaodb.entity.search.EmployeeSM;
 
 import java.util.List;
 
@@ -14,5 +14,6 @@ public interface IEmployeeServiceInf {
      * 获取员工信息
      * @return
      */
-    public List<EmployeeInfo> getEmployeeInfoList(EmployeeInfo model,PageWhere pageWhere);
+    List<EmployeeInfo> getEmployeeInfoList(EmployeeSM model);
+    int getEmployeeInfoListCount(EmployeeSM model);
 }
