@@ -2,6 +2,7 @@ package com.jebao.erp.web.responseModel.loaner;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.jebao.erp.web.responseModel.ViewModel;
+import com.jebao.jebaodb.entity.loaner.TbLoaner;
 
 import java.util.Date;
 
@@ -9,6 +10,30 @@ import java.util.Date;
  * Created by Administrator on 2016/11/22.
  */
 public class LoanerVM extends ViewModel {
+    public LoanerVM(TbLoaner entity){
+        this.id = entity.getlId();
+        this.loginId = entity.getlLoginId();
+        this.nickName = entity.getlNickName();
+        this.phone = entity.getlPhone();
+        this.trueName = entity.getlTrueName();
+        this.idNumber = entity.getlIdNumber();
+        this.email = entity.getlEmail();
+        this.sex = entity.getlSex();
+        this.age = entity.getlAge();
+        this.registerTime = entity.getlRegisterTime();
+        this.lastLoginTime = entity.getlLastLoginTime();
+        this.homeAdd = entity.getlHomeAdd();
+        this.hkadr = entity.getlHkadr();
+        this.maritalStatus = entity.getlMaritalStatus();
+        this.ishaveHouse = entity.getlIshaveHouse();
+        this.ishaveCar = entity.getlIshaveCar();
+        this.politicsStatus = entity.getlPoliticsStatus();
+        this.creditStatus = entity.getlCreditStatus();
+        this.monthlySalary = entity.getlMonthlySalary();
+        this.education = entity.getlEducation();
+        this.workCity = entity.getlWorkCity();
+        this.thirdAccount = entity.getlThirdAccount();
+    }
     private Long id;
 
     private Long loginId;

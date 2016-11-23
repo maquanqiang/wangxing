@@ -1,6 +1,7 @@
 package com.jebao.erp.service.inf.loaner;
 
 import com.jebao.jebaodb.entity.TbFundsDetails;
+import com.jebao.jebaodb.entity.extEntity.PageWhere;
 import com.jebao.jebaodb.entity.loaner.TbLoaner;
 import com.jebao.jebaodb.entity.loaner.TbRcpMaterialsTemp;
 import com.jebao.jebaodb.entity.loaner.TbRiskCtlPrjTemp;
@@ -14,18 +15,25 @@ public interface ILoanerServiceInf {
     /* ==================================================借款人start==================================================*/
 
     /**
-     * 添加借款人基本资料，导入用户信息
+     * 添加借款人基本资料
+     * @param entity
+     * @return
+     */
+    int addLoaner(TbLoaner entity);
+
+    /**
+     * 根据手机号查询借款人基本信息
      * @param phone
      * @return
      */
-    int addLoaner(String phone);
+    TbLoaner getLoanerByPhone(String phone);
 
     /**
      * 修改借款人详细资料
-     * @param record
+     * @param entity
      * @return
      */
-    int updateLoaner(TbLoaner record);
+    int updateLoaner(TbLoaner entity);
 
     /**
      * 删除借款人
@@ -51,11 +59,16 @@ public interface ILoanerServiceInf {
     /**
      * 根据查询条件获取借款人列表(分页)
      * @param record
-     * @param pageIndex
-     * @param pageSize
+     * @param page
      * @return
      */
-    List<TbLoaner> selectLoanerByParamsForPage(TbLoaner record,int pageIndex,int pageSize);
+    List<TbLoaner> selectLoanerByParamsForPage(TbLoaner record,PageWhere page);
+
+
+/*    int selectBySearchForPageCount(LoanerSM model);
+
+    List<TbLoaner> selectBySearchForPage(LoanerSM model);*/
+
     /* ==================================================借款人end==================================================*/
 
     /* ==================================================充值提现明细start==================================================*/

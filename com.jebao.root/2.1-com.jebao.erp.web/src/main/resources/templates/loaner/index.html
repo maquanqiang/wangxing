@@ -13,37 +13,37 @@
         <h1>借款人管理</h1>
     </section>
     <!-- Main content -->
-    <section class="content">
+    <section class="content" id="content">
         <div class="row">
             <div class="col-xs-12">
                 <div class="box box-primary">
-                    <form action="" class="form-inline" id="search_form" method="post" novalidate="novalidate">
+                    <form action="" class="form-inline" id="search_form" novalidate="novalidate">
                         <div class="box-body">
                             <div class="form-group">
                                 <div class="input-group ">
                                     <div class="input-group-addon">用户名</div>
-                                    <input type="text" class="form-control" placeholder="" name="nickName" v-model="">
+                                    <input type="text" class="form-control" placeholder="" name="nickName" v-model="searchObj.nickName">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="input-group ">
                                     <div class="input-group-addon">手机号</div>
-                                    <input type="text" class="form-control" placeholder="" name="phone" v-model="">
+                                    <input type="text" class="form-control" placeholder="" name="phone" v-model="searchObj.phone">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="input-group ">
                                     <div class="input-group-addon">姓名</div>
-                                    <input type="text" class="form-control" placeholder="" name="trueName" v-model="">
+                                    <input type="text" class="form-control" placeholder="" name="trueName" v-model="searchObj.trueName">
                                 </div>
                             </div>
                             <div class="form-group ">
                                 <div class="input-group  margin">
-                                    <a href="javascript:;" class="btn btn-primary " role="button" target="_blank">搜索</a>
+                                    <a href="javascript:;" class="btn btn-primary" role="button" id="btnSearch" @click="search">搜索</a>
                                 </div>
                             </div>
                             <div class="form-group ">
-                                <a href="javascript:;" class="btn btn-primary " role="button" target="_blank" id="add-people">添加借款人</a>
+                                <a href="javascript:;" class="btn btn-primary" role="button" id="add-people">添加借款人</a>
                             </div>
                         </div>
                     </form>
@@ -71,25 +71,32 @@
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        <tr role="row" class="odd">
-                                            <td>abcd123</td>
-                                            <td>张三</td>
-                                            <td>13888888888</td>
-                                            <td>2015/03/03 8:49</td>
-                                            <td>5</td>
-                                            <td>10000.00</td>
-                                            <td>
-                                                <a href="javascript:;" class="btn btn-default btn-xs" role="button" target="_blank"  id="modifyInformation">修改</a>
-                                                <a href="基本信息.html" class="btn btn-default btn-xs" role="button" target="_blank">查看详情</a>
-                                                <a href="资金信息.html" class="btn btn-default btn-xs" role="button" target="_blank">资金信息</a>
-                                                <a href="借款信息.html" class="btn btn-default btn-xs" role="button" target="_blank">借款信息</a>
-                                                <a href="风控信息.html" class="btn btn-default btn-xs" role="button" target="_blank">风控信息</a>
-                                                <a href="javascript:;" class="btn btn-default btn-xs remove-msg" role="button" target="_blank">删除</a>
-                                            </td>
-                                        </tr>
+                                        <template v-for="item in loaners">
+                                            <tr role="row" class="odd">
+                                                <td>{{item.nickName}}</td>
+                                                <td>{{item.trueName}}</td>
+                                                <td>{{item.phone}}</td>
+                                                <td>{{item.registerTime}}</td>
+                                                <td>5</td>
+                                                <td>10000.00</td>
+                                                <td>
+                                                    <a href="javascript:;" class="btn btn-default btn-xs" role="button" target="_blank" id="modifyInformation">修改</a>
+                                                    <a href="基本信息.html" class="btn btn-default btn-xs" role="button" target="_blank">查看详情</a>
+                                                    <a href="资金信息.html" class="btn btn-default btn-xs" role="button" target="_blank">资金信息</a>
+                                                    <a href="借款信息.html" class="btn btn-default btn-xs" role="button" target="_blank">借款信息</a>
+                                                    <a href="风控信息.html" class="btn btn-default btn-xs" role="button" target="_blank">风控信息</a>
+                                                    <a href="javascript:;" class="btn btn-default btn-xs remove-msg" role="button" target="_blank">删除</a>
+                                                </td>
+                                            </tr>
+                                        </template>
                                         </tbody>
                                     </table>
                                 </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12 pagination">
+                                <div id="pageNum"></div>
                             </div>
                         </div>
                     </div>
@@ -98,12 +105,10 @@
         </div>
     </section>
 </div>
-<!-- /.content-wrapper -->
-#parse("common/footer.html")
 <!--提示框-->
 <!--添加个人借款用户-->
 <div class="modal col-xs-12" id="addInforModal">
-    <form class="form-horizontal">
+    <form class="form-horizontal" action="/loaner/doLoanerAdd" method="post">
         <div class="box-title">
             <h5>基本资料</h5>
         </div>
@@ -111,40 +116,40 @@
             <div class="row form-group">
                 <label class="col-sm-4 control-label"><span class="text-red">*</span>注册手机号:</label>
                 <div class="col-sm-4">
-                    <input type="text" class="form-control" placeholder="" name="tel">
+                    <input type="text" class="form-control" placeholder="" name="phone" v-model="searchTel">
                 </div>
                 <div class="col-sm-4">
-                    <input type="button" class="" placeholder="" value="导入用户信息">
+                    <input type="button" class="" placeholder="" value="导入用户信息" id="btnImport">
                 </div>
             </div>
             <div class="row form-group">
                 <label class="col-sm-2 control-label">用户名</label>
                 <div class="col-sm-4">
-                    <input type="text" class="form-control" placeholder="" name="username" value="" readonly>
+                    <input type="text" class="form-control" placeholder="" name="nickName" value="" readonly v-model="loaner.nickName">
                 </div>
                 <label class="col-sm-2 control-label"><span class="text-red">*</span>真实姓名</label>
                 <div class="col-sm-4">
-                    <input type="text" class="form-control" placeholder="" name="user"  value="" readonly>
+                    <input type="text" class="form-control" placeholder="" name="trueName"  value="" readonly v-model="loaner.trueName">
                 </div>
             </div>
             <div class="row form-group">
                 <label class="col-sm-2 control-label"><span class="text-red">*</span>身份证号</label>
                 <div class="col-sm-4">
-                    <input type="text" class="form-control" placeholder="" name="ID" value="" readonly>
+                    <input type="text" class="form-control" placeholder="" name="idNumber" value="" readonly v-model="loaner.idNumber">
                 </div>
                 <label class="col-sm-2 control-label"><span class="text-red">*</span>性别</label>
                 <div class="col-sm-4">
-                    <input type="text" class="form-control" placeholder="" name="sex" value="" readonly>
+                    <input type="text" class="form-control" placeholder="" name="sex" value="" readonly v-model="loaner.sex">
                 </div>
             </div>
             <div class="row form-group">
                 <label class="col-sm-2 control-label"><span class="text-red">*</span>年龄</label>
                 <div class="col-sm-4">
-                    <input type="text" class="form-control" placeholder="" name="age" value="" readonly>
+                    <input type="text" class="form-control" placeholder="" name="age" value="" readonly v-model="loaner.age">
                 </div>
                 <label class="col-sm-2 control-label">邮箱</label>
                 <div class="col-sm-4">
-                    <input type="text" class="form-control" placeholder="" name="email" value="" readonly>
+                    <input type="text" class="form-control" placeholder="" name="email" value="" readonly v-model="loaner.email">
                 </div>
             </div>
         </div>
@@ -177,7 +182,7 @@
             <div class="row form-group">
                 <label class="col-sm-2 control-label">学历</label>
                 <div class="col-sm-4">
-                    <input type="text" class="form-control" placeholder="" >
+                    <input type="text" class="form-control" placeholder="">
                 </div>
                 <label class="col-sm-2 control-label">信用状况</label>
                 <div class="col-sm-4">
@@ -323,5 +328,92 @@
         </div>
     </form>
 </div>
+<!-- /.content-wrapper -->
+#parse("common/footer.html")
+<script>
+    $(function(){
+        //添加人借款用户信息
+        $('#add-people').on('click',function(){
+            var tempObj= $('#addInforModal').clone();
+            tempObj.find('form').attr('id','insertFormId');
+            var tempHtml=tempObj.html();
+            layer.open({
+                title:'添加个人借款用户',
+                content:tempHtml,
+                btn: ['添加', '重置'],
+                area:['800px'],
+                btn1: function(){
+                    initValidateForm($('#insertFormId'));
+                    var bootstrapValidator = $("#insertFormId").data('bootstrapValidator').validate();
+                    if(!bootstrapValidator.isValid()){
+                        return false;
+                    }else{
+                        //TODO 后台逻辑
+                        $.axForForm($('#insertFormId'),function(data){
+                            if(data.success_is_ok)
+                            {
+                                layer.alert('添加成功！',function(){
+                                    layer.closeAll();
+                                });
+                                var targetUrl="/loaner/index";
+                                redirectUrl(targetUrl);
+                                return;
+                            }else{
+                                alert(data);
+                            }
+                        });
+
+                    }
+                },
+                btn2: function(){
+                    $("#insertFormId input[type=text]").val("");
+                    return false;
+                }
+            });
+        });
+        //删除信息
+        $('.remove-msg').on('click',function(){
+            _this=$(this);
+            layer.open({
+                content:'您是否删除信息?',
+                btn: ['取消', '删除'],
+                yes: function(){
+                    layer.closeAll();
+                },
+                btn2: function(){
+                    _this.parent().parent().remove();
+                    layer.msg('删除成功！', {icon: 1});
+                }
+            });
+        });
+        //修改借款用户信息
+        $('#modifyInformation').on('click',function(){
+            var tempObj= $('#modInforInfModal').clone();
+            tempObj.find('form').attr('id','ModifyFormId');
+            var tempHtml=tempObj.html();
+            layer.open({
+                title:'修改个人借款用户',
+                content:tempHtml,
+                area:['800px'],
+                btn: ['保存', '取消'],
+                btn1: function(){
+                    initValidateForm($('#ModifyFormId'));
+                    var bootstrapValidator = $("#ModifyFormId").data('bootstrapValidator').validate();
+                    if(!bootstrapValidator.isValid()){
+                        return false;
+                    }else{
+                        layer.alert('修改成功！',function(){
+                            layer.closeAll();
+                        });
+                    }
+                },
+                btn2: function(){
+                    layer.close();
+                }
+            });
+        });
+    });
+</script>
+<script src=$UrlHelperTool.href("/content/script/loaner/index.js")></script>
 </body>
 </html>

@@ -6,18 +6,18 @@ import org.hibernate.validator.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 
 /**
- * Created by Administrator on 2016/11/22.
+ * Created by wangwei on 2016/11/23.
  */
-public class LoanerForm extends _BaseForm {
+public class LoanerAF extends _BaseForm {
     //转为数据库实体数据
 /*    public static Object toEntity(LoanerForm form)
     {
         *//**
-         TbTempTest result=new TbTempTest();
-         result.setUsername(form.getName());
-         result.setPassword(form.getPassword());
-         return result;
-         *//*
+     TbTempTest result=new TbTempTest();
+     result.setUsername(form.getName());
+     result.setPassword(form.getPassword());
+     return result;
+     *//*
         return null;
     }*/
     //===================================================

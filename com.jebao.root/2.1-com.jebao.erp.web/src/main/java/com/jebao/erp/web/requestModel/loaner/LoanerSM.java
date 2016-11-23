@@ -1,14 +1,16 @@
 package com.jebao.erp.web.requestModel.loaner;
 
-import com.jebao.erp.web.requestModel.base._BaseForm;
+import com.jebao.erp.web.requestModel.ParamModel;
 
 /**
- * Created by Administrator on 2016/11/22.
+ * Created by wangwei on 2016/11/22.
  */
-public class SearchForm extends _BaseForm {
+public class LoanerSM extends ParamModel {
     private String nickName;
     private String phone;
     private String trueName;
+    private int pageIndex;
+    private int pageSize;
 
     public String getNickName() {
         return nickName;
@@ -32,5 +34,21 @@ public class SearchForm extends _BaseForm {
 
     public void setTrueName(String trueName) {
         this.trueName = trueName;
+    }
+
+    public int getPageIndex() {
+        return pageIndex;
+    }
+
+    public void setPageIndex(int pageIndex) {
+        this.pageIndex = pageIndex;
+    }
+
+    public int getPageSize() {
+        return pageSize;
+    }
+
+    public void setPageSize(int pageSize) {
+        this.pageSize = pageSize;
     }
 }
