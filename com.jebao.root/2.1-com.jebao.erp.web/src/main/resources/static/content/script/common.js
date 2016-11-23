@@ -116,4 +116,19 @@ Date.prototype.toFormatString = function (format) {
 
 }(jQuery));
 
+function dataToHtml(jctTpl, data) {
+    if (data == undefined) {
+        data = {};
+    }
+    var tplText = $(jctTpl).html();
+    var instance = new jCT(tplText);
+    var collection = data;
+    //if (collection.length == 0)
+    //    return;
+    var innerHtml = instance.GetView(collection);
+    collection = null;
+    instance = null;
+    return innerHtml;
+};
+
 

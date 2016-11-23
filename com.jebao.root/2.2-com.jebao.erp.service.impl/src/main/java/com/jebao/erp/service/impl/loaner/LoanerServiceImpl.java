@@ -17,8 +17,6 @@ import com.jebao.jebaodb.entity.loaner.TbRcpMaterialsTemp;
 import com.jebao.jebaodb.entity.loaner.TbRiskCtlPrjTemp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
-
 import java.util.Date;
 import java.util.List;
 
@@ -42,10 +40,10 @@ public class LoanerServiceImpl implements ILoanerServiceInf {
 
     @Override
     public int addLoaner(TbLoaner entity) {
-        if(entity == null || StringUtils.isEmpty(entity.getlPhone())){
+        if(entity == null){
             return 0;
         }
-/*        TbLoginInfo loginInfo = tbLoginInfoDao.selectByLoginName(entity.getlPhone());
+        TbLoginInfo loginInfo = tbLoginInfoDao.selectByLoginName(entity.getlPhone());
         if (loginInfo == null) {
             return 0;
         }
@@ -53,7 +51,6 @@ public class LoanerServiceImpl implements ILoanerServiceInf {
         if (userDetails == null) {
             return 0;
         }
-        //TbLoaner loaner = new TbLoaner();
         entity.setlLoginId(loginInfo.getLiId());
         entity.setlNickName(userDetails.getUdNickName());
         entity.setlTrueName(userDetails.getUdTrueName());
@@ -74,15 +71,17 @@ public class LoanerServiceImpl implements ILoanerServiceInf {
         entity.setlBankParentBankName(userDetails.getUdBankParentBankName());
         entity.setlCreateTime(new Date());
         entity.setlUpdateTime(new Date());
-        entity.setlIsDel(1);*/
+        entity.setlIsDel(1);
         return tbLoanerDao.insertSelective(entity);
     }
 
     @Override
     public TbLoaner getLoanerByPhone(String phone){
-        if(StringUtils.isEmpty(phone)){
+        phone = phone.trim();
+        if(phone.length() == 0){
             return null;
         }
+
         TbLoaner record = new TbLoaner();
         record.setlPhone(phone);
         int result = tbLoanerDao.selectByParamsForPageCount(record);
@@ -105,17 +104,11 @@ public class LoanerServiceImpl implements ILoanerServiceInf {
         entity.setlLastLoginTime(loginInfo.getLiLastLoginTime());
         entity.setlEmail(userDetails.getUdEmail());
         entity.setlIdNumber(userDetails.getUdIdNumber());
-        entity.setlSex(IdCardUtil.getGenderByIdCard(userDetails.getUdIdNumber()));
-        entity.setlAge(IdCardUtil.getAgeByIdCard(userDetails.getUdIdNumber()));
+        if(userDetails.getUdIdNumber().trim().length()>0){
+            entity.setlSex(IdCardUtil.getGenderByIdCard(userDetails.getUdIdNumber()));
+            entity.setlAge(IdCardUtil.getAgeByIdCard(userDetails.getUdIdNumber()));
+        }
         entity.setlPhone(loginInfo.getLiLoginName());
-        entity.setlThirdAccount(userDetails.getUdThirdAccount());
-        entity.setlThirdPayPassword(userDetails.getUdThirdPayPassword());
-        entity.setlThirdLoginPassword(userDetails.getUdThirdLoginPassword());
-        entity.setlBankCardNo(userDetails.getUdBankCardNo());
-        entity.setlBankCityName(userDetails.getUdBankCityName());
-        entity.setlBankCityCode(userDetails.getUdBankCityCode());
-        entity.setlBankParentBankCode(userDetails.getUdBankParentBankCode());
-        entity.setlBankParentBankName(userDetails.getUdBankParentBankName());
         return entity;
     }
 

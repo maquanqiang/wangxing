@@ -80,7 +80,7 @@
                                                 <td>5</td>
                                                 <td>10000.00</td>
                                                 <td>
-                                                    <a href="javascript:;" class="btn btn-default btn-xs" role="button" target="_blank" id="modifyInformation">修改</a>
+                                                    <a href="javascript:;" class="btn btn-default btn-xs" role="button" id="modifyInformation">修改</a>
                                                     <a href="基本信息.html" class="btn btn-default btn-xs" role="button" target="_blank">查看详情</a>
                                                     <a href="资金信息.html" class="btn btn-default btn-xs" role="button" target="_blank">资金信息</a>
                                                     <a href="借款信息.html" class="btn btn-default btn-xs" role="button" target="_blank">借款信息</a>
@@ -109,47 +109,49 @@
 <!--添加个人借款用户-->
 <div class="modal col-xs-12" id="addInforModal">
     <form class="form-horizontal" action="/loaner/doLoanerAdd" method="post">
-        <div class="box-title">
-            <h5>基本资料</h5>
-        </div>
         <div class="box-body">
             <div class="row form-group">
                 <label class="col-sm-4 control-label"><span class="text-red">*</span>注册手机号:</label>
                 <div class="col-sm-4">
-                    <input type="text" class="form-control" placeholder="" name="phone" v-model="searchTel">
+                    <input id="import-phone" type="text" class="form-control" placeholder="" name="phone">
                 </div>
                 <div class="col-sm-4">
-                    <input type="button" class="" placeholder="" value="导入用户信息" id="btnImport">
+                    <input id="btnImport" type="button" class="" placeholder="" value="导入用户信息">
                 </div>
             </div>
+        </div>
+        <div class="box-title">
+            <h5>基本资料</h5>
+        </div>
+        <div class="box-body" id="Template-UserInfoView">
             <div class="row form-group">
                 <label class="col-sm-2 control-label">用户名</label>
                 <div class="col-sm-4">
-                    <input type="text" class="form-control" placeholder="" name="nickName" value="" readonly v-model="loaner.nickName">
+                    <input type="text" class="form-control" placeholder="" name="nickName" value="" readonly>
                 </div>
-                <label class="col-sm-2 control-label"><span class="text-red">*</span>真实姓名</label>
+                <label class="col-sm-2 control-label">真实姓名</label>
                 <div class="col-sm-4">
-                    <input type="text" class="form-control" placeholder="" name="trueName"  value="" readonly v-model="loaner.trueName">
-                </div>
-            </div>
-            <div class="row form-group">
-                <label class="col-sm-2 control-label"><span class="text-red">*</span>身份证号</label>
-                <div class="col-sm-4">
-                    <input type="text" class="form-control" placeholder="" name="idNumber" value="" readonly v-model="loaner.idNumber">
-                </div>
-                <label class="col-sm-2 control-label"><span class="text-red">*</span>性别</label>
-                <div class="col-sm-4">
-                    <input type="text" class="form-control" placeholder="" name="sex" value="" readonly v-model="loaner.sex">
+                    <input type="text" class="form-control" placeholder="" name="trueName"  value="" readonly>
                 </div>
             </div>
             <div class="row form-group">
-                <label class="col-sm-2 control-label"><span class="text-red">*</span>年龄</label>
+                <label class="col-sm-2 control-label">身份证号</label>
                 <div class="col-sm-4">
-                    <input type="text" class="form-control" placeholder="" name="age" value="" readonly v-model="loaner.age">
+                    <input type="text" class="form-control" placeholder="" name="idNumber" value="" readonly>
+                </div>
+                <label class="col-sm-2 control-label">性别</label>
+                <div class="col-sm-4">
+                    <input type="text" class="form-control" placeholder="" name="sex" value="" readonly>
+                </div>
+            </div>
+            <div class="row form-group">
+                <label class="col-sm-2 control-label">年龄</label>
+                <div class="col-sm-4">
+                    <input type="text" class="form-control" placeholder="" name="age" value="" readonly>
                 </div>
                 <label class="col-sm-2 control-label">邮箱</label>
                 <div class="col-sm-4">
-                    <input type="text" class="form-control" placeholder="" name="email" value="" readonly v-model="loaner.email">
+                    <input type="text" class="form-control" placeholder="" name="email" value="" readonly>
                 </div>
             </div>
         </div>
@@ -160,57 +162,90 @@
             <div class="row form-group">
                 <label class="col-sm-2 control-label">婚姻状况</label>
                 <div class="col-sm-4">
-                    <input type="text" class="form-control" placeholder="">
+                    <input type="text" class="form-control" placeholder="" name="maritalStatus">
                 </div>
                 <label class="col-sm-2 control-label">常住地址</label>
                 <div class="col-sm-4">
-                    <input type="text" class="form-control" placeholder="">
+                    <input type="text" class="form-control" placeholder="" name="homeAdd">
                 </div>
             </div>
 
             <div class="row form-group">
                 <label class="col-sm-2 control-label">户口所在地</label>
                 <div class="col-sm-4">
-                    <input type="text" class="form-control" placeholder="">
+                    <input type="text" class="form-control" placeholder="" name="hkadr">
                 </div>
                 <label class="col-sm-2 control-label">政治面貌</label>
                 <div class="col-sm-4">
-                    <input type="text" class="form-control" placeholder="">
+                    <input type="text" class="form-control" placeholder="" name="politicsStatus">
                 </div>
             </div>
 
             <div class="row form-group">
                 <label class="col-sm-2 control-label">学历</label>
                 <div class="col-sm-4">
-                    <input type="text" class="form-control" placeholder="">
+                    <input type="text" class="form-control" placeholder="" name="education">
                 </div>
                 <label class="col-sm-2 control-label">信用状况</label>
                 <div class="col-sm-4">
-                    <input type="text" class="form-control" placeholder="">
+                    <input type="text" class="form-control" placeholder="" name="creditStatus">
                 </div>
             </div>
             <div class="row form-group">
                 <label class="col-sm-2 control-label">月收入</label>
                 <div class="col-sm-4">
-                    <input type="text" class="form-control" placeholder="">
+                    <input type="text" class="form-control" placeholder="" name="monthlySalary">
                 </div>
                 <label class="col-sm-2 control-label">工作城市</label>
                 <div class="col-sm-4">
-                    <input type="text" class="form-control" placeholder="">
+                    <input type="text" class="form-control" placeholder="" name="workCity">
                 </div>
             </div>
             <div class="row form-group">
                 <label class="col-sm-2 control-label">名下是否有房</label>
                 <div class="col-sm-4">
-                    <input type="text" class="form-control" placeholder="">
+                    <input type="text" class="form-control" placeholder="" name="ishaveHouse">
                 </div>
                 <label class="col-sm-2 control-label">是否有车</label>
                 <div class="col-sm-4">
-                    <input type="text" class="form-control" placeholder="">
+                    <input type="text" class="form-control" placeholder="" name="ishaveCar">
                 </div>
             </div>
         </div>
     </form>
+</div>
+<div id="Template-UserInfo" style="display: none">
+    <!---// data-->
+    <div class="row form-group">
+        <label class="col-sm-2 control-label">用户名</label>
+        <div class="col-sm-4">
+            <input type="text" class="form-control" placeholder="" name="nickName" value="+-data.nickName-+" readonly>
+        </div>
+        <label class="col-sm-2 control-label">真实姓名</label>
+        <div class="col-sm-4">
+            <input type="text" class="form-control" placeholder="" name="trueName"  value="+-data.trueName-+" readonly>
+        </div>
+    </div>
+    <div class="row form-group">
+        <label class="col-sm-2 control-label">身份证号</label>
+        <div class="col-sm-4">
+            <input type="text" class="form-control" placeholder="" name="idNumber" value="+-data.idNumber-+" readonly>
+        </div>
+        <label class="col-sm-2 control-label">性别</label>
+        <div class="col-sm-4">
+            <input type="text" class="form-control" placeholder="" name="sex" value="+-data.sex-+" readonly>
+        </div>
+    </div>
+    <div class="row form-group">
+        <label class="col-sm-2 control-label">年龄</label>
+        <div class="col-sm-4">
+            <input type="text" class="form-control" placeholder="" name="age" value="+-data.age-+" readonly>
+        </div>
+        <label class="col-sm-2 control-label">邮箱</label>
+        <div class="col-sm-4">
+            <input type="text" class="form-control" placeholder="" name="email" value="+-data.email-+" readonly>
+        </div>
+    </div>
 </div>
 <!--修改个人借款用户-->
 <div class="modal col-xs-12"  id="modInforInfModal">
@@ -343,9 +378,11 @@
                 btn: ['添加', '重置'],
                 area:['800px'],
                 btn1: function(){
-                    initValidateForm($('#insertFormId'));
-                    var bootstrapValidator = $("#insertFormId").data('bootstrapValidator').validate();
-                    if(!bootstrapValidator.isValid()){
+                    //initValidateForm($('#insertFormId'));
+                    //var bootstrapValidator = $("#insertFormId").data('bootstrapValidator').validate();
+                    //if(!bootstrapValidator.isValid()){
+                    var phone= $('#insertFormId #import-phone').val();
+                    if(phone.trim().length < 11){
                         return false;
                     }else{
                         //TODO 后台逻辑
@@ -369,6 +406,20 @@
                     $("#insertFormId input[type=text]").val("");
                     return false;
                 }
+            });
+            $('#insertFormId #btnImport').on('click',function(){
+                var phone= $('#insertFormId #import-phone').val();
+               // alert("phone="+phone);
+                $.get("/api/loaner/doImport","phone="+phone,function(response){
+                    if (response.success_is_ok){
+                        if (response.data != null){var model=response.data;
+                           // alert(model.nickName);
+                           var html= dataToHtml('#Template-UserInfo', model);
+                          //  alert("导入数据成功"+html);
+                            $('#insertFormId #Template-UserInfoView').html(html);
+                        }
+                    }
+                });
             });
         });
         //删除信息
@@ -409,6 +460,17 @@
                 },
                 btn2: function(){
                     layer.close();
+                }
+            });
+            /*加载借款人*/
+            $.get("/api/loaner/info","id="+phone,function(response){
+                if (response.success_is_ok){
+                    if (response.data != null){var model=response.data;
+                        // alert(model.nickName);
+                        var html= dataToHtml('#Template-UserInfo', model);
+                        //  alert("导入数据成功"+html);
+                        $('#insertFormId #Template-UserInfoView').html(html);
+                    }
                 }
             });
         });

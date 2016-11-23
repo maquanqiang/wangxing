@@ -9,13 +9,10 @@ import com.jebao.erp.web.responseModel.base.JsonResultList;
 import com.jebao.erp.web.responseModel.loaner.LoanerVM;
 import com.jebao.jebaodb.entity.extEntity.PageWhere;
 import com.jebao.jebaodb.entity.loaner.TbLoaner;
-import com.sun.org.apache.regexp.internal.RECompiler;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,10 +48,22 @@ public class LoanerControllerApi extends _BaseController {
 
     @RequestMapping("doImport")
     public JsonResult doImport(String phone){
-        if(StringUtils.isEmpty(phone)){
+        if(StringUtils.isBlank(phone)){
             return new JsonResultData<>(null);
         }
+        phone=StringUtils.trim(phone);
         TbLoaner record = loanerService.getLoanerByPhone(phone);
+        LoanerVM viewModel = new LoanerVM(record);
+        return new JsonResultData<>(viewModel);
+    }
+
+    @RequestMapping("info")
+    public JsonResult info(Long id){
+        if(id == null || id == 0){
+            return new JsonResultData<>(null);
+        }
+
+        TbLoaner record = loanerService.findLoanerById(id);
         LoanerVM viewModel = new LoanerVM(record);
         return new JsonResultData<>(viewModel);
     }
