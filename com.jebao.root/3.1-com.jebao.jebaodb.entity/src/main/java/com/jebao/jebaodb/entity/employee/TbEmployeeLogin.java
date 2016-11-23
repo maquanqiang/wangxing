@@ -5,7 +5,9 @@ import java.util.Date;
 public class TbEmployeeLogin {
     private Integer lgId;
 
-    private String lgEmpCode;
+    private Integer lgEmpId;
+
+    private String lgUsername;
 
     private String lgPassword;
 
@@ -21,12 +23,20 @@ public class TbEmployeeLogin {
         this.lgId = lgId;
     }
 
-    public String getLgEmpCode() {
-        return lgEmpCode;
+    public Integer getLgEmpId() {
+        return lgEmpId;
     }
 
-    public void setLgEmpCode(String lgEmpCode) {
-        this.lgEmpCode = lgEmpCode == null ? null : lgEmpCode.trim();
+    public void setLgEmpId(Integer lgEmpId) {
+        this.lgEmpId = lgEmpId;
+    }
+
+    public String getLgUsername() {
+        return lgUsername;
+    }
+
+    public void setLgUsername(String lgUsername) {
+        this.lgUsername = lgUsername == null ? null : lgUsername.trim();
     }
 
     public String getLgPassword() {

@@ -17,4 +17,12 @@ public class TbEmpDepRelationshipDao {
     public int updateByPrimaryKeySelective(TbEmpDepRelationship record){return mapper.updateByPrimaryKeySelective(record);}
 
     public int updateByPrimaryKey(TbEmpDepRelationship record){return mapper.updateByPrimaryKey(record);}
+
+    /**
+     * 查询员工的当前部门关系
+     * @param empId 员工id
+     * @return 当前员工所属部门关系
+     */
+    public TbEmpDepRelationship selectCurrentEmpRelation(Integer empId){return mapper.selectCurrentEmpRelation(empId);}
+
 }

@@ -1,14 +1,21 @@
-package com.jebao.erp.web.requestModel.employee;
+package com.jebao.jebaodb.entity.employee.input;
 
-import com.jebao.erp.web.requestModel.ParamModel;
+import com.jebao.jebaodb.entity.extEntity.InputModel;
+import org.hibernate.validator.constraints.NotBlank;
+
+import javax.validation.constraints.Pattern;
 
 /**
- * Created by Jack on 2016/11/22.
+ * Created by Jack on 2016/11/23.
  */
-public class EmployeePM extends ParamModel{
-
+public class EmployeeIM extends InputModel {
+    private Integer empId;
+    @NotBlank(message="员工姓名不能为空")
     private String name;
+    @NotBlank(message="手机号不能为空")
+    @Pattern(regexp = "^1[3-8]\\d{9}$")
     private String mobile;
+    @NotBlank(message="身份证不能为空")
     private String cardNo;
     /**
      * 员工级别
@@ -22,6 +29,14 @@ public class EmployeePM extends ParamModel{
      * 在职状态
      */
     private int status;
+
+    public Integer getEmpId() {
+        return empId;
+    }
+
+    public void setEmpId(Integer empId) {
+        this.empId = empId;
+    }
 
     public String getName() {
         return name;

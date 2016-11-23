@@ -1,4 +1,4 @@
-package com.jebao.jebaodb.entity.search;
+package com.jebao.jebaodb.entity.employee.search;
 
 import com.jebao.jebaodb.entity.extEntity.PageWhere;
 
@@ -11,7 +11,7 @@ public class EmployeeSM extends PageWhere {
         super(0,10);
     }
 
-    private String empCode;
+    private Integer empId;
     private String name;
     private String mobile;
     /**
@@ -21,12 +21,12 @@ public class EmployeeSM extends PageWhere {
     private int rankId;
     private int departmentId;
 
-    public String getEmpCode() {
-        return empCode;
+    public Integer getEmpId() {
+        return empId;
     }
 
-    public void setEmpCode(String empCode) {
-        this.empCode = empCode;
+    public void setEmpId(Integer empId) {
+        this.empId = empId;
     }
 
     public String getName() {

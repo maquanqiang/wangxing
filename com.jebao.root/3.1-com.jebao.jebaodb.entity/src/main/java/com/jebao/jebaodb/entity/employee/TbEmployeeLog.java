@@ -5,7 +5,7 @@ import java.util.Date;
 public class TbEmployeeLog {
     private Integer elId;
 
-    private String elEmpCode;
+    private Integer elEmpId;
 
     private String elContent;
 
@@ -21,12 +21,12 @@ public class TbEmployeeLog {
         this.elId = elId;
     }
 
-    public String getElEmpCode() {
-        return elEmpCode;
+    public Integer getElEmpId() {
+        return elEmpId;
     }
 
-    public void setElEmpCode(String elEmpCode) {
-        this.elEmpCode = elEmpCode == null ? null : elEmpCode.trim();
+    public void setElEmpId(Integer elEmpId) {
+        this.elEmpId = elEmpId;
     }
 
     public String getElContent() {

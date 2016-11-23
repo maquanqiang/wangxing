@@ -2,7 +2,7 @@ package com.jebao.jebaodb.dao.mapper.employee;
 
 import com.jebao.jebaodb.entity.employee.EmployeeInfo;
 import com.jebao.jebaodb.entity.employee.TbEmployee;
-import com.jebao.jebaodb.entity.search.EmployeeSM;
+import com.jebao.jebaodb.entity.employee.search.EmployeeSM;
 
 import java.util.List;
 
