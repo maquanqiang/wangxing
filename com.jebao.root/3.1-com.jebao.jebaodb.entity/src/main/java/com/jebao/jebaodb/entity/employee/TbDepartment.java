@@ -3,11 +3,11 @@ package com.jebao.jebaodb.entity.employee;
 public class TbDepartment {
     private Integer depId;
 
-    private String depCode;
-
     private String depName;
 
     private Integer depParentId;
+
+    private Boolean depIsDepartment;
 
     public Integer getDepId() {
         return depId;
@@ -15,14 +15,6 @@ public class TbDepartment {
 
     public void setDepId(Integer depId) {
         this.depId = depId;
-    }
-
-    public String getDepCode() {
-        return depCode;
-    }
-
-    public void setDepCode(String depCode) {
-        this.depCode = depCode == null ? null : depCode.trim();
     }
 
     public String getDepName() {
@@ -39,5 +31,13 @@ public class TbDepartment {
 
     public void setDepParentId(Integer depParentId) {
         this.depParentId = depParentId;
+    }
+
+    public Boolean getDepIsDepartment() {
+        return depIsDepartment;
+    }
+
+    public void setDepIsDepartment(Boolean depIsDepartment) {
+        this.depIsDepartment = depIsDepartment;
     }
 }

@@ -5,8 +5,6 @@ import java.util.Date;
 public class TbEmployee {
     private Integer empId;
 
-    private String empCode;
-
     private String empName;
 
     private String empMobilephone;
@@ -35,14 +33,6 @@ public class TbEmployee {
 
     public void setEmpId(Integer empId) {
         this.empId = empId;
-    }
-
-    public String getEmpCode() {
-        return empCode;
-    }
-
-    public void setEmpCode(String empCode) {
-        this.empCode = empCode == null ? null : empCode.trim();
     }
 
     public String getEmpName() {

@@ -3,7 +3,7 @@
 <mapper namespace="com.jebao.jebaodb.dao.mapper.employee.TbEmpDepRelationshipMapper" >
   <resultMap id="BaseResultMap" type="com.jebao.jebaodb.entity.employee.TbEmpDepRelationship" >
     <id column="edr_id" property="edrId" jdbcType="INTEGER" />
-    <result column="edr_emp_code" property="edrEmpCode" jdbcType="VARCHAR" />
+    <result column="edr_emp_id" property="edrEmpId" jdbcType="INTEGER" />
     <result column="edr_dep_id" property="edrDepId" jdbcType="INTEGER" />
     <result column="edr_effect_date" property="edrEffectDate" jdbcType="DATE" />
     <result column="edr_expiry_date" property="edrExpiryDate" jdbcType="DATE" />
@@ -11,7 +11,7 @@
     <result column="edr_create_user" property="edrCreateUser" jdbcType="INTEGER" />
   </resultMap>
   <sql id="Base_Column_List" >
-    edr_id, edr_emp_code, edr_dep_id, edr_effect_date, edr_expiry_date, edr_create_time, 
+    edr_id, edr_emp_id, edr_dep_id, edr_effect_date, edr_expiry_date, edr_create_time, 
     edr_create_user
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
@@ -24,10 +24,10 @@
     <selectKey resultType="java.lang.Integer" keyProperty="edrId" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_emp_dep_relationship (edr_emp_code, edr_dep_id, edr_effect_date, 
+    insert into tb_emp_dep_relationship (edr_emp_id, edr_dep_id, edr_effect_date, 
       edr_expiry_date, edr_create_time, edr_create_user
       )
-    values (#{edrEmpCode,jdbcType=VARCHAR}, #{edrDepId,jdbcType=INTEGER}, #{edrEffectDate,jdbcType=DATE}, 
+    values (#{edrEmpId,jdbcType=INTEGER}, #{edrDepId,jdbcType=INTEGER}, #{edrEffectDate,jdbcType=DATE}, 
       #{edrExpiryDate,jdbcType=DATE}, #{edrCreateTime,jdbcType=TIMESTAMP}, #{edrCreateUser,jdbcType=INTEGER}
       )
   </insert>
@@ -37,8 +37,8 @@
     </selectKey>
     insert into tb_emp_dep_relationship
     <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="edrEmpCode != null" >
-        edr_emp_code,
+      <if test="edrEmpId != null" >
+        edr_emp_id,
       </if>
       <if test="edrDepId != null" >
         edr_dep_id,
@@ -57,8 +57,8 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="edrEmpCode != null" >
-        #{edrEmpCode,jdbcType=VARCHAR},
+      <if test="edrEmpId != null" >
+        #{edrEmpId,jdbcType=INTEGER},
       </if>
       <if test="edrDepId != null" >
         #{edrDepId,jdbcType=INTEGER},
@@ -80,8 +80,8 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.jebao.jebaodb.entity.employee.TbEmpDepRelationship" >
     update tb_emp_dep_relationship
     <set >
-      <if test="edrEmpCode != null" >
-        edr_emp_code = #{edrEmpCode,jdbcType=VARCHAR},
+      <if test="edrEmpId != null" >
+        edr_emp_id = #{edrEmpId,jdbcType=INTEGER},
       </if>
       <if test="edrDepId != null" >
         edr_dep_id = #{edrDepId,jdbcType=INTEGER},
@@ -103,7 +103,7 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.jebao.jebaodb.entity.employee.TbEmpDepRelationship" >
     update tb_emp_dep_relationship
-    set edr_emp_code = #{edrEmpCode,jdbcType=VARCHAR},
+    set edr_emp_id = #{edrEmpId,jdbcType=INTEGER},
       edr_dep_id = #{edrDepId,jdbcType=INTEGER},
       edr_effect_date = #{edrEffectDate,jdbcType=DATE},
       edr_expiry_date = #{edrExpiryDate,jdbcType=DATE},
@@ -111,4 +111,14 @@
       edr_create_user = #{edrCreateUser,jdbcType=INTEGER}
     where edr_id = #{edrId,jdbcType=INTEGER}
   </update>
+
+
+  <!--==================================================华丽分割线==================================================-->
+  <select id="selectCurrentEmpRelation" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+    select
+    <include refid="Base_Column_List" />
+    from tb_emp_dep_relationship
+    where edr_emp_id = #{edrEmpId,jdbcType=INTEGER} ORDER BY edr_effect_date DESC LIMIT 0,1
+  </select>
+
 </mapper>

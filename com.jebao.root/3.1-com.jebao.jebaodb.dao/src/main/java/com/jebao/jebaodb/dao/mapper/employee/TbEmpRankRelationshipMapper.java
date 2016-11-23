@@ -12,4 +12,12 @@ public interface TbEmpRankRelationshipMapper {
     int updateByPrimaryKeySelective(TbEmpRankRelationship record);
 
     int updateByPrimaryKey(TbEmpRankRelationship record);
+    //-----------------------------------------------------
+
+    /**
+     * 查询员工的当前职级关系
+     * @param empId 员工id
+     * @return 当前员工职级关系
+     */
+    TbEmpRankRelationship selectCurrentEmpRelation(Integer empId);
 }

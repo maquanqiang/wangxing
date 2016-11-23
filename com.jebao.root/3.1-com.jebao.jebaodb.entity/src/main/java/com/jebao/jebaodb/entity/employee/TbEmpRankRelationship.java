@@ -5,7 +5,7 @@ import java.util.Date;
 public class TbEmpRankRelationship {
     private Integer errId;
 
-    private String errEmpCode;
+    private Integer errEmpId;
 
     private Integer errRankId;
 
@@ -25,12 +25,12 @@ public class TbEmpRankRelationship {
         this.errId = errId;
     }
 
-    public String getErrEmpCode() {
-        return errEmpCode;
+    public Integer getErrEmpId() {
+        return errEmpId;
     }
 
-    public void setErrEmpCode(String errEmpCode) {
-        this.errEmpCode = errEmpCode == null ? null : errEmpCode.trim();
+    public void setErrEmpId(Integer errEmpId) {
+        this.errEmpId = errEmpId;
     }
 
     public Integer getErrRankId() {
