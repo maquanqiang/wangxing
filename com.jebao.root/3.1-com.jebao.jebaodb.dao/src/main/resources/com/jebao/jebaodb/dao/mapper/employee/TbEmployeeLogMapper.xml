@@ -3,13 +3,13 @@
 <mapper namespace="com.jebao.jebaodb.dao.mapper.employee.TbEmployeeLogMapper" >
   <resultMap id="BaseResultMap" type="com.jebao.jebaodb.entity.employee.TbEmployeeLog" >
     <id column="el_id" property="elId" jdbcType="INTEGER" />
-    <result column="el_emp_code" property="elEmpCode" jdbcType="VARCHAR" />
+    <result column="el_emp_id" property="elEmpId" jdbcType="INTEGER" />
     <result column="el_content" property="elContent" jdbcType="VARCHAR" />
     <result column="el_operator" property="elOperator" jdbcType="INTEGER" />
     <result column="el_operate_time" property="elOperateTime" jdbcType="TIMESTAMP" />
   </resultMap>
   <sql id="Base_Column_List" >
-    el_id, el_emp_code, el_content, el_operator, el_operate_time
+    el_id, el_emp_id, el_content, el_operator, el_operate_time
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
@@ -21,9 +21,9 @@
     <selectKey resultType="java.lang.Integer" keyProperty="elId" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_employee_log (el_emp_code, el_content, el_operator, 
+    insert into tb_employee_log (el_emp_id, el_content, el_operator, 
       el_operate_time)
-    values (#{elEmpCode,jdbcType=VARCHAR}, #{elContent,jdbcType=VARCHAR}, #{elOperator,jdbcType=INTEGER}, 
+    values (#{elEmpId,jdbcType=INTEGER}, #{elContent,jdbcType=VARCHAR}, #{elOperator,jdbcType=INTEGER}, 
       #{elOperateTime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.jebao.jebaodb.entity.employee.TbEmployeeLog" >
@@ -32,8 +32,8 @@
     </selectKey>
     insert into tb_employee_log
     <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="elEmpCode != null" >
-        el_emp_code,
+      <if test="elEmpId != null" >
+        el_emp_id,
       </if>
       <if test="elContent != null" >
         el_content,
@@ -46,8 +46,8 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="elEmpCode != null" >
-        #{elEmpCode,jdbcType=VARCHAR},
+      <if test="elEmpId != null" >
+        #{elEmpId,jdbcType=INTEGER},
       </if>
       <if test="elContent != null" >
         #{elContent,jdbcType=VARCHAR},
@@ -63,8 +63,8 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.jebao.jebaodb.entity.employee.TbEmployeeLog" >
     update tb_employee_log
     <set >
-      <if test="elEmpCode != null" >
-        el_emp_code = #{elEmpCode,jdbcType=VARCHAR},
+      <if test="elEmpId != null" >
+        el_emp_id = #{elEmpId,jdbcType=INTEGER},
       </if>
       <if test="elContent != null" >
         el_content = #{elContent,jdbcType=VARCHAR},
@@ -80,7 +80,7 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.jebao.jebaodb.entity.employee.TbEmployeeLog" >
     update tb_employee_log
-    set el_emp_code = #{elEmpCode,jdbcType=VARCHAR},
+    set el_emp_id = #{elEmpId,jdbcType=INTEGER},
       el_content = #{elContent,jdbcType=VARCHAR},
       el_operator = #{elOperator,jdbcType=INTEGER},
       el_operate_time = #{elOperateTime,jdbcType=TIMESTAMP}

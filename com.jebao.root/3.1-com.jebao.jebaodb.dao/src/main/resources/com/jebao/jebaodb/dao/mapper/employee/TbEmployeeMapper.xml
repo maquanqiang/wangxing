@@ -3,7 +3,6 @@
 <mapper namespace="com.jebao.jebaodb.dao.mapper.employee.TbEmployeeMapper" >
     <resultMap id="BaseResultMap" type="com.jebao.jebaodb.entity.employee.TbEmployee" >
         <id column="emp_id" property="empId" jdbcType="INTEGER" />
-        <result column="emp_code" property="empCode" jdbcType="VARCHAR" />
         <result column="emp_name" property="empName" jdbcType="VARCHAR" />
         <result column="emp_mobilephone" property="empMobilephone" jdbcType="VARCHAR" />
         <result column="emp_card_no" property="empCardNo" jdbcType="VARCHAR" />
@@ -17,9 +16,8 @@
         <result column="emp_create_user" property="empCreateUser" jdbcType="INTEGER" />
     </resultMap>
     <sql id="Base_Column_List" >
-        emp_id, emp_code, emp_name, emp_mobilephone, emp_card_no, emp_sex, emp_birthday,
-        emp_status, emp_entry_date, emp_dimission_date, emp_is_deleted, emp_create_time,
-        emp_create_user
+        emp_id, emp_name, emp_mobilephone, emp_card_no, emp_sex, emp_birthday, emp_status,
+        emp_entry_date, emp_dimission_date, emp_is_deleted, emp_create_time, emp_create_user
     </sql>
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
         select
@@ -31,16 +29,14 @@
         <selectKey resultType="java.lang.Integer" keyProperty="empId" order="AFTER" >
             SELECT LAST_INSERT_ID()
         </selectKey>
-        insert into tb_employee (emp_code, emp_name, emp_mobilephone,
-        emp_card_no, emp_sex, emp_birthday,
-        emp_status, emp_entry_date, emp_dimission_date,
-        emp_is_deleted, emp_create_time, emp_create_user
-        )
-        values (#{empCode,jdbcType=VARCHAR}, #{empName,jdbcType=VARCHAR}, #{empMobilephone,jdbcType=VARCHAR},
-        #{empCardNo,jdbcType=VARCHAR}, #{empSex,jdbcType=INTEGER}, #{empBirthday,jdbcType=DATE},
-        #{empStatus,jdbcType=INTEGER}, #{empEntryDate,jdbcType=DATE}, #{empDimissionDate,jdbcType=DATE},
-        #{empIsDeleted,jdbcType=BIT}, #{empCreateTime,jdbcType=TIMESTAMP}, #{empCreateUser,jdbcType=INTEGER}
-        )
+        insert into tb_employee (emp_name, emp_mobilephone, emp_card_no,
+        emp_sex, emp_birthday, emp_status,
+        emp_entry_date, emp_dimission_date, emp_is_deleted,
+        emp_create_time, emp_create_user)
+        values (#{empName,jdbcType=VARCHAR}, #{empMobilephone,jdbcType=VARCHAR}, #{empCardNo,jdbcType=VARCHAR},
+        #{empSex,jdbcType=INTEGER}, #{empBirthday,jdbcType=DATE}, #{empStatus,jdbcType=INTEGER},
+        #{empEntryDate,jdbcType=DATE}, #{empDimissionDate,jdbcType=DATE}, #{empIsDeleted,jdbcType=BIT},
+        #{empCreateTime,jdbcType=TIMESTAMP}, #{empCreateUser,jdbcType=INTEGER})
     </insert>
     <insert id="insertSelective" parameterType="com.jebao.jebaodb.entity.employee.TbEmployee" >
         <selectKey resultType="java.lang.Integer" keyProperty="empId" order="AFTER" >
@@ -48,9 +44,6 @@
         </selectKey>
         insert into tb_employee
         <trim prefix="(" suffix=")" suffixOverrides="," >
-            <if test="empCode != null" >
-                emp_code,
-            </if>
             <if test="empName != null" >
                 emp_name,
             </if>
@@ -86,9 +79,6 @@
             </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides="," >
-            <if test="empCode != null" >
-                #{empCode,jdbcType=VARCHAR},
-            </if>
             <if test="empName != null" >
                 #{empName,jdbcType=VARCHAR},
             </if>
@@ -127,9 +117,6 @@
     <update id="updateByPrimaryKeySelective" parameterType="com.jebao.jebaodb.entity.employee.TbEmployee" >
         update tb_employee
         <set >
-            <if test="empCode != null" >
-                emp_code = #{empCode,jdbcType=VARCHAR},
-            </if>
             <if test="empName != null" >
                 emp_name = #{empName,jdbcType=VARCHAR},
             </if>
@@ -168,8 +155,7 @@
     </update>
     <update id="updateByPrimaryKey" parameterType="com.jebao.jebaodb.entity.employee.TbEmployee" >
         update tb_employee
-        set emp_code = #{empCode,jdbcType=VARCHAR},
-        emp_name = #{empName,jdbcType=VARCHAR},
+        set emp_name = #{empName,jdbcType=VARCHAR},
         emp_mobilephone = #{empMobilephone,jdbcType=VARCHAR},
         emp_card_no = #{empCardNo,jdbcType=VARCHAR},
         emp_sex = #{empSex,jdbcType=INTEGER},
@@ -182,6 +168,7 @@
         emp_create_user = #{empCreateUser,jdbcType=INTEGER}
         where emp_id = #{empId,jdbcType=INTEGER}
     </update>
+
 
     <!--==================================================华丽分割线==================================================-->
     <resultMap id="EmployeeResultMap" type="com.jebao.jebaodb.entity.employee.EmployeeInfo">
@@ -198,23 +185,20 @@
                      resultMap="com.jebao.jebaodb.dao.mapper.employee.TbRankMapper.BaseResultMap" />
     </resultMap>
 
-    <select id="selectEmployeeDetailsInfo" resultMap="EmployeeResultMap" parameterType="com.jebao.jebaodb.entity.search.EmployeeSM">
+    <select id="selectEmployeeDetailsInfo" resultMap="EmployeeResultMap" parameterType="com.jebao.jebaodb.entity.employee.search.EmployeeSM">
         SELECT * FROM v_employee
         <where>
             <include refid="dynamicJoinWehre"/>
         </where>
         order by emp_id DESC LIMIT #{begin},#{pageSize}
     </select>
-    <select id="selectEmployeeDetailsInfoCount" resultType="integer" parameterType="com.jebao.jebaodb.entity.search.EmployeeSM">
+    <select id="selectEmployeeDetailsInfoCount" resultType="integer" parameterType="com.jebao.jebaodb.entity.employee.search.EmployeeSM">
         SELECT COUNT(1) FROM v_employee
         <where>
             <include refid="dynamicJoinWehre"/>
         </where>
     </select>
     <sql id="dynamicWehre">
-        <if test="empCode != null">
-            AND emp_code = #{empCode,jdbcType=VARCHAR}
-        </if>
         <if test="empName != null">
             AND emp_name = #{empName,jdbcType=VARCHAR}
         </if>
@@ -241,8 +225,8 @@
         </if>
     </sql>
     <sql id="dynamicJoinWehre">
-        <if test="empCode != null and empCode != ''">
-            AND emp_code = #{empCode,jdbcType=VARCHAR}
+        <if test="empId != null and empId != ''">
+            AND emp_id = #{empId,jdbcType=INTEGER}
         </if>
         <if test="name != null and name != ''">
             AND emp_name = #{name,jdbcType=VARCHAR}

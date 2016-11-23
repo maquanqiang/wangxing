@@ -3,7 +3,7 @@
 <mapper namespace="com.jebao.jebaodb.dao.mapper.employee.TbEmpRankRelationshipMapper" >
   <resultMap id="BaseResultMap" type="com.jebao.jebaodb.entity.employee.TbEmpRankRelationship" >
     <id column="err_id" property="errId" jdbcType="INTEGER" />
-    <result column="err_emp_code" property="errEmpCode" jdbcType="VARCHAR" />
+    <result column="err_emp_id" property="errEmpId" jdbcType="INTEGER" />
     <result column="err_rank_id" property="errRankId" jdbcType="INTEGER" />
     <result column="err_effect_date" property="errEffectDate" jdbcType="DATE" />
     <result column="err_expiry_date" property="errExpiryDate" jdbcType="DATE" />
@@ -11,7 +11,7 @@
     <result column="err_create_user" property="errCreateUser" jdbcType="INTEGER" />
   </resultMap>
   <sql id="Base_Column_List" >
-    err_id, err_emp_code, err_rank_id, err_effect_date, err_expiry_date, err_create_time, 
+    err_id, err_emp_id, err_rank_id, err_effect_date, err_expiry_date, err_create_time, 
     err_create_user
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
@@ -24,10 +24,10 @@
     <selectKey resultType="java.lang.Integer" keyProperty="errId" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_emp_rank_relationship (err_emp_code, err_rank_id, err_effect_date, 
+    insert into tb_emp_rank_relationship (err_emp_id, err_rank_id, err_effect_date, 
       err_expiry_date, err_create_time, err_create_user
       )
-    values (#{errEmpCode,jdbcType=VARCHAR}, #{errRankId,jdbcType=INTEGER}, #{errEffectDate,jdbcType=DATE}, 
+    values (#{errEmpId,jdbcType=INTEGER}, #{errRankId,jdbcType=INTEGER}, #{errEffectDate,jdbcType=DATE}, 
       #{errExpiryDate,jdbcType=DATE}, #{errCreateTime,jdbcType=TIMESTAMP}, #{errCreateUser,jdbcType=INTEGER}
       )
   </insert>
@@ -37,8 +37,8 @@
     </selectKey>
     insert into tb_emp_rank_relationship
     <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="errEmpCode != null" >
-        err_emp_code,
+      <if test="errEmpId != null" >
+        err_emp_id,
       </if>
       <if test="errRankId != null" >
         err_rank_id,
@@ -57,8 +57,8 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="errEmpCode != null" >
-        #{errEmpCode,jdbcType=VARCHAR},
+      <if test="errEmpId != null" >
+        #{errEmpId,jdbcType=INTEGER},
       </if>
       <if test="errRankId != null" >
         #{errRankId,jdbcType=INTEGER},
@@ -80,8 +80,8 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.jebao.jebaodb.entity.employee.TbEmpRankRelationship" >
     update tb_emp_rank_relationship
     <set >
-      <if test="errEmpCode != null" >
-        err_emp_code = #{errEmpCode,jdbcType=VARCHAR},
+      <if test="errEmpId != null" >
+        err_emp_id = #{errEmpId,jdbcType=INTEGER},
       </if>
       <if test="errRankId != null" >
         err_rank_id = #{errRankId,jdbcType=INTEGER},
@@ -103,7 +103,7 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.jebao.jebaodb.entity.employee.TbEmpRankRelationship" >
     update tb_emp_rank_relationship
-    set err_emp_code = #{errEmpCode,jdbcType=VARCHAR},
+    set err_emp_id = #{errEmpId,jdbcType=INTEGER},
       err_rank_id = #{errRankId,jdbcType=INTEGER},
       err_effect_date = #{errEffectDate,jdbcType=DATE},
       err_expiry_date = #{errExpiryDate,jdbcType=DATE},
@@ -111,4 +111,14 @@
       err_create_user = #{errCreateUser,jdbcType=INTEGER}
     where err_id = #{errId,jdbcType=INTEGER}
   </update>
+
+
+  <!--==================================================华丽分割线==================================================-->
+  <select id="selectCurrentEmpRelation" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+    select
+    <include refid="Base_Column_List" />
+    from tb_emp_rank_relationship
+    where err_emp_id = #{errEmpId,jdbcType=INTEGER} ORDER BY err_effect_date DESC LIMIT 0,1
+  </select>
+
 </mapper>

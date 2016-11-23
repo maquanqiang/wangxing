@@ -16,7 +16,7 @@ public class EmployeeVM extends ViewModel {
     public EmployeeVM(EmployeeInfo entity) {
         TbEmployee employee = entity.getEmployee();
         if (employee != null) {
-            this.code = employee.getEmpCode();
+            this.id = employee.getEmpId();
             this.name = employee.getEmpName();
             this.mobile = employee.getEmpMobilephone();
             this.cardNo = employee.getEmpCardNo();
@@ -38,7 +38,7 @@ public class EmployeeVM extends ViewModel {
         }
     }
 
-    private String code;
+    private Integer id;
 
     private String name;
 
@@ -61,12 +61,12 @@ public class EmployeeVM extends ViewModel {
     private int departmentId;
     private String departmentName;
 
-    public String getCode() {
-        return code;
+    public Integer getId() {
+        return id;
     }
 
-    public void setCode(String code) {
-        this.code = code;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getName() {

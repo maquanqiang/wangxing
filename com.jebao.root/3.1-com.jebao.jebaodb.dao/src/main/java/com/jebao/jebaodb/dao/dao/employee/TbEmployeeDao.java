@@ -3,7 +3,7 @@ package com.jebao.jebaodb.dao.dao.employee;
 import com.jebao.jebaodb.dao.mapper.employee.TbEmployeeMapper;
 import com.jebao.jebaodb.entity.employee.EmployeeInfo;
 import com.jebao.jebaodb.entity.employee.TbEmployee;
-import com.jebao.jebaodb.entity.search.EmployeeSM;
+import com.jebao.jebaodb.entity.employee.search.EmployeeSM;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
