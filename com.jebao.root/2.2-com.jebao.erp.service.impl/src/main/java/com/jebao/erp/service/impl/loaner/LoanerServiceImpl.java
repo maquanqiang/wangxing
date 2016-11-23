@@ -83,6 +83,12 @@ public class LoanerServiceImpl implements ILoanerServiceInf {
         if(StringUtils.isEmpty(phone)){
             return null;
         }
+        TbLoaner record = new TbLoaner();
+        record.setlPhone(phone);
+        int result = tbLoanerDao.selectByParamsForPageCount(record);
+        if(result > 0 ){
+            return null;
+        }
         TbLoginInfo loginInfo = tbLoginInfoDao.selectByLoginName(phone);
         if (loginInfo == null) {
             return null;
