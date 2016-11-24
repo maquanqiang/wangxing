@@ -2,7 +2,7 @@
  * Created by Jack on 2016/11/18.
  */
 $(function () {
-    $("#search_form .select2").select2();
+    $("#search_form select.select2").select2();
 });
 (function($) {
     $.fn.bootstrapValidator.validators.idCard = {
@@ -57,7 +57,9 @@ var model = {
     //销售级别
     ranks: [],
     //员工列表
-    employees:[]
+    employees:[],
+    //弹窗vm实例
+    openFormVm:{}
 };
 
 // 创建一个 Vue 实例 (ViewModel),它连接 View 与 Model
@@ -101,9 +103,36 @@ var vm = new Vue({
             if (typeof event !== "undefined"){ //点击查询按钮的话，是查询第一页数据
                 model.searchObj.pageIndex=0;
             }
+            model.searchObj.teamId=$("#teamId").val();
+            model.searchObj.rankId=$("#rankId").val();
             $("#btnSearch").addClass("disabled");//禁用按钮
             $.get("/api/employee/list",model.searchObj,function(response){
                 if (response.success_is_ok){
+                    //递归查询所属部门
+                    var findParentDepartmentFunc = function(teamId){
+                        var parentId=0;
+                        //先检测它本身是否是部门级别，不是的话返回它的父级id
+                        for(var i=0;i<vm.teams.length;i++){
+                            var item = vm.teams[i];
+                            if(item.id === teamId){
+                                if (item.isDepartment){
+                                    return item.name;
+                                }
+                                parentId = item.parentId;
+                            }
+                        }
+                        for(var i=0;i<vm.teams.length;i++){
+                            var item = vm.teams[i];
+                            if(item.id === parentId){
+                                return item.isDepartment ? item.name :findParentDepartmentFunc(item.id);
+                            }
+                        }
+                        return "";
+                    }
+                    for (var i=0;i<response.data.length;i++){
+                        var item =response.data[i];
+                        item.departmentName =findParentDepartmentFunc(item.teamId);
+                    }
                     vm.employees=response.data;
                     if (response.count>0){
                         var pageCount = Math.ceil(response.count / model.pageSize);
@@ -125,6 +154,26 @@ var vm = new Vue({
                 }
                 $("#btnSearch").removeClass("disabled");//解除禁用
             });
+        },
+        findParentDepartmentFunc:function(teamId){
+            var parentId=0;
+            //先检测它本身是否是部门级别，不是的话返回它的父级id
+            for(var i=0;i<vm.teams.length;i++){
+                var item = vm.teams[i];
+                if(item.id === teamId){
+                    if (item.isDepartment){
+                        return {id:item.id,name:item.name};
+                    }
+                    parentId = item.parentId;
+                }
+            }
+            for(var i=0;i<vm.teams.length;i++){
+                var item = vm.teams[i];
+                if(item.id === parentId){
+                    return item.isDepartment ? {id:item.id,name:item.name} :findParentDepartmentFunc(item.id);
+                }
+            }
+            return {id:0,name:""};
         },
         //绑定表单验证
         bindFormValidate:function($form){
@@ -191,58 +240,36 @@ var vm = new Vue({
             });
         },
         post:function($form){
-            console.log("post...")
+            var $button =$form.parent().parent().children(".layui-layer-btn").children("a:first");
+            $button.addClass("btn disabled");
+            layer.load(2);
             var submitModel = $form.serializeObject();
             $.post("/api/employee/post",submitModel,function(response){
                 if (response.success_is_ok){
-                    layer.alert('添加成功！', function () {
+                    layer.msg(response.msg, function () {
                         layer.closeAll();
                     });
                     vm.search();
                 }else{
-                    alert(response.msg);
+                    vm.openFormVm.error.hide=false;
+                    vm.openFormVm.error.message=response.msg;
                 }
-
-            })
-        },
-        openAddForm:function(){
-            var tempObj= $('#addInforModal').clone();
-            tempObj.find('form').prop('id','insertFormId');
-            var tempHtml=tempObj.html();
-            layer.open({
-                title:'添加员工',
-                content:tempHtml,
-                btn: ['添加', '重置'],
-                area:['500px'],
-                btn1: function(){
-                    var $form = $("#insertFormId");
-                    var bootstrapValidator = $form.data('bootstrapValidator').validate();
-                    //选择员工职位看是否能显示
-                    if(!bootstrapValidator.isValid()){
-                        return false;
-                    }else{
-                        vm.post($form);
-                    }
-                },
-                btn2: function(){
-                    var $form =$("#insertFormId");
-                    var bootstrapValidator =$form.data('bootstrapValidator');
-                    if(typeof bootstrapValidator !== "undefined"){
-                        bootstrapValidator.resetForm();
-                    }
-                    $form[0].reset();
-                    return false;
-                }
+                $button.removeClass("disabled");
             });
-
-            var openFormVm = new Vue({
-                el: "#insertFormId",
-                data: {
-                    ranks:vm.ranks,
-                    departments:vm.departments,
-                    formData:$("#insertFormId").serializeObject(),
-                    teamClass:"",
-                },
+        },
+        createOpenVm:function(form,empId){
+            var openVmModel ={
+                form:form,
+                ranks:vm.ranks,
+                departments:vm.departments,
+                formData:$(form).serializeObject(),
+                teamClass:"",
+                error:{hide:true,message:""}
+            };
+            openVmModel.formData.empId=empId;
+            vm.openFormVm = new Vue({
+                el: openVmModel.form,
+                data: openVmModel,
                 computed:{
                     //根据选择部门动态变化所属团队
                     partOfTeams:function(){
@@ -261,18 +288,41 @@ var vm = new Vue({
                         if(departmentId>0){
                             recursiveFunc(departmentId);
                         }
-                        this.formData.teamId=0;//回归 请选择
+                        if(openVmModel.formData.empId==0){
+                            this.formData.teamId=0;//回归 请选择
+                        }
                         return localPartOfTeams;
+                    },
+                    isEdit:function(){
+                        return this.formData.empId>0;
                     }
                 },
                 beforeCreate:function(){
-
+                    var empId =openVmModel.formData.empId;
+                    //填充窗体数据
+                    if (empId>0){
+                        for (var i=0;i<vm.employees.length;i++){
+                            var item =vm.employees[i];
+                            if (item.id==empId){
+                                openVmModel.formData.name = item.name;
+                                openVmModel.formData.mobile = item.mobile;
+                                openVmModel.formData.cardNo = item.cardNo;
+                                openVmModel.formData.rankId = item.rankId;
+                                openVmModel.formData.departmentId = vm.findParentDepartmentFunc(item.teamId).id;
+                                openVmModel.formData.teamId = item.teamId;
+                            }
+                        }
+                    }
                 },
                 created:function(){
-                    var $form = $('#insertFormId');
+
+                },
+                mounted:function(){
+                    var $form = $(openVmModel.form);
                     vm.bindFormValidate($form);
                 },
-                watch: { //watch可以监视数据变动，针对相应的数据设置监视函数即可
+                //watch可以监视数据变动，针对相应的数据设置监视函数即可
+                watch: {
                     // 这个回调将在 `formData.rankId`  改变后调用
                     "formData.rankId": function (newVal,oldVal) {
                         var text = $("#insertFormId .rank").find("option:selected").text();
@@ -284,7 +334,55 @@ var vm = new Vue({
                     }
                 },
             });
+        },
+        openPostForm:function(empId){
+            if (isNaN(empId)){empId=0;}
+            var tempObj= $('#addInforModal').clone();
+            tempObj.find('form').prop('id','insertFormId');
+            var tempHtml=tempObj.html();
+            layer.open({
+                title:empId>0?'修改员工信息':'添加员工',
+                content:tempHtml,
+                btn: ['保存', '重置'],
+                area:['500px'],
+                btn1: function(){
+                    var $form = $("#insertFormId");
+                    var bootstrapValidator = $form.data('bootstrapValidator').validate();
+                    if(!bootstrapValidator.isValid()){
+                        return false;
+                    }else{
+                        vm.post($form);
+                    }
+                },
+                btn2: function(){
+                    var $form =$("#insertFormId");
+                    var bootstrapValidator =$form.data('bootstrapValidator');
+                    if(typeof bootstrapValidator !== "undefined"){
+                        bootstrapValidator.resetForm();
+                    }
+                    $form[0].reset();
+                    return false;
+                }
+            });
+            vm.createOpenVm("#insertFormId",empId);
 
+        },
+        openEditForm:function(empId){
+            vm.openPostForm(empId);
+        },
+        openDeleteWin:function(empId){
+            layer.confirm('确定要删除吗?', {icon: 3, title:'询问'}, function(index){
+                layer.load(2);
+                $.post("/api/employee/delete",{empId:empId},function(response){
+                    if (response.success_is_ok){
+                        layer.msg(response.msg);
+                        vm.search();
+                    }else{
+                        layer.alert(response.msg);
+                    }
+                });
+                layer.closeAll();
+            });
         }
     }
 });

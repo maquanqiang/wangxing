@@ -48,4 +48,11 @@ public class AccountController extends _BaseController {
         //
         return new JsonResultOk("登录成功");
     }
+
+    @RequestMapping("logout")
+    public String logout(){
+        LoginSessionUtil.logout(request,response);
+        return "redirect:/home/index";
+    }
+
 }
