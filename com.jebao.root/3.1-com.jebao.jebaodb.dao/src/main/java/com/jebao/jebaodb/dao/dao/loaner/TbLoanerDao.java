@@ -46,10 +46,19 @@ public class TbLoanerDao {
     }
     public List<TbLoaner> selectByParamsForPage(TbLoaner record,PageWhere pageWhere)
     {
+        if (record == null){
+            record = new TbLoaner();
+        }
+        if(pageWhere == null){
+            pageWhere = new PageWhere(0,10);
+        }
         return tbLoanerMapper.selectByParamsForPage(record, pageWhere);
     }
     public int selectByParamsForPageCount(TbLoaner record)
     {
+        if (record == null){
+            record = new TbLoaner();
+        }
         return tbLoanerMapper.selectByParamsForPageCount(record);
     }
     @Transactional

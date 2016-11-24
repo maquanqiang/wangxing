@@ -12,11 +12,13 @@ public class DepartmentVM extends ViewModel {
         this.id = entity.getDepId();
         this.name = entity.getDepName();
         this.parentId = entity.getDepParentId();
+        this.isDepartment=entity.getDepIsDepartment();
     }
 
     private int id;
     private String name;
     private int parentId;
+    private boolean isDepartment;
 
     public int getId() {
         return id;
@@ -40,5 +42,13 @@ public class DepartmentVM extends ViewModel {
 
     public void setParentId(int parentId) {
         this.parentId = parentId;
+    }
+
+    public boolean getIsDepartment() {
+        return isDepartment;
+    }
+
+    public void setIsDepartment(boolean department) {
+        isDepartment = department;
     }
 }

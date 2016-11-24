@@ -5,7 +5,7 @@ import java.util.Date;
 public class TbEmpDepRelationship {
     private Integer edrId;
 
-    private String edrEmpCode;
+    private Integer edrEmpId;
 
     private Integer edrDepId;
 
@@ -25,12 +25,12 @@ public class TbEmpDepRelationship {
         this.edrId = edrId;
     }
 
-    public String getEdrEmpCode() {
-        return edrEmpCode;
+    public Integer getEdrEmpId() {
+        return edrEmpId;
     }
 
-    public void setEdrEmpCode(String edrEmpCode) {
-        this.edrEmpCode = edrEmpCode == null ? null : edrEmpCode.trim();
+    public void setEdrEmpId(Integer edrEmpId) {
+        this.edrEmpId = edrEmpId;
     }
 
     public Integer getEdrDepId() {

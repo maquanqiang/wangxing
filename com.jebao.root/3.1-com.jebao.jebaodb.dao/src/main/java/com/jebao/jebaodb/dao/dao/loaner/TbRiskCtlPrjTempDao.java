@@ -39,16 +39,29 @@ public class TbRiskCtlPrjTempDao {
     {
         return tbRiskCtlPrjTempMapper.deleteByPrimaryKey(rcptId);
     }
+    public int deleteByLoanerId(Long loanerId)
+    {
+        return tbRiskCtlPrjTempMapper.deleteByLoanerId(loanerId);
+    }
     public List<TbRiskCtlPrjTemp> selectForPage(PageWhere pageWhere)
     {
         return tbRiskCtlPrjTempMapper.selectForPage(pageWhere);
     }
     public List<TbRiskCtlPrjTemp> selectByLoanerIdForPage(TbRiskCtlPrjTemp record,PageWhere pageWhere)
     {
+        if (record == null){
+            record = new TbRiskCtlPrjTemp();
+        }
+        if(pageWhere == null){
+            pageWhere = new PageWhere(0,10);
+        }
         return tbRiskCtlPrjTempMapper.selectByLoanerIdForPage(record, pageWhere);
     }
     public int selectByLoanerIdForPageCount(TbRiskCtlPrjTemp record)
     {
+        if (record == null){
+            record = new TbRiskCtlPrjTemp();
+        }
         return tbRiskCtlPrjTempMapper.selectByLoanerIdForPageCount(record);
     }
     @Transactional

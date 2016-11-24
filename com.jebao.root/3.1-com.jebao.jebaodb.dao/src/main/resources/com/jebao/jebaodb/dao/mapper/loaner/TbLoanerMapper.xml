@@ -461,13 +461,13 @@
     </select>
     <sql id="selectByParams_Where_Clause">
         l_is_del = 1
-        <if test="record.lNickName != null" >
+        <if test="record.lNickName != null and record.lNickName != ''" >
             AND l_nick_name = #{record.lNickName}
         </if>
-        <if test="record.lPhone != null" >
+        <if test="record.lPhone != null and record.lPhone != ''" >
             AND l_phone = #{record.lPhone}
         </if>
-        <if test="record.lTrueName != null" >
+        <if test="record.lTrueName != null and record.lTrueName != ''" >
             AND l_true_name = #{record.lTrueName}
         </if>
     </sql>

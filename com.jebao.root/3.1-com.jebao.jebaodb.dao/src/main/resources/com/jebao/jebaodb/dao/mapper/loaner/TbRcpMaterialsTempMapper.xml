@@ -139,6 +139,11 @@
         set rcpmt_is_del = 2
         where rcpmt_id = #{rcpmtId,jdbcType=BIGINT}
     </update>
+    <update id="deleteByProjectId" parameterType="java.lang.Long" >
+        update tb_rcp_materials_temp
+        set rcpmt_is_del = 2
+        where rcpmt_project_id = #{rcpmtProjectId,jdbcType=BIGINT}
+    </update>
     <select id="selectForPage" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>

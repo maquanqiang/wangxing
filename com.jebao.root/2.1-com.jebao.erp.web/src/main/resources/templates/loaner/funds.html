@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+<head>#parse("common/head.html")
+</head>
+<body class="skin-blue sidebar-mini">
+#parse("common/main-header.html")
+<!-- Left side column. contains the logo and sidebar -->
+#parse("common/main-sidebar.html")
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h1>资金信息</h1>
+    </section>
+    <!-- Main content -->
+    <section class="content">
+        <!--资金概况-->
+        <div class="box-title">
+            <h5>资金概况</h5>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box box-primary">
+                    <div class="box-body">
+                        <div id="orderlist_table_wrapper" class="dataTables_wrapper">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <table id="orderlist_table" class="table table-bordered table-hover dataTable" role="grid" aria-describedby="orderlist_table_info">
+                                        <thead>
+                                        <tr role="row">
+                                            <th width="14%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">可用金额</th>
+                                            <th width="14%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">借款金额</th>
+                                            <th width="14%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">借款利息</th>
+                                            <th width="14%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">借款利息</th>
+                                            <th width="14%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">手续费</th>
+                                            <th width="14%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">待还金额</th>
+                                            <th width="14%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">待还利息</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr role="row">
+                                            <td>55656</td>
+                                            <td>6666</td>
+                                            <td>777</td>
+                                            <td>65656</td>
+                                            <td>146</td>
+                                            <td>999</td>
+                                            <td>3022</td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--充值提现-->
+        <div class="box-title">
+            <h5>充值提现</h5>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box box-primary">
+                    <div class="box-body">
+                        <div class="dataTables_wrapper">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <table class="table table-bordered table-hover dataTable" role="grid" aria-describedby="orderlist_table_info">
+                                        <thead>
+                                        <tr role="row">
+                                            <th width="25%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">充值次数</th>
+                                            <th width="25%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">充值金额</th>
+                                            <th width="25%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">提现次数</th>
+                                            <th width="25%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">提现金额</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr role="row">
+                                            <td>2</td>
+                                            <td>500</td>
+                                            <td>3</td>
+                                            <td>500</td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--充值提现明细-->
+        <div class="box-title">
+            <h5>充值提现明细</h5>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box box-primary">
+                    <div class="box-body">
+                        <div class="dataTables_wrapper">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <table id="" class="table table-bordered table-hover dataTable" role="grid" aria-describedby="orderlist_table_info">
+                                        <thead>
+                                        <tr role="row">
+                                            <th width="16%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">流水号</th>
+                                            <th width="16%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">用户名</th>
+                                            <th width="16%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">发生金额</th>
+                                            <th width="20%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">时间</th>
+                                            <th width="12%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">手续费</th>
+                                            <th width="12%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">类型</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr role="row">
+                                            <td>0000101011</td>
+                                            <td>长山龙姝姝</td>
+                                            <td>100</td>
+                                            <td>2016/10/01 8:01:09</td>
+                                            <td>2</td>
+                                            <td>充值</td>
+                                        </tr>
+                                        <tr role="row">
+                                            <td>0000101012</td>
+                                            <td>长山龙姝姝</td>
+                                            <td>100</td>
+                                            <td>2016/10/01 8:01:09</td>
+                                            <td>2</td>
+                                            <td>充值</td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+<!-- /.content-wrapper -->
+#parse("common/footer.html")
+</body>
+</html>

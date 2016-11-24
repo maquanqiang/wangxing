@@ -17,7 +17,6 @@ import com.jebao.jebaodb.entity.loaner.TbRcpMaterialsTemp;
 import com.jebao.jebaodb.entity.loaner.TbRiskCtlPrjTemp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.Date;
 import java.util.List;
 
@@ -40,8 +39,11 @@ public class LoanerServiceImpl implements ILoanerServiceInf {
     private TbRcpMaterialsTempDao tbRcpMaterialsTempDao;
 
     @Override
-    public int addLoaner(String phone) {
-        TbLoginInfo loginInfo = tbLoginInfoDao.selectByLoginName(phone);
+    public int addLoaner(TbLoaner entity) {
+        if(entity == null){
+            return 0;
+        }
+        TbLoginInfo loginInfo = tbLoginInfoDao.selectByLoginName(entity.getlPhone());
         if (loginInfo == null) {
             return 0;
         }
@@ -49,29 +51,65 @@ public class LoanerServiceImpl implements ILoanerServiceInf {
         if (userDetails == null) {
             return 0;
         }
-        TbLoaner loaner = new TbLoaner();
-        loaner.setlLoginId(loginInfo.getLiId());
-        loaner.setlNickName(userDetails.getUdNickName());
-        loaner.setlTrueName(userDetails.getUdTrueName());
-        loaner.setlRegisterTime(loginInfo.getLiCreateTime());
-        loaner.setlLastLoginTime(loginInfo.getLiLastLoginTime());
-        loaner.setlEmail(userDetails.getUdEmail());
-        loaner.setlIdNumber(userDetails.getUdIdNumber());
-        loaner.setlSex(IdCardUtil.getGenderByIdCard(userDetails.getUdIdNumber()));
-        loaner.setlAge(IdCardUtil.getAgeByIdCard(userDetails.getUdIdNumber()));
-        loaner.setlPhone(loginInfo.getLiLoginName());
-        loaner.setlThirdAccount(userDetails.getUdThirdAccount());
-        loaner.setlThirdPayPassword(userDetails.getUdThirdPayPassword());
-        loaner.setlThirdLoginPassword(userDetails.getUdThirdLoginPassword());
-        loaner.setlBankCardNo(userDetails.getUdBankCardNo());
-        loaner.setlBankCityName(userDetails.getUdBankCityName());
-        loaner.setlBankCityCode(userDetails.getUdBankCityCode());
-        loaner.setlBankParentBankCode(userDetails.getUdBankParentBankCode());
-        loaner.setlBankParentBankName(userDetails.getUdBankParentBankName());
-        loaner.setlCreateTime(new Date());
-        loaner.setlUpdateTime(new Date());
-        loaner.setlIsDel(1);
-        return tbLoanerDao.insertSelective(loaner);
+        entity.setlLoginId(loginInfo.getLiId());
+        entity.setlNickName(userDetails.getUdNickName());
+        entity.setlTrueName(userDetails.getUdTrueName());
+        entity.setlRegisterTime(loginInfo.getLiCreateTime());
+        entity.setlLastLoginTime(loginInfo.getLiLastLoginTime());
+        entity.setlEmail(userDetails.getUdEmail());
+        entity.setlIdNumber(userDetails.getUdIdNumber());
+        entity.setlSex(IdCardUtil.getGenderByIdCard(userDetails.getUdIdNumber()));
+        entity.setlAge(IdCardUtil.getAgeByIdCard(userDetails.getUdIdNumber()));
+        entity.setlPhone(loginInfo.getLiLoginName());
+        entity.setlThirdAccount(userDetails.getUdThirdAccount());
+        entity.setlThirdPayPassword(userDetails.getUdThirdPayPassword());
+        entity.setlThirdLoginPassword(userDetails.getUdThirdLoginPassword());
+        entity.setlBankCardNo(userDetails.getUdBankCardNo());
+        entity.setlBankCityName(userDetails.getUdBankCityName());
+        entity.setlBankCityCode(userDetails.getUdBankCityCode());
+        entity.setlBankParentBankCode(userDetails.getUdBankParentBankCode());
+        entity.setlBankParentBankName(userDetails.getUdBankParentBankName());
+        entity.setlCreateTime(new Date());
+        entity.setlUpdateTime(new Date());
+        entity.setlIsDel(1);
+        return tbLoanerDao.insertSelective(entity);
+    }
+
+    @Override
+    public TbLoaner getLoanerByPhone(String phone){
+        phone = phone.trim();
+        if(phone.length() == 0){
+            return null;
+        }
+
+        TbLoaner record = new TbLoaner();
+        record.setlPhone(phone);
+        int result = tbLoanerDao.selectByParamsForPageCount(record);
+        if(result > 0 ){
+            return null;
+        }
+        TbLoginInfo loginInfo = tbLoginInfoDao.selectByLoginName(phone);
+        if (loginInfo == null) {
+            return null;
+        }
+        TbUserDetails userDetails = tbUserDetailsDao.selectByLoginId(loginInfo.getLiId());
+        if (userDetails == null) {
+            return null;
+        }
+        TbLoaner entity = new TbLoaner();
+        entity.setlLoginId(loginInfo.getLiId());
+        entity.setlNickName(userDetails.getUdNickName());
+        entity.setlTrueName(userDetails.getUdTrueName());
+        entity.setlRegisterTime(loginInfo.getLiCreateTime());
+        entity.setlLastLoginTime(loginInfo.getLiLastLoginTime());
+        entity.setlEmail(userDetails.getUdEmail());
+        entity.setlIdNumber(userDetails.getUdIdNumber());
+        if(userDetails.getUdIdNumber().trim().length()>0){
+            entity.setlSex(IdCardUtil.getGenderByIdCard(userDetails.getUdIdNumber()));
+            entity.setlAge(IdCardUtil.getAgeByIdCard(userDetails.getUdIdNumber()));
+        }
+        entity.setlPhone(loginInfo.getLiLoginName());
+        return entity;
     }
 
     @Override
@@ -81,7 +119,19 @@ public class LoanerServiceImpl implements ILoanerServiceInf {
 
     @Override
     public int deleteLoanerById(Long lId) {
-        return tbLoanerDao.deleteByPrimaryKey(lId);
+        int result = tbLoanerDao.deleteByPrimaryKey(lId);
+        if(result > 0){
+            int rcpmCount = selectRiskCtlPrjTempByLoanerIdForPageCount(lId);
+            if(rcpmCount > 0){
+                List<TbRiskCtlPrjTemp> rcptList = selectRiskCtlPrjTempByLoanerIdForPage(lId, null);
+
+                for (TbRiskCtlPrjTemp item : rcptList) {
+                    tbRcpMaterialsTempDao.deleteByProjectId(item.getRcptId());
+                }
+                tbRiskCtlPrjTempDao.deleteByLoanerId(lId);
+            }
+        }
+        return result;
     }
 
     @Override
@@ -95,14 +145,12 @@ public class LoanerServiceImpl implements ILoanerServiceInf {
     }
 
     @Override
-    public List<TbLoaner> selectLoanerByParamsForPage(TbLoaner record, int pageIndex, int pageSize) {
-        PageWhere page = new PageWhere(pageIndex, pageSize);
+    public List<TbLoaner> selectLoanerByParamsForPage(TbLoaner record, PageWhere page) {
         return tbLoanerDao.selectByParamsForPage(record, page);
     }
 
     @Override
-    public List<TbFundsDetails> selectFundsDetailsForPage(TbFundsDetails record, int pageIndex, int pageSize) {
-        PageWhere page = new PageWhere(pageIndex, pageSize);
+    public List<TbFundsDetails> selectFundsDetailsForPage(TbFundsDetails record, PageWhere page) {
         return tbFundsDetailsDao.selectByParamsForPage(record, page);
     }
 
@@ -123,7 +171,18 @@ public class LoanerServiceImpl implements ILoanerServiceInf {
 
     @Override
     public int deleteRiskCtlPrjTempById(Long rcptId) {
-        return tbRiskCtlPrjTempDao.deleteByPrimaryKey(rcptId);
+        int result = tbRiskCtlPrjTempDao.deleteByPrimaryKey(rcptId);
+        if(result>0){
+            int rcpmCount = selectRcpMaterialsTempByPrjIdForPageCount(rcptId);
+            if(rcpmCount>0){
+                List<TbRcpMaterialsTemp> rcpmList = selectRcpMaterialsTempByPrjIdForPage(rcptId,null);
+                for (TbRcpMaterialsTemp item : rcpmList) {
+                    tbRcpMaterialsTempDao.deleteByProjectId(item.getRcpmtProjectId());
+                }
+            }
+
+        }
+        return result;
     }
 
     @Override
@@ -139,10 +198,9 @@ public class LoanerServiceImpl implements ILoanerServiceInf {
     }
 
     @Override
-    public List<TbRiskCtlPrjTemp> selectRiskCtlPrjTempByLoanerIdForPage(Long loanerId, int pageIndex, int pageSize) {
+    public List<TbRiskCtlPrjTemp> selectRiskCtlPrjTempByLoanerIdForPage(Long loanerId, PageWhere page) {
         TbRiskCtlPrjTemp record = new TbRiskCtlPrjTemp();
         record.setRcptLoanerId(loanerId);
-        PageWhere page = new PageWhere(pageIndex, pageSize);
         return tbRiskCtlPrjTempDao.selectByLoanerIdForPage(record,page);
     }
 
@@ -174,10 +232,9 @@ public class LoanerServiceImpl implements ILoanerServiceInf {
     }
 
     @Override
-    public List<TbRcpMaterialsTemp> selectRcpMaterialsTempByPrjIdForPage(Long projectId, int pageIndex, int pageSize) {
+    public List<TbRcpMaterialsTemp> selectRcpMaterialsTempByPrjIdForPage(Long projectId, PageWhere page) {
         TbRcpMaterialsTemp record = new TbRcpMaterialsTemp();
         record.setRcpmtProjectId(projectId);
-        PageWhere page = new PageWhere(pageIndex, pageSize);
         return tbRcpMaterialsTempDao.selectByProjectIdForPage(record,page);
     }
 }

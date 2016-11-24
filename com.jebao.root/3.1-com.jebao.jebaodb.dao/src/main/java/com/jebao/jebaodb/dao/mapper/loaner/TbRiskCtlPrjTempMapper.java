@@ -22,6 +22,8 @@ public interface TbRiskCtlPrjTempMapper {
     /* ==================================================华丽分割线==================================================*/
     int deleteByPrimaryKey(Long rcptId);
 
+    int deleteByLoanerId(Long loanerId);
+
     List<TbRiskCtlPrjTemp> selectForPage(@Param("pageWhere") PageWhere pageWhere);
 
     List<TbRiskCtlPrjTemp> selectByLoanerIdForPage(@Param("record") TbRiskCtlPrjTemp record, @Param("pageWhere") PageWhere pageWhere);

@@ -39,16 +39,29 @@ public class TbRcpMaterialsTempDao {
     {
         return tbRcpMaterialsTempMapper.deleteByPrimaryKey(rcpmtId);
     }
+    public int deleteByProjectId(Long projectId)
+    {
+        return tbRcpMaterialsTempMapper.deleteByProjectId(projectId);
+    }
     public List<TbRcpMaterialsTemp> selectForPage(PageWhere pageWhere)
     {
         return tbRcpMaterialsTempMapper.selectForPage(pageWhere);
     }
     public List<TbRcpMaterialsTemp> selectByProjectIdForPage(TbRcpMaterialsTemp record,PageWhere pageWhere)
     {
+        if (record == null){
+            record = new TbRcpMaterialsTemp();
+        }
+        if(pageWhere == null){
+            pageWhere = new PageWhere(0,10);
+        }
         return tbRcpMaterialsTempMapper.selectByProjectIdForPage(record, pageWhere);
     }
     public int selectByProjectIdForPageCount(TbRcpMaterialsTemp record)
     {
+        if (record == null){
+            record = new TbRcpMaterialsTemp();
+        }
         return tbRcpMaterialsTempMapper.selectByProjectIdForPageCount(record);
     }
     @Transactional

@@ -20,6 +20,8 @@ public interface TbRcpMaterialsTempMapper {
     /* ==================================================华丽分割线==================================================*/
     int deleteByPrimaryKey(Long rcpmtId);
 
+    int deleteByProjectId(Long projectId);
+
     List<TbRcpMaterialsTemp> selectForPage(@Param("pageWhere") PageWhere pageWhere);
 
     List<TbRcpMaterialsTemp> selectByProjectIdForPage(@Param("record") TbRcpMaterialsTemp record, @Param("pageWhere") PageWhere pageWhere);
