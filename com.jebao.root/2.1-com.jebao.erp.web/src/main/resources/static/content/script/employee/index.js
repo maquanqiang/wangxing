@@ -57,7 +57,9 @@ var model = {
     //销售级别
     ranks: [],
     //员工列表
-    employees:[]
+    employees:[],
+    //弹窗vm实例
+    openFormVm:{}
 };
 
 // 创建一个 Vue 实例 (ViewModel),它连接 View 与 Model
@@ -104,6 +106,31 @@ var vm = new Vue({
             $("#btnSearch").addClass("disabled");//禁用按钮
             $.get("/api/employee/list",model.searchObj,function(response){
                 if (response.success_is_ok){
+                    //递归查询所属部门
+                    var findParentDepartmentFunc = function(teamId){
+                        var parentId=0;
+                        //先检测它本身是否是部门级别，不是的话返回它的父级id
+                        for(var i=0;i<vm.teams.length;i++){
+                            var item = vm.teams[i];
+                            if(item.id === teamId){
+                                if (item.isDepartment){
+                                    return item.name;
+                                }
+                                parentId = item.parentId;
+                            }
+                        }
+                        for(var i=0;i<vm.teams.length;i++){
+                            var item = vm.teams[i];
+                            if(item.id === parentId){
+                                return item.isDepartment ? item.name :findParentDepartmentFunc(item.id);
+                            }
+                        }
+                        return "";
+                    }
+                    for (var i=0;i<response.data.length;i++){
+                        var item =response.data[i];
+                        item.departmentName =findParentDepartmentFunc(item.teamId);
+                    }
                     vm.employees=response.data;
                     if (response.count>0){
                         var pageCount = Math.ceil(response.count / model.pageSize);
@@ -192,6 +219,8 @@ var vm = new Vue({
         },
         post:function($form){
             console.log("post...")
+            var $button =$form.find(".layui-layer-btn0");
+            $button.addClass("disabled");
             var submitModel = $form.serializeObject();
             $.post("/api/employee/post",submitModel,function(response){
                 if (response.success_is_ok){
@@ -200,10 +229,11 @@ var vm = new Vue({
                     });
                     vm.search();
                 }else{
-                    alert(response.msg);
+                    vm.openFormVm.error.hide=true;
+                    vm.openFormVm.error.message=response.msg;
                 }
-
-            })
+                $button.removeClass("disabled");
+            });
         },
         openAddForm:function(){
             var tempObj= $('#addInforModal').clone();
@@ -235,13 +265,14 @@ var vm = new Vue({
                 }
             });
 
-            var openFormVm = new Vue({
+            vm.openFormVm = new Vue({
                 el: "#insertFormId",
                 data: {
                     ranks:vm.ranks,
                     departments:vm.departments,
                     formData:$("#insertFormId").serializeObject(),
                     teamClass:"",
+                    error:{hide:true,message:""}
                 },
                 computed:{
                     //根据选择部门动态变化所属团队
@@ -269,6 +300,9 @@ var vm = new Vue({
 
                 },
                 created:function(){
+
+                },
+                mounted:function(){
                     var $form = $('#insertFormId');
                     vm.bindFormValidate($form);
                 },

@@ -93,9 +93,9 @@
                                             <thead>
                                             <tr role="row">
                                                 <th>员工姓名</th>
-                                                <th>员工编号</th>
                                                 <th>手机号</th>
                                                 <th>员工级别</th>
+                                                <th>所属部门</th>
                                                 <th>所属团队</th>
                                                 <th>操作</th>
                                             </tr>
@@ -105,10 +105,10 @@
                                             <template v-for="item in employees">
                                                 <tr>
                                                     <td>{{item.name}}</td>
-                                                    <td>{{item.code}}</td>
                                                     <td>{{item.mobile}}</td>
                                                     <td>{{item.rankName}}</td>
                                                     <td>{{item.departmentName}}</td>
+                                                    <td>{{item.teamName}}</td>
                                                     <td>
                                                         <a href="javascript:;" class="btn btn-default btn-xs"
                                                            role="button">修改</a>
@@ -144,19 +144,19 @@
             <div class="form-group">
                 <label class="col-sm-3 control-label">姓名:</label>
                 <div class="col-sm-8">
-                    <input type="text" class="form-control" placeholder="" value="" name="name" v-model="formData.name">
+                    <input type="text" class="form-control" autocomplete="off" name="name" v-model="formData.name">
                 </div>
             </div>
             <div class="form-group">
                 <label class="col-sm-3 control-label">手机号:</label>
                 <div class="col-sm-8">
-                    <input type="text" class="form-control" placeholder="" value="" name="mobile" v-model="formData.mobile">
+                    <input type="text" class="form-control" autocomplete="off" name="mobile" v-model="formData.mobile">
                 </div>
             </div>
             <div class="form-group">
                 <label class="col-sm-3 control-label">身份证号:</label>
                 <div class="col-sm-8">
-                    <input type="text" class="form-control" placeholder="" value="" name="cardNo" v-model="formData.cardNo">
+                    <input type="text" class="form-control" autocomplete="off" name="cardNo" v-model="formData.cardNo">
                 </div>
             </div>
             <div class="form-group">
@@ -184,6 +184,12 @@
                         <option value="0">请选择</option>
                         <option v-for="item in partOfTeams" :value="item.id">{{ item.name }}</option>
                     </select>
+                </div>
+            </div>
+            <div class="has-error" :class="{hide:error.hide }">
+                <label class="col-sm-3 control-label"></label>
+                <div class="col-sm-8">
+                    <small class="help-block">{{error.message}}</small>
                 </div>
             </div>
         </div><!-- /.box-body -->

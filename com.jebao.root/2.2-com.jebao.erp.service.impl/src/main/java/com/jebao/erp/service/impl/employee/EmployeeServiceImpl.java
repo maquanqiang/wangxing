@@ -54,8 +54,11 @@ public class EmployeeServiceImpl implements IEmployeeServiceInf {
         //region 校验
         ValidationResult resultValidation = ValidationUtil.validateEntity(model);
         if (resultValidation.isHasErrors()) {
-            resultInfo.setMsg(resultValidation.toString());
+            resultInfo.setMsg(resultValidation.getErrorMsg().toString());
             return resultInfo;
+        }
+        if (model.getTeamId()==0){
+            model.setTeamId(model.getDepartmentId());
         }
         //endregion
 
@@ -89,8 +92,9 @@ public class EmployeeServiceImpl implements IEmployeeServiceInf {
         employee.setEmpCreateTime(today);//创建时间
         employee.setEmpCreateUser(model.getUserId());//创建人
         //插入员工基本信息
-        int empId = employeeDao.insert(employee);
-        if (empId==0){return new ResultInfo(false,"添加员工基本信息失败");}
+        int reval = employeeDao.insert(employee);
+        int empId = employee.getEmpId();//员工id，插入之后有内容
+        if (reval==0){return new ResultInfo(false,"添加员工基本信息失败");}
         //员工所属部门
         if (model.getTeamId()>0){
             TbEmpDepRelationship empDepRelationship = new TbEmpDepRelationship();

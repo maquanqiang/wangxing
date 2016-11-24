@@ -28,8 +28,8 @@ public class EmployeeVM extends ViewModel {
         }
         TbDepartment department = entity.getDepartment();
         if (department != null) {
-            this.departmentId = department.getDepId();
-            this.departmentName = department.getDepName();
+            this.teamId = department.getDepId();
+            this.teamName = department.getDepName();
         }
         TbRank rank = entity.getRank();
         if (rank != null) {
@@ -38,7 +38,7 @@ public class EmployeeVM extends ViewModel {
         }
     }
 
-    private Integer id;
+    private int id;
 
     private String name;
 
@@ -46,26 +46,26 @@ public class EmployeeVM extends ViewModel {
 
     private String cardNo;
 
-    private Integer sex;
+    private int sex;
 
     @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd")
     private Date birthday;
 
-    private Integer status;
-    @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
+    private int status;
+    @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd")
     private Date entryDate;
-    @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd")
     private Date dimissionDate;
     private int rankId;
     private String rankName;
-    private int departmentId;
-    private String departmentName;
+    private int teamId;
+    private String teamName;
 
-    public Integer getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -93,11 +93,11 @@ public class EmployeeVM extends ViewModel {
         this.cardNo = cardNo;
     }
 
-    public Integer getSex() {
+    public int getSex() {
         return sex;
     }
 
-    public void setSex(Integer sex) {
+    public void setSex(int sex) {
         this.sex = sex;
     }
 
@@ -109,11 +109,11 @@ public class EmployeeVM extends ViewModel {
         this.birthday = birthday;
     }
 
-    public Integer getStatus() {
+    public int getStatus() {
         return status;
     }
 
-    public void setStatus(Integer status) {
+    public void setStatus(int status) {
         this.status = status;
     }
 
@@ -149,19 +149,19 @@ public class EmployeeVM extends ViewModel {
         this.rankName = rankName;
     }
 
-    public int getDepartmentId() {
-        return departmentId;
+    public int getTeamId() {
+        return teamId;
     }
 
-    public void setDepartmentId(int departmentId) {
-        this.departmentId = departmentId;
+    public void setTeamId(int teamId) {
+        this.teamId = teamId;
     }
 
-    public String getDepartmentName() {
-        return departmentName;
+    public String getTeamName() {
+        return teamName;
     }
 
-    public void setDepartmentName(String departmentName) {
-        this.departmentName = departmentName;
+    public void setTeamName(String teamName) {
+        this.teamName = teamName;
     }
 }

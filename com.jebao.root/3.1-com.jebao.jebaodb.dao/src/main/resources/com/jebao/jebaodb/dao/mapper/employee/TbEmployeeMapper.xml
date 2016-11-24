@@ -40,7 +40,7 @@
     </insert>
     <insert id="insertSelective" parameterType="com.jebao.jebaodb.entity.employee.TbEmployee" >
         <selectKey resultType="java.lang.Integer" keyProperty="empId" order="AFTER" >
-            SELECT LAST_INSERT_ID()
+            SELECT LAST_INSERT_ID() AS empId
         </selectKey>
         insert into tb_employee
         <trim prefix="(" suffix=")" suffixOverrides="," >
