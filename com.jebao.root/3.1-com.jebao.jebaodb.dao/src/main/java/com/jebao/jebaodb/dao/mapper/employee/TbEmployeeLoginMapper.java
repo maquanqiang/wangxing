@@ -15,5 +15,6 @@ public interface TbEmployeeLoginMapper {
 
 
     int deleteEmployeeLogin(int empId);
+    TbEmployeeLogin selectByUsername(String username);
 
 }

@@ -5,6 +5,8 @@ import com.jebao.erp.web.controller._BaseController;
 import com.jebao.erp.web.responseModel.base.JsonResult;
 import com.jebao.erp.web.responseModel.base.JsonResultList;
 import com.jebao.erp.web.responseModel.employee.EmployeeVM;
+import com.jebao.erp.web.utils.session.CurrentUser;
+import com.jebao.erp.web.utils.session.LoginSessionUtil;
 import com.jebao.jebaodb.entity.employee.EmployeeInfo;
 import com.jebao.jebaodb.entity.employee.input.EmployeeIM;
 import com.jebao.jebaodb.entity.employee.search.EmployeeSM;
@@ -45,14 +47,18 @@ public class EmployeeControllerApi extends _BaseController {
     @RequestMapping(value = "post",method = RequestMethod.POST)
     public ResultInfo post(EmployeeIM model){
 
-        ResultInfo resultInfo = employeeService.SaveEmployeeInfo(model);
+        if (model!=null){
+            CurrentUser user = LoginSessionUtil.User(request,response);
+            model.setUserId(user.getId());
+        }
+        ResultInfo resultInfo = employeeService.saveEmployeeInfo(model);
 
         return resultInfo;
     }
     @RequestMapping(value = "delete",method = RequestMethod.POST)
     public ResultInfo delete(int empId){
-        int userId = 0;//获取登录用户id
-        ResultInfo resultInfo = employeeService.DeleteEmployeeInfo(empId,userId);
+        CurrentUser user = LoginSessionUtil.User(request,response);
+        ResultInfo resultInfo = employeeService.deleteEmployeeInfo(empId,user.getId());
         return resultInfo;
     }
 

@@ -1,5 +1,6 @@
 package com.jebao.erp.service.impl.employee;
 
+import com.jebao.jebaodb.entity.employee.input.LoginIM;
 import org.apache.commons.lang.time.DateUtils;
 import com.jebao.common.utils.date.DateUtil;
 import com.jebao.common.utils.idcard.IdCardUtil;
@@ -49,7 +50,7 @@ public class EmployeeServiceImpl implements IEmployeeServiceInf {
         return employeeDao.selectEmployeeDetailsInfoCount(model);
     }
     @Override
-    public ResultInfo SaveEmployeeInfo(EmployeeIM model){
+    public ResultInfo saveEmployeeInfo(EmployeeIM model){
         ResultInfo resultInfo = new ResultInfo(false);
         //region 校验
         ValidationResult resultValidation = ValidationUtil.validateEntity(model);
@@ -65,15 +66,15 @@ public class EmployeeServiceImpl implements IEmployeeServiceInf {
         int empId = model.getEmpId();
 
         if (empId==0){
-            resultInfo = AddEmployeeInfo(model);//新增
+            resultInfo = addEmployeeInfo(model);//新增
         }else{
-            resultInfo = UpdateEmployeeInfo(model);//修改
+            resultInfo = updateEmployeeInfo(model);//修改
         }
 
         return resultInfo;
     }
     @Override
-    public ResultInfo DeleteEmployeeInfo(int empId,int userId){
+    public ResultInfo deleteEmployeeInfo(int empId,int userId){
         ResultInfo resultInfo = new ResultInfo(false);
 
         TbEmployee employeeEntity = employeeDao.selectByPrimaryKey(empId);
@@ -102,10 +103,30 @@ public class EmployeeServiceImpl implements IEmployeeServiceInf {
         return resultInfo;
     }
 
+    @Override
+    public ResultInfo Login(LoginIM model){
+        TbEmployeeLogin loginEntity = loginDao.selectByUsername(model.getUsername());
+        if (loginEntity==null){
+            return new ResultInfo(false,"不存在此用户");
+        }
+        if(!loginEntity.getLgPassword().equalsIgnoreCase(model.getPassword())){
+            return new ResultInfo(false,"登录密码错误");
+        }
+        //登录成功
+        if (loginEntity.getLgFirstLoginTime() == null){
+            loginEntity.setLgFirstLoginTime(new Date());
+        }
+        loginEntity.setLgLastLoginTime(new Date());
+        //更新登录时间
+        loginDao.updateByPrimaryKey(loginEntity);
+
+        return new ResultData<Integer>(loginEntity.getLgEmpId(),"登录成功");
+    }
+
     /**
      * 新增员工信息
      */
-    private ResultInfo AddEmployeeInfo(EmployeeIM model){
+    private ResultInfo addEmployeeInfo(EmployeeIM model){
         //region 转换实体
         Date today = new Date();
         //员工基本信息
@@ -171,7 +192,7 @@ public class EmployeeServiceImpl implements IEmployeeServiceInf {
     /**
      * 更新员工信息
      */
-    private ResultInfo UpdateEmployeeInfo(EmployeeIM model){
+    private ResultInfo updateEmployeeInfo(EmployeeIM model){
 
         EmployeeSM searchModel = new EmployeeSM();
         searchModel.setEmpId(model.getEmpId());

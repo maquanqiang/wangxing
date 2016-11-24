@@ -102,5 +102,11 @@
   <delete id="deleteEmployeeLogin" parameterType="integer">
     DELETE FROM tb_employee_login WHERE lg_emp_id = #{lgEmpId,jdbcType=INTEGER}
   </delete>
+  <select id="selectByUsername" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    from tb_employee_login
+    where lg_username = #{lgUsername,jdbcType=VARCHAR}
+  </select>
 
 </mapper>

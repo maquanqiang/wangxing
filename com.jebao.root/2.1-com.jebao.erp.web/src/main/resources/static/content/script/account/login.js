@@ -7,14 +7,15 @@ $(document).ready(function() {
         var bootstrapValidator = $("#defaultForm").data('bootstrapValidator').validate();
         if(!bootstrapValidator.isValid()){return;}
         //TODO 后台逻辑
-        $.axForForm($('#defaultForm'),function(data){
-            if(data.success_is_ok)
+        $.axForForm($('#defaultForm'),function(response){
+
+            if(response.success_is_ok)
             {
                 var targetUrl="/home/index"
                 redirectUrl(targetUrl)
                 return;
             }else{
-                errorHandlerFun(data,"#error_place_id");
+                $("#error_place_id").html(response.msg);
             }
         });
     });
@@ -27,7 +28,7 @@ $(document).ready(function() {
 function initValidateForm(){
     $('#defaultForm').bootstrapValidator({
         fields: {
-            name: {
+            username: {
                 message: '用户名验证失败',
                 validators: {
                     notEmpty: {

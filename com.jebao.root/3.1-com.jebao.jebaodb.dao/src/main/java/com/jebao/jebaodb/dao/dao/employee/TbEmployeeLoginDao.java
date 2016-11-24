@@ -23,4 +23,9 @@ public class TbEmployeeLoginDao {
         return mapper.deleteEmployeeLogin(empId);
     }
 
+    public TbEmployeeLogin selectByUsername(String username)
+    {
+        return mapper.selectByUsername(username);
+    }
+
 }
