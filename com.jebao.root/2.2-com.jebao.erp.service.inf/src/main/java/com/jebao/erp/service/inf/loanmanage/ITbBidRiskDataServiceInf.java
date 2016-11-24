@@ -19,6 +19,4 @@ public interface ITbBidRiskDataServiceInf {
     int selectByConditionCount(TbBidRiskData record);
 
     int updateByBidIdSelective(TbBidRiskData record);
-
-    int updateByBidId(TbBidRiskData record);
 }

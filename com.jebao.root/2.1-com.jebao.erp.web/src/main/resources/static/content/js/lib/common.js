@@ -131,3 +131,13 @@ function initValidateForm(obj){
     });
 }
 
+function select2ChangeVal(hiddentId, targetId) {
+    $(targetId).change(function () {
+        $(hiddentId).val($(this).val())
+    });
+};
+function select2DefaultVal(hiddentId, targetId) {
+    var val = $(hiddentId).val();
+    $(targetId).select2().select2("val", val)
+};
+

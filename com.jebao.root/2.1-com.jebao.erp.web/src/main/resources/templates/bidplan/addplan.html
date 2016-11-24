@@ -14,9 +14,11 @@
     </section>
     <!-- Main content -->
     <section class="content">
-        <form action="/bidplan/plan/addplan" class="form-inline" id="order_search_form" method="post"
-              novalidate="novalidate">
-            <input name="bpLoanerId" type="hidden" value="${bpLoanerId}">
+        <form action="/bidplan/doAddPlan" class="form-inline" id="defaultForm" method="get" novalidate="novalidate">
+            <input name="bpLoanerId" type="hidden" value="1"/>
+            <input name="bpCycleSize" type="hidden" value="1"/>
+            <input id="bpPeriods" name="bpPeriods" type="hidden"/>
+
             <!--基本信息-->
             <div class="row">
                 <div class="col-xs-12">
@@ -28,19 +30,19 @@
                             <div class="form-group">
                                 <div class="input-group margin">
                                     <div class="input-group-addon">项目编号</div>
-                                    <input type="text" class="form-control" placeholder="" name="" value="">
+                                    <input type="text" class="form-control" placeholder="" name="bpNumber" value="">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="input-group margin">
                                     <div class="input-group-addon">标的名称</div>
-                                    <input type="text" class="form-control" placeholder="" name="" value="">
+                                    <input type="text" class="form-control" placeholder="" name="bpName" value="">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="input-group margin">
                                     <div class="input-group-addon">产品类型</div>
-                                    <select class="select2  select2-hidden-accessible" style="width: 160px;">
+                                    <select name="bpType" class="select2  select2-hidden-accessible" style="width: 160px;">
                                         <option value="0">请选择</option>
                                         <option value="1">普通理财</option>
                                         <option value="2">新手专享</option>
@@ -50,13 +52,13 @@
                             <div class="form-group">
                                 <div class="input-group margin">
                                     <div class="input-group-addon">募集时间</div>
-                                    <input type="text" value="" placeholder="" class="form-control chooseDate" name="">
+                                    <input type="text" value="" placeholder="" class="form-control chooseDate" name="bpStartTime">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="input-group margin">
                                     <div class="input-group-addon">募集期限</div>
-                                    <input type="text" placeholder="" class="form-control" value="">
+                                    <input type="text" placeholder="" class="form-control" value="" name="">
                                 </div>
                             </div>
                             <div class="form-group">
@@ -233,7 +235,6 @@
                         <h5>项目说明</h5>
                     </div>
                     <div class="box box-primary">
-                        <form action="" class="form-inline" method="post" novalidate="novalidate">
                             <div class="box-body">
                                 <div class="form-group">
                                     <div class="input-group margin">
@@ -282,7 +283,6 @@
                                     </div>
                                 </div>
                             </div>
-                        </form>
                     </div>
                 </div>
             </div>
@@ -341,8 +341,8 @@
         <div class="row">
             <div class="col-xs-12">
                 <div class="box-body">
-                    <a href="javascript:;" class="btn btn-primary btn-lg" role="button" target="_blank">建标</a>
-                    <a href="javascript:;" class="btn btn-primary btn-lg" role="button" target="_blank" onclick="window.opener=null;window.close()">取消</a>
+                    <a id="submitBtn" href="javascript:;" class="btn btn-primary btn-lg add" role="button" >建标</a>
+                    <a href="javascript:;" class="btn btn-primary btn-lg" role="button" onclick="window.opener=null;window.close()">取消</a>
                 </div>
             </div>
         </div>
@@ -352,83 +352,4 @@
 #parse("common/footer.html")
 <script src=$UrlHelperTool.href("/content/script/bidplan/addplan.js")></script>
 </body>
-<script>
-    $(function () {
-        $(".select2").select2();
-        //添加材料
-        $('#add-material').on('click', function () {
-            var tempObj = $('#addMaterialModal').clone();
-            tempObj.find('form').prop('id', 'insertFormId');
-            var tempHtml = tempObj.html();
-            layer.open({
-                title: '添加材料',
-                content: tempHtml,
-                btn: ['添加', '取消'],
-                area: ['500px'],
-                btn1: function () {
-                    initValidateForm($('#insertFormId'));
-                    var bootstrapValidator = $("#insertFormId").data('bootstrapValidator').validate();
-                    if (!bootstrapValidator.isValid()) {
-                        return false;
-                    } else {
-                        layer.alert('添加成功！', function () {
-                            layer.closeAll();
-                        });
-                    }
-                },
-                btn2: function () {
-                    layer.close();
-                }
-            });
-            $("#insertFormId #fileupload").wrap("<form id='_myUpload_' action='/filePlugin/uploadFile?dir=image'method='post' enctype='multipart/form-data'></form>");
-            $("#insertFormId #fileupload").change(function () {
-                var fileUploadUrl = $('#uploadFileUrl');
-                $("#_myUpload_").ajaxSubmit({
-                    dataType: 'json', //数据格式为json
-                    success: function (data) {
-                        if (data) {
-                            if (data.error == 0) {
-                                alert(data.url);
-                                fileUploadUrl.val(data.url);
-                                return;
-                            }
-                            alert(data.message)
-                            return;
-                        }
-                        alert("--上传失败---")
-                        return;
-                    },
-                    error: function (xhr) {
-                        alert(fileUploadUrl.html());
-                        alert(xhr.responseText);
-                    }
-                });
-            });
-        });
-        /*时间选择*/
-        $('.chooseDate').datepicker({
-            format: 'yyyy-mm-dd',
-            weekStart: 1,
-            autoclose: true,
-            todayBtn: 'linked',
-            language: 'cn'
-        });
-        //删除信息
-        $('.remove-msg').on('click', function () {
-            _this = $(this);
-            layer.open({
-                content: '您是否删除信息?',
-                btn: ['取消', '删除'],
-                yes: function () {
-                    layer.closeAll();
-                },
-                btn2: function () {
-                    _this.parent().parent().remove();
-                    layer.msg('删除成功！', {icon: 1});
-                }
-            });
-        });
-    });
-</script>
-
 </html>

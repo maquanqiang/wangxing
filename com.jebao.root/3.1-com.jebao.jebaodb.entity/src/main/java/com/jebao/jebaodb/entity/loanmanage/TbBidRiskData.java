@@ -1,8 +1,21 @@
 package com.jebao.jebaodb.entity.loanmanage;
 
+import com.jebao.jebaodb.entity.loaner.TbRcpMaterialsTemp;
+
 import java.util.Date;
 
 public class TbBidRiskData {
+
+    public static TbBidRiskData toEntity(TbRcpMaterialsTemp temp){
+        TbBidRiskData riskData = new TbBidRiskData();
+        riskData.setBrdNo(temp.getRcpmtNo());
+        riskData.setBrdRemark(temp.getRcpmtRemark());
+        riskData.setBrdName(temp.getRcpmtName());
+        riskData.setBrdPath(temp.getRcpmtPath());
+        riskData.setBrdUrl(temp.getRcpmtUrl());
+        return riskData;
+    }
+
     private Long brdId;
 
     private Long brdBpId;

@@ -8,7 +8,6 @@
 $(function () {
 
     $(".select2").select2();
-
     //var autoObj = {
     //    addInsuredFormValidate: function () {
     //        var $form = $("#form-inline");
@@ -66,8 +65,8 @@ $(function () {
 var model = {
     //查询条件
     search: {},
-    //列表
-    planlist: [],
+    //
+    plan: {},
     //销售级别
     ranks: []
 
@@ -83,9 +82,14 @@ var vm = new Vue({
     },
     //初始化远程数据
     created:function(){
-        $.get("/bidplan/dplan/getlist",function(response){
+        var dataVal = $("#order_search_form").serializeObject();
+        console.log("请求"+dataVal);
+        $.get("/bidplan/getBidPlanById",dataVal,function(response){
             if (response.success_is_ok){
-                vm.planlist=response.data;
+                var data=response.data;
+                vm.plan=data;
+                $('#productTypeBtn').select2().select2("val", data.bpType);
+                $('#cycleTypeBtn').select2().select2("val", data.bpCycleType);
             }
         });
     },

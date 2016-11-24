@@ -41,60 +41,18 @@
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        <tr role="row" class="odd">
-                                            <td>ZE03161101</td>
-                                            <td>月利宝1031</td>
-                                            <td>普通理财</td>
-                                            <td>张三</td>
-                                            <td>张三</td>
-                                            <td>10000.00</td>
-                                            <td>5%</td>
-                                            <td>30天</td>
-                                            <td>2016/10/3110:21:08</td>
+                                        <tr role="row" class="odd" v-for="plan in planlist">
+                                            <td>{{plan.bpNumber}}</td>
+                                            <td>{{plan.bpName}}</td>
+                                            <td>{{plan.bpType}}</td>
+                                            <td>{{plan.bpId}}AAAA</td>
+                                            <td>{{plan.bpTrueName}}</td>
+                                            <td>{{plan.bpBidMoney}}</td>
+                                            <td>{{plan.bpRate}}%</td>
+                                            <td>{{plan.bpPeriodsDisplay}}{{plan.bpCycleType}}</td>
+                                            <td>{{plan.bpCreateTime}}</td>
                                             <td>
-                                                <a href="开标--详情.html" class="btn btn-default btn-xs" role="button" target="_blank">查看详情</a>
-                                            </td>
-                                        </tr>
-                                        <tr role="row" class="even">
-                                            <td>ZE03161101</td>
-                                            <td>月利宝1031</td>
-                                            <td>普通理财</td>
-                                            <td>张三</td>
-                                            <td>张三</td>
-                                            <td>10000.00</td>
-                                            <td>5%</td>
-                                            <td>30天</td>
-                                            <td>2016/10/3110:21:08</td>
-                                            <td>
-                                                <a href="开标--详情.html" class="btn btn-default btn-xs" role="button" target="_blank">查看详情</a>
-                                            </td>
-                                        </tr>
-                                        <tr role="row" class="odd">
-                                            <td>ZE03161101</td>
-                                            <td>月利宝1031</td>
-                                            <td>普通理财</td>
-                                            <td>张三</td>
-                                            <td>张三</td>
-                                            <td>10000.00</td>
-                                            <td>5%</td>
-                                            <td>30天</td>
-                                            <td>2016/10/3110:21:08</td>
-                                            <td>
-                                                <a href="开标--详情.html" class="btn btn-default btn-xs" role="button" target="_blank">查看详情</a>
-                                            </td>
-                                        </tr>
-                                        <tr role="row" class="even">
-                                            <td>ZE03161101</td>
-                                            <td>月利宝1031</td>
-                                            <td>普通理财</td>
-                                            <td>张三</td>
-                                            <td>张三</td>
-                                            <td>10000.00</td>
-                                            <td>5%</td>
-                                            <td>30天</td>
-                                            <td>2016/10/3110:21:08</td>
-                                            <td>
-                                                <a href="开标--详情.html" class="btn btn-default btn-xs" role="button" target="_blank">查看详情</a>
+                                                <a class="btn btn-default btn-xs" role="button" target="_self" @click="">查看详情</a>
                                             </td>
                                         </tr>
                                         </tbody>
@@ -188,12 +146,6 @@
                     return false;
                 }
             });
-        });
-        //调用分页
-        laypage({
-            cont:$('#pageNum'), //容器。值支持id名、原生dom对象，jquery对象,
-            pages: 100, //总页数
-            groups: 7 //连续显示分页数
         });
     });
 </script>
