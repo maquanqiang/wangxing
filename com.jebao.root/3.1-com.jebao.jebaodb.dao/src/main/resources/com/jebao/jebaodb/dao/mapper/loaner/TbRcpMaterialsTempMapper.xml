@@ -158,7 +158,9 @@
         WHERE
         <include refid="selectByProjectId_Where_Clause"/>
         order by rcpmt_id DESC
+        <if test="pageWhere != null" >
         LIMIT #{pageWhere.begin},#{pageWhere.pageSize}
+        </if>
     </select>
     <select id="selectByProjectIdForPageCount" resultType="java.lang.Integer">
         select count(*)

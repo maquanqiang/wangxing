@@ -52,9 +52,9 @@ public class TbRiskCtlPrjTempDao {
         if (record == null){
             record = new TbRiskCtlPrjTemp();
         }
-        if(pageWhere == null){
+/*        if(pageWhere == null){
             pageWhere = new PageWhere(0,10);
-        }
+        }*/
         return tbRiskCtlPrjTempMapper.selectByLoanerIdForPage(record, pageWhere);
     }
     public int selectByLoanerIdForPageCount(TbRiskCtlPrjTemp record)

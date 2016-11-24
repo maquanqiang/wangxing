@@ -52,9 +52,9 @@ public class TbRcpMaterialsTempDao {
         if (record == null){
             record = new TbRcpMaterialsTemp();
         }
-        if(pageWhere == null){
+/*        if(pageWhere == null){
             pageWhere = new PageWhere(0,10);
-        }
+        }*/
         return tbRcpMaterialsTempMapper.selectByProjectIdForPage(record, pageWhere);
     }
     public int selectByProjectIdForPageCount(TbRcpMaterialsTemp record)
