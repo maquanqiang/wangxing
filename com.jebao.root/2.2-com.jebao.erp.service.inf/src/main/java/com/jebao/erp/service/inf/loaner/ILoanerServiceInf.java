@@ -76,11 +76,10 @@ public interface ILoanerServiceInf {
     /**
      * 根据查询条件获取借款人的充值提现明细列表（分页）
      * @param record （登陆ID，交易状态）
-     * @param pageIndex
-     * @param pageSize
+     * @param page
      * @return
      */
-    List<TbFundsDetails> selectFundsDetailsForPage(TbFundsDetails record,int pageIndex,int pageSize);
+    List<TbFundsDetails> selectFundsDetailsForPage(TbFundsDetails record,PageWhere page);
 
     /**
      * 根据查询条件统计借款人的充值提现明细信息总数
@@ -130,11 +129,10 @@ public interface ILoanerServiceInf {
     /**
      * 根据借款人ID获取风控项目模版信息列表（分页）
      * @param loanerId 借款人ID
-     * @param pageIndex
-     * @param pageSize
+     * @param page
      * @return
      */
-    List<TbRiskCtlPrjTemp> selectRiskCtlPrjTempByLoanerIdForPage(Long loanerId,int pageIndex,int pageSize);
+    List<TbRiskCtlPrjTemp> selectRiskCtlPrjTempByLoanerIdForPage(Long loanerId,PageWhere page);
     /* ==================================================风控项目模版end==================================================*/
 
     /* ==================================================风控项目认证材料模版start==================================================*/
@@ -176,10 +174,9 @@ public interface ILoanerServiceInf {
     /**
      * 根据风控项目Id获取风控项目认证材料模版信息列表（分页）
      * @param projectId 风控项目Id
-     * @param pageIndex
-     * @param pageSize
+     * @param page
      * @return
      */
-    List<TbRcpMaterialsTemp> selectRcpMaterialsTempByPrjIdForPage(Long projectId,int pageIndex,int pageSize);
+    List<TbRcpMaterialsTemp> selectRcpMaterialsTempByPrjIdForPage(Long projectId,PageWhere page);
     /* ==================================================风控项目认证材料模版end==================================================*/
 }

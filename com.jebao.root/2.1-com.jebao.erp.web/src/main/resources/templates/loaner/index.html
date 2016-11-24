@@ -80,7 +80,7 @@
                                                 <td>5</td>
                                                 <td>10000.00</td>
                                                 <td>
-                                                    <a href="javascript:;" class="btn btn-default btn-xs" role="button" id="modifyInformation">修改</a>
+                                                    <a href="javascript:;" class="btn btn-default btn-xs btn-modify" role="button" id="modifyInformation" :flag="item.id">修改</a>
                                                     <a href="基本信息.html" class="btn btn-default btn-xs" role="button" target="_blank">查看详情</a>
                                                     <a href="资金信息.html" class="btn btn-default btn-xs" role="button" target="_blank">资金信息</a>
                                                     <a href="借款信息.html" class="btn btn-default btn-xs" role="button" target="_blank">借款信息</a>
@@ -438,7 +438,7 @@
             });
         });
         //修改借款用户信息
-        $('#modifyInformation').on('click',function(){
+        $('.btn-modify').on('click',function(){
             var tempObj= $('#modInforInfModal').clone();
             tempObj.find('form').attr('id','ModifyFormId');
             var tempHtml=tempObj.html();

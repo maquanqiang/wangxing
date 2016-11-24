@@ -121,9 +121,9 @@ public class LoanerServiceImpl implements ILoanerServiceInf {
     public int deleteLoanerById(Long lId) {
         int result = tbLoanerDao.deleteByPrimaryKey(lId);
         if(result > 0){
-            int pageSize = selectRiskCtlPrjTempByLoanerIdForPageCount(lId);
-            if(pageSize > 0){
-                List<TbRiskCtlPrjTemp> rcptList = selectRiskCtlPrjTempByLoanerIdForPage(lId, 0, pageSize);
+            int rcpmCount = selectRiskCtlPrjTempByLoanerIdForPageCount(lId);
+            if(rcpmCount > 0){
+                List<TbRiskCtlPrjTemp> rcptList = selectRiskCtlPrjTempByLoanerIdForPage(lId, null);
 
                 for (TbRiskCtlPrjTemp item : rcptList) {
                     tbRcpMaterialsTempDao.deleteByProjectId(item.getRcptId());
@@ -150,8 +150,7 @@ public class LoanerServiceImpl implements ILoanerServiceInf {
     }
 
     @Override
-    public List<TbFundsDetails> selectFundsDetailsForPage(TbFundsDetails record, int pageIndex, int pageSize) {
-        PageWhere page = new PageWhere(pageIndex, pageSize);
+    public List<TbFundsDetails> selectFundsDetailsForPage(TbFundsDetails record, PageWhere page) {
         return tbFundsDetailsDao.selectByParamsForPage(record, page);
     }
 
@@ -174,9 +173,9 @@ public class LoanerServiceImpl implements ILoanerServiceInf {
     public int deleteRiskCtlPrjTempById(Long rcptId) {
         int result = tbRiskCtlPrjTempDao.deleteByPrimaryKey(rcptId);
         if(result>0){
-            int pageSize = selectRcpMaterialsTempByPrjIdForPageCount(rcptId);
-            if(pageSize>0){
-                List<TbRcpMaterialsTemp> rcpmList = selectRcpMaterialsTempByPrjIdForPage(rcptId,0,pageSize);
+            int rcpmCount = selectRcpMaterialsTempByPrjIdForPageCount(rcptId);
+            if(rcpmCount>0){
+                List<TbRcpMaterialsTemp> rcpmList = selectRcpMaterialsTempByPrjIdForPage(rcptId,null);
                 for (TbRcpMaterialsTemp item : rcpmList) {
                     tbRcpMaterialsTempDao.deleteByProjectId(item.getRcpmtProjectId());
                 }
@@ -199,10 +198,9 @@ public class LoanerServiceImpl implements ILoanerServiceInf {
     }
 
     @Override
-    public List<TbRiskCtlPrjTemp> selectRiskCtlPrjTempByLoanerIdForPage(Long loanerId, int pageIndex, int pageSize) {
+    public List<TbRiskCtlPrjTemp> selectRiskCtlPrjTempByLoanerIdForPage(Long loanerId, PageWhere page) {
         TbRiskCtlPrjTemp record = new TbRiskCtlPrjTemp();
         record.setRcptLoanerId(loanerId);
-        PageWhere page = new PageWhere(pageIndex, pageSize);
         return tbRiskCtlPrjTempDao.selectByLoanerIdForPage(record,page);
     }
 
@@ -234,10 +232,9 @@ public class LoanerServiceImpl implements ILoanerServiceInf {
     }
 
     @Override
-    public List<TbRcpMaterialsTemp> selectRcpMaterialsTempByPrjIdForPage(Long projectId, int pageIndex, int pageSize) {
+    public List<TbRcpMaterialsTemp> selectRcpMaterialsTempByPrjIdForPage(Long projectId, PageWhere page) {
         TbRcpMaterialsTemp record = new TbRcpMaterialsTemp();
         record.setRcpmtProjectId(projectId);
-        PageWhere page = new PageWhere(pageIndex, pageSize);
         return tbRcpMaterialsTempDao.selectByProjectIdForPage(record,page);
     }
 }

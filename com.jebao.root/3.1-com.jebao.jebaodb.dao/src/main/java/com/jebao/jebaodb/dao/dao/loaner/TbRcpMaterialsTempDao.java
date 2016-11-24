@@ -49,10 +49,19 @@ public class TbRcpMaterialsTempDao {
     }
     public List<TbRcpMaterialsTemp> selectByProjectIdForPage(TbRcpMaterialsTemp record,PageWhere pageWhere)
     {
+        if (record == null){
+            record = new TbRcpMaterialsTemp();
+        }
+        if(pageWhere == null){
+            pageWhere = new PageWhere(0,10);
+        }
         return tbRcpMaterialsTempMapper.selectByProjectIdForPage(record, pageWhere);
     }
     public int selectByProjectIdForPageCount(TbRcpMaterialsTemp record)
     {
+        if (record == null){
+            record = new TbRcpMaterialsTemp();
+        }
         return tbRcpMaterialsTempMapper.selectByProjectIdForPageCount(record);
     }
     @Transactional
