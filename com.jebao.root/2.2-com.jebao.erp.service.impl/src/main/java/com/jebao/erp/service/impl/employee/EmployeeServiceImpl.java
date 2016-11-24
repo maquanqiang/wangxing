@@ -72,6 +72,36 @@ public class EmployeeServiceImpl implements IEmployeeServiceInf {
 
         return resultInfo;
     }
+    @Override
+    public ResultInfo DeleteEmployeeInfo(int empId,int userId){
+        ResultInfo resultInfo = new ResultInfo(false);
+
+        TbEmployee employeeEntity = employeeDao.selectByPrimaryKey(empId);
+        if (employeeEntity==null){
+            resultInfo.setMsg("不存在此员工");
+            return resultInfo;
+        }
+        boolean success = employeeDao.delete(empId);
+        if (success){
+            loginDao.deleteEmployeeLogin(empId);
+            resultInfo.setSuccess_is_ok(true);
+            resultInfo.setMsg("删除成功");
+
+            //region 记录日志
+            TbEmployeeLog logEntity = new TbEmployeeLog();
+            logEntity.setElEmpId(empId);
+            logEntity.setElContent("删除员工");//操作内容
+            logEntity.setElOperateTime(new Date());//操作时间
+            logEntity.setElOperator(userId);//操作人
+            logDao.insert(logEntity);//插入日志记录
+
+            //endregion
+        }else{
+            resultInfo.setMsg("删除失败");
+        }
+        return resultInfo;
+    }
+
     /**
      * 新增员工信息
      */
@@ -145,7 +175,7 @@ public class EmployeeServiceImpl implements IEmployeeServiceInf {
 
         EmployeeSM searchModel = new EmployeeSM();
         searchModel.setEmpId(model.getEmpId());
-        searchModel.setPageIndex(1);
+        searchModel.setPageIndex(0);
         searchModel.setPageSize(1);
         List<EmployeeInfo> employeeInfoList = employeeDao.selectEmployeeDetailsInfo(searchModel);
         if (employeeInfoList==null || employeeInfoList.size()==0){

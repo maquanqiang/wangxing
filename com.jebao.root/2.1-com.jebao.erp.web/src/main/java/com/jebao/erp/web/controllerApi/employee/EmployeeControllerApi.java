@@ -49,5 +49,11 @@ public class EmployeeControllerApi extends _BaseController {
 
         return resultInfo;
     }
+    @RequestMapping(value = "delete",method = RequestMethod.POST)
+    public ResultInfo delete(int empId){
+        int userId = 0;//获取登录用户id
+        ResultInfo resultInfo = employeeService.DeleteEmployeeInfo(empId,userId);
+        return resultInfo;
+    }
 
 }

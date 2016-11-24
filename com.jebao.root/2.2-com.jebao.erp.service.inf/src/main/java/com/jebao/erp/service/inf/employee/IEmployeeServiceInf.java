@@ -25,4 +25,12 @@ public interface IEmployeeServiceInf {
      * @return 执行结果
      */
     ResultInfo SaveEmployeeInfo(EmployeeIM model);
+
+    /**
+     * 删除员工信息
+     * @param empId 员工id
+     * @param userId 操作用户id
+     * @return 执行结果
+     */
+    ResultInfo DeleteEmployeeInfo(int empId,int userId);
 }

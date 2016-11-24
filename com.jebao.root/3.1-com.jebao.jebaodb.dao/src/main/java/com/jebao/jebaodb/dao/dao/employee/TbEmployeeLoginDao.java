@@ -17,4 +17,10 @@ public class TbEmployeeLoginDao {
     public int updateByPrimaryKeySelective(TbEmployeeLogin record){return mapper.updateByPrimaryKeySelective(record);}
 
     public int updateByPrimaryKey(TbEmployeeLogin record){return mapper.updateByPrimaryKey(record);}
+
+
+    public int deleteEmployeeLogin(int empId){
+        return mapper.deleteEmployeeLogin(empId);
+    }
+
 }

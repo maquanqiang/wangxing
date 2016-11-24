@@ -225,7 +225,7 @@
         </if>
     </sql>
     <sql id="dynamicJoinWehre">
-        <if test="empId != null and empId != ''">
+        <if test="empId != null and empId>0">
             AND emp_id = #{empId,jdbcType=INTEGER}
         </if>
         <if test="name != null and name != ''">

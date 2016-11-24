@@ -97,4 +97,10 @@
       lg_last_login_time = #{lgLastLoginTime,jdbcType=TIMESTAMP}
     where lg_id = #{lgId,jdbcType=INTEGER}
   </update>
+
+  <!--==================================================华丽分割线==================================================-->
+  <delete id="deleteEmployeeLogin" parameterType="integer">
+    DELETE FROM tb_employee_login WHERE lg_emp_id = #{lgEmpId,jdbcType=INTEGER}
+  </delete>
+
 </mapper>

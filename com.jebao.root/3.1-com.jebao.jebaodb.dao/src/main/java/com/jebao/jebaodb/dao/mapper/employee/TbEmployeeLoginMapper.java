@@ -12,4 +12,8 @@ public interface TbEmployeeLoginMapper {
     int updateByPrimaryKeySelective(TbEmployeeLogin record);
 
     int updateByPrimaryKey(TbEmployeeLogin record);
+
+
+    int deleteEmployeeLogin(int empId);
+
 }
