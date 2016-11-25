@@ -1,4 +1,5 @@
 #set($_loginUser_=$LoginUserTool.getUser())
+
 <aside class="main-sidebar">
     <!-- sidebar: style can be found in sidebar.less -->
     <section class="sidebar">
@@ -9,130 +10,66 @@
             </div>
             <div class="pull-left info">
                 <p>
-                    $!_loginUser_.userName
+                    管理员
                 </p>
                 <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
             </div>
         </div>
-        <ul class="sidebar-menu">
-            <li class="header">导航-借款中心</li>
-            <li class="treeview  active">
+        <ul class="sidebar-menu" id="ulList">
+            <li class="treeview">
+                <a href="/home/index" target="_self">
+                    <i class="fa fa-dashboard"></i><span>后台管理首页</span>
+                </a>
+            </li>
+            <li class="treeview">
+                <a href="/借款个人/index.html" target="_self">
+                    <i class="fa fa-th-large"></i><span>借款人</span>
+                </a>
+            </li>
+            <li class="treeview">
                 <a href="#">
-                    <i class="fa fa-dashboard"></i> <span>任务处理</span> <i class="fa fa-angle-left pull-right"></i>
+                    <i class="fa fa-files-o"></i><span>借款管理</span><i class="fa fa-angle-left pull-right"></i>
                 </a>
                 <ul class="treeview-menu">
-                    <li><a href=""><i class="fa fa-circle-o"></i>待办任务</a></li>
-                    <li><a href=""><i class="fa fa-circle-o"></i>已办结任务</a></li>
-                    <li><a href=""><i class="fa fa-circle-o"></i>我参与的贷款</a></li>
+                    <li><a href="/借款管理/未放款标的列表.html"><i class="fa fa-circle-o"></i><span>未放款标的列表</span></a></li>
+                    <li><a href="/借款管理/已放款标的列表.html"><i class="fa fa-circle-o"></i><span>已放款标的列表</span></a></li>
+                    <li><a href="/借款管理/建标.html"><i class="fa fa-circle-o"></i><span>建标</span></a></li>
+                    <li><a href="/借款管理/开标被拒.html"><i class="fa fa-circle-o"></i><span>开标被拒</span></a></li>
+                    <li><a href="/借款管理/等待开标.html"><i class="fa fa-circle-o"></i><span>等待开标</span></a></li>
+                </ul>
+            </li>
+            <li class="treeview">
+                <a href="/贷后管理/index.html">
+                    <i class="fa fa-pie-chart"></i><span>贷后管理</span>
+                </a>
+            </li>
+            <li class="treeview">
+                <a href="#">
+                    <i class="fa fa-laptop"></i><span>业务员管理</span><i class="fa fa-angle-left pull-right"></i>
+                </a>
+                <ul class="treeview-menu">
+                    <li><a href="/employee"><i class="fa fa-circle-o"></i><span>业务员管理</span></a></li>
+                    <li><a href="/业务员管理/批量上传.html"><i class="fa fa-circle-o"></i><span>批量上传</span></a></li>
                 </ul>
             </li>
             <li class="treeview">
                 <a href="#">
-                    <i class="fa fa-files-o"></i> <span>客户档案管理</span> <i class="fa fa-angle-left pull-right"></i>
+                    <i class="fa fa-edit"></i><span>业务员提成</span><i class="fa fa-angle-left pull-right"></i>
                 </a>
                 <ul class="treeview-menu">
-                    <li><a href=""><i class="fa fa-circle-o"></i>企业客户档案</a></li>
-                    <li><a href=""><i class="fa fa-circle-o"></i>个人客户档案</a></li>
-                    <li><a href=""><i class="fa fa-circle-o"></i>个人贷款客户P2P账号</a></li>
-                    <li><a href=""><i class="fa fa-circle-o"></i>黑名单</a></li>
-                    <li><a href=""><i class="fa fa-circle-o"></i>客户资源分配</a></li>
+                    <li><a href="/业务员提成/顾问提成查询.html"><i class="fa fa-circle-o"></i><span>顾问提成查询</span></a></li>
+                    <li><a href="/业务员提成/经理提成查询.html"><i class="fa fa-circle-o"></i><span>经理提成查询</span></a></li>
+                    <li><a href="/业务员提成/总监提成查询.html"><i class="fa fa-circle-o"></i><span>总监提成查询</span></a></li>
                 </ul>
             </li>
             <li class="treeview">
                 <a href="#">
-                    <i class="fa fa-pie-chart"></i>
-                    <span>抵质押物管理</span>
-                    <i class="fa fa-angle-left pull-right"></i>
+                    <i class="fa fa-table"></i><span>财务管理</span><i class="fa fa-angle-left pull-right"></i>
                 </a>
                 <ul class="treeview-menu">
-                    <li><a href=""><i class="fa fa-circle-o"></i>抵质押物查询</a></li>
-                    <li><a href=""><i class="fa fa-circle-o"></i>抵质押物办理</a></li>
-                </ul>
-            </li>
-            <li class="treeview">
-                <a href="#">
-                    <i class="fa fa-laptop"></i>
-                    <span>合同管理</span>
-                    <i class="fa fa-angle-left pull-right"></i>
-                </a>
-                <ul class="treeview-menu">
-                    <li><a href=""><i class="fa fa-circle-o"></i>合同模板制作</a></li>
-                    <li><a href=""><i class="fa fa-circle-o"></i>合同管理</a></li>
-                    <li><a href=""><i class="fa fa-circle-o"></i>合同查询</a></li>
-                    <li><a href=""><i class="fa fa-circle-o"></i>合同要素</a></li>
-                </ul>
-            </li>
-            <li class="treeview">
-                <a href="#">
-                    <i class="fa fa-edit"></i> <span>资金管理</span>
-                    <i class="fa fa-angle-left pull-right"></i>
-                </a>
-                <ul class="treeview-menu">
-                    <li class="active"><a href=""><i class="fa fa-circle-o"></i>银行账户管理</a></li>
-                    <li><a href=""><i class="fa fa-circle-o"></i>银行流水录入</a></li>
-                    <li><a href=""><i class="fa fa-circle-o"></i>现金流水录入</a></li>
-                    <li><a href=""><i class="fa fa-circle-o"></i>银行账户明细</a></li>
-                    <li><a href=""><i class="fa fa-circle-o"></i>地区管理</a></li>
-                </ul>
-            </li>
-            <li class="treeview">
-                <a href="#">
-                    <i class="fa fa-table"></i> <span>款项台账</span>
-                    <i class="fa fa-angle-left pull-right"></i>
-                </a>
-                <ul class="treeview-menu">
-                    <li><a href=""><i class="fa fa-circle-o"></i>本金放款台账</a></li>
-                    <li><a href=""><i class="fa fa-circle-o"></i>本金收款台账</a></li>
-                    <li><a href=""><i class="fa fa-circle-o"></i>利息收款台账</a></li>
-                    <li><a href=""><i class="fa fa-circle-o"></i>其他支出台账</a></li>
-                    <li><a href=""><i class="fa fa-circle-o"></i>手续费收支台账</a></li>
-                    <li><a href=""><i class="fa fa-circle-o"></i>本金利息台账日志</a></li>
-                    <li><a href=""><i class="fa fa-circle-o"></i>手续费收支台账日志</a></li>
-                    <li><a href=""><i class="fa fa-circle-o"></i>本金挪用台账</a></li>
-                </ul>
-            </li>
-            <li class="treeview">
-                <a href="#">
-                    <i class="fa fa-folder"></i> <span>审批进度查询</span>
-                    <i class="fa fa-angle-left pull-right"></i>
-                </a>
-                <ul class="treeview-menu">
-                    <li><a href=""><i class="fa fa-circle-o"></i>调查审核项目</a></li>
-                    <li><a href=""><i class="fa fa-circle-o"></i>审批通过项目</a></li>
-                    <li><a href=""><i class="fa fa-circle-o"></i>审批否决项目</a></li>
-                </ul>
-            </li>
-            <li class="treeview">
-                <a href="#">
-                    <i class="fa fa-book"></i> <span>项目状态查询</span>
-                    <i class="fa fa-angle-left pull-right"></i>
-                </a>
-                <ul class="treeview-menu">
-                    <li><a href=""><i class="fa fa-circle-o"></i>全部贷款业务</a></li>
-                    <li><a href=""><i class="fa fa-circle-o"></i>办理中项目</a></li>
-                    <li><a href=""><i class="fa fa-circle-o"></i>还款中项目</a></li>
-                    <li><a href=""><i class="fa fa-circle-o"></i>违约处理项目</a></li>
-                    <li><a href=""><i class="fa fa-circle-o"></i>结项项目</a></li>
-                    <li><a href=""><i class="fa fa-circle-o"></i>提前终止项目</a></li>
-                </ul>
-            </li>
-            <li class="treeview">
-                <a href="#">
-                    <i class="fa fa-edit"></i> <span>贷款产品管理</span>
-                    <i class="fa fa-angle-left pull-right"></i>
-                </a>
-                <ul class="treeview-menu">
-                    <li><a href=""><i class="fa fa-circle-o"></i>贷款产品设计</a></li>
-                    <li>
-                        <a href="#"><i class="fa fa-circle-o"></i>基础材料配置<i class="fa fa-angle-left pull-right"></i></a>
-                        <ul class="treeview-menu">
-                            <li><a href="#"><i class="fa fa-circle-o"></i>基础贷款材料管理</a></li>
-                            <li><a href="#"><i class="fa fa-circle-o"></i>基础贷款条件管理</a></li>
-                            <li><a href="#"><i class="fa fa-circle-o"></i>基础贷款归档材料管理</a></li>
-                            <li><a href="#"><i class="fa fa-circle-o"></i>费用配置管理</a></li>
-                            <li><a href="#"><i class="fa fa-circle-o"></i>文档模板管理</a></li>
-                        </ul>
-                    </li>
+                    <li><a href="/财务管理/服务费收入.html"><i class="fa fa-circle-o"></i><span>服务费收入</span></a></li>
+                    <li><a href="/财务管理/充值.html"><i class="fa fa-circle-o"></i><span>充值</span></a></li>
+                    <li><a href="/财务管理/提现.html"><i class="fa fa-circle-o"></i><span>提现</span></a></li>
                 </ul>
             </li>
         </ul>
