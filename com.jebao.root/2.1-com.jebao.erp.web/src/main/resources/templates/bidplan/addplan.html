@@ -15,8 +15,7 @@
     <!-- Main content -->
     <section class="content">
         <form action="/bidplan/doAddPlan" class="form-inline" id="defaultForm" method="get" novalidate="novalidate">
-            <input name="bpLoanerId" type="hidden" value="1"/>
-            <input name="bpCycleSize" type="hidden" value="1"/>
+            <input name="bpLoanerId" type="hidden" value="${bpLoanerId}"/>
             <input id="bpPeriods" name="bpPeriods" type="hidden"/>
 
             <!--基本信息-->
@@ -239,7 +238,7 @@
                                 <div class="form-group">
                                     <div class="input-group margin">
                                         <div class="input-group-addon"><span class="text-red">*</span>产品类型</div>
-                                        <select  class="select2  select2-hidden-accessible" style="width: 160px;">
+                                        <select name="rcptId" class="select2  select2-hidden-accessible" style="width: 160px;">
                                             <option value="0">请选择</option>
                                             <option value="1">项目1</option>
                                             <option value="2">项目2</option>

@@ -82,7 +82,7 @@ var vm = new Vue({
     },
     //初始化远程数据
     created:function(){
-        var dataVal = $("#order_search_form").serializeObject();
+        var dataVal = $("#defaultForm").serializeObject();
         console.log("请求"+dataVal);
         $.get("/bidplan/getBidPlanById",dataVal,function(response){
             if (response.success_is_ok){
@@ -90,6 +90,7 @@ var vm = new Vue({
                 vm.plan=data;
                 $('#productTypeBtn').select2().select2("val", data.bpType);
                 $('#cycleTypeBtn').select2().select2("val", data.bpCycleType);
+                $('#bpInterestPayTypeBtn').select2().select2("val", data.bpInterestPayType);
             }
         });
     },
@@ -98,14 +99,22 @@ var vm = new Vue({
         search:function(event){
             var model = $("#order_search_form").serializeObject();
             $.get("/bidplan/dplan/getlist",model,function(response){
-                console.log("model")
                 if (response.success_is_ok){
                     vm.planlist=response.data;
                 }
             })
-        },
-        remove:function(event, id){
-
         }
     }
+});
+$("#submitBtn").click(function () {
+    //TODO 后台逻辑
+    $.axForForm($('#defaultForm'), function (data) {
+        if (data.success_is_ok) {
+            var targetUrl = "/bidplan/notPassList"
+            redirectUrl(targetUrl)
+            return;
+        } else {
+            errorHandlerFun(data, "#error_place_id");
+        }
+    });
 });

@@ -88,7 +88,7 @@ var vm = new Vue({
     //方法，可用于绑定事件或直接调用
     methods: {
         search:function(event){
-            $.get("/bidplan/dplan/getlist",model.searchObj,function(response){
+            $.get("/bidplan/dplan/getPlanListForPage",model.searchObj,function(response){
                 if (response.success_is_ok){
                     vm.planlist=response.data;
                     if (response.count>0){
@@ -133,12 +133,5 @@ $("#orderlist_table").on("click",'.cmd-delete',function(){
 $("#orderlist_table").on("click",'#modifyInformation',function(){
     var that = $(this); //解决方案
     var dataVal=that.attr('data-val');//自定义属性
-    window.location.href = "/bidplan/dplan/updateplandetail?bpId="+dataVal;
-});
-
-//调用分页
-laypage({
-    cont:$('#pageNum'), //容器。值支持id名、原生dom对象，jquery对象,
-    pages: 100, //总页数
-    groups: 7 //连续显示分页数
+    window.location.href = "/bidplan/updateplandetail/"+dataVal;
 });

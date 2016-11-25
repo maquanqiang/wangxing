@@ -1,31 +1,24 @@
 package com.jebao.erp.web.controller;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.serializer.SimpleDateFormatSerializer;
 import com.jebao.erp.service.inf.loaner.ILoanerServiceInf;
 import com.jebao.erp.service.inf.loanmanage.ITbBidPlanServiceInf;
 import com.jebao.erp.service.inf.loanmanage.ITbBidRiskDataServiceInf;
-import com.jebao.erp.service.inf.loanmanage.ITbInvestInfoServiceInf;
 import com.jebao.erp.web.requestModel.bidplan.AddPlanForm;
-import com.jebao.erp.web.requestModel.bidplan.BidPlanForm;
+import com.jebao.erp.web.requestModel.bidplan.UpdatePlanForm;
 import com.jebao.erp.web.responseModel.base.*;
 import com.jebao.erp.web.responseModel.bidplan.BidPlanVM;
-import com.jebao.erp.web.responseModel.bidplan.LoanIntentVM;
-import com.jebao.jebaodb.entity.TbFundsDetails;
 import com.jebao.jebaodb.entity.extEntity.PageWhere;
 import com.jebao.jebaodb.entity.loaner.TbLoaner;
 import com.jebao.jebaodb.entity.loaner.TbRcpMaterialsTemp;
+import com.jebao.jebaodb.entity.loaner.TbRiskCtlPrjTemp;
 import com.jebao.jebaodb.entity.loanmanage.TbBidPlan;
 import com.jebao.jebaodb.entity.loanmanage.TbBidRiskData;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -49,10 +42,25 @@ public class BidPlanController {
         return "bidplan/reviewedplanlist";
     }
 
+    @RequestMapping("notPassList")
+    public String notPassList() {
+        return "bidplan/notpasslist";
+    }
+
     @RequestMapping("addPlan")
-    public String addPlan() {
+    public String addPlan(Long bpLoanerId, Model model) {
+        List<TbRiskCtlPrjTemp> projectTemps = loanerService.selectRiskCtlPrjTempByLoanerIdForPage(bpLoanerId, null);
+        model.addAttribute("projTemps", projectTemps);
+        model.addAttribute("bpLoanerId", bpLoanerId);
         return "bidplan/addplan";
     }
+
+    @RequestMapping("updatePlanDetail/{bpId}")
+    public String updatePlanDetail(@PathVariable("bpId") Long bpId, Model model) {
+        model.addAttribute("bpId", bpId);
+        return "bidplan/updateplandetail";
+    }
+
 
     @RequestMapping("doAddPlan")
     @ResponseBody
@@ -76,9 +84,7 @@ public class BidPlanController {
         Long rcptId = form.getRcptId();
         //保存风控信息
             if(rcptId!=null){
-                List<TbRcpMaterialsTemp> materialsTemps = new ArrayList<>();
-                TbRcpMaterialsTemp record = new TbRcpMaterialsTemp();
-//                loanerService.selectFundsDetailsForPage(rcptId);
+                List<TbRcpMaterialsTemp> materialsTemps = loanerService.selectRcpMaterialsTempByPrjIdForPage(rcptId, null);
                 if(materialsTemps!=null && materialsTemps.size()>0){
                     for(TbRcpMaterialsTemp temp : materialsTemps){
                         Date cDate = new Date();
@@ -93,11 +99,8 @@ public class BidPlanController {
             }
         return new JsonResultOk("ok");
     }
-    @RequestMapping("updatePlanDetail")
-    public String updatePlanDetail(Long bpId, Model model) {
-        model.addAttribute("bpId", bpId);
-        return "bidplan/updateplandetail";
-    }
+
+
     @RequestMapping("getBidPlanById")
     @ResponseBody
     public JsonResult getBidPlanById(Long bpId) {
@@ -106,4 +109,33 @@ public class BidPlanController {
         return new JsonResultData<>(viewModel);
     }
 
+
+    @RequestMapping("dplan/getPlanListForPage")
+    @ResponseBody
+    public JsonResult getPlanListForPage(@RequestParam(value = "page", defaultValue = "0") Integer page,
+                                  @RequestParam(value = "rows", defaultValue = "10") Integer rows, Integer bpStatus) {
+        TbBidPlan plan = new TbBidPlan();
+        plan.setBpStatus(bpStatus);
+        PageWhere pw = new PageWhere(page, rows);
+        List<TbBidPlan> tbBidPlans = bidPlanService.selectByConditionForPage(plan, pw);
+        int count = bidPlanService.selectByConditionCount(plan);
+        List<BidPlanVM> viewModelList = new ArrayList<BidPlanVM>();
+        tbBidPlans.forEach(o -> viewModelList.add(new BidPlanVM(o)));
+
+        return new JsonResultList<>(viewModelList, count);
+    }
+
+
+    @RequestMapping("updatePlan")
+    @ResponseBody
+    public JsonResult updatePlan(UpdatePlanForm form){
+        TbBidPlan bidPlan = UpdatePlanForm.toEntity(form);
+        bidPlan.setBpStatus(0);                             //改为待审核状态
+        int count = bidPlanService.updateByBidIdSelective(bidPlan);
+        if(count>0){
+            return new JsonResultOk("信息修改成功");
+        }else {
+            return new JsonResultError("信息修改失败");
+        }
+    }
 }

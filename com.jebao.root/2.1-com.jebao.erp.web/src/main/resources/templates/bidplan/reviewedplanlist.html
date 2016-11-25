@@ -34,10 +34,10 @@
                                             <th width="10%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">用户名</th>
                                             <th width="10%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">姓名</th>
                                             <th width="10%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">借款总金额</th>
-                                            <th width="10%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">利率</th>
+                                            <th width="5%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">利率</th>
                                             <th width="10%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">期限</th>
                                             <th width="10%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">申请时间</th>
-                                            <th width="10%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">操作</th>
+                                            <th width="15%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">操作</th>
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -52,7 +52,8 @@
                                             <td>{{plan.bpPeriodsDisplay}}{{plan.bpCycleType}}</td>
                                             <td>{{plan.bpCreateTime}}</td>
                                             <td>
-                                                <a class="btn btn-default btn-xs" role="button" target="_self" @click="">查看详情</a>
+                                                <a class="btn btn-default btn-xs" role="button" :data-val="plan.bpId" id="modifyInformation">查看详情</a>
+                                                <a class="btn btn-default btn-xs" role="button" :data-val="plan.bpId" id="modifyRiskData">修改/添加材料</a>
                                             </td>
                                         </tr>
                                         </tbody>

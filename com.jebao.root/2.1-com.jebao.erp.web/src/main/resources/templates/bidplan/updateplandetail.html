@@ -10,7 +10,7 @@
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <section class="content-header">
-        <h1>借款管理-建标-添加借款</h1>
+        <h1>借款管理-开标被拒-修改信息</h1>
     </section>
     <!-- Main content -->
     <section class="content">
@@ -21,9 +21,9 @@
                     <h5>基本信息</h5>
                 </div>
                 <div class="box box-primary">
-                    <form action="" class="form-inline" id="order_search_form" method="post" novalidate="novalidate">
-                        <input type="hidden" name="bpId" value="${bpId}"/>
-
+                    <form action="/bidplan/updatePlan" class="form-inline" id="defaultForm" method="post" novalidate="novalidate">
+                        <input id="bpId" type="hidden" name="bpId" value="${bpId}"/>
+                        <input id="bpPeriods" name="bpPeriods" type="hidden"/>
                         <div class="box-body">
                             <div class="form-group">
                                 <div class="input-group margin">
@@ -35,7 +35,7 @@
                             <div class="form-group">
                                 <div class="input-group margin">
                                     <div class="input-group-addon">标的名称</div>
-                                    <input type="text" class="form-control" placeholder="" name=""
+                                    <input type="text" class="form-control" placeholder="" name="bpName"
                                            v-model="plan.bpName">
                                 </div>
                             </div>
@@ -43,7 +43,7 @@
                                 <div class="input-group margin">
                                     <div class="input-group-addon">产品类型</div>
                                     <select id="productTypeBtn"  name="bpType" class="select2 select2-hidden-accessible" style="width: 160px;">
-                                        <option value="">请选择</option>
+                                        <option>请选择</option>
                                         <option value="1">普通理财</option>
                                         <option value="2">新手专享</option>
                                     </select>
@@ -59,62 +59,62 @@
                             <div class="form-group">
                                 <div class="input-group margin">
                                     <div class="input-group-addon">募集期限</div>
-                                    <input type="text" placeholder="" class="form-control" v-model="plan.bpOpenTime">
+                                    <input type="text" placeholder="" class="form-control" v-model="plan.bpOpenTime" name="bpOpenTime">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="input-group margin">
                                     <div class="input-group-addon">募集结束</div>
                                     <input type="text" placeholder="" class="form-control chooseDate"
-                                           v-model="plan.bpEndTime">
+                                           v-model="plan.bpEndTime" name="bpEndTime">
                                 </div>
                             </div>
                             <div class="form-group ">
                                 <div class="input-group margin">
                                     <div class="input-group-addon">起投金额</div>
-                                    <input type="text" placeholder="" class="form-control" v-model="plan.bpStartMoney">
+                                    <input type="text" placeholder="" class="form-control" v-model="plan.bpStartMoney" name="bpStartMoney">
                                 </div>
                             </div>
                             <div class="form-group ">
                                 <div class="input-group margin">
                                     <div class="input-group-addon">递增金额</div>
-                                    <input type="text" placeholder="" class="form-control" v-model="plan.bpRiseMoney">
+                                    <input type="text" placeholder="" class="form-control" v-model="plan.bpRiseMoney" name="bpRiseMoney">
                                 </div>
                             </div>
                             <div class="form-group ">
                                 <div class="input-group margin">
                                     <div class="input-group-addon">投资上限</div>
-                                    <input type="text" placeholder="" class="form-control" v-model="plan.bpTopMoney">
+                                    <input type="text" placeholder="" class="form-control" v-model="plan.bpTopMoney" name="bpTopMoney">
                                 </div>
                             </div>
                             <div class="form-group ">
                                 <div class="input-group margin">
                                     <div class="input-group-addon">募集金额</div>
-                                    <input type="text" placeholder="" class="form-control" v-model="plan.bpBidMoney">
+                                    <input type="text" placeholder="" class="form-control" v-model="plan.bpBidMoney" name="bpBidMoney">
                                 </div>
                             </div>
                             <div class="form-group ">
                                 <div class="input-group margin">
                                     <div class="input-group-addon">借款利率</div>
-                                    <input type="text" placeholder="" class="form-control" v-model="plan.bpRate">
+                                    <input type="text" placeholder="" class="form-control" v-model="plan.bpRate" name="bpRate">
                                 </div>
                             </div>
                             <div class="form-group margin">
                                 <div class="input-group">
                                     <div class="input-group-addon">借款期限</div>
                                     <input type="text" placeholder="" class="form-control"
-                                           v-model="plan.bpPeriodsDisplay">
+                                           v-model="plan.bpPeriodsDisplay" name="bpPeriodsDisplay">
                                 </div>
                             </div>
                             <div class="form-group margin">
                                 <div class="input-group">
                                     <div class="input-group-addon">周期选项</div>
-                                    <select  id="cycleTypeBtn"  class="select2 select2-hidden-accessible" style="width: 160px;">
-                                        <option :value="0">请选择</option>
-                                        <option :value="1">日</option>
-                                        <option :value="2">月</option>
-                                        <option :value="3">季</option>
-                                        <option :value="4">年</option>
+                                    <select  id="cycleTypeBtn" name="bpCycleType" class="select2 select2-hidden-accessible" style="width: 160px;">
+                                        <option>请选择</option>
+                                        <option value="1">日</option>
+                                        <option value="2">月</option>
+                                        <option value="3">季</option>
+                                        <option value="4">年</option>
                                     </select>
                                 </div>
                             </div>
@@ -122,22 +122,22 @@
                                 <div class="input-group">
                                     <div class="input-group-addon">预期放款日期</div>
                                     <input type="text" placeholder="" class="form-control chooseDate"
-                                           v-model="plan.bpExpectLoanDate">
+                                           v-model="plan.bpExpectLoanDate" name="bpExpectLoanDate">
                                 </div>
                             </div>
                             <div class="form-group margin">
                                 <div class="input-group">
                                     <div class="input-group-addon">预期还款日期</div>
                                     <input type="text" placeholder="" class="form-control chooseDate"
-                                           v-model="plan.bpExpectRepayDate">
+                                           v-model="plan.bpExpectRepayDate" name="bpExpectRepayDate">
                                 </div>
                             </div>
                             <div class="form-group margin">
                                 <div class="input-group">
                                     <div class="input-group-addon">还款方式</div>
-                                    <select v-model="plan.bpInterestPayType" class="select2  select2-hidden-accessible"
-                                            style="width: 160px;">
-                                        <option value="0">请选择</option>
+                                    <select id="bpInterestPayTypeBtn" class="select2 select2-hidden-accessible"
+                                            style="width: 160px;" name="bpInterestPayType">
+                                        <option>请选择</option>
                                         <option value="1">一次性还本付息</option>
                                         <option value="2">先息后本，按期付息</option>
                                     </select>
@@ -147,14 +147,13 @@
                                 <div class="input-group">
                                     <div class="input-group-addon">平台服务费</div>
                                     <input type="text" placeholder="" class="form-control"
-                                           v-model="plan.bpServiceChargeRate">
+                                           v-model="plan.bpServiceChargeRate" name="bpServiceChargeRate">
                                 </div>
                             </div>
                             <div class="form-group margin">
                                 <div class="input-group">
                                     <div class="input-group-addon">逾期罚息</div>
-                                    <input type="text" placeholder="" class="form-control" v-model="plan.bpLateRate">
-
+                                    <input type="text" placeholder="" class="form-control" v-model="plan.bpLateRate" name="bpLateRate">
                                     <div class="input-group-addon">*借款利率</div>
                                 </div>
                             </div>
@@ -270,61 +269,61 @@
             </div>
         </div>
         <!--认证材料-->
-        <div class="row">
-            <div class="col-xs-12">
-                <div class="box-title">
-                    <h5>认证材料</h5>
-                </div>
-                <div class="form-group ">
-                    <a href="javascript:;" class="btn btn-primary " role="button" target="_blank"
-                       id="add-material">添加</a>
-                </div>
-                <div class="box box-primary">
-                    <div class="box-body">
-                        <div class="dataTables_wrapper">
-                            <div class="row">
-                                <div class="col-xs-12">
-                                    <table class="table table-bordered table-hover dataTable" role="grid"
-                                           aria-describedby="orderlist_table_info">
-                                        <thead>
-                                        <tr role="row">
-                                            <th width="25%" class="ui-state-default sorting_disabled" rowspan="1"
-                                                colspan="1">材料名称
-                                            </th>
-                                            <th width="25%" class="ui-state-default sorting_disabled" rowspan="1"
-                                                colspan="1">备注
-                                            </th>
-                                            <th width="25%" class="ui-state-default sorting_disabled" rowspan="1"
-                                                colspan="1">操作
-                                            </th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        <tr role="row">
-                                            <td>认证材料</td>
-                                            <td>认证材料</td>
-                                            <td>
-                                                <a href="javascript:;" class="btn btn-default btn-xs"
-                                                   role="button">预览</a>
-                                                <a href="javascript:;" class="btn btn-default btn-xs remove-msg"
-                                                   role="button">删除</a>
-                                            </td>
-                                        </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <!--<div class="row">-->
+            <!--<div class="col-xs-12">-->
+                <!--<div class="box-title">-->
+                    <!--<h5>认证材料</h5>-->
+                <!--</div>-->
+                <!--<div class="form-group ">-->
+                    <!--<a href="javascript:;" class="btn btn-primary " role="button" target="_blank"-->
+                       <!--id="add-material">添加</a>-->
+                <!--</div>-->
+                <!--<div class="box box-primary">-->
+                    <!--<div class="box-body">-->
+                        <!--<div class="dataTables_wrapper">-->
+                            <!--<div class="row">-->
+                                <!--<div class="col-xs-12">-->
+                                    <!--<table class="table table-bordered table-hover dataTable" role="grid"-->
+                                           <!--aria-describedby="orderlist_table_info">-->
+                                        <!--<thead>-->
+                                        <!--<tr role="row">-->
+                                            <!--<th width="25%" class="ui-state-default sorting_disabled" rowspan="1"-->
+                                                <!--colspan="1">材料名称-->
+                                            <!--</th>-->
+                                            <!--<th width="25%" class="ui-state-default sorting_disabled" rowspan="1"-->
+                                                <!--colspan="1">备注-->
+                                            <!--</th>-->
+                                            <!--<th width="25%" class="ui-state-default sorting_disabled" rowspan="1"-->
+                                                <!--colspan="1">操作-->
+                                            <!--</th>-->
+                                        <!--</tr>-->
+                                        <!--</thead>-->
+                                        <!--<tbody>-->
+                                        <!--<tr role="row">-->
+                                            <!--<td>认证材料</td>-->
+                                            <!--<td>认证材料</td>-->
+                                            <!--<td>-->
+                                                <!--<a href="javascript:;" class="btn btn-default btn-xs"-->
+                                                   <!--role="button">预览</a>-->
+                                                <!--<a href="javascript:;" class="btn btn-default btn-xs remove-msg"-->
+                                                   <!--role="button">删除</a>-->
+                                            <!--</td>-->
+                                        <!--</tr>-->
+                                        <!--</tbody>-->
+                                    <!--</table>-->
+                                <!--</div>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
         <!--按钮-->
         <div class="row">
             <div class="col-xs-12">
                 <div class="box-body">
-                    <a href="javascript:;" class="btn btn-primary btn-lg" role="button" target="_blank">确定</a>
-                    <a href="javascript:;" class="btn btn-primary btn-lg" role="button" target="_blank">取消</a>
+                    <a href="javascript:;" class="btn btn-primary btn-lg" role="button" id="submitBtn">确定</a>
+                    <a href="javascript:;" class="btn btn-primary btn-lg" role="button">取消</a>
                 </div>
             </div>
         </div>

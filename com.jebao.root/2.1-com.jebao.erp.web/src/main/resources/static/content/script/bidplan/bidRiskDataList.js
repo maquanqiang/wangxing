@@ -9,65 +9,67 @@ $(function () {
 
     $(".select2").select2();
 
-    //var autoObj = {
-    //    addInsuredFormValidate: function () {
-    //        var $form = $("#form-inline");
-    //        $form.validate({
-    //            rules: {
-    //                Name: {
-    //                    required: true,
-    //                    realName: $("#insured_card_type")
-    //                },
-    //                CardNo: {
-    //                    required: true,
-    //                    idCard: $("#insured_card_type")
-    //                },
-    //                Birthday: {
-    //                    required: true,
-    //                    date: true
-    //                },
-    //                Gender: {
-    //                    required: true
-    //                }
-    //            },
-    //            messages: {
-    //                Name: {
-    //                    required: "请输入被保险人姓名",
-    //                    realName: "请输入正确的被保险人姓名"
-    //                },
-    //                CardNo: {
-    //                    required: "请输入被保险人证件号码"
-    //                },
-    //                Birthday: {
-    //                    required: "请输入被保险人出生日期"
-    //                },
-    //                Gender: {
-    //                    required: "请选择性别"
-    //                }
-    //            }
-    //
-    //        });
-    //    },
-    //    BindEvent: function () {
-    //
-    //    },
-    //    ButtonEvent: function () {
-    //
-    //    }
-    //};
-    //for (var prop in autoObj) {
-    //    if (typeof autoObj[prop] === "function") {
-    //        //autoObj[prop].apply();
-    //    }
-    //}
+
 });
+//var autoObj = {
+//    addInsuredFormValidate: function () {
+//        var $form = $("#form-inline");
+//        $form.validate({
+//            rules: {
+//                Name: {
+//                    required: true,
+//                    realName: $("#insured_card_type")
+//                },
+//                CardNo: {
+//                    required: true,
+//                    idCard: $("#insured_card_type")
+//                },
+//                Birthday: {
+//                    required: true,
+//                    date: true
+//                },
+//                Gender: {
+//                    required: true
+//                }
+//            },
+//            messages: {
+//                Name: {
+//                    required: "请输入被保险人姓名",
+//                    realName: "请输入正确的被保险人姓名"
+//                },
+//                CardNo: {
+//                    required: "请输入被保险人证件号码"
+//                },
+//                Birthday: {
+//                    required: "请输入被保险人出生日期"
+//                },
+//                Gender: {
+//                    required: "请选择性别"
+//                }
+//            }
+//
+//        });
+//    },
+//    BindEvent: function () {
+//
+//    },
+//    ButtonEvent: function () {
+//
+//    }
+//};
+//for (var prop in autoObj) {
+//    if (typeof autoObj[prop] === "function") {
+//        //autoObj[prop].apply();
+//    }
+//}
+
 //Vue实例
 //Model
 var model = {
     //查询条件
     searchObj: {},
     //列表
-    planlist: []
+    riskDataList: []
 };
 
 // 创建一个 Vue 实例 (ViewModel),它连接 View 与 Model
@@ -75,22 +77,25 @@ var vm = new Vue({
     el: ".content",
     data: model,
     beforeCreate:function(){
+
         //初始化本地数据
         model.searchObj.page=0;
         model.searchObj.rows=2;
-        model.searchObj.bpStatus=0;
     },
-    //初始化远程数据
-    created:function(){
-        this.search();
+//初始化远程数据
+created:function(){
+    this.search();
 
-    },
-    //方法，可用于绑定事件或直接调用
-    methods: {
+},
+//方法，可用于绑定事件或直接调用
+methods: {
         search:function(event){
-            $.get("/bidplan/dplan/getPlanListForPage",model.searchObj,function(response){
+            var bpId = $("#bpId").val();
+            console.log(bpId)
+            model.searchObj.bpId=bpId;
+            $.get("/bidRiskData/getRiskDataListForPage",model.searchObj,function(response){
                 if (response.success_is_ok){
-                    vm.planlist=response.data;
+                    vm.riskDataList=response.data;
                     console.log(response.count);
                     if (response.count>0){
                         var pageCount = Math.ceil(response.count / model.searchObj.rows);
@@ -134,10 +139,10 @@ $("#orderlist_table").on("click",'.cmd-delete',function(){
 $("#orderlist_table").on("click",'#modifyInformation',function(){
     var that = $(this); //解决方案
     var dataVal=that.attr('data-val');//自定义属性
-    window.location.href = "/bidRiskData/bidRiskDataList/"+dataVal;
+    window.location.href = "/bidRiskData/bidRiskDataView/"+dataVal;
 });
 $("#orderlist_table").on("click",'#modifyRiskData',function(){
     var that = $(this); //解决方案
     var dataVal=that.attr('data-val');//自定义属性
-    window.location.href = "/bidRiskData/bidRiskDataList/"+dataVal;
+    window.location.href = "/bidRiskData/bidRiskDataView/"+dataVal;
 });

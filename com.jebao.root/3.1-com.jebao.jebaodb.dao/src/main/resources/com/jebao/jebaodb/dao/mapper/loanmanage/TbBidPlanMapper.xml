@@ -514,7 +514,7 @@
                 bp_desc = #{bpDesc,jdbcType=LONGVARCHAR},
             </if>
             <if test="bpType != null" >
-                #{bpType,jdbcType=INTEGER},
+                bp_type = #{bpType,jdbcType=INTEGER},
             </if>
         </set>
         where bp_id = #{bpId,jdbcType=BIGINT}

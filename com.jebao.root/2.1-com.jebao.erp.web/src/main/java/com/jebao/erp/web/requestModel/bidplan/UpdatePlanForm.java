@@ -3,17 +3,17 @@ package com.jebao.erp.web.requestModel.bidplan;
 import com.jebao.jebaodb.entity.loanmanage.TbBidPlan;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.util.Date;
 
 /**
  * Created by Lee on 2016/11/24.
  */
-public class AddPlanForm {
+public class UpdatePlanForm{
 
-    public static TbBidPlan toEntity(AddPlanForm planForm) {
+    public static TbBidPlan toEntity(UpdatePlanForm planForm) {
         TbBidPlan bidPlan = new TbBidPlan();
+        bidPlan.setBpId(planForm.getBpId());
         bidPlan.setBpName(planForm.getBpName());
         bidPlan.setBpNumber(planForm.getBpNumber());
         bidPlan.setBpPeriodsDisplay(planForm.getBpPeriodsDisplay());
@@ -45,9 +45,8 @@ public class AddPlanForm {
         bidPlan.setBpType(planForm.getBpType());
         return bidPlan;
     }
+    private Long bpId;
 
-    private Long rcptId;    //项目模板id
-    @NotNull()
     private String bpName;
 
     private String bpNumber;
@@ -63,9 +62,9 @@ public class AddPlanForm {
     private BigDecimal bpBidMoney;
 
     private BigDecimal bpRate;
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date bpStartTime;
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date bpEndTime;
 
     private BigDecimal bpStartMoney;
@@ -79,9 +78,9 @@ public class AddPlanForm {
     private Integer bpInterestPayType;
 
     private Integer bpOpenTime;
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date bpExpectLoanDate;
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date bpExpectRepayDate;
 
     private BigDecimal bpServiceChargeRate;
@@ -109,14 +108,6 @@ public class AddPlanForm {
     private Integer bpType;
 
     private Integer bpLoanerType;
-
-    public Long getRcptId() {
-        return rcptId;
-    }
-
-    public void setRcptId(Long rcptId) {
-        this.rcptId = rcptId;
-    }
 
     public String getBpName() {
         return bpName;
@@ -335,12 +326,28 @@ public class AddPlanForm {
         this.bpLoanerId = bpLoanerId;
     }
 
+    public Long getBpId() {
+        return bpId;
+    }
+
+    public void setBpId(Long bpId) {
+        this.bpId = bpId;
+    }
+
     public Date getBpStartTime() {
         return bpStartTime;
     }
 
     public void setBpStartTime(Date bpStartTime) {
         this.bpStartTime = bpStartTime;
+    }
+
+    public Date getBpEndTime() {
+        return bpEndTime;
+    }
+
+    public void setBpEndTime(Date bpEndTime) {
+        this.bpEndTime = bpEndTime;
     }
 
     public Date getBpExpectLoanDate() {
@@ -357,13 +364,5 @@ public class AddPlanForm {
 
     public void setBpExpectRepayDate(Date bpExpectRepayDate) {
         this.bpExpectRepayDate = bpExpectRepayDate;
-    }
-
-    public Date getBpEndTime() {
-        return bpEndTime;
-    }
-
-    public void setBpEndTime(Date bpEndTime) {
-        this.bpEndTime = bpEndTime;
     }
 }
