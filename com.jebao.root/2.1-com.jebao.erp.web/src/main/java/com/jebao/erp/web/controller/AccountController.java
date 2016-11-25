@@ -24,6 +24,11 @@ public class AccountController extends _BaseController {
 
     @RequestMapping("login")
     public String login() {
+        //检测是否已登录
+        boolean isLogin = LoginSessionUtil.isLogin(request,response);
+        if (isLogin){
+            return "home/index";
+        }
         return "account/login";
     }
     @RequestMapping(value="doLogin",produces="application/json")
@@ -48,4 +53,11 @@ public class AccountController extends _BaseController {
         //
         return new JsonResultOk("登录成功");
     }
+
+    @RequestMapping("logout")
+    public String logout(){
+        LoginSessionUtil.logout(request,response);
+        return "redirect:/home/index";
+    }
+
 }

@@ -228,8 +228,10 @@
         from tb_risk_ctl_prj_temp
         WHERE
         <include refid="selectByLoanerId_Where_Clause"/>
-        order by l_id DESC
+        order by rcpt_id DESC
+        <if test="pageWhere != null" >
         LIMIT #{pageWhere.begin},#{pageWhere.pageSize}
+        </if>
     </select>
     <select id="selectByLoanerIdForPageCount" resultType="java.lang.Integer">
         select count(*)

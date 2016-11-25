@@ -1,7 +1,6 @@
 package com.jebao.erp.web.controller;
 
 import com.jebao.erp.web.requestModel.home.IndexForm;
-import com.jebao.erp.web.requestModel.user.UserForm;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class HomeController {
     @RequestMapping("index")
     public String index(@ModelAttribute("form") IndexForm form) {
+
         return "home/index";
     }
 }

@@ -17,8 +17,10 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="box box-primary">
+                    <form id="defaultForm"><input type="hidden" name="loanerId" value="${loanerId}"/></form>
                     <div class="box-body pad table-responsive">
-                        <a href="修改风控信息.html" class="btn btn-primary" role="button" target="_blank">添加</a>
+                        <a href="/loaner/riskedit/${loanerId}/rId/0" class="btn btn-primary" role="button"
+                           target="_blank">添加</a>
                     </div>
                 </div>
             </div>
@@ -31,33 +33,37 @@
                         <div class="dataTables_wrapper">
                             <div class="row">
                                 <div class="col-sm-12">
-                                    <table id="" class="table table-bordered table-hover dataTable" role="grid" aria-describedby="orderlist_table_info">
+                                    <table id="orderlist_table" class="table table-bordered table-hover dataTable"
+                                           role="grid" aria-describedby="orderlist_table_info">
                                         <thead>
                                         <tr role="row">
-                                            <th width="33%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">项目名称</th>
-                                            <th width="33%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">更新时间</th>
-                                            <th width="33%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">操作</th>
+                                            <th width="33%" class="ui-state-default sorting_disabled" rowspan="1"
+                                                colspan="1">项目名称
+                                            </th>
+                                            <th width="33%" class="ui-state-default sorting_disabled" rowspan="1"
+                                                colspan="1">更新时间
+                                            </th>
+                                            <th width="33%" class="ui-state-default sorting_disabled" rowspan="1"
+                                                colspan="1">操作
+                                            </th>
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        <tr role="row">
-                                            <td>项目1</td>
-                                            <td>2016/10/10 9:00:00</td>
-                                            <td>
-                                                <a href="修改风控信息.html" class="btn btn-default btn-xs" role="button" target="_blank" id="modifyProject">修改</a>
-                                                <a href="查看详情.html" class="btn btn-default btn-xs" role="button" target="_blank">查看详情</a>
-                                                <a href="javascript:;" class="btn btn-default btn-xs remove-msg" role="button" target="_blank">删除</a>
-                                            </td>
-                                        </tr>
-                                        <tr role="row">
-                                            <td>项目1</td>
-                                            <td>2016/10/10 9:00:00</td>
-                                            <td>
-                                                <a href="javascript:;" class="btn btn-default btn-xs " role="button" target="_blank">修改</a>
-                                                <a href="javascript:;" class="btn btn-default btn-xs" role="button" target="_blank">查看详情</a>
-                                                <a href="javascript:;" class="btn btn-default btn-xs remove-msg" role="button" target="_blank">删除</a>
-                                            </td>
-                                        </tr>
+                                        <template v-for="item in risks">
+                                            <tr role="row">
+                                                <td>{{ item.name }}</td>
+                                                <td>{{ item.updateTime }}</td>
+                                                <td>
+                                                    <a :href="getEditHref(item.loanerId,item.id)"
+                                                       class="btn btn-default btn-xs btn-modify" role="button"
+                                                       target="_blank">修改</a>
+                                                    <a :href="getDetailHref(item.id)" class="btn btn-default btn-xs"
+                                                       role="button" target="_blank">查看详情</a>
+                                                    <a href="javascript:;" class="btn btn-default btn-xs remove-msg"
+                                                       role="button" :flag="item.id">删除</a>
+                                                </td>
+                                            </tr>
+                                        </template>
                                         </tbody>
                                     </table>
                                 </div>
@@ -71,5 +77,33 @@
 </div>
 <!-- /.content-wrapper -->
 #parse("common/footer.html")
+<script src=$UrlHelperTool.href("/content/script/loaner/risklist.js")></script>
+<script>
+    $(function () {
+        //删除信息
+        $('#orderlist_table').on('click', '.remove-msg', function () {
+            var id = $(this).attr("flag");
+            layer.open({
+                content: '您是否删除信息?',
+                btn: ['取消', '删除'],
+                yes: function () {
+                    layer.closeAll();
+                },
+                btn2: function () {
+                    $.get("/api/risk/deleteRisk", "id=" + id, function (response) {
+                        if (response.success_is_ok) {
+                            layer.msg('删除成功！', {icon: 1});
+                            var targetUrl = "/loaner/risklist/${loanerId}";
+                            redirectUrl(targetUrl);
+                            return;
+                        } else {
+                            layer.msg('删除失败！', {icon: 1});
+                        }
+                    });
+                }
+            });
+        });
+    });
+</script>
 </body>
 </html>

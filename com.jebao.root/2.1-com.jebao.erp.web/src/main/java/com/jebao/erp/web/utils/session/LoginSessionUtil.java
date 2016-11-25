@@ -5,10 +5,7 @@ import com.jebao.common.utils.fastjson.FastJsonUtil;
 import com.jebao.erp.web.utils.constants.Constants;
 import com.jebao.erp.web.utils.cookie.CookieUtil;
 import org.apache.commons.lang.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.Environment;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.UUID;
@@ -25,7 +22,7 @@ public class LoginSessionUtil {
      */
     public static boolean isLogin(HttpServletRequest request, HttpServletResponse response) {
         CurrentUser currentUser=User(request, response);
-        boolean isOk=User(request, response) != null;
+        boolean isOk=currentUser != null;
         if(isOk)
         {
             Refresh(currentUser,request,response);

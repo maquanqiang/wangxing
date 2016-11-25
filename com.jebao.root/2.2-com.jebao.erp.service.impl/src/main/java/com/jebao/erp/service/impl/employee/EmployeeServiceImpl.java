@@ -1,5 +1,6 @@
 package com.jebao.erp.service.impl.employee;
 
+import com.jebao.jebaodb.entity.employee.input.LoginIM;
 import org.apache.commons.lang.time.DateUtils;
 import com.jebao.common.utils.date.DateUtil;
 import com.jebao.common.utils.idcard.IdCardUtil;
@@ -49,30 +50,83 @@ public class EmployeeServiceImpl implements IEmployeeServiceInf {
         return employeeDao.selectEmployeeDetailsInfoCount(model);
     }
     @Override
-    public ResultInfo SaveEmployeeInfo(EmployeeIM model){
+    public ResultInfo saveEmployeeInfo(EmployeeIM model){
         ResultInfo resultInfo = new ResultInfo(false);
         //region 校验
         ValidationResult resultValidation = ValidationUtil.validateEntity(model);
         if (resultValidation.isHasErrors()) {
-            resultInfo.setMsg(resultValidation.toString());
+            resultInfo.setMsg(resultValidation.getErrorMsg().toString());
             return resultInfo;
+        }
+        if (model.getTeamId()==0){
+            model.setTeamId(model.getDepartmentId());
         }
         //endregion
 
         int empId = model.getEmpId();
 
         if (empId==0){
-            resultInfo = AddEmployeeInfo(model);//新增
+            resultInfo = addEmployeeInfo(model);//新增
         }else{
-            resultInfo = UpdateEmployeeInfo(model);//修改
+            resultInfo = updateEmployeeInfo(model);//修改
         }
 
         return resultInfo;
     }
+    @Override
+    public ResultInfo deleteEmployeeInfo(int empId,int userId){
+        ResultInfo resultInfo = new ResultInfo(false);
+
+        TbEmployee employeeEntity = employeeDao.selectByPrimaryKey(empId);
+        if (employeeEntity==null){
+            resultInfo.setMsg("不存在此员工");
+            return resultInfo;
+        }
+        boolean success = employeeDao.delete(empId);
+        if (success){
+            loginDao.deleteEmployeeLogin(empId);
+            resultInfo.setSuccess_is_ok(true);
+            resultInfo.setMsg("删除成功");
+
+            //region 记录日志
+            TbEmployeeLog logEntity = new TbEmployeeLog();
+            logEntity.setElEmpId(empId);
+            logEntity.setElContent("删除员工");//操作内容
+            logEntity.setElOperateTime(new Date());//操作时间
+            logEntity.setElOperator(userId);//操作人
+            logDao.insert(logEntity);//插入日志记录
+
+            //endregion
+        }else{
+            resultInfo.setMsg("删除失败");
+        }
+        return resultInfo;
+    }
+
+    @Override
+    public ResultInfo Login(LoginIM model){
+        TbEmployeeLogin loginEntity = loginDao.selectByUsername(model.getUsername());
+        if (loginEntity==null){
+            return new ResultInfo(false,"不存在此用户");
+        }
+        if(!loginEntity.getLgPassword().equalsIgnoreCase(model.getPassword())){
+            return new ResultInfo(false,"登录密码错误");
+        }
+        //登录成功
+        if (loginEntity.getLgFirstLoginTime() == null){
+            loginEntity.setLgFirstLoginTime(new Date());
+        }
+        loginEntity.setLgLastLoginTime(new Date());
+        //更新登录时间
+        loginDao.updateByPrimaryKey(loginEntity);
+
+        return new ResultData<Integer>(loginEntity.getLgEmpId(),"登录成功");
+    }
+
     /**
      * 新增员工信息
      */
-    private ResultInfo AddEmployeeInfo(EmployeeIM model){
+    private ResultInfo addEmployeeInfo(EmployeeIM model){
         //region 转换实体
         Date today = new Date();
         //员工基本信息
@@ -89,8 +143,9 @@ public class EmployeeServiceImpl implements IEmployeeServiceInf {
         employee.setEmpCreateTime(today);//创建时间
         employee.setEmpCreateUser(model.getUserId());//创建人
         //插入员工基本信息
-        int empId = employeeDao.insert(employee);
-        if (empId==0){return new ResultInfo(false,"添加员工基本信息失败");}
+        int reval = employeeDao.insert(employee);
+        int empId = employee.getEmpId();//员工id，插入之后有内容
+        if (reval==0){return new ResultInfo(false,"添加员工基本信息失败");}
         //员工所属部门
         if (model.getTeamId()>0){
             TbEmpDepRelationship empDepRelationship = new TbEmpDepRelationship();
@@ -137,11 +192,11 @@ public class EmployeeServiceImpl implements IEmployeeServiceInf {
     /**
      * 更新员工信息
      */
-    private ResultInfo UpdateEmployeeInfo(EmployeeIM model){
+    private ResultInfo updateEmployeeInfo(EmployeeIM model){
 
         EmployeeSM searchModel = new EmployeeSM();
         searchModel.setEmpId(model.getEmpId());
-        searchModel.setPageIndex(1);
+        searchModel.setPageIndex(0);
         searchModel.setPageSize(1);
         List<EmployeeInfo> employeeInfoList = employeeDao.selectEmployeeDetailsInfo(searchModel);
         if (employeeInfoList==null || employeeInfoList.size()==0){

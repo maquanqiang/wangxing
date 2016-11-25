@@ -3,13 +3,14 @@ package com.jebao.jebaodb.entity.employee.input;
 import com.jebao.jebaodb.entity.extEntity.InputModel;
 import org.hibernate.validator.constraints.NotBlank;
 
+import javax.validation.constraints.Min;
 import javax.validation.constraints.Pattern;
 
 /**
  * Created by Jack on 2016/11/23.
  */
 public class EmployeeIM extends InputModel {
-    private Integer empId;
+    private int empId;
     @NotBlank(message="员工姓名不能为空")
     private String name;
     @NotBlank(message="手机号不能为空")
@@ -20,7 +21,13 @@ public class EmployeeIM extends InputModel {
     /**
      * 员工级别
      */
+    @Min(value = 1,message = "请选择职级")
     private int rankId;
+    /**
+     * 部门id
+     */
+    @Min(value = 1,message = "请选择部门")
+    private int departmentId;
     /**
      * 所属团队
      */
@@ -30,11 +37,11 @@ public class EmployeeIM extends InputModel {
      */
     private int status;
 
-    public Integer getEmpId() {
+    public int getEmpId() {
         return empId;
     }
 
-    public void setEmpId(Integer empId) {
+    public void setEmpId(int empId) {
         this.empId = empId;
     }
 
@@ -84,5 +91,13 @@ public class EmployeeIM extends InputModel {
 
     public void setStatus(int status) {
         this.status = status;
+    }
+
+    public int getDepartmentId() {
+        return departmentId;
+    }
+
+    public void setDepartmentId(int departmentId) {
+        this.departmentId = departmentId;
     }
 }
