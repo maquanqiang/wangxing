@@ -25,6 +25,9 @@ var vm = new Vue({
         },
         getDetailHref: function (id) {
             return "/loaner/riskdetails/" + id;
+        },
+        getMaterialsHref: function(id){
+            return "/loaner/riskmaterials/" + id;
         }
     }
 });
