@@ -173,7 +173,7 @@
                     </select>
                 </div>
             </div>
-            <div class="form-group team" :class="teamClass">
+            <div class="form-group team" :class="{hide:noTeamRankId==formData.rankId}">
                 <label class="col-sm-3 control-label">所属团队:</label>
                 <div class="col-sm-8">
                     <select class="form-control" style="width:100%;height: 34px;border-color: #d2d6de;"  name="teamId" v-model.number="formData.teamId">

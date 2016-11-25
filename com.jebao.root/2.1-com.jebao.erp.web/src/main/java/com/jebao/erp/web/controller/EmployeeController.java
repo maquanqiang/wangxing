@@ -10,12 +10,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * Created by Jack on 2016/11/17.
  */
 @Controller
-@RequestMapping("employee")
+@RequestMapping("/employee/")
 public class EmployeeController {
     @Autowired
     private IEmployeeServiceInf employeeService;
 
-    @RequestMapping("")
+    @RequestMapping("index")
     public String index(Model model) {
         //model.addAttribute("name","jackaa");
         return "employee/index";
