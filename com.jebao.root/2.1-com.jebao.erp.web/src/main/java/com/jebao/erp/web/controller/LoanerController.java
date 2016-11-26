@@ -58,4 +58,10 @@ public class LoanerController extends _BaseController {
         model.addAttribute("rcptId", rId);
         return "loaner/riskdetails";
     }
+
+    @RequestMapping(value = "/riskmaterials/{rId}", method = RequestMethod.GET)
+    public String riskmaterials(@PathVariable Long rId, Model model) {
+        model.addAttribute("rcptId", rId);
+        return "loaner/riskmaterials";
+    }
 }
