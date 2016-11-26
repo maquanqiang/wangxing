@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>test</title>
+    #parse("common/head.html")
+    <link href="/content/plugins/fileinput/css/fileinput.min.css" rel="stylesheet">
+</head>
+<body class="skin-blue sidebar-mini">
+<div class="wrapper">
+    <!-- 头部菜单 -->
+    #parse("common/main-header.html")
+    <!-- 左侧菜单 -->
+    #parse("common/main-sidebar.html")
+    <!-- 页面主内容 -->
+    <div class="content-wrapper">
+        <form enctype="multipart/form-data">
+
+            <div class="form-group">
+                <input id="input-ficons-1" name="inputficons1[]" multiple type="file" class="file-loading">
+
+            </div>
+
+        </form>
+
+    </div>
+    <!-- /.content-wrapper -->
+    <div class="control-sidebar-bg"></div>
+</div><!-- ./wrapper -->
+
+#include("common/footer.html")
+<script src="/content/plugins/fileinput/fileinput.min.js"></script>
+<script>
+    $("#input-ficons-1").fileinput({
+        uploadUrl: "/file-upload-batch/2",
+        uploadAsync: true,
+        previewFileIcon: '<i class="fa fa-file"></i>',
+        allowedPreviewTypes: null, // set to empty, null or false to disable preview for all types
+        previewFileIconSettings: {
+            'docx': '<i class="fa fa-file-word-o text-primary"></i>',
+            'xlsx': '<i class="fa fa-file-excel-o text-success"></i>',
+            'pptx': '<i class="fa fa-file-powerpoint-o text-danger"></i>',
+            'jpg': '<i class="fa fa-file-photo-o text-warning"></i>',
+            'pdf': '<i class="fa fa-file-pdf-o text-danger"></i>',
+            'zip': '<i class="fa fa-file-archive-o text-muted"></i>',
+        }
+    });
+</script>
+</body>
+</html>

@@ -21,4 +21,9 @@ public class EmployeeController {
         return "employee/index";
     }
 
+    @RequestMapping("upload")
+    public String upload(){
+        return "employee/upload";
+    }
+
 }

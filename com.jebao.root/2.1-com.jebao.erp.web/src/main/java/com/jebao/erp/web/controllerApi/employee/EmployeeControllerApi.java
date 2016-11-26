@@ -62,5 +62,11 @@ public class EmployeeControllerApi extends _BaseController {
         return resultInfo;
     }
 
+    @RequestMapping(value = "upload",method = RequestMethod.POST)
+    public ResultInfo upload(){
+        System.out.println("upload");
+        return new ResultInfo(true);
+    }
+
 
 }

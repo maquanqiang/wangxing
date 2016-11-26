@@ -1,10 +1,6 @@
 /**
  * Created by Jack on 2016/11/25.
  */
-$(function () {
-
-
-});
 var model = {
     form:"#password_form",
     submitObj:$("#password_form").serializeObject(),
