@@ -246,15 +246,14 @@ var vm = new Vue({
             var submitModel = $form.serializeObject();
             $.post("/api/employee/post",submitModel,function(response){
                 if (response.success_is_ok){
-                    layer.msg(response.msg, function () {
-                        layer.closeAll();
-                    });
+                    layer.msg(response.msg);
                     vm.search();
                 }else{
                     vm.openFormVm.error.hide=false;
                     vm.openFormVm.error.message=response.msg;
                 }
                 $button.removeClass("disabled");
+                layer.closeAll();
             });
         },
         createOpenVm:function(form,empId){
@@ -263,7 +262,7 @@ var vm = new Vue({
                 ranks:vm.ranks,
                 departments:vm.departments,
                 formData:$(form).serializeObject(),
-                teamClass:"",
+                noTeamRankId:1, //不显示团队select的职级id
                 error:{hide:true,message:""}
             };
             openVmModel.formData.empId=empId;
@@ -320,19 +319,7 @@ var vm = new Vue({
                 mounted:function(){
                     var $form = $(openVmModel.form);
                     vm.bindFormValidate($form);
-                },
-                //watch可以监视数据变动，针对相应的数据设置监视函数即可
-                watch: {
-                    // 这个回调将在 `formData.rankId`  改变后调用
-                    "formData.rankId": function (newVal,oldVal) {
-                        var text = $("#insertFormId .rank").find("option:selected").text();
-                        if (text=="总监"){
-                            this.teamClass="hide";
-                        }else{
-                            this.teamClass="";
-                        }
-                    }
-                },
+                }
             });
         },
         openPostForm:function(empId){
