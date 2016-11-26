@@ -17,22 +17,22 @@
         <div class="row">
             <div class="col-xs-12">
                 <div class="box box-primary">
-                    <form action="" class="form-inline" id="order_search_form" method="post" novalidate="novalidate">
+                    <form action="" class="form-inline" id="defaultForm" method="post" novalidate="novalidate">
                         <div class="box-body">
                             <div class="form-group">
                                 <div class="input-group margin">
                                     <div class="input-group-addon">用户名</div>
-                                    <input type="text" class="form-control" placeholder="" name="">
+                                    <input type="text" class="form-control" placeholder="" v-model="searchObj.nickName" name="nickName">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="input-group margin">
                                     <div class="input-group-addon">手机号</div>
-                                    <input type="text" class="form-control" placeholder="" name="">
+                                    <input type="text" class="form-control" placeholder="" v-model="searchObj.phone" name="phone">
                                 </div>
                             </div>
                             <div class="input-group  margin">
-                                <a href="javascript:;" class="btn btn-primary " role="button" target="_blank">搜索</a>
+                                <a href="javascript:;" class="btn btn-primary " role="button" id="btnSearch" @click="search">搜索</a>
                             </div>
                         </div>
                     </form>
@@ -60,50 +60,19 @@
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        <tr role="row" class="odd">
-                                            <td>0920183</td>
-                                            <td>张三</td>
-                                            <td>13601254554</td>
-                                            <td>2015/03/03 8:49</td>
-                                            <td>5</td>
-                                            <td>10000.00</td>
-                                            <td>
-                                                <a href="/bidplan/plan/toaddplan?bpLoanerId=1" class="btn btn-default btn-xs" role="button" target="_blank">添加借款</a>
-                                            </td>
-                                        </tr>
-                                        <tr role="row" class="even">
-                                            <td>0920183</td>
-                                            <td>张三</td>
-                                            <td>13601254554</td>
-                                            <td>2015/03/03 8:49</td>
-                                            <td>5</td>
-                                            <td>10000.00</td>
-                                            <td>
-                                                <a href="建标--添加借款.html" class="btn btn-default btn-xs" role="button" target="_blank">添加借款</a>
-                                            </td>
-                                        </tr>
-                                        <tr role="row" class="odd">
-                                            <td>0920183</td>
-                                            <td>张三</td>
-                                            <td>13601254554</td>
-                                            <td>2015/03/03 8:49</td>
-                                            <td>5</td>
-                                            <td>10000.00</td>
-                                            <td>
-                                                <a href="建标--添加借款.html" class="btn btn-default btn-xs" role="button" target="_blank">添加借款</a>
-                                            </td>
-                                        </tr>
-                                        <tr role="row" class="even">
-                                            <td>0920183</td>
-                                            <td>张三</td>
-                                            <td>13601254554</td>
-                                            <td>2015/03/03 8:49</td>
-                                            <td>5</td>
-                                            <td>10000.00</td>
-                                            <td>
-                                                <a href="建标--添加借款.html" class="btn btn-default btn-xs" role="button" target="_blank">添加借款</a>
-                                            </td>
-                                        </tr>
+                                            <template v-for="item in loaners">
+                                                <tr role="row" class="odd">
+                                                    <td>{{item.nickName}}</td>
+                                                    <td>{{item.trueName}}</td>
+                                                    <td>{{item.phone}}</td>
+                                                    <td>{{item.registerTime}}</td>
+                                                    <td>5</td>
+                                                    <td>10000.00</td>
+                                                    <td>
+                                                        <a href="javascript:;" class="btn btn-default btn-xs" role="button" @click="addPlanBtn(item.id)">添加借款</a>
+                                                    </td>
+                                                </tr>
+                                            </template>
                                         </tbody>
                                     </table>
                                 </div>

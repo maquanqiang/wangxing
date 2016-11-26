@@ -134,7 +134,7 @@ $("#orderlist_table").on("click",'.cmd-delete',function(){
 $("#orderlist_table").on("click",'#modifyInformation',function(){
     var that = $(this); //解决方案
     var dataVal=that.attr('data-val');//自定义属性
-    window.location.href = "/bidRiskData/bidRiskDataList/"+dataVal;
+    window.location.href = "/bidplan/updatePlanDetail/"+dataVal;
 });
 $("#orderlist_table").on("click",'#modifyRiskData',function(){
     var that = $(this); //解决方案

@@ -65,10 +65,10 @@ $(function () {
 var model = {
     //查询条件
     search: {},
-    //
+    //标的
     plan: {},
-    //销售级别
-    ranks: []
+    //台账列表
+    intentList : []
 
 };
 
@@ -78,43 +78,44 @@ var vm = new Vue({
     data: model,
     beforeCreate:function(){
         //初始化本地数据
-        model.search = $("#order_search_form").serializeObject(); //初始化 model.search 对象
     },
     //初始化远程数据
     created:function(){
-        var dataVal = $("#defaultForm").serializeObject();
-        console.log("请求"+dataVal);
+        var val = $("#bpId").val();
+        var dataVal = {
+            bpId : val
+        }
         $.get("/bidplan/getBidPlanById",dataVal,function(response){
             if (response.success_is_ok){
                 var data=response.data;
                 vm.plan=data;
-                $('#productTypeBtn').select2().select2("val", data.bpType);
-                $('#cycleTypeBtn').select2().select2("val", data.bpCycleType);
-                $('#bpInterestPayTypeBtn').select2().select2("val", data.bpInterestPayType);
             }
         });
     },
     //方法，可用于绑定事件或直接调用
     methods: {
         search:function(event){
-            var model = $("#order_search_form").serializeObject();
-            $.get("/bidplan/dplan/getlist",model,function(response){
+        },
+        createIntentBtn:function(){
+            var formValue = $("#defaultForm").serializeObject();
+            $.get("/bidplan/getLoanFundIntents",formValue,function(response){
                 if (response.success_is_ok){
-                    vm.planlist=response.data;
+                    vm.intentList = response.data;
                 }
-            })
+            });
+        },
+        cancelBtn : function(){
+            window.location.href = document.referrer;
+        },
+        submitBtn:function() {
+            var formValue = $("#defaultForm").serializeObject();
+            $.post("/bidplan/updatePlan",formValue,function(response){
+                if (response.success_is_ok){
+                    window.location.href = document.referrer;
+                }else{
+                    errorHandlerFun("#error_place_id");
+                }
+            });
         }
     }
-});
-$("#submitBtn").click(function () {
-    //TODO 后台逻辑
-    $.axForForm($('#defaultForm'), function (data) {
-        if (data.success_is_ok) {
-            var targetUrl = "/bidplan/notPassList"
-            redirectUrl(targetUrl)
-            return;
-        } else {
-            errorHandlerFun(data, "#error_place_id");
-        }
-    });
 });

@@ -1,9 +1,5 @@
 /**
- * Created by Lee on 2016/11/17.
- */
-
-/**
- * Created by Jack on 2016/11/18.
+ * Created by lee on 2016/11/18.
  */
 $(function () {
 
@@ -63,14 +59,13 @@ $(function () {
 });
 //Vue实例
 //Model
+//Vue实例
+//Model
 var model = {
     //查询条件
-    search: {},
-    //列表
-    planlist: [],
-    //销售级别
-    ranks: []
-
+    searchObj: {},
+    //借款人列表
+    loaners:[]
 };
 
 // 创建一个 Vue 实例 (ViewModel),它连接 View 与 Model
@@ -79,28 +74,26 @@ var vm = new Vue({
     data: model,
     beforeCreate:function(){
         //初始化本地数据
-        model.search = $("#order_search_form").serializeObject(); //初始化 model.search 对象
-        model.search.pageIndex=0;
-        model.search.pageSize=10;
+        model.searchObj = $("#defaultForm").serializeObject(); //初始化 model.search 对象
+        model.searchObj.pageIndex=0;
+        model.searchObj.pageSize=10;
     },
     //初始化远程数据
+    //初始化远程数据
     created:function(){
-        $.get("/bidplan/dplan/getlist",function(response){
-            if (response.success_is_ok){
-                vm.planlist=response.data;
-            }
-        });
+        this.search();
     },
     //方法，可用于绑定事件或直接调用
     methods: {
         search:function(event){
             if (typeof event !== "undefined"){ //点击查询按钮的话，是查询第一页数据
-                model.search.pageIndex=0;
+                model.searchObj.pageIndex=0;
             }
             $("#btnSearch").addClass("disabled");//禁用按钮
-            $.get("/bidplan/dplan/getlist",model.search,function(response){
+            $.get("/api/loaner/list",model.searchObj,function(response){
                 if (response.success_is_ok){
-                    vm.planlist=response.data;
+                    console.log(response.data)
+                    vm.loaners=response.data;
                     if (response.count>0){
                         var pageCount = Math.ceil(response.count / model.pageSize);
                         //调用分页
@@ -111,7 +104,7 @@ var vm = new Vue({
                             jump: function(obj, first){ //触发分页后的回调
                                 if(!first){ //点击跳页触发函数自身，并传递当前页：obj.curr
                                     console.log(obj.curr);
-                                    vm.search.pageIndex=obj.curr -1;
+                                    vm.searchObj.pageIndex=obj.curr -1;
                                     vm.search();
                                 }
                             },
@@ -120,9 +113,11 @@ var vm = new Vue({
                     }
                 }
                 $("#btnSearch").removeClass("disabled");//解除禁用
-
-            })
-
+            });
+        },
+        addPlanBtn : function(id){
+            var targetUrl = "/bidplan/addplan/"+id
+            redirectUrl(targetUrl)
         }
     }
 });

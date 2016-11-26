@@ -79,9 +79,9 @@ public class BidPlanVM extends ViewModel {
     private BigDecimal bpBidMoney;
 
     private BigDecimal bpRate;
-    @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd")
     private Date bpStartTime;
-    @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd")
     private Date bpEndTime;
 
     private BigDecimal bpStartMoney;
@@ -119,9 +119,9 @@ public class BidPlanVM extends ViewModel {
     private Date bpInterestEt;
 
     private String bpRemark;
-    @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd")
     private Date bpExpectLoanDate;
-    @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd")
     private Date bpExpectRepayDate;
 
     private BigDecimal bpServiceChargeRate;

@@ -22,8 +22,8 @@ public class AddPlanForm {
         bidPlan.setBpCycleSize(planForm.getBpCycleSize());
         bidPlan.setBpBidMoney(planForm.getBpBidMoney());
         bidPlan.setBpRate(planForm.getBpRate());
-//        bidPlan.setBpStartTime(planForm.getBpStartTime());
-//        bidPlan.setBpEndTime(planForm.getBpEndTime());
+        bidPlan.setBpStartTime(planForm.getBpStartTime());
+        bidPlan.setBpEndTime(planForm.getBpEndTime());
         bidPlan.setBpStartMoney(planForm.getBpStartMoney());
         bidPlan.setBpRiseMoney(planForm.getBpRiseMoney());
         bidPlan.setBpTopMoney(planForm.getBpTopMoney());
@@ -31,8 +31,8 @@ public class AddPlanForm {
         bidPlan.setBpLoanerType(planForm.getBpLoanerType());
         bidPlan.setBpInterestPayType(planForm.getBpInterestPayType());
         bidPlan.setBpOpenTime(planForm.getBpOpenTime());
-//        bidPlan.setBpExpectLoanDate(planForm.getBpExpectLoanDate());
-//        bidPlan.setBpExpectRepayDate(planForm.getBpExpectRepayDate());
+        bidPlan.setBpExpectLoanDate(planForm.getBpExpectLoanDate());
+        bidPlan.setBpExpectRepayDate(planForm.getBpExpectRepayDate());
         bidPlan.setBpServiceChargeRate(planForm.getBpServiceChargeRate());
         bidPlan.setBpLateRate(planForm.getBpLateRate());
         bidPlan.setBpBorrowDesc(planForm.getBpBorrowDesc());
@@ -47,7 +47,7 @@ public class AddPlanForm {
     }
 
     private Long rcptId;    //项目模板id
-    @NotNull()
+
     private String bpName;
 
     private String bpNumber;

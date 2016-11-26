@@ -22,8 +22,8 @@ public class UpdatePlanForm{
         bidPlan.setBpCycleSize(planForm.getBpCycleSize());
         bidPlan.setBpBidMoney(planForm.getBpBidMoney());
         bidPlan.setBpRate(planForm.getBpRate());
-//        bidPlan.setBpStartTime(planForm.getBpStartTime());
-//        bidPlan.setBpEndTime(planForm.getBpEndTime());
+        bidPlan.setBpStartTime(planForm.getBpStartTime());
+        bidPlan.setBpEndTime(planForm.getBpEndTime());
         bidPlan.setBpStartMoney(planForm.getBpStartMoney());
         bidPlan.setBpRiseMoney(planForm.getBpRiseMoney());
         bidPlan.setBpTopMoney(planForm.getBpTopMoney());
@@ -31,8 +31,8 @@ public class UpdatePlanForm{
         bidPlan.setBpLoanerType(planForm.getBpLoanerType());
         bidPlan.setBpInterestPayType(planForm.getBpInterestPayType());
         bidPlan.setBpOpenTime(planForm.getBpOpenTime());
-//        bidPlan.setBpExpectLoanDate(planForm.getBpExpectLoanDate());
-//        bidPlan.setBpExpectRepayDate(planForm.getBpExpectRepayDate());
+        bidPlan.setBpExpectLoanDate(planForm.getBpExpectLoanDate());
+        bidPlan.setBpExpectRepayDate(planForm.getBpExpectRepayDate());
         bidPlan.setBpServiceChargeRate(planForm.getBpServiceChargeRate());
         bidPlan.setBpLateRate(planForm.getBpLateRate());
         bidPlan.setBpBorrowDesc(planForm.getBpBorrowDesc());
@@ -62,9 +62,9 @@ public class UpdatePlanForm{
     private BigDecimal bpBidMoney;
 
     private BigDecimal bpRate;
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date bpStartTime;
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date bpEndTime;
 
     private BigDecimal bpStartMoney;
@@ -78,9 +78,9 @@ public class UpdatePlanForm{
     private Integer bpInterestPayType;
 
     private Integer bpOpenTime;
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date bpExpectLoanDate;
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date bpExpectRepayDate;
 
     private BigDecimal bpServiceChargeRate;

@@ -7,6 +7,10 @@ import com.jebao.erp.web.requestModel.bidplan.AddPlanForm;
 import com.jebao.erp.web.requestModel.bidplan.UpdatePlanForm;
 import com.jebao.erp.web.responseModel.base.*;
 import com.jebao.erp.web.responseModel.bidplan.BidPlanVM;
+import com.jebao.erp.web.responseModel.bidplan.LoanIntentVM;
+import com.jebao.erp.web.responseModel.bidplan.ProjTempNameVM;
+import com.jebao.erp.web.responseModel.bidplan.ProjectTempVM;
+import com.jebao.erp.web.utils.toolbox.BetweenDays;
 import com.jebao.jebaodb.entity.extEntity.PageWhere;
 import com.jebao.jebaodb.entity.loaner.TbLoaner;
 import com.jebao.jebaodb.entity.loaner.TbRcpMaterialsTemp;
@@ -18,7 +22,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -37,6 +43,12 @@ public class BidPlanController {
     private ITbBidRiskDataServiceInf riskDataService;
 
 
+    @RequestMapping("index")
+    public String index() {
+        return "bidplan/index";
+    }
+
+
     @RequestMapping("reviewedPlanList")
     public String reviewedPlanList() {
         return "bidplan/reviewedplanlist";
@@ -47,18 +59,34 @@ public class BidPlanController {
         return "bidplan/notpasslist";
     }
 
-    @RequestMapping("addPlan")
-    public String addPlan(Long bpLoanerId, Model model) {
-        List<TbRiskCtlPrjTemp> projectTemps = loanerService.selectRiskCtlPrjTempByLoanerIdForPage(bpLoanerId, null);
-        model.addAttribute("projTemps", projectTemps);
+    @RequestMapping("addPlan/{bpLoanerId}")
+    public String addPlan(@PathVariable Long bpLoanerId, Model model) {
         model.addAttribute("bpLoanerId", bpLoanerId);
         return "bidplan/addplan";
+    }
+
+    @RequestMapping("getProjList")
+    @ResponseBody
+    public JsonResult getProjList(Long bpLoanerId){
+        List<TbRiskCtlPrjTemp> projectTemps = loanerService.selectRiskCtlPrjTempByLoanerIdForPage(bpLoanerId, null);
+        List<ProjTempNameVM> tempVMs = new ArrayList<>();
+        projectTemps.forEach(o -> tempVMs.add(new ProjTempNameVM(o)));
+        return new JsonResultList<>(tempVMs);
     }
 
     @RequestMapping("updatePlanDetail/{bpId}")
     public String updatePlanDetail(@PathVariable("bpId") Long bpId, Model model) {
         model.addAttribute("bpId", bpId);
         return "bidplan/updateplandetail";
+    }
+
+    @RequestMapping("getOne/{bpId}")
+    @ResponseBody
+    public JsonResult getOne(Long bpId) {
+        System.out.println(bpId);
+        TbBidPlan bidPlan = bidPlanService.selectByBpId(bpId);
+        BidPlanVM viewModel = new BidPlanVM(bidPlan);
+        return new JsonResultData<>(viewModel);
     }
 
 
@@ -138,4 +166,76 @@ public class BidPlanController {
             return new JsonResultError("信息修改失败");
         }
     }
+
+    @RequestMapping("getProjectTempById")
+    @ResponseBody
+    public JsonResult getProjectTempById(Long rcptId){
+        TbRiskCtlPrjTemp tbRiskCtlPrjTemp = loanerService.findRiskCtlPrjTempById(rcptId);
+        ProjectTempVM projectTemp = new ProjectTempVM(tbRiskCtlPrjTemp);
+        return new JsonResultData<>(projectTemp);
+    }
+
+    @RequestMapping("getLoanFundIntents")
+    @ResponseBody
+    public JsonResult getLoanFundIntents(AddPlanForm form){
+
+        List<LoanIntentVM> loanFundIntents = new ArrayList<>();
+        BigDecimal principal = form.getBpBidMoney();
+        if(form.getBpInterestPayType()==1){     //一次性还本付息
+            LoanIntentVM loanIntentVM = new LoanIntentVM();
+            Date loanDate = form.getBpExpectLoanDate();
+            Date repayDate = form.getBpExpectRepayDate();
+            int days = BetweenDays.differentDays(loanDate, repayDate);
+            BigDecimal interest = principal.multiply(form.getBpRate()).multiply(new BigDecimal(days))
+                    .divide(new BigDecimal(100 * 365), 2, BigDecimal.ROUND_DOWN);
+
+            loanIntentVM.setIntentPeriod(form.getBpPeriodsDisplay());
+            loanIntentVM.setRepayDate(form.getBpExpectRepayDate());
+            loanIntentVM.setPrincipal(principal);
+            loanIntentVM.setInterest(interest);
+            loanIntentVM.setTotal(principal.add(interest));
+            loanFundIntents.add(loanIntentVM);
+        }else if(form.getBpInterestPayType()==2){//按期付息
+            Date loanDate = form.getBpExpectLoanDate();
+            Date nextRepayDate = form.getBpExpectLoanDate();
+            Integer bpCycleType = form.getBpCycleType();
+            Calendar now = Calendar.getInstance();
+
+            for(int i=1; i<=form.getBpPeriodsDisplay(); i++){
+                LoanIntentVM loanIntent = new LoanIntentVM();
+                now.setTime(loanDate);
+                loanIntent.setIntentPeriod(i);
+                if(bpCycleType==1){         //日
+                    now.add(Calendar.DATE, i);
+                }else if(bpCycleType==2){   //月
+                    now.add(Calendar.MONTH, i);
+                }else if(bpCycleType==3){   //季
+                    now.add(Calendar.MONTH, i*3);
+                }else if(bpCycleType==4){   //年
+                    now.add(Calendar.YEAR, i);
+                }
+                int days = BetweenDays.differentDays(nextRepayDate, now.getTime());
+                nextRepayDate = now.getTime();
+                BigDecimal interest = principal.multiply(form.getBpRate()).multiply(new BigDecimal(days))
+                        .divide(new BigDecimal(100 * 365), 2,BigDecimal.ROUND_DOWN);
+
+                loanIntent.setRepayDate(nextRepayDate);
+                loanIntent.setInterest(interest);
+
+                if(i==form.getBpPeriodsDisplay()){
+                    loanIntent.setPrincipal(form.getBpBidMoney());
+                    loanIntent.setTotal(interest.add(form.getBpBidMoney()));
+                }else {
+                    loanIntent.setPrincipal(BigDecimal.ZERO);
+                    loanIntent.setTotal(interest);
+                }
+
+                loanFundIntents.add(loanIntent);
+            }
+        }
+
+        return new JsonResultList<>(loanFundIntents);
+    }
+
+
 }

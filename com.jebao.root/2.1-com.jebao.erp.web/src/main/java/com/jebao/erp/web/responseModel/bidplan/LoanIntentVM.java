@@ -1,5 +1,7 @@
 package com.jebao.erp.web.responseModel.bidplan;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.jebao.erp.web.responseModel.ViewModel;
 import org.apache.el.lang.ELArithmetic;
 
 import java.math.BigDecimal;
@@ -8,13 +10,14 @@ import java.util.Date;
 /**
  * Created by Lee on 2016/11/23.
  */
-public class LoanIntentVM {
+public class LoanIntentVM extends ViewModel {
 
-    private Integer intentPeriod;
-    private Date repayDate;
-    private BigDecimal principal;
-    private BigDecimal interest;
-    private BigDecimal total;
+    private Integer intentPeriod;        //当前还款期数
+    @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd")
+    private Date repayDate;              //还款日期
+    private BigDecimal principal;        //本金
+    private BigDecimal interest;         //利息
+    private BigDecimal total;            //总计
 
 
     public Integer getIntentPeriod() {
