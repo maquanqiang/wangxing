@@ -21,16 +21,21 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
      * @author yzd
      */
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(new AuthorizeInterceptor())
-                .addPathPatterns("/user/**")
-                .addPathPatterns("/account/logout");
+//        registry.addInterceptor(new AuthorizeInterceptor())
+//                .addPathPatterns("/**")
+//                .excludePathPatterns("/account/login")
+//                .excludePathPatterns("/captcha/getCode")
+//                .excludePathPatterns("/api/account/login")
+//                .excludePathPatterns("/content/**")
+//                .excludePathPatterns("/favicon.ico");
     }
+
     /**
      * SpringMvc_@RequestMapping设置Router Url大小写不敏感
      * http://www.cnblogs.com/gossip/p/5441358.html
      * 如何取消 /index.*映射
      * http://www.oschina.net/question/190714_116949
-     * */
+     */
     @Override
     public void configurePathMatch(PathMatchConfigurer configurer) {
         AntPathMatcher matcher = new AntPathMatcher();
@@ -38,9 +43,9 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
         configurer.setPathMatcher(matcher);
         configurer.setUseSuffixPatternMatch(false);
     }
+
     @Bean
-    public EmbeddedServletContainerFactory createEmbeddedServletContainerFactory()
-    {
+    public EmbeddedServletContainerFactory createEmbeddedServletContainerFactory() {
         TomcatEmbeddedServletContainerFactory tomcatFactory = new TomcatEmbeddedServletContainerFactory();
         //tomcatFactory.setPort(8081);
         tomcatFactory.addConnectorCustomizers(new MyTomcatConnectorCustomizer());
