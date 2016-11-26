@@ -39,6 +39,24 @@ public class LoanerServiceImpl implements ILoanerServiceInf {
     private TbRcpMaterialsTempDao tbRcpMaterialsTempDao;
 
     @Override
+    public int saveLoaner(TbLoaner entity){
+        if(entity == null){
+            return 0;
+        }
+        long lId;
+        if(entity.getlId() == null){
+            lId = 0;
+        }else {
+            lId = entity.getlId();
+        }
+        if(lId == 0){
+            return addLoaner(entity);
+        }else{
+            return updateLoaner(entity);
+        }
+    }
+
+    @Override
     public int addLoaner(TbLoaner entity) {
         if(entity == null){
             return 0;

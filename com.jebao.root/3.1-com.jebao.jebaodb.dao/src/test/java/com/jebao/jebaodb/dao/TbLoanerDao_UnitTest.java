@@ -33,7 +33,6 @@ public class TbLoanerDao_UnitTest extends _BaseUnitTest {
         record.setlBankProvincesName("");
         record.setlCreateTime(new Date());
         record.setlCreditStatus("");
-        record.setlEducation("");
         record.setlEmail("");
         record.setlHkadr("");
         record.setlHomeAdd("");
