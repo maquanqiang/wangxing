@@ -49,6 +49,7 @@
                                 <td>{{ item.name }}</td>
                                 <td>{{ item.remark }}</td>
                                 <td>
+                                    <a href="javascript:;" class="btn btn-default btn-xs btn-view" role="button" :flag="item.id">预览</a>
                                     <a href="javascript:;" class="btn btn-default btn-xs remove-msg" role="button" :flag="item.id">删除</a>
                                 </td>
                             </tr>
@@ -88,6 +89,24 @@
             </div>
         </div><!-- /.box-body -->
     </form>
+</div>
+<!--预览材料图片-->
+<div class="modal col-xs-12" id="viewMaterialModal">
+    <form class="form-horizontal">
+        <div class="box-body">
+            <div class="form-group" id="Template-InfoView">
+                <div class="col-sm-12">
+                    <img src="" name="path">
+                </div>
+            </div>
+        </div><!-- /.box-body -->
+    </form>
+</div>
+<div id="Template-Info" style="display: none;">
+    <!---// data-->
+    <div class="col-sm-12">
+        <img src="+-data.path-+" name="path">
+    </div>
 </div>
 <!-- /.content-wrapper -->
 #parse("common/footer.html")
@@ -188,6 +207,34 @@
                 }
             });
         });
+        //预览材料图片
+        $('#orderlist_table').on('click','.btn-view',function(){
+            //alert(1);
+            var tempObj= $('#viewMaterialModal').clone();
+            tempObj.find('form').prop('id','ViewFormId');
+            var tempHtml=tempObj.html();
+            layer.open({
+                title:'预览材料',
+                content:tempHtml,
+                btn: ['确定'],
+                area:['500px'],
+                btn1: function(){
+                    layer.closeAll();
+                }
+            });
+            /*加载材料*/
+            var id = $(this).attr("flag");
+            $.get("/api/risk/getMaterials","id="+id,function(response){
+                //alert(2);
+                if (response.success_is_ok){
+                    if (response.data != null){var model=response.data;
+                        var html= dataToHtml('#Template-Info', model);
+                        $('#ViewFormId #Template-InfoView').html(html);
+                    }
+                }
+            });
+        });
+
     });
     //表单登录验证封装
     function myInitValidateForm(obj){
