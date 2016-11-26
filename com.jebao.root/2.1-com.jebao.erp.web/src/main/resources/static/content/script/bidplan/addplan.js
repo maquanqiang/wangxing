@@ -21,8 +21,7 @@ var model = {
     projList: [],
     projectTemp : {},
     selected : '',
-    intentList : [],
-    createIntent : {}
+    intentList : []
 
 };
 
@@ -36,7 +35,7 @@ var vm = new Vue({
         var loanerId =  {
             bpLoanerId : formData
         }
-        $.get("/bidplan/getProjList",loanerId,function(response){
+        $.get("/api/bidPlan/getProjList",loanerId,function(response){
             console.log(response.data);
             if (response.success_is_ok){
                 vm.projList = response.data;
@@ -51,7 +50,7 @@ var vm = new Vue({
             var rcptId = {
                 rcptId : optionVal
             }
-            $.get("/bidplan/getProjectTempById",rcptId,function(response){
+            $.get("/api/bidPlan/getProjectTempById",rcptId,function(response){
                 console.log(response.data);
                 if (response.success_is_ok){
                     vm.projectTemp = response.data;
@@ -65,26 +64,29 @@ var vm = new Vue({
         },
         createIntent:function(){
             var formValue = $("#defaultForm").serializeObject();
-            $.get("/bidplan/getLoanFundIntents",formValue,function(response){
-                console.log(response.data);
+            $.get("/api/bidPlan/getLoanFundIntents",formValue,function(response){
                 if (response.success_is_ok){
                     vm.intentList = response.data;
                 }
             });
+        },
+        addBtn:function(){
+            var formValue = $("#defaultForm").serializeObject();
+            $.post("/api/bidPlan/doAddPlan",formValue,function(response){
+                if (response.success_is_ok) {
+                    layer.msg(response.msg);
+                    vm.toIndex();
+                } else {
+                    layer.alert(response.msg);
+                }
+            })
+        },
+        cancelBtn:function(){
+            vm.toIndex()
+        },
+        toIndex:function(){
+            window.location.href = "/bidplan/index";
         }
-
     }
-});
-$("#submitBtn").click(function () {
-    //TODO 后台逻辑
-    $.axForForm($('#defaultForm'), function (data) {
-        if (data.success_is_ok) {
-            var targetUrl = "/bidplan/reviewedPlanList"
-            redirectUrl(targetUrl)
-            return;
-        } else {
-            errorHandlerFun(data, "#error_place_id");
-        }
-    });
 });
 

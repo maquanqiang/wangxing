@@ -51,8 +51,8 @@
                                             <td>{{plan.bpCreateTime}}</td>
                                             <td>{{plan.bpRemark}}</td>
                                             <td>
-                                                <a class="btn btn-default btn-xs" role="button" target="_self" :data-val="plan.bpId" id="modifyInformation">修改</a>
-                                                <a class="btn btn-default btn-xs remove-msg cmd-delete" :data-val="plan.bpId"  role="button">删除</a>
+                                                <a class="btn btn-default btn-xs" role="button" @click="modifyPlanBtn(plan.bpId)">修改</a>
+                                                <a class="btn btn-default btn-xs remove-msg cmd-delete" role="button" @click="removePlanBtn(plan.bpId)">删除</a>
                                             </td>
                                         </tr>
                                         </tbody>

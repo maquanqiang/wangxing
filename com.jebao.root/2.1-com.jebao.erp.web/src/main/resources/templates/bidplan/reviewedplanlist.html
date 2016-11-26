@@ -52,8 +52,10 @@
                                             <td>{{plan.bpPeriodsDisplay}}{{plan.bpCycleType}}</td>
                                             <td>{{plan.bpCreateTime}}</td>
                                             <td>
-                                                <a class="btn btn-default btn-xs" role="button" :data-val="plan.bpId" id="modifyInformation">查看详情</a>
-                                                <a class="btn btn-default btn-xs" role="button" :data-val="plan.bpId" id="modifyRiskData">修改/添加材料</a>
+                                                <a class="btn btn-default btn-xs" role="button" @click="bidPlanViewBtn(plan.bpId)">查看详情</a>
+                                                <a class="btn btn-default btn-xs" role="button" @click="modifyRiskDataBtn(plan.bpId)">修改/添加材料</a>
+                                                <a class="btn btn-default btn-xs" role="button" @click="removeBtn(plan.bpId)">删除</a>
+
                                             </td>
                                         </tr>
                                         </tbody>
@@ -77,77 +79,4 @@
 </body>
 <script src=$UrlHelperTool.href("/content/script/bidplan/reviewedplanlist.js")></script>
 <!--pagination-->
-<script>
-    $(function(){
-        //添加个人
-        $('#add-people').on('click',function(){
-            var tempObj= $('#addInforModal').clone();
-            tempObj.find('form').attr('id','insertFormId');
-            var tempHtml=tempObj.html();
-            layer.open({
-                title:'添加业务员信息',
-                content:tempHtml,
-                btn: ['添加', '重置'],
-                area:['500px'],
-                btn1: function(){
-                    initValidateForm($('#insertFormId'));
-                    var bootstrapValidator = $("#insertFormId").data('bootstrapValidator').validate();
-                    if(!bootstrapValidator.isValid()){
-                        return false;
-                    }else{
-                        layer.alert('添加成功！',function(){
-                            layer.closeAll();
-                        });
-                    }
-                },
-                btn2: function(){
-                    $("#insertFormId input").val("");
-                    return false;
-                }
-            });
-        });
-        //删除信息
-        $('.remove-msg').on('click',function(){
-            _this=$(this);
-            layer.open({
-                content:'您是否删除信息?',
-                btn: ['取消', '删除'],
-                yes: function(){
-                    layer.closeAll();
-                },
-                btn2: function(){
-                    _this.parent().parent().remove();
-                    layer.msg('删除成功！', {icon: 1});
-                }
-            });
-        });
-        //修改信息
-        $('#modifyInformation').on('click',function(){
-            var tempObj= $('#modInforInfModal').clone();
-            tempObj.find('form').attr('id','ModifyFormId');
-            var tempHtml=tempObj.html();
-            layer.open({
-                title:'修改业务员信息',
-                content:tempHtml,
-                area:['500px'],
-                btn: ['修改', '重置'],
-                btn1: function(){
-                    initValidateForm($('#ModifyFormId'));
-                    var bootstrapValidator = $("#ModifyFormId").data('bootstrapValidator').validate();
-                    if(!bootstrapValidator.isValid()){
-                        return false;
-                    }else{
-                        layer.alert('修改成功！',function(){
-                            layer.closeAll();
-                        });
-                    }
-                },
-                btn2: function(){
-                    $("#ModifyFormId input").val("");
-                    return false;
-                }
-            });
-        });
-    });
-</script>
 </html>

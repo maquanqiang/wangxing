@@ -14,7 +14,7 @@
     </section>
     <!-- Main content -->
     <section class="content">
-        <form action="/bidplan/doAddPlan" class="form-inline" id="defaultForm" method="get" novalidate="novalidate">
+        <form action="" class="form-inline" id="defaultForm" novalidate="novalidate">
             <input name="bpLoanerId" type="hidden" value="${bpLoanerId}"/>
             <input id="bpPeriods" name="bpPeriods" type="hidden"/>
             <input id="bpCycleSize" name="bpCycleSize" type="hidden" value="1"/>
@@ -325,8 +325,8 @@
         <div class="row">
             <div class="col-xs-12">
                 <div class="box-body">
-                    <a id="submitBtn" href="javascript:;" class="btn btn-primary btn-lg add" role="button" >建标</a>
-                    <a href="javascript:;" class="btn btn-primary btn-lg" role="button" onclick="window.opener=null;window.close()">取消</a>
+                    <a id="submitBtn" href="javascript:;" class="btn btn-primary btn-lg add" role="button" @click="addBtn">建标</a>
+                    <a href="javascript:;" class="btn btn-primary btn-lg" role="button" @click="cancelBtn">取消</a>
                 </div>
             </div>
         </div>

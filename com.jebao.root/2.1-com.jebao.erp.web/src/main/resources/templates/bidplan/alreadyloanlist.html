@@ -17,7 +17,7 @@
         <div class="row">
             <div class="col-xs-12">
                 <div class="box box-primary">
-                    <form action="" class="form-inline" id="order_search_form" method="post" novalidate="novalidate">
+                    <form action="" class="form-inline" id="defaultForm" method="post" novalidate="novalidate">
                         <input name="bpStatus" value="7" type="hidden">
                         <div class="box-body">
                             <div class="form-group">
@@ -41,8 +41,8 @@
                             <div class="form-group">
                                 <div class="input-group margin">
                                     <div class="input-group-addon">标的状态</div>
-                                    <select name="bpStatus"  class="select2  select2-hidden-accessible" style="width: 120px;">
-                                        <option value="">请选择</option>
+                                    <select name="bpStatus"  class="form-control" style="width: 120px;">
+                                        <option>请选择</option>
                                         <option value="7">还款中</option>
                                         <option value="10">已还款</option>
                                     </select>
@@ -59,8 +59,8 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <select  class="select2  select2-hidden-accessible" style="width: 120px;">
-                                    <option value="0">请选择</option>
+                                <select  class="form-control" style="width: 120px;">
+                                    <option>请选择</option>
                                     <option value="1">募集开始时间</option>
                                     <option value="2">募集结束时间</option>
                                     <option value="3">满标/计息时间</option>
@@ -133,7 +133,7 @@
                                             <td>{{plan.bpRepayTime}}</td>
                                             <td>{{plan.bpStatus}}</td>
                                             <td>
-                                                <a :href="/bidplan/dplan/getone?bpId=plan.bpId" class="btn btn-default btn-xs" role="button" target="_blank" id="modifyInformation">查看详情</a>
+                                                <a href="javascript:;" class="btn btn-default btn-xs" role="button" @click="modifyPlanBtn(plan.bpId)">查看详情</a>
                                             </td>
                                         </tr>
                                         </tbody>
@@ -156,84 +156,4 @@
 #parse("common/footer.html")
 </body>
 <script src=$UrlHelperTool.href("/content/script/bidplan/alreadyloanlist.js")></script>
-<!--pagination-->
-<script>
-    $(function(){
-        //添加个人
-        $('#add-people').on('click',function(){
-            var tempObj= $('#addInforModal').clone();
-            tempObj.find('form').attr('id','insertFormId');
-            var tempHtml=tempObj.html();
-            layer.open({
-                title:'添加业务员信息',
-                content:tempHtml,
-                btn: ['添加', '重置'],
-                area:['500px'],
-                btn1: function(){
-                    initValidateForm($('#insertFormId'));
-                    var bootstrapValidator = $("#insertFormId").data('bootstrapValidator').validate();
-                    if(!bootstrapValidator.isValid()){
-                        return false;
-                    }else{
-                        layer.alert('添加成功！',function(){
-                            layer.closeAll();
-                        });
-                    }
-                },
-                btn2: function(){
-                    $("#insertFormId input").val("");
-                    return false;
-                }
-            });
-        });
-        //删除信息
-        $('.remove-msg').on('click',function(){
-            _this=$(this);
-            layer.open({
-                content:'您是否删除信息?',
-                btn: ['取消', '删除'],
-                yes: function(){
-                    layer.closeAll();
-                },
-                btn2: function(){
-                    _this.parent().parent().remove();
-                    layer.msg('删除成功！', {icon: 1});
-                }
-            });
-        });
-        //修改信息
-        $('#modifyInformation').on('click',function(){
-            var tempObj= $('#modInforInfModal').clone();
-            tempObj.find('form').attr('id','ModifyFormId');
-            var tempHtml=tempObj.html();
-            layer.open({
-                title:'修改业务员信息',
-                content:tempHtml,
-                area:['500px'],
-                btn: ['修改', '重置'],
-                btn1: function(){
-                    initValidateForm($('#ModifyFormId'));
-                    var bootstrapValidator = $("#ModifyFormId").data('bootstrapValidator').validate();
-                    if(!bootstrapValidator.isValid()){
-                        return false;
-                    }else{
-                        layer.alert('修改成功！',function(){
-                            layer.closeAll();
-                        });
-                    }
-                },
-                btn2: function(){
-                    $("#ModifyFormId input").val("");
-                    return false;
-                }
-            });
-        });
-        //调用分页
-        laypage({
-            cont:$('#pageNum'), //容器。值支持id名、原生dom对象，jquery对象,
-            pages: 100, //总页数
-            groups: 7 //连续显示分页数
-        });
-    });
-</script>
 </html>

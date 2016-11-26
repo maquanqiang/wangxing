@@ -116,7 +116,7 @@ var vm = new Vue({
             });
         },
         addPlanBtn : function(id){
-            var targetUrl = "/bidplan/addplan/"+id
+            window.location.href = "/bidplan/addplan/"+id
             redirectUrl(targetUrl)
         }
     }

@@ -173,9 +173,8 @@
         <if test="record.brdRemark != null" >
            AND brd_remark = #{record.brdRemark,jdbcType=VARCHAR}
         </if>
-        <if test="record.brdIsDel != null" >
-           AND brd_is_del = #{record.brdIsDel,jdbcType=INTEGER}
-        </if>
+
+        AND brd_is_del = 1
 
     </sql>
 

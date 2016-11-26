@@ -1,16 +1,12 @@
 /**
- * Created by Lee on 2016/11/17.
- */
-
-/**
- * Created by Jack on 2016/11/18.
+ * Created by lee on 2016/11/18.
  */
 $(function () {
 
     $(".select2").select2();
+})
 
 
-});
 //var autoObj = {
 //    addInsuredFormValidate: function () {
 //        var $form = $("#form-inline");
@@ -76,38 +72,60 @@ var model = {
 var vm = new Vue({
     el: ".content",
     data: model,
-    beforeCreate:function(){
+    beforeCreate: function () {
 
         //初始化本地数据
-        model.searchObj.page=0;
-        model.searchObj.rows=2;
+        model.searchObj.page = 0;
+        model.searchObj.rows = 10;
     },
 //初始化远程数据
-created:function(){
-    this.search();
+    created: function () {
+        this.search();
 
-},
+    },
 //方法，可用于绑定事件或直接调用
-methods: {
-        search:function(event){
+    methods: {
+        //表单登录验证封装
+        myInitValidateForm: function (obj) {
+            obj.bootstrapValidator({
+                fields: {
+                    name: {
+                        validators: {
+                            notEmpty: {
+                                message: '材料名称不能为空'
+                            }
+                        }
+                    },
+                    remark: {
+                        validators: {
+                            notEmpty: {
+                                message: '备注不能为空'
+                            }
+                        }
+                    }
+                }
+            });
+        },
+        search: function (event) {
             var bpId = $("#bpId").val();
             console.log(bpId)
-            model.searchObj.bpId=bpId;
-            $.get("/bidRiskData/getRiskDataListForPage",model.searchObj,function(response){
-                if (response.success_is_ok){
-                    vm.riskDataList=response.data;
+            model.searchObj.bpId = bpId;
+            $.get("/api/bidRiskData/getRiskDataListForPage", model.searchObj, function (response) {
+                if (response.success_is_ok) {
+                    vm.riskDataList = response.data;
                     console.log(response.count);
-                    if (response.count>0){
+                    if (response.count > 0) {
                         var pageCount = Math.ceil(response.count / model.searchObj.rows);
                         //调用分页
                         laypage({
                             cont: $('#pageNum'), //容器。值支持id名、原生dom对象，jquery对象,
                             pages: pageCount, //总页数
+                            curr: model.searchObj.page + 1,
                             groups: 7, //连续显示分页数
-                            jump: function(obj, first){ //触发分页后的回调
-                                if(!first){ //点击跳页触发函数自身，并传递当前页：obj.curr
+                            jump: function (obj, first) { //触发分页后的回调
+                                if (!first) { //点击跳页触发函数自身，并传递当前页：obj.curr
                                     console.log(obj.curr);
-                                    vm.searchObj.page=obj.curr -1;
+                                    vm.searchObj.page = obj.curr - 1;
                                     vm.search();
                                 }
                             },
@@ -116,33 +134,95 @@ methods: {
                     }
                 }
             })
+        },
+        removeBtn: function (id) {
+            layer.confirm('确定要删除吗?', {icon: 3, title: '询问'}, function (index) {
+                layer.load(2);
+                $.post("/api/bidRiskData/removeRiskData", {id: id}, function (response) {
+                    if (response.success_is_ok) {
+                        layer.msg(response.msg);
+                        vm.search();
+                    } else {
+                        layer.alert(response.msg);
+                    }
+                });
+                layer.closeAll();
+            });
+        },
+        //添加材料
+        addBtn: function () {
+            var tempObj = $('#addMaterialModal').clone();
+            tempObj.find('form').prop('id', 'insertFormId');
+            var tempHtml = tempObj.html();
+            var pid = $("#defaultForm").find("[name=bpId]").val();
+            layer.open({
+                title: '添加材料',
+                content: tempHtml,
+                btn: ['添加', '取消'],
+                area: ['500px'],
+                btn1: function () {
+                    vm.myInitValidateForm($('#insertFormId'));
+                    var bootstrapValidator = $("#insertFormId").data('bootstrapValidator').validate();
+                    if (!bootstrapValidator.isValid()) {
+                        return false;
+                    } else {
+                        /* layer.alert('添加成功！',function(){
+                         layer.closeAll();
+                         });*/
+                        //TODO 后台逻辑
+                        $.axForForm($('#insertFormId'), function (response) {
+                            if (data.success_is_ok) {
+                                layer.msg(response.msg);
+                                vm.search();
+                            } else {
+                                layer.alert(response.msg);
+                            }
+                        });
+                    }
+                },
+                btn2: function () {
+                    layer.close();
+                }
+            });
+            $("#insertFormId #fileupload").wrap("<form id='_myUpload_' action='/filePlugin/uploadFile?dir=image'method='post' enctype='multipart/form-data'></form>");
+            $("#insertFormId #fileupload").change(function () {
+                var fileUploadUrl = $('#insertFormId #uploadFileUrl');
+                $("#_myUpload_").ajaxSubmit({
+                    dataType: 'json', //数据格式为json
+                    success: function (data) {
+                        if (data) {
+                            if (data.error == 0) {
+                                //  alert(data.url);
+                                fileUploadUrl.val(data.url);
+                                return;
+                            }
+                            alert(data.message)
+                            return;
+                        }
+                        alert("--上传失败---")
+                        return;
+                    },
+                    error: function (xhr) {
+                        alert(fileUploadUrl.html());
+                        alert(xhr.responseText);
+                    }
+                });
+            });
+        },
+
+        viewBtn: function () {
+
         }
     }
 });
 
-$("#orderlist_table").on("click",'.cmd-delete',function(){
-    var that = $(this); //解决方案
-    var dataVal=that.attr('data-val');//自定义属性
-    layer.open({
-        content:'您是否删除信息?',
-        btn: ['取消', '删除'],
-        btn1: function(){
-            layer.closeAll();
-        },
-        btn2: function(){
-            window.location.href = "/bidplan/dplan/remove?bpId="+dataVal
-            layer.msg('删除成功!');
-        }
-    });
-});
-
-$("#orderlist_table").on("click",'#modifyInformation',function(){
-    var that = $(this); //解决方案
-    var dataVal=that.attr('data-val');//自定义属性
-    window.location.href = "/bidRiskData/bidRiskDataView/"+dataVal;
-});
-$("#orderlist_table").on("click",'#modifyRiskData',function(){
-    var that = $(this); //解决方案
-    var dataVal=that.attr('data-val');//自定义属性
-    window.location.href = "/bidRiskData/bidRiskDataView/"+dataVal;
-});
+//$("#orderlist_table").on("click",'#modifyInformation',function(){
+//    var that = $(this); //解决方案
+//    var dataVal=that.attr('data-val');//自定义属性
+//    window.location.href = "/bidRiskData/bidRiskDataView/"+dataVal;
+//});
+//$("#orderlist_table").on("click",'#modifyRiskData',function(){
+//    var that = $(this); //解决方案
+//    var dataVal=that.attr('data-val');//自定义属性
+//    window.location.href = "/bidRiskData/bidRiskDataView/"+dataVal;
+//});

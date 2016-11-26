@@ -88,50 +88,47 @@ var vm = new Vue({
     //方法，可用于绑定事件或直接调用
     methods: {
         search:function(event){
-            $.get("/bidplan/dplan/getPlanListForPage",model.searchObj,function(response){
+            $.get("/api/bidPlan/getPlanListForPage",model.searchObj,function(response){
                 if (response.success_is_ok){
                     vm.planlist=response.data;
                     if (response.count>0){
                         var pageCount = Math.ceil(response.count / model.searchObj.rows);
-                        //调用分页
-                        laypage({
-                            cont: $('#pageNum'), //容器。值支持id名、原生dom对象，jquery对象,
-                            pages: pageCount, //总页数
-                            groups: 7, //连续显示分页数
-                            jump: function(obj, first){ //触发分页后的回调
-                                if(!first){ //点击跳页触发函数自身，并传递当前页：obj.curr
-                                    console.log(obj.curr);
-                                    vm.searchObj.page=obj.curr -1;
-                                    vm.search();
-                                }
-                            },
-                            skin: '#3c8dbc'
-                        });
+                        if(model.searchObj.page==0){
+                            //调用分页
+                            laypage({
+                                cont: $('#pageNum'), //容器。值支持id名、原生dom对象，jquery对象,
+                                pages: pageCount, //总页数
+                                groups: 7, //连续显示分页数
+                                jump: function(obj, first){ //触发分页后的回调
+                                    if(!first){ //点击跳页触发函数自身，并传递当前页：obj.curr
+                                        console.log(obj.curr);
+                                        vm.searchObj.page=obj.curr -1;
+                                        vm.search();
+                                    }
+                                },
+                                skin: '#3c8dbc'
+                            });
+                        }
                     }
                 }
             })
+        },
+        modifyPlanBtn:function(bpId){
+            window.location.href = "/bidplan/updateplandetail/"+bpId;
+        },
+        removePlanBtn:function(bpId){
+            layer.confirm('确定要删除吗?', {icon: 3, title:'询问'}, function(index){
+                layer.load(2);
+                $.post("/api/bidPlan/removeBidPlan",{bpId:bpId},function(response){
+                    if (response.success_is_ok){
+                        layer.msg(response.msg);
+                        vm.search();
+                    }else{
+                        layer.alert(response.msg);
+                    }
+                });
+                layer.closeAll();
+            });
         }
     }
-});
-
-$("#orderlist_table").on("click",'.cmd-delete',function(){
-    var that = $(this); //解决方案
-    var dataVal=that.attr('data-val');//自定义属性
-    layer.open({
-        content:'您是否删除信息?',
-        btn: ['取消', '删除'],
-        btn1: function(){
-            layer.closeAll();
-        },
-        btn2: function(){
-            window.location.href = "/bidplan/dplan/remove?bpId="+dataVal
-            layer.msg('删除成功!');
-        }
-    });
-});
-
-$("#orderlist_table").on("click",'#modifyInformation',function(){
-    var that = $(this); //解决方案
-    var dataVal=that.attr('data-val');//自定义属性
-    window.location.href = "/bidplan/updateplandetail/"+dataVal;
 });
