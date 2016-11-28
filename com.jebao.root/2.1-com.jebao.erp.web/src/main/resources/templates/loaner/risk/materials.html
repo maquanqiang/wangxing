@@ -21,11 +21,11 @@
         <div class="row">
             <div class="col-xs-12">
                 <div class="box box-primary">
-                    <form id="defaultForm"><input type="hidden" name="rcptId" value="${rcptId}"/></form>
+                    <form id="search_form"><input type="hidden" name="rcptId" value="${rcptId}"/></form>
                     <form action="" class="form-inline"  method="post" novalidate="novalidate">
                         <div class="box-body">
                             <div class="form-group ">
-                                <a href="javascript:;" class="btn btn-primary " role="button" id="add-material">添加</a>
+                                <a href="javascript:;" class="btn btn-primary " role="button" id="add-material" @click="openAddForm">添加</a>
                             </div>
                         </div>
                     </form>
@@ -49,8 +49,8 @@
                                 <td>{{ item.name }}</td>
                                 <td>{{ item.remark }}</td>
                                 <td>
-                                    <a href="javascript:;" class="btn btn-default btn-xs btn-view" role="button" :flag="item.id">预览</a>
-                                    <a href="javascript:;" class="btn btn-default btn-xs remove-msg" role="button" :flag="item.id">删除</a>
+                                    <a href="javascript:;" class="btn btn-default btn-xs" role="button" @click="openViewForm(item.id)">预览</a>
+                                    <a href="javascript:;" class="btn btn-default btn-xs remove-msg" role="button" @click="openDeleteWin(item.id)">删除</a>
                                 </td>
                             </tr>
                         </template>
@@ -65,13 +65,13 @@
 <!--提示框-->
 <!--添加材料-->
 <div class="modal col-xs-12" id="addMaterialModal">
-    <form class="form-horizontal" action="/api/risk/addMaterials" method="post" novalidate="novalidate">
+    <form class="form-horizontal">
         <div class="box-body">
             <div class="form-group">
                 <label class="col-sm-3 control-label">上传材料:</label>
                 <div class="col-sm-8">
-                    <input id="fileupload" type="file" name="file">
-                    <input id="uploadFileUrl" type="hidden" name="path" value="">
+                    <input type="file" name="file" class="btn-fileupload" @change="fileupload">
+                    <input type="hidden" name="path" value="" class="uploadFileUrl">
                 </div>
             </div>
             <div class="form-group">
@@ -94,171 +94,18 @@
 <div class="modal col-xs-12" id="viewMaterialModal">
     <form class="form-horizontal">
         <div class="box-body">
-            <div class="form-group" id="Template-InfoView">
+            <div class="form-group">
                 <div class="col-sm-12">
-                    <img src="" name="path">
+                    <img name="path" :src="formData.path">
                 </div>
             </div>
-        </div><!-- /.box-body -->
+        </div>
     </form>
-</div>
-<div id="Template-Info" style="display: none;">
-    <!---// data-->
-    <div class="col-sm-12">
-        <img src="+-data.path-+" name="path">
-    </div>
 </div>
 <!-- /.content-wrapper -->
 #parse("common/footer.html")
-<script src="/content/js/lib/jct.js"></script>
 <!--上传图片-->
 <script src="/content/AdminLTE-2.2.0/plugins/jQuery/jquery.form.js"></script>
-<script>
-    $(function(){
-        //添加材料
-        $('#add-material').on('click',function(){
-            var tempObj= $('#addMaterialModal').clone();
-            tempObj.find('form').prop('id','insertFormId');
-            var tempHtml=tempObj.html();
-            var pid = $("#defaultForm").find("[name=rcptId]").val();
-            layer.open({
-                title:'添加材料',
-                content:tempHtml,
-                btn: ['添加', '取消'],
-                area:['500px'],
-                btn1: function(){
-                    myInitValidateForm($('#insertFormId'));
-                    var bootstrapValidator = $("#insertFormId").data('bootstrapValidator').validate();
-                    if(!bootstrapValidator.isValid()){
-                        return false;
-                    }else{
-                        /*                        layer.alert('添加成功！',function(){
-                         layer.closeAll();
-                         });*/
-                        //TODO 后台逻辑
-                        $.axForForm($('#insertFormId'),function(data){
-                            if(data.success_is_ok)
-                            {
-                                layer.alert('添加成功！',function(){
-                                    layer.closeAll();
-                                });
-                                var targetUrl="/loaner/risk/materials/"+pid;
-                                redirectUrl(targetUrl);
-                                return;
-                            }else{
-                                layer.alert(data.msg,function(){
-                                    layer.closeAll();
-                                });
-                            }
-                        });
-                    }
-                },
-                btn2: function(){
-                    layer.close();
-                }
-            });
-            $("#insertFormId #fileupload").wrap("<form id='_myUpload_' action='/filePlugin/uploadFile?dir=image'method='post' enctype='multipart/form-data'></form>");
-            $("#insertFormId #fileupload").change(function(){
-                var fileUploadUrl=$('#insertFormId #uploadFileUrl');
-                $("#_myUpload_").ajaxSubmit({
-                    dataType:  'json', //数据格式为json
-                    success:function(data){
-                        if(data)
-                        {
-                            if(data.error==0)
-                            {
-                                //  alert(data.url);
-                                fileUploadUrl.val(data.url);
-                                return;
-                            }
-                            alert(data.message)
-                            return;
-                        }
-                        alert("--上传失败---")
-                        return;
-                    },
-                    error:function(xhr){
-                        alert(fileUploadUrl.html());
-                        alert(xhr.responseText);
-                    }
-                });
-            });
-        });
-        //删除信息
-        $('#orderlist_table').on('click','.remove-msg',function(){
-            var mid = $(this).attr("flag");
-            var pid = $("#defaultForm").find("[name=rcptId]").val();
-            layer.open({
-                content:'您是否删除信息?',
-                btn: ['取消', '删除'],
-                yes: function(){
-                    layer.closeAll();
-                },
-                btn2: function(){
-                    $.get("/api/risk/deleteMaterials","id="+mid,function(response){
-                        if (response.success_is_ok){
-                            layer.msg('删除成功！', {icon: 1});
-                            var targetUrl="/loaner/risk/materials/"+pid;
-                            redirectUrl(targetUrl);
-                            return;
-                        }else{
-                            layer.msg('删除失败！', {icon: 1});
-                        }
-                    });
-                }
-            });
-        });
-        //预览材料图片
-        $('#orderlist_table').on('click','.btn-view',function(){
-            //alert(1);
-            var tempObj= $('#viewMaterialModal').clone();
-            tempObj.find('form').prop('id','ViewFormId');
-            var tempHtml=tempObj.html();
-            layer.open({
-                title:'预览材料',
-                content:tempHtml,
-                btn: ['确定'],
-                area:['500px'],
-                btn1: function(){
-                    layer.closeAll();
-                }
-            });
-            /*加载材料*/
-            var id = $(this).attr("flag");
-            $.get("/api/risk/materials","id="+id,function(response){
-                //alert(2);
-                if (response.success_is_ok){
-                    if (response.data != null){var model=response.data;
-                        var html= dataToHtml('#Template-Info', model);
-                        $('#ViewFormId #Template-InfoView').html(html);
-                    }
-                }
-            });
-        });
-
-    });
-    //表单登录验证封装
-    function myInitValidateForm(obj){
-        obj.bootstrapValidator({
-            fields: {
-                name:{
-                    validators: {
-                        notEmpty: {
-                            message: '材料名称不能为空'
-                        }
-                    }
-                },
-                remark:{
-                    validators: {
-                        notEmpty: {
-                            message: '备注不能为空'
-                        }
-                    }
-                }
-            }
-        });
-    }
-</script>
 <script src=$UrlHelperTool.href("/content/script/loaner/risk/materials.js")></script>
 </body>
 </html>
