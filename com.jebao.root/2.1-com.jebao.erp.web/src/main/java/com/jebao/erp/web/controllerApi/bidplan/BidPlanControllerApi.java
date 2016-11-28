@@ -225,4 +225,19 @@ public class BidPlanControllerApi extends _BaseController {
         return new JsonResultList<>(loanFundIntents);
     }
 
+
+    @RequestMapping("reviewedPlan")
+    @ResponseBody
+    public JsonResult reviewedPlan(Long bpId, Integer status, String remark){
+        TbBidPlan tbBidPlan = new TbBidPlan();
+        tbBidPlan.setBpStatus(status);
+        tbBidPlan.setBpId(bpId);
+        tbBidPlan.setBpRemark(remark);
+        int result = bidPlanService.updateByBidIdSelective(tbBidPlan);
+        if(result>0){
+            return new JsonResultOk("开标成功");
+        }else {
+            return new JsonResultError("已打回");
+        }
+    }
 }

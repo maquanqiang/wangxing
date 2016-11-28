@@ -86,4 +86,15 @@ public class BidPlanController {
     }
 
 
+    @RequestMapping("reviewedPlanDetail/{bpId}")
+    public String reviewedPlanDetail(@PathVariable("bpId") Long bpId, Model model) {
+        model.addAttribute("bpId", bpId);
+        return "bidplan/reviewedPlanDetail";
+    }
+
+    @RequestMapping("nolendinglist")
+    public String nolendinglist(){
+        return "bidplan/nolendinglist";
+    }
+
 }

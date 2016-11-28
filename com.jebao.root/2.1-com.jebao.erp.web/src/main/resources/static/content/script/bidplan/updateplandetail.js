@@ -81,11 +81,12 @@ var vm = new Vue({
     },
     //初始化远程数据
     created:function(){
+        console.log("created");
         var val = $("#bpId").val();
         var dataVal = {
             bpId : val
         }
-        $.get("/bidplan/getBidPlanById",dataVal,function(response){
+        $.get("/api/bidPlan/getBidPlanById",dataVal,function(response){
             if (response.success_is_ok){
                 var data=response.data;
                 vm.plan=data;
@@ -98,7 +99,7 @@ var vm = new Vue({
         },
         createIntentBtn:function(){
             var formValue = $("#defaultForm").serializeObject();
-            $.get("/bidplan/getLoanFundIntents",formValue,function(response){
+            $.get("/api/bidPlan/getLoanFundIntents",formValue,function(response){
                 if (response.success_is_ok){
                     vm.intentList = response.data;
                 }
@@ -109,7 +110,7 @@ var vm = new Vue({
         },
         submitBtn:function() {
             var formValue = $("#defaultForm").serializeObject();
-            $.post("/bidplan/updatePlan",formValue,function(response){
+            $.post("/api/bidPlan/updatePlan",formValue,function(response){
                 if (response.success_is_ok){
                     window.location.href = document.referrer;
                 }else{
@@ -118,4 +119,12 @@ var vm = new Vue({
             });
         }
     }
+});
+//
+$("#bpExpectLoanDateId").change(function(){
+    vm.plan.bpExpectLoanDate=$(this).val();
+});
+//
+$("#bpExpectRepayDateId").change(function(){
+    vm.plan.bpExpectRepayDate=$(this).val();
 });

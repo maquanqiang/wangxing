@@ -52,10 +52,9 @@
                                             <td>{{plan.bpPeriodsDisplay}}{{plan.bpCycleType}}</td>
                                             <td>{{plan.bpCreateTime}}</td>
                                             <td>
-                                                <a class="btn btn-default btn-xs" role="button" @click="bidPlanViewBtn(plan.bpId)">查看详情</a>
+                                                <a class="btn btn-default btn-xs" role="button" @click="bidPlanViewBtn(plan.bpId)">审核</a>
                                                 <a class="btn btn-default btn-xs" role="button" @click="modifyRiskDataBtn(plan.bpId)">修改/添加材料</a>
-                                                <a class="btn btn-default btn-xs" role="button" @click="removeBtn(plan.bpId)">删除</a>
-
+                                                <!--<a class="btn btn-default btn-xs" role="button" @click="removeBtn(plan.bpId)">删除</a>-->
                                             </td>
                                         </tr>
                                         </tbody>

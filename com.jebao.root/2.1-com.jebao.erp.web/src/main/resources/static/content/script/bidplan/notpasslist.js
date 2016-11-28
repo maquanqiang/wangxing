@@ -77,7 +77,7 @@ var vm = new Vue({
     beforeCreate:function(){
         //初始化本地数据
         model.searchObj.page=0;
-        model.searchObj.rows=10;
+        model.searchObj.rows=20;
         model.searchObj.bpStatus=1;
     },
     //初始化远程数据

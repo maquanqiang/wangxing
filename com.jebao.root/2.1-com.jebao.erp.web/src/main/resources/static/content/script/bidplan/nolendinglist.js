@@ -27,7 +27,7 @@ var vm = new Vue({
     },
     //初始化远程数据
     created:function(){
-       this.search();
+        this.search();
     },
     //方法，可用于绑定事件或直接调用
     methods: {

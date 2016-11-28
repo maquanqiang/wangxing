@@ -77,7 +77,7 @@ var vm = new Vue({
     beforeCreate:function(){
         //初始化本地数据
         model.searchObj.page=0;
-        model.searchObj.rows=2;
+        model.searchObj.rows=10;
         model.searchObj.bpStatus=0;
     },
     //初始化远程数据
@@ -114,7 +114,7 @@ var vm = new Vue({
             })
         },
         bidPlanViewBtn:function(bpId){
-            window.location.href = "/api/bidPlan/updatePlanDetail/"+bpId;
+            window.location.href = "/bidplan/reviewedPlanDetail/"+bpId;
         },
         modifyRiskDataBtn:function(bpId){
             window.location.href = "/bidplan/bidRiskDataList/"+bpId;

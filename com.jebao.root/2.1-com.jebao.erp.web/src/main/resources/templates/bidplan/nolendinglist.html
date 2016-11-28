@@ -17,7 +17,8 @@
         <div class="row">
             <div class="col-xs-12">
                 <div class="box box-primary">
-                    <form action="" class="form-inline" id="order_search_form" method="post" novalidate="novalidate">
+                    <form action="" class="form-inline" id="defaultForm" method="post" novalidate="novalidate">
+                        <input name="bpStatus" value="2" type="hidden">
                         <div class="box-body">
                             <div class="form-group">
                                 <div class="input-group margin">
@@ -40,7 +41,7 @@
                             <div class="form-group">
                                 <div class="input-group margin">
                                     <div class="input-group-addon">标的状态</div>
-                                    <select  class="select2  select2-hidden-accessible" style="width: 120px;">
+                                    <select  class="form-control" style="width: 120px;">
                                         <option value="0">请选择</option>
                                         <option value="1">倒计时标</option>
                                         <option value="2">投标中</option>
@@ -60,7 +61,7 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <select  class="select2  select2-hidden-accessible" style="width: 120px;">
+                                <select  class="form-control" style="width: 120px;">
                                     <option value="0">请选择</option>
                                     <option value="1">募集开始时间</option>
                                     <option value="2">募集结束时间</option>
@@ -110,7 +111,7 @@
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        <tr role="row" class="odd">
+                                        <tr role="row" class="odd" v-for="plan in planlist" track-by="$index">
                                             <td>ZE03161101</td>
                                             <td>月利宝1031</td>
                                             <td>普通理财</td>
@@ -125,63 +126,6 @@
                                             <td>2016/10/3110:21:08</td>
                                             <td>2016/10/31</td>
                                             <td>倒计时标</td>
-                                            <td>
-                                                <a href="未放款标的详情.html" class="btn btn-default btn-xs" role="button" target="_blank">查看详情</a>
-                                            </td>
-                                        </tr>
-                                        <tr role="row" class="even">
-                                            <td>ZE03161101</td>
-                                            <td>月利宝1031</td>
-                                            <td>普通理财</td>
-                                            <td>张三</td>
-                                            <td>10000.00</td>
-                                            <td>10000.00</td>
-                                            <td>50%</td>
-                                            <td>5%</td>
-                                            <td>30天</td>
-                                            <td>2016/10/3110:21:08</td>
-                                            <td>2016/10/3110:21:08</td>
-                                            <td>2016/10/3110:21:08</td>
-                                            <td>2016/10/31</td>
-                                            <td>投资中</td>
-                                            <td>
-                                                <a href="未放款标的详情.html" class="btn btn-default btn-xs" role="button" target="_blank">查看详情</a>
-                                            </td>
-                                        </tr>
-                                        <tr role="row" class="odd">
-                                            <td>ZE03161101</td>
-                                            <td>月利宝1031</td>
-                                            <td>普通理财</td>
-                                            <td>张三</td>
-                                            <td>10000.00</td>
-                                            <td>10000.00</td>
-                                            <td>50%</td>
-                                            <td>5%</td>
-                                            <td>30天</td>
-                                            <td>2016/10/3110:21:08</td>
-                                            <td>2016/10/3110:21:08</td>
-                                            <td>2016/10/3110:21:08</td>
-                                            <td>2016/10/31</td>
-                                            <td>募集结束</td>
-                                            <td>
-                                                <a href="未放款标的详情.html" class="btn btn-default btn-xs" role="button" target="_blank">查看详情</a>
-                                            </td>
-                                        </tr>
-                                        <tr role="row" class="even">
-                                            <td>ZE03161101</td>
-                                            <td>月利宝1031</td>
-                                            <td>普通理财</td>
-                                            <td>张三</td>
-                                            <td>10000.00</td>
-                                            <td>10000.00</td>
-                                            <td>50%</td>
-                                            <td>5%</td>
-                                            <td>30天</td>
-                                            <td>2016/10/3110:21:08</td>
-                                            <td>2016/10/3110:21:08</td>
-                                            <td>2016/10/3110:21:08</td>
-                                            <td>2016/10/31</td>
-                                            <td>募集结束</td>
                                             <td>
                                                 <a href="未放款标的详情.html" class="btn btn-default btn-xs" role="button" target="_blank">查看详情</a>
                                             </td>
