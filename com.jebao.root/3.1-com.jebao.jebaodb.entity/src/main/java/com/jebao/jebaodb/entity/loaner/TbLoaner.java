@@ -41,7 +41,7 @@ public class TbLoaner {
 
     private Integer lMonthlySalary;
 
-    private String lEducation;
+    private Integer lEducation;
 
     private String lWorkCity;
 
@@ -223,12 +223,12 @@ public class TbLoaner {
         this.lMonthlySalary = lMonthlySalary;
     }
 
-    public String getlEducation() {
+    public Integer getlEducation() {
         return lEducation;
     }
 
-    public void setlEducation(String lEducation) {
-        this.lEducation = lEducation == null ? null : lEducation.trim();
+    public void setlEducation(Integer lEducation) {
+        this.lEducation = lEducation;
     }
 
     public String getlWorkCity() {

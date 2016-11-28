@@ -15,6 +15,13 @@ public interface ILoanerServiceInf {
     /* ==================================================借款人start==================================================*/
 
     /**
+     * 保存借款人信息
+     * @param entity
+     * @return
+     */
+    int saveLoaner(TbLoaner entity);
+
+    /**
      * 添加借款人基本资料
      * @param entity
      * @return

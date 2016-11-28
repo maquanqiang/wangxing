@@ -1,12 +1,19 @@
 package com.jebao.erp.web.requestModel.loaner;
 
 import com.jebao.erp.web.requestModel.base._BaseForm;
+import org.hibernate.validator.constraints.NotBlank;
+
+import javax.validation.constraints.Pattern;
 
 /**
- * Created by Administrator on 2016/11/24.
+ * Created by Administrator on 2016/11/26.
  */
-public class LoanerMF extends _BaseForm {
+public class LoanerIM extends _BaseForm {
     private Long id;
+
+    @NotBlank(message="注册手机号不能为空")
+    @Pattern(regexp = "(^(13|14|15|17|18)\\d{9}$)",message = "注册手机号格式不正确！")
+    private String phone;
 
     private String homeAdd;
 
@@ -24,7 +31,7 @@ public class LoanerMF extends _BaseForm {
 
     private Integer monthlySalary;
 
-    private String education;
+    private Integer education;
 
     private String workCity;
 
@@ -34,6 +41,14 @@ public class LoanerMF extends _BaseForm {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
     public String getHomeAdd() {
@@ -100,11 +115,11 @@ public class LoanerMF extends _BaseForm {
         this.monthlySalary = monthlySalary;
     }
 
-    public String getEducation() {
+    public Integer getEducation() {
         return education;
     }
 
-    public void setEducation(String education) {
+    public void setEducation(Integer education) {
         this.education = education;
     }
 

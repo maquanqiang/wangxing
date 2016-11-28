@@ -144,6 +144,17 @@ public class RiskControllerApi extends _BaseController {
         return new JsonResultList<>(viewModelList);
     }
 
+    @RequestMapping(value = "getMaterials", method = RequestMethod.GET)
+    @ResponseBody
+    public JsonResult getMaterials(Long id){
+        if(id == null || id == 0){
+            return new JsonResultData<>(null);
+        }
+        TbRcpMaterialsTemp model = loanerService.findRcpMaterialsTempById(id);
+        RcpMaterialsTempVM viewModel = new RcpMaterialsTempVM(model);
+        return new JsonResultData<>(viewModel);
+    }
+
     @RequestMapping("deleteMaterials")
     public @ResponseBody JsonResult deleteMaterials(Long id){
         if(id == null || id == 0){

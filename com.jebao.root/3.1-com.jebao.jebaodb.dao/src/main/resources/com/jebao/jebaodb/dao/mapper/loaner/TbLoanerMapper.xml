@@ -21,7 +21,7 @@
     <result column="l_politics_status" property="lPoliticsStatus" jdbcType="INTEGER" />
     <result column="l_credit_status" property="lCreditStatus" jdbcType="VARCHAR" />
     <result column="l_monthly_salary" property="lMonthlySalary" jdbcType="INTEGER" />
-    <result column="l_education" property="lEducation" jdbcType="VARCHAR" />
+    <result column="l_education" property="lEducation" jdbcType="INTEGER" />
     <result column="l_work_city" property="lWorkCity" jdbcType="VARCHAR" />
     <result column="l_third_account" property="lThirdAccount" jdbcType="VARCHAR" />
     <result column="l_third_login_password" property="lThirdLoginPassword" jdbcType="VARCHAR" />
@@ -74,7 +74,7 @@
       #{lLastLoginTime,jdbcType=TIMESTAMP}, #{lHomeAdd,jdbcType=VARCHAR}, #{lHkadr,jdbcType=VARCHAR}, 
       #{lMaritalStatus,jdbcType=INTEGER}, #{lIshaveHouse,jdbcType=INTEGER}, #{lIshaveCar,jdbcType=INTEGER}, 
       #{lPoliticsStatus,jdbcType=INTEGER}, #{lCreditStatus,jdbcType=VARCHAR}, #{lMonthlySalary,jdbcType=INTEGER}, 
-      #{lEducation,jdbcType=VARCHAR}, #{lWorkCity,jdbcType=VARCHAR}, #{lThirdAccount,jdbcType=VARCHAR}, 
+      #{lEducation,jdbcType=INTEGER}, #{lWorkCity,jdbcType=VARCHAR}, #{lThirdAccount,jdbcType=VARCHAR},
       #{lThirdLoginPassword,jdbcType=VARCHAR}, #{lThirdPayPassword,jdbcType=VARCHAR}, 
       #{lBankProvincesCode,jdbcType=VARCHAR}, #{lBankProvincesName,jdbcType=VARCHAR}, 
       #{lBankCityCode,jdbcType=VARCHAR}, #{lBankCityName,jdbcType=VARCHAR}, #{lBankParentBankCode,jdbcType=VARCHAR}, 
@@ -243,7 +243,7 @@
         #{lMonthlySalary,jdbcType=INTEGER},
       </if>
       <if test="lEducation != null" >
-        #{lEducation,jdbcType=VARCHAR},
+        #{lEducation,jdbcType=INTEGER},
       </if>
       <if test="lWorkCity != null" >
         #{lWorkCity,jdbcType=VARCHAR},
@@ -347,7 +347,7 @@
         l_monthly_salary = #{lMonthlySalary,jdbcType=INTEGER},
       </if>
       <if test="lEducation != null" >
-        l_education = #{lEducation,jdbcType=VARCHAR},
+        l_education = #{lEducation,jdbcType=INTEGER},
       </if>
       <if test="lWorkCity != null" >
         l_work_city = #{lWorkCity,jdbcType=VARCHAR},
@@ -414,7 +414,7 @@
       l_politics_status = #{lPoliticsStatus,jdbcType=INTEGER},
       l_credit_status = #{lCreditStatus,jdbcType=VARCHAR},
       l_monthly_salary = #{lMonthlySalary,jdbcType=INTEGER},
-      l_education = #{lEducation,jdbcType=VARCHAR},
+      l_education = #{lEducation,jdbcType=INTEGER},
       l_work_city = #{lWorkCity,jdbcType=VARCHAR},
       l_third_account = #{lThirdAccount,jdbcType=VARCHAR},
       l_third_login_password = #{lThirdLoginPassword,jdbcType=VARCHAR},

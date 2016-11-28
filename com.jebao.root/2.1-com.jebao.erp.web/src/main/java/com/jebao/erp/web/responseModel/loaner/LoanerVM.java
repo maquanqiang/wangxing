@@ -72,7 +72,7 @@ public class LoanerVM extends ViewModel {
 
     private Integer monthlySalary;
 
-    private String education;
+    private Integer education;
 
     private String workCity;
 
@@ -252,11 +252,11 @@ public class LoanerVM extends ViewModel {
         this.monthlySalary = monthlySalary;
     }
 
-    public String getEducation() {
+    public Integer getEducation() {
         return education;
     }
 
-    public void setEducation(String education) {
+    public void setEducation(Integer education) {
         this.education = education;
     }
 
