@@ -69,6 +69,12 @@
                             </div>
                             <div class="form-group ">
                                 <div class="input-group margin">
+                                    <div class="input-group-addon">募集金额</div>
+                                    <input type="text" placeholder="" class="form-control" name="bpBidMoney">
+                                </div>
+                            </div>
+                            <div class="form-group ">
+                                <div class="input-group margin">
                                     <div class="input-group-addon">起投金额</div>
                                     <input type="text" placeholder="" class="form-control" name="bpStartMoney">
                                 </div>
@@ -83,12 +89,6 @@
                                 <div class="input-group margin">
                                     <div class="input-group-addon">投资上限</div>
                                     <input type="text" placeholder="" class="form-control" name="bpTopMoney">
-                                </div>
-                            </div>
-                            <div class="form-group ">
-                                <div class="input-group margin">
-                                    <div class="input-group-addon">募集金额</div>
-                                    <input type="text" placeholder="" class="form-control" name="bpBidMoney">
                                 </div>
                             </div>
                             <div class="form-group ">
@@ -200,9 +200,9 @@
                                             <tr role="row" class="even">
                                                 <td>总计</td>
                                                 <td></td>
-                                                <td>10000</td>
-                                                <td>1200</td>
-                                                <td>101200</td>
+                                                <td>{{principalTotal}}</td>
+                                                <td>{{interestTotal}}</td>
+                                                <td>{{total}}</td>
                                             </tr>
                                             </tbody>
                                         </table>

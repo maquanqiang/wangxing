@@ -108,7 +108,6 @@ var vm = new Vue({
         },
         search: function (event) {
             var bpId = $("#bpId").val();
-            console.log(bpId)
             model.searchObj.bpId = bpId;
             $.get("/api/bidRiskData/getRiskDataListForPage", model.searchObj, function (response) {
                 if (response.success_is_ok) {
@@ -166,12 +165,9 @@ var vm = new Vue({
                     if (!bootstrapValidator.isValid()) {
                         return false;
                     } else {
-                        /* layer.alert('添加成功！',function(){
-                         layer.closeAll();
-                         });*/
                         //TODO 后台逻辑
                         $.axForForm($('#insertFormId'), function (response) {
-                            if (data.success_is_ok) {
+                            if (response.success_is_ok) {
                                 layer.msg(response.msg);
                                 vm.search();
                             } else {
@@ -209,9 +205,30 @@ var vm = new Vue({
                 });
             });
         },
-
-        viewBtn: function () {
-
+        //预览材料图片
+        viewBtn: function (bpId) {
+            var tempObj= $('#viewMaterialModal').clone();
+            tempObj.find('form').prop('id','ViewFormId');
+            var tempHtml=tempObj.html();
+            layer.open({
+                title:'预览材料',
+                content:tempHtml,
+                btn: ['确定'],
+                area:['500px'],
+                btn1: function(){
+                    layer.closeAll();
+                }
+            });
+            /*加载材料*/
+            $.get("/api/bidRiskData/getMaterials","bpId="+bpId,function(response){
+                if (response.success_is_ok){
+                    if (response.data != null){
+                        var model=response.data;
+                        var html= dataToHtml('#Template-Info', model);
+                        $('#ViewFormId #Template-InfoView').html(html);
+                    }
+                }
+            });
         }
     }
 });

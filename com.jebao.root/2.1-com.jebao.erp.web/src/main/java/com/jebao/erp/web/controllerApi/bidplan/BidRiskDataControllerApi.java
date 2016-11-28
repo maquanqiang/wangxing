@@ -4,11 +4,9 @@ import com.jebao.erp.service.inf.loanmanage.ITbBidRiskDataServiceInf;
 import com.jebao.erp.web.controller._BaseController;
 import com.jebao.erp.web.requestModel.bidplan.RiskDataForm;
 import com.jebao.erp.web.requestModel.loaner.RcpMaterialsTempAF;
-import com.jebao.erp.web.responseModel.base.JsonResult;
-import com.jebao.erp.web.responseModel.base.JsonResultError;
-import com.jebao.erp.web.responseModel.base.JsonResultList;
-import com.jebao.erp.web.responseModel.base.JsonResultOk;
+import com.jebao.erp.web.responseModel.base.*;
 import com.jebao.erp.web.responseModel.bidplan.RiskDataVM;
+import com.jebao.erp.web.responseModel.loaner.RcpMaterialsTempVM;
 import com.jebao.erp.web.utils.validation.ValidationResult;
 import com.jebao.erp.web.utils.validation.ValidationUtil;
 import com.jebao.jebaodb.entity.extEntity.PageWhere;
@@ -17,6 +15,7 @@ import com.jebao.jebaodb.entity.loanmanage.TbBidRiskData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -83,5 +82,17 @@ public class BidRiskDataControllerApi extends _BaseController {
         List<RiskDataVM> dataVMs = new ArrayList<RiskDataVM>();
         riskDatas.forEach(o -> dataVMs.add(new RiskDataVM(o)));
         return new JsonResultList<>(dataVMs, count);
+    }
+
+
+    @RequestMapping(value = "getMaterials", method = RequestMethod.GET)
+    @ResponseBody
+    public JsonResult getMaterials(Long bpId){
+        if(bpId == null || bpId == 0){
+            return new JsonResultData<>(null);
+        }
+        TbBidRiskData tbBidRiskData = bidRiskDataService.selectByBpId(bpId);
+        RiskDataVM viewModel = new RiskDataVM(tbBidRiskData);
+        return new JsonResultData<>(viewModel);
     }
 }
