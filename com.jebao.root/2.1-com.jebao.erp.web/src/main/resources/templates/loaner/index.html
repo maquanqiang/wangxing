@@ -65,7 +65,7 @@
                                             <th width="10%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">姓名</th>
                                             <th width="10%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">手机号</th>
                                             <th width="15%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">注册时间</th>
-                                            <th width="10%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">实际借款数笔</th>
+                                            <th width="10%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">实际借款笔数</th>
                                             <th width="10%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">实际借款金额</th>
                                             <th width="25%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">操作</th>
                                         </tr>
@@ -77,14 +77,14 @@
                                                 <td>{{item.trueName}}</td>
                                                 <td>{{item.phone}}</td>
                                                 <td>{{item.registerTime}}</td>
-                                                <td>0</td>
-                                                <td>0</td>
+                                                <td>{{item.borrowCount}}</td>
+                                                <td>{{item.borrowAmount}}</td>
                                                 <td>
                                                     <a href="javascript:;" class="btn btn-default btn-xs" role="button" @click="openEditForm(item.id)">修改</a>
-                                                    <a :href="getDetailHref(item.id)" class="btn btn-default btn-xs" role="button">查看详情</a>
-                                                    <a class="btn btn-default btn-xs" role="button">资金信息</a>
-                                                    <a class="btn btn-default btn-xs" role="button">借款信息</a>
-                                                    <a :href="getRiskHref(item.id)" class="btn btn-default btn-xs" role="button">风控信息</a>
+                                                    <a :href="getDetailHref(item.id)" class="btn btn-default btn-xs" role="button" target="_blank">查看详情</a>
+                                                    <a class="btn btn-default btn-xs" role="button" target="_blank">资金信息</a>
+                                                    <a class="btn btn-default btn-xs" role="button" target="_blank">借款信息</a>
+                                                    <a :href="getRiskHref(item.id)" class="btn btn-default btn-xs" role="button" target="_blank">风控信息</a>
                                                     <a class="btn btn-default btn-xs remove-msg" role="button" @click="openDeleteWin(item.id)">删除</a>
                                                 </td>
                                             </tr>
@@ -413,135 +413,6 @@
 </div>
 <!-- /.content-wrapper -->
 #parse("common/footer.html")
-<!--<script>
-    $(function(){
-        //添加人借款用户信息
-        $('#add-people').on('click',function(){
-            var tempObj= $('#addInforModal').clone();
-            tempObj.find('form').attr('id','insertFormId');
-            var tempHtml=tempObj.html();
-            layer.open({
-                title:'添加个人借款用户',
-                content:tempHtml,
-                btn: ['添加', '重置'],
-                area:['800px'],
-                btn1: function(){
-                    //initValidateForm($('#insertFormId'));
-                    //var bootstrapValidator = $("#insertFormId").data('bootstrapValidator').validate();
-                    //if(!bootstrapValidator.isValid()){
-                    var phone= $('#insertFormId #import-phone').val();
-                    if(phone.trim().length < 11){
-                        return false;
-                    }else{
-                        //TODO 后台逻辑
-                        $.axForForm($('#insertFormId'),function(data){
-                            if(data.success_is_ok)
-                            {
-                                layer.alert('添加成功！',function(){
-                                    layer.closeAll();
-                                });
-                                var targetUrl="/loaner/index";
-                                redirectUrl(targetUrl);
-                                return;
-                            }else{
-                                layer.alert(data.msg,function(){
-                                    layer.closeAll();
-                                });
-                            }
-                        });
-
-                    }
-                },
-                btn2: function(){
-                    $("#insertFormId input[type=text]").val("");
-                    return false;
-                }
-            });
-            $('#insertFormId #btnImport').on('click',function(){
-                var phone= $('#insertFormId #import-phone').val();
-               // alert("phone="+phone);
-                $.get("/api/loaner/importLoaner","phone="+phone,function(response){
-                    if (response.success_is_ok){
-                        if (response.data != null){var model=response.data;
-                           // alert(model.nickName);
-                           var html= dataToHtml('#Template-UserInfo', model);
-                          //  alert("导入数据成功"+html);
-                            $('#insertFormId #Template-UserInfoView').html(html);
-                        }
-                    }
-                });
-            });
-        });
-        //删除信息
-        $('#orderlist_table').on('click','.remove-msg',function(){
-            var loanerId = $(this).attr("flag");
-            layer.open({
-                content:'您是否删除信息?',
-                btn: ['取消', '删除'],
-                yes: function(){
-                    layer.closeAll();
-                },
-                btn2: function(){
-/*                    $(this).parent().parent().remove();
-                    layer.msg('删除成功！', {icon: 1});*/
-                    $.get("/api/loaner/deleteLoaner","id="+loanerId,function(response){
-                        if (response.success_is_ok){
-                            layer.msg('删除成功！', {icon: 1});
-                            var targetUrl="/loaner/index";
-                            redirectUrl(targetUrl);
-                            return;
-                        }else{
-                            layer.msg('删除失败！', {icon: 1});
-                        }
-                    });
-                }
-            });
-        });
-        //修改借款用户信息
-        $('#orderlist_table').on('click','.btn-modify',function(){
-            var tempObj= $('#modInforInfModal').clone();
-            tempObj.find('form').attr('id','ModifyFormId');
-            var tempHtml=tempObj.html();
-            layer.open({
-                title:'修改个人借款用户',
-                content:tempHtml,
-                area:['800px'],
-                btn: ['保存', '取消'],
-                btn1: function(){
-                    //TODO 后台逻辑
-                    $.axForForm($('#ModifyFormId'),function(data){
-                        if(data.success_is_ok)
-                        {
-                            layer.alert('修改成功！',function(){
-                                layer.closeAll();
-                            });
-                        }else{
-                            layer.alert(data.msg,function(){
-                                layer.closeAll();
-                            });
-                        }
-                    });
-                },
-                btn2: function(){
-                    layer.close();
-                }
-            });
-            /*加载借款人*/
-            var loanerId = $(this).attr("flag");
-            $.get("/api/loaner/details","loanerId="+loanerId,function(response){
-                if (response.success_is_ok){
-                    if (response.data != null){var model=response.data;
-                        var html= dataToHtml('#Template-Modify-Info', model);
-                        $('#ModifyFormId #Template-Modify-InfoView').html(html);
-
-                        var dhtml= dataToHtml('#Template-Modify-Details', model);
-                        $('#ModifyFormId #Template-Modify-DetailsView').html(dhtml);
-                    }
-                }
-            });
-        });
-    });
-</script>-->
 <script src=$UrlHelperTool.href("/content/script/loaner/index.js")></script>
 </body>
 </html>

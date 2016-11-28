@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.jebao.erp.web.responseModel.ViewModel;
 import com.jebao.jebaodb.entity.loaner.TbLoaner;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 /**
@@ -32,7 +33,8 @@ public class LoanerVM extends ViewModel {
         this.monthlySalary = entity.getlMonthlySalary();
         this.education = entity.getlEducation();
         this.workCity = entity.getlWorkCity();
-        this.thirdAccount = entity.getlThirdAccount();
+        this.borrowCount = 0;
+        this.borrowAmount = new BigDecimal(0);
     }
     private Long id;
 
@@ -51,8 +53,10 @@ public class LoanerVM extends ViewModel {
     private Integer sex;
 
     private Integer age;
+
     @JsonFormat(timezone = "GMT+8", pattern = "yyyy/MM/dd HH:mm:ss")
     private Date registerTime;
+
     @JsonFormat(timezone = "GMT+8", pattern = "yyyy/MM/dd HH:mm:ss")
     private Date lastLoginTime;
 
@@ -76,29 +80,11 @@ public class LoanerVM extends ViewModel {
 
     private String workCity;
 
-    private String thirdAccount;
+    //实际借款笔数
+    private Integer borrowCount;
 
-    private String thirdLoginPassword;
-
-    private String thirdPayPassword;
-
-    private String bankProvincesCode;
-
-    private String bankProvincesName;
-
-    private String bankCityCode;
-
-    private String bankCityName;
-
-    private String bankParentBankCode;
-
-    private String bankParentBankName;
-
-    private Date createTime;
-
-    private Date updateTime;
-
-    private String bankCardNo;
+    //实际借款金额
+    private BigDecimal borrowAmount;
 
     public Long getId() {
         return id;
@@ -268,99 +254,19 @@ public class LoanerVM extends ViewModel {
         this.workCity = workCity;
     }
 
-    public String getThirdAccount() {
-        return thirdAccount;
+    public Integer getBorrowCount() {
+        return borrowCount;
     }
 
-    public void setThirdAccount(String thirdAccount) {
-        this.thirdAccount = thirdAccount;
+    public void setBorrowCount(Integer borrowCount) {
+        this.borrowCount = borrowCount;
     }
 
-    public String getThirdLoginPassword() {
-        return thirdLoginPassword;
+    public BigDecimal getBorrowAmount() {
+        return borrowAmount;
     }
 
-    public void setThirdLoginPassword(String thirdLoginPassword) {
-        this.thirdLoginPassword = thirdLoginPassword;
-    }
-
-    public String getThirdPayPassword() {
-        return thirdPayPassword;
-    }
-
-    public void setThirdPayPassword(String thirdPayPassword) {
-        this.thirdPayPassword = thirdPayPassword;
-    }
-
-    public String getBankProvincesCode() {
-        return bankProvincesCode;
-    }
-
-    public void setBankProvincesCode(String bankProvincesCode) {
-        this.bankProvincesCode = bankProvincesCode;
-    }
-
-    public String getBankProvincesName() {
-        return bankProvincesName;
-    }
-
-    public void setBankProvincesName(String bankProvincesName) {
-        this.bankProvincesName = bankProvincesName;
-    }
-
-    public String getBankCityCode() {
-        return bankCityCode;
-    }
-
-    public void setBankCityCode(String bankCityCode) {
-        this.bankCityCode = bankCityCode;
-    }
-
-    public String getBankCityName() {
-        return bankCityName;
-    }
-
-    public void setBankCityName(String bankCityName) {
-        this.bankCityName = bankCityName;
-    }
-
-    public String getBankParentBankCode() {
-        return bankParentBankCode;
-    }
-
-    public void setBankParentBankCode(String bankParentBankCode) {
-        this.bankParentBankCode = bankParentBankCode;
-    }
-
-    public String getBankParentBankName() {
-        return bankParentBankName;
-    }
-
-    public void setBankParentBankName(String bankParentBankName) {
-        this.bankParentBankName = bankParentBankName;
-    }
-
-    public Date getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
-
-    public Date getUpdateTime() {
-        return updateTime;
-    }
-
-    public void setUpdateTime(Date updateTime) {
-        this.updateTime = updateTime;
-    }
-
-    public String getBankCardNo() {
-        return bankCardNo;
-    }
-
-    public void setBankCardNo(String bankCardNo) {
-        this.bankCardNo = bankCardNo;
+    public void setBorrowAmount(BigDecimal borrowAmount) {
+        this.borrowAmount = borrowAmount;
     }
 }

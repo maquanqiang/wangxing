@@ -1,6 +1,7 @@
 package com.jebao.erp.web.controllerApi.employee;
 
 import com.jebao.erp.service.inf.employee.IEmployeeServiceInf;
+import com.jebao.erp.web.controller.FilePluginController;
 import com.jebao.erp.web.controller._BaseController;
 import com.jebao.erp.web.responseModel.base.JsonResult;
 import com.jebao.erp.web.responseModel.base.JsonResultList;
@@ -64,8 +65,13 @@ public class EmployeeControllerApi extends _BaseController {
 
     @RequestMapping(value = "upload",method = RequestMethod.POST)
     public ResultInfo upload(){
-        System.out.println("upload");
-        return new ResultInfo(true);
+        FilePluginController fileUploader = new FilePluginController(null);
+        FilePluginController.UploadReturnJson returnJson = fileUploader.uploadFile("file",request);
+
+        ResultInfo resultInfo = new ResultInfo(returnJson.getError()==0);
+        resultInfo.setMsg(returnJson.getUrl());
+
+        return resultInfo;
     }
 
 

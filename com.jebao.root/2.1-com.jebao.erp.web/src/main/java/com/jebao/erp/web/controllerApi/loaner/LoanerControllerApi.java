@@ -6,6 +6,7 @@ import com.jebao.erp.web.requestModel.loaner.LoanerIM;
 import com.jebao.erp.web.requestModel.loaner.LoanerSM;
 import com.jebao.erp.web.responseModel.base.*;
 import com.jebao.erp.web.responseModel.loaner.LoanerVM;
+import com.jebao.erp.web.responseModel.loaner.UserInfoVM;
 import com.jebao.erp.web.utils.validation.ValidationResult;
 import com.jebao.erp.web.utils.validation.ValidationUtil;
 import com.jebao.jebaodb.entity.extEntity.PageWhere;
@@ -96,11 +97,14 @@ public class LoanerControllerApi extends _BaseController {
     @RequestMapping("doImport")
     public JsonResult doImport(String phone){
         if(StringUtils.isBlank(phone)){
-            return new JsonResultData<>(null);
+            return new JsonResultError("手机号不能为空");
         }
         phone=StringUtils.trim(phone);
-        TbLoaner record = loanerService.getLoanerByPhone(phone);
-        LoanerVM viewModel = new LoanerVM(record);
+        TbLoaner loaner = loanerService.getLoanerByPhone(phone);
+        if(loaner == null){
+            return new JsonResultError("查无此号");
+        }
+        UserInfoVM viewModel = new UserInfoVM(loaner);
         return new JsonResultData<>(viewModel);
     }
 
@@ -110,10 +114,11 @@ public class LoanerControllerApi extends _BaseController {
         if(loanerId == null || loanerId == 0){
             return new JsonResultData<>(null);
         }
-        TbLoaner record = loanerService.findLoanerById(loanerId);
-        LoanerVM viewModel = new LoanerVM(record);
+        TbLoaner loaner = loanerService.findLoanerById(loanerId);
+        if(loaner == null){
+            return new JsonResultData<>(null);
+        }
+        LoanerVM viewModel = new LoanerVM(loaner);
         return new JsonResultData<>(viewModel);
     }
-
-
 }

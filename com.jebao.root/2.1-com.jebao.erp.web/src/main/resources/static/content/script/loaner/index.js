@@ -32,7 +32,7 @@ var vm = new Vue({
             return "/loaner/details/"+id;
         },
         getRiskHref:function(id){
-            return "/loaner/risklist/"+id;
+            return "/loaner/risk/index/"+id;
         },
         search:function(event){
             if (typeof event !== "undefined"){ //点击查询按钮的话，是查询第一页数据
@@ -42,8 +42,8 @@ var vm = new Vue({
             $.get("/api/loaner/list",model.searchObj,function(response){
                 if (response.success_is_ok){
                     vm.loaners=response.data;
-                    console.log("count:"+response.count);
-                    console.log("pageSize:"+model.searchObj.pageSize);
+                    //console.log("count:"+response.count);
+                    //console.log("pageSize:"+model.searchObj.pageSize);
                     if (response.count>0){
                         var pageCount = Math.ceil(response.count / model.searchObj.pageSize);
                         //调用分页
@@ -153,10 +153,15 @@ var vm = new Vue({
                         var $form = $(openVmModel.form);
                         $form.find(".import-btn").addClass("disabled");//禁用按钮
                         var phone = $form.find(".import-phone").val();
-                        console.log(phone);
+                        //console.log(phone);
                         $.get("/api/loaner/doImport",{phone:phone},function(response){
                             if (response.success_is_ok){
                                 openVmModel.userInfo=response.data;
+                            }else{
+                                console.log(response.error);
+                                //window.alert(response.error);
+                                vm.openFormVm.error.hide=false;
+                                vm.openFormVm.error.message=response.error;
                             }
                             $form.find(".import-btn").removeClass("disabled");//解除禁用
                         });
