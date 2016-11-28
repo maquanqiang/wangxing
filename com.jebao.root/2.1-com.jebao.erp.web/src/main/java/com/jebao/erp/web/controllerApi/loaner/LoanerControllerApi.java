@@ -2,8 +2,7 @@ package com.jebao.erp.web.controllerApi.loaner;
 
 import com.jebao.erp.service.inf.loaner.ILoanerServiceInf;
 import com.jebao.erp.web.controller._BaseController;
-import com.jebao.erp.web.requestModel.loaner.LoanerAF;
-import com.jebao.erp.web.requestModel.loaner.LoanerMF;
+import com.jebao.erp.web.requestModel.loaner.LoanerIM;
 import com.jebao.erp.web.requestModel.loaner.LoanerSM;
 import com.jebao.erp.web.responseModel.base.*;
 import com.jebao.erp.web.responseModel.loaner.LoanerVM;
@@ -29,63 +28,47 @@ public class LoanerControllerApi extends _BaseController {
     @Autowired
     private ILoanerServiceInf loanerService;
 
-    @RequestMapping(value = "addLoaner", produces = "application/json")
-    public @ResponseBody JsonResult addLoaner(LoanerAF form) {
-        ValidationResult resultValidation = ValidationUtil.validateEntity(form);
+    @RequestMapping(value = "post",method = RequestMethod.POST,produces = "application/json")
+    public @ResponseBody JsonResult post(LoanerIM model) {
+        ValidationResult resultValidation = ValidationUtil.validateEntity(model);
         if (resultValidation.isHasErrors()) {
             return new JsonResultError(resultValidation.getErrorMsg());
         }
 
-        //todo 添加借款人逻辑实现
+        //todo 编辑借款人逻辑实现
         //todo 实际的业务逻辑
         TbLoaner entity = new TbLoaner();
-        entity.setlPhone(form.getPhone());
-        entity.setlHomeAdd(form.getHomeAdd());
-        entity.setlHkadr(form.getHkadr());
-        entity.setlMaritalStatus(form.getMaritalStatus());
-        entity.setlIshaveHouse(form.getIshaveHouse());
-        entity.setlIshaveCar(form.getIshaveCar());
-        entity.setlPoliticsStatus(form.getPoliticsStatus());
-        entity.setlCreditStatus(form.getCreditStatus());
-        entity.setlMonthlySalary(form.getMonthlySalary());
-        entity.setlEducation(form.getEducation());
-        entity.setlWorkCity(form.getWorkCity());
-        int result = loanerService.addLoaner(entity);
+        entity.setlPhone(model.getPhone());
+        entity.setlHomeAdd(model.getHomeAdd());
+        entity.setlHkadr(model.getHkadr());
+        entity.setlMaritalStatus(model.getMaritalStatus());
+        entity.setlIshaveHouse(model.getIshaveHouse());
+        entity.setlIshaveCar(model.getIshaveCar());
+        entity.setlPoliticsStatus(model.getPoliticsStatus());
+        entity.setlCreditStatus(model.getCreditStatus());
+        entity.setlMonthlySalary(model.getMonthlySalary());
+        entity.setlEducation(model.getEducation());
+        entity.setlWorkCity(model.getWorkCity());
+        entity.setlId(model.getId());
+        int result = loanerService.saveLoaner(entity);
         //
         if (result > 0) {
-            return new JsonResultOk("添加成功");
+            return new JsonResultOk("保存成功");
         } else {
-            return new JsonResultError("添加失败");
+            return new JsonResultError("保存失败");
         }
     }
 
-    @RequestMapping(value = "modifyLoaner", produces = "application/json")
-    public @ResponseBody JsonResult modifyLoaner(LoanerMF form) {
-        ValidationResult resultValidation = ValidationUtil.validateEntity(form);
-        if (resultValidation.isHasErrors()) {
-            return new JsonResultError(resultValidation.getErrorMsg());
+    @RequestMapping(value = "delete",method = RequestMethod.POST)
+    public @ResponseBody JsonResult delete(Long id){
+        if(id == null || id == 0){
+            return new JsonResultData<>(null);
         }
-
-        //todo 修改借款人逻辑实现
-        //todo 实际的业务逻辑
-        TbLoaner entity = new TbLoaner();
-        entity.setlId(form.getId());
-        entity.setlHomeAdd(form.getHomeAdd());
-        entity.setlHkadr(form.getHkadr());
-        entity.setlMaritalStatus(form.getMaritalStatus());
-        entity.setlIshaveHouse(form.getIshaveHouse());
-        entity.setlIshaveCar(form.getIshaveCar());
-        entity.setlPoliticsStatus(form.getPoliticsStatus());
-        entity.setlCreditStatus(form.getCreditStatus());
-        entity.setlMonthlySalary(form.getMonthlySalary());
-        entity.setlEducation(form.getEducation());
-        entity.setlWorkCity(form.getWorkCity());
-        int result = loanerService.updateLoaner(entity);
-        //
+        int result = loanerService.deleteLoanerById(id);
         if (result > 0) {
-            return new JsonResultOk("修改成功");
+            return new JsonResultOk("删除成功");
         } else {
-            return new JsonResultError("修改失败");
+            return new JsonResultError("删除失败");
         }
     }
 
@@ -110,7 +93,7 @@ public class LoanerControllerApi extends _BaseController {
         return new JsonResultList<>(viewModelList,count);
     }
 
-    @RequestMapping("importLoaner")
+    @RequestMapping("doImport")
     public JsonResult doImport(String phone){
         if(StringUtils.isBlank(phone)){
             return new JsonResultData<>(null);
@@ -132,16 +115,5 @@ public class LoanerControllerApi extends _BaseController {
         return new JsonResultData<>(viewModel);
     }
 
-    @RequestMapping("deleteLoaner")
-    public @ResponseBody JsonResult deleteLoaner(Long id){
-        if(id == null || id == 0){
-            return new JsonResultData<>(null);
-        }
-        int result = loanerService.deleteLoanerById(id);
-        if (result > 0) {
-            return new JsonResultOk("删除成功");
-        } else {
-            return new JsonResultError("删除失败");
-        }
-    }
+
 }

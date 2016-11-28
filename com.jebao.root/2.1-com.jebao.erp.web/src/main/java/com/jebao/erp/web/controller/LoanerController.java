@@ -1,15 +1,6 @@
 package com.jebao.erp.web.controller;
 
 import com.jebao.erp.service.inf.loaner.ILoanerServiceInf;
-import com.jebao.erp.web.requestModel.loaner.LoanerAF;
-import com.jebao.erp.web.requestModel.loaner.LoanerMF;
-import com.jebao.erp.web.responseModel.base.JsonResult;
-import com.jebao.erp.web.responseModel.base.JsonResultData;
-import com.jebao.erp.web.responseModel.base.JsonResultError;
-import com.jebao.erp.web.responseModel.base.JsonResultOk;
-import com.jebao.erp.web.responseModel.loaner.LoanerVM;
-import com.jebao.erp.web.utils.validation.ValidationResult;
-import com.jebao.erp.web.utils.validation.ValidationUtil;
 import com.jebao.jebaodb.entity.loaner.TbLoaner;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

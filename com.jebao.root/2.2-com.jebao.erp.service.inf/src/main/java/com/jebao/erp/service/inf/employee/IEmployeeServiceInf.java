@@ -2,7 +2,6 @@ package com.jebao.erp.service.inf.employee;
 
 import com.jebao.jebaodb.entity.employee.EmployeeInfo;
 import com.jebao.jebaodb.entity.employee.input.EmployeeIM;
-import com.jebao.jebaodb.entity.employee.input.LoginIM;
 import com.jebao.jebaodb.entity.employee.search.EmployeeSM;
 import com.jebao.jebaodb.entity.extEntity.ResultInfo;
 
@@ -35,8 +34,5 @@ public interface IEmployeeServiceInf {
      */
     ResultInfo deleteEmployeeInfo(int empId,int userId);
 
-    /**
-     * 员工登录
-     */
-    ResultInfo Login(LoginIM model);
+
 }

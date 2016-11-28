@@ -25,23 +25,25 @@ public class AccountController extends _BaseController {
     @RequestMapping("login")
     public String login() {
         //检测是否已登录
-        boolean isLogin = LoginSessionUtil.isLogin(request,response);
-        if (isLogin){
+        boolean isLogin = LoginSessionUtil.isLogin(request, response);
+        if (isLogin) {
             return "home/index";
         }
         return "account/login";
     }
-    @RequestMapping(value="doLogin",produces="application/json")
-    public @ResponseBody JsonResult doLogin(LoginForm form) {
+
+    @RequestMapping(value = "doLogin", produces = "application/json")
+    public
+    @ResponseBody
+    JsonResult doLogin(LoginForm form) {
         ValidationResult resultValidation = ValidationUtil.validateEntity(form);
         if (resultValidation.isHasErrors()) {
             return new JsonResultError(resultValidation.getErrorMsg());
         }
-        String verifyCode= CaptchaUtil.getCaptchaToken(request, response);
-        if(StringUtils.isBlank(verifyCode)||
-                StringUtils.isBlank(form.getVerifyCode())||
-                !verifyCode.toLowerCase().equals(form.getVerifyCode().toLowerCase()))
-        {
+        String verifyCode = CaptchaUtil.getCaptchaToken(request, response);
+        if (StringUtils.isBlank(verifyCode) ||
+                StringUtils.isBlank(form.getVerifyCode()) ||
+                !verifyCode.toLowerCase().equals(form.getVerifyCode().toLowerCase())) {
             return new JsonResultError("验证码不正确");
         }
         //todo 登录逻辑实现
@@ -55,9 +57,15 @@ public class AccountController extends _BaseController {
     }
 
     @RequestMapping("logout")
-    public String logout(){
-        LoginSessionUtil.logout(request,response);
-        return "redirect:/home/index";
+    public String logout() {
+        LoginSessionUtil.logout(request, response);
+        //return "redirect:/home/index";
+        return "/account/login";
+    }
+
+    @RequestMapping("password")
+    public String password() {
+        return "account/password";
     }
 
 }

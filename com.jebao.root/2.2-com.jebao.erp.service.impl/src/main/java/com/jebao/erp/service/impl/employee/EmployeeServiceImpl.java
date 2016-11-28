@@ -1,8 +1,7 @@
 package com.jebao.erp.service.impl.employee;
 
-import com.jebao.jebaodb.entity.employee.input.LoginIM;
-import org.apache.commons.lang.time.DateUtils;
 import com.jebao.common.utils.date.DateUtil;
+import com.jebao.common.utils.encrypt.EncryptUtil;
 import com.jebao.common.utils.idcard.IdCardUtil;
 import com.jebao.common.utils.validation.ValidationResult;
 import com.jebao.common.utils.validation.ValidationUtil;
@@ -13,6 +12,7 @@ import com.jebao.jebaodb.entity.employee.input.EmployeeIM;
 import com.jebao.jebaodb.entity.employee.search.EmployeeSM;
 import com.jebao.jebaodb.entity.extEntity.ResultData;
 import com.jebao.jebaodb.entity.extEntity.ResultInfo;
+import org.apache.commons.lang.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -35,6 +35,7 @@ public class EmployeeServiceImpl implements IEmployeeServiceInf {
     private TbEmployeeLoginDao loginDao;
     @Autowired
     private TbEmployeeLogDao logDao;
+
     /**
      * 获取员工信息
      *
@@ -49,8 +50,9 @@ public class EmployeeServiceImpl implements IEmployeeServiceInf {
     public int getEmployeeInfoListCount(EmployeeSM model) {
         return employeeDao.selectEmployeeDetailsInfoCount(model);
     }
+
     @Override
-    public ResultInfo saveEmployeeInfo(EmployeeIM model){
+    public ResultInfo saveEmployeeInfo(EmployeeIM model) {
         ResultInfo resultInfo = new ResultInfo(false);
         //region 校验
         ValidationResult resultValidation = ValidationUtil.validateEntity(model);
@@ -58,32 +60,33 @@ public class EmployeeServiceImpl implements IEmployeeServiceInf {
             resultInfo.setMsg(resultValidation.getErrorMsg().toString());
             return resultInfo;
         }
-        if (model.getTeamId()==0){
+        if (model.getTeamId() == 0) {
             model.setTeamId(model.getDepartmentId());
         }
         //endregion
 
         int empId = model.getEmpId();
 
-        if (empId==0){
+        if (empId == 0) {
             resultInfo = addEmployeeInfo(model);//新增
-        }else{
+        } else {
             resultInfo = updateEmployeeInfo(model);//修改
         }
 
         return resultInfo;
     }
+
     @Override
-    public ResultInfo deleteEmployeeInfo(int empId,int userId){
+    public ResultInfo deleteEmployeeInfo(int empId, int userId) {
         ResultInfo resultInfo = new ResultInfo(false);
 
         TbEmployee employeeEntity = employeeDao.selectByPrimaryKey(empId);
-        if (employeeEntity==null){
+        if (employeeEntity == null) {
             resultInfo.setMsg("不存在此员工");
             return resultInfo;
         }
         boolean success = employeeDao.delete(empId);
-        if (success){
+        if (success) {
             loginDao.deleteEmployeeLogin(empId);
             resultInfo.setSuccess_is_ok(true);
             resultInfo.setMsg("删除成功");
@@ -97,36 +100,16 @@ public class EmployeeServiceImpl implements IEmployeeServiceInf {
             logDao.insert(logEntity);//插入日志记录
 
             //endregion
-        }else{
+        } else {
             resultInfo.setMsg("删除失败");
         }
         return resultInfo;
     }
 
-    @Override
-    public ResultInfo Login(LoginIM model){
-        TbEmployeeLogin loginEntity = loginDao.selectByUsername(model.getUsername());
-        if (loginEntity==null){
-            return new ResultInfo(false,"不存在此用户");
-        }
-        if(!loginEntity.getLgPassword().equalsIgnoreCase(model.getPassword())){
-            return new ResultInfo(false,"登录密码错误");
-        }
-        //登录成功
-        if (loginEntity.getLgFirstLoginTime() == null){
-            loginEntity.setLgFirstLoginTime(new Date());
-        }
-        loginEntity.setLgLastLoginTime(new Date());
-        //更新登录时间
-        loginDao.updateByPrimaryKey(loginEntity);
-
-        return new ResultData<Integer>(loginEntity.getLgEmpId(),"登录成功");
-    }
-
     /**
      * 新增员工信息
      */
-    private ResultInfo addEmployeeInfo(EmployeeIM model){
+    private ResultInfo addEmployeeInfo(EmployeeIM model) {
         //region 转换实体
         Date today = new Date();
         //员工基本信息
@@ -145,9 +128,11 @@ public class EmployeeServiceImpl implements IEmployeeServiceInf {
         //插入员工基本信息
         int reval = employeeDao.insert(employee);
         int empId = employee.getEmpId();//员工id，插入之后有内容
-        if (reval==0){return new ResultInfo(false,"添加员工基本信息失败");}
+        if (reval == 0) {
+            return new ResultInfo(false, "添加员工基本信息失败");
+        }
         //员工所属部门
-        if (model.getTeamId()>0){
+        if (model.getTeamId() > 0) {
             TbEmpDepRelationship empDepRelationship = new TbEmpDepRelationship();
             empDepRelationship.setEdrEmpId(empId);
             empDepRelationship.setEdrDepId(model.getTeamId());//部门/团队 id
@@ -157,7 +142,7 @@ public class EmployeeServiceImpl implements IEmployeeServiceInf {
             empDepRelationshipDao.insert(empDepRelationship); //插入员工部门信息
         }
         //员工职级
-        if (model.getRankId()>0){
+        if (model.getRankId() > 0) {
             TbEmpRankRelationship empRankRelationship = new TbEmpRankRelationship();
             empRankRelationship.setErrEmpId(empId);
             empRankRelationship.setErrRankId(model.getRankId());//职级id
@@ -171,7 +156,9 @@ public class EmployeeServiceImpl implements IEmployeeServiceInf {
         loginEntity.setLgEmpId(empId);
         String mobile = model.getMobile();
         loginEntity.setLgUsername(mobile);//手机号作为登录名
-        loginEntity.setLgPassword(mobile.substring(mobile.length()-6)); //密码默认手机号码后6位
+        String loginPassword = mobile.substring(mobile.length() - 6);//密码默认手机号码后6位
+        String md5Password = new EncryptUtil().encryptToMD5(loginPassword);
+        loginEntity.setLgPassword(md5Password);
         loginDao.insert(loginEntity);//插入员工登录信息
 
         //endregion
@@ -179,7 +166,7 @@ public class EmployeeServiceImpl implements IEmployeeServiceInf {
         //region 记录日志
         TbEmployeeLog logEntity = new TbEmployeeLog();
         logEntity.setElEmpId(empId);
-        String content = String.format("新增员工，所属团队：{0}，职级：{1}",model.getTeamId(),model.getRankId());
+        String content = String.format("新增员工，所属团队：{0}，职级：{1}", model.getTeamId(), model.getRankId());
         logEntity.setElContent(content);//操作内容
         logEntity.setElOperateTime(today);//操作时间
         logEntity.setElOperator(model.getUserId());//操作人
@@ -187,22 +174,23 @@ public class EmployeeServiceImpl implements IEmployeeServiceInf {
 
         //endregion
 
-        return new ResultData<Integer>(empId,"保存成功");
+        return new ResultData<Integer>(empId, "保存成功");
     }
+
     /**
      * 更新员工信息
      */
-    private ResultInfo updateEmployeeInfo(EmployeeIM model){
+    private ResultInfo updateEmployeeInfo(EmployeeIM model) {
 
         EmployeeSM searchModel = new EmployeeSM();
         searchModel.setEmpId(model.getEmpId());
         searchModel.setPageIndex(0);
         searchModel.setPageSize(1);
         List<EmployeeInfo> employeeInfoList = employeeDao.selectEmployeeDetailsInfo(searchModel);
-        if (employeeInfoList==null || employeeInfoList.size()==0){
-            return new ResultInfo(false,"更新失败，不存在此员工");
+        if (employeeInfoList == null || employeeInfoList.size() == 0) {
+            return new ResultInfo(false, "更新失败，不存在此员工");
         }
-        EmployeeInfo employeeInfo =employeeInfoList.get(0); //已存在的员工信息
+        EmployeeInfo employeeInfo = employeeInfoList.get(0); //已存在的员工信息
         int empId = model.getEmpId();//员工id
         //region 转换实体
         Date today = new Date();
@@ -214,15 +202,15 @@ public class EmployeeServiceImpl implements IEmployeeServiceInf {
         employeeDao.updateByPrimaryKeySelective(employeeEntity);
 
         //region员工所属部门
-        if (model.getTeamId()>0){
+        if (model.getTeamId() > 0) {
             TbDepartment departmentInfo = employeeInfo.getDepartment();
-            if (!(departmentInfo!=null && departmentInfo.getDepId()==model.getTeamId())){ //团队关系变动
+            if (!(departmentInfo != null && departmentInfo.getDepId() == model.getTeamId())) { //团队关系变动
 
                 TbEmpDepRelationship empDepRelationshipEntity = empDepRelationshipDao.selectCurrentEmpRelation(empId);//当前存在的部门关系，更新失效时间
-                if (empDepRelationshipEntity!=null){
+                if (empDepRelationshipEntity != null) {
                     Date currentTime = new Date();
                     //获取昨天时间
-                    Date yesterday= DateUtils.addDays(currentTime, -1);
+                    Date yesterday = DateUtils.addDays(currentTime, -1);
                     empDepRelationshipEntity.setEdrExpiryDate(yesterday);//失效时间,昨日
                     empDepRelationshipDao.updateByPrimaryKey(empDepRelationshipEntity);
                 }
@@ -239,14 +227,14 @@ public class EmployeeServiceImpl implements IEmployeeServiceInf {
         //endregion
 
         //region员工职级
-        if (model.getRankId()>0){
+        if (model.getRankId() > 0) {
             TbRank rankInfo = employeeInfo.getRank();
-            if (!(rankInfo!=null && rankInfo.getRankId()==model.getRankId())){ //职级关系变动
+            if (!(rankInfo != null && rankInfo.getRankId() == model.getRankId())) { //职级关系变动
                 TbEmpRankRelationship empRankRelationshipEntity = empRankRelationshipDao.selectCurrentEmpRelation(empId);//当前存在的职级关系，更新失效时间
-                if (empRankRelationshipEntity!=null){
+                if (empRankRelationshipEntity != null) {
                     Date currentTime = new Date();
                     //获取昨天时间
-                    Date yesterday= DateUtils.addDays(currentTime, -1);
+                    Date yesterday = DateUtils.addDays(currentTime, -1);
                     empRankRelationshipEntity.setErrExpiryDate(yesterday);//失效时间,昨日
                     empRankRelationshipDao.updateByPrimaryKey(empRankRelationshipEntity);
                 }
@@ -266,7 +254,7 @@ public class EmployeeServiceImpl implements IEmployeeServiceInf {
         //region 记录日志
         TbEmployeeLog logEntity = new TbEmployeeLog();
         logEntity.setElEmpId(empId);
-        String content = String.format("修改员工，所属团队：{0}，职级：{1}",model.getTeamId(),model.getRankId());
+        String content = String.format("修改员工，所属团队：{0}，职级：{1}", model.getTeamId(), model.getRankId());
         logEntity.setElContent(content);//操作内容
         logEntity.setElOperateTime(today);//操作时间
         logEntity.setElOperator(model.getUserId());//操作人
@@ -274,7 +262,7 @@ public class EmployeeServiceImpl implements IEmployeeServiceInf {
 
         //endregion
 
-        return new ResultInfo(true,"修改成功");
+        return new ResultInfo(true, "修改成功");
     }
 
 }
