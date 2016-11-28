@@ -21,13 +21,13 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
      * @author yzd
      */
     public void addInterceptors(InterceptorRegistry registry) {
-//        registry.addInterceptor(new AuthorizeInterceptor())
-//                .addPathPatterns("/**")
-//                .excludePathPatterns("/account/login")
-//                .excludePathPatterns("/captcha/getCode")
-//                .excludePathPatterns("/api/account/login")
-//                .excludePathPatterns("/content/**")
-//                .excludePathPatterns("/favicon.ico");
+        registry.addInterceptor(new AuthorizeInterceptor())
+                .addPathPatterns("/**")
+                .excludePathPatterns("/account/login")
+                .excludePathPatterns("/captcha/getCode")
+                .excludePathPatterns("/api/account/login")
+                .excludePathPatterns("/content/**")
+                .excludePathPatterns("/favicon.ico");
     }
 
     /**
