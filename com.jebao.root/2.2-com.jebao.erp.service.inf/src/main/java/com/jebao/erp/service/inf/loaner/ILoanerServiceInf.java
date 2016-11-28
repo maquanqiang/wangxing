@@ -12,8 +12,7 @@ import java.util.List;
  * Created by Administrator on 2016/11/18.
  */
 public interface ILoanerServiceInf {
-    /* ==================================================借款人start==================================================*/
-
+    //region 借款人接口
     /**
      * 保存借款人信息
      * @param entity
@@ -70,16 +69,9 @@ public interface ILoanerServiceInf {
      * @return
      */
     List<TbLoaner> selectLoanerByParamsForPage(TbLoaner record,PageWhere page);
+    //endregion
 
-
-/*    int selectBySearchForPageCount(LoanerSM model);
-
-    List<TbLoaner> selectBySearchForPage(LoanerSM model);*/
-
-    /* ==================================================借款人end==================================================*/
-
-    /* ==================================================充值提现明细start==================================================*/
-
+    //region 充值提现明细接口
     /**
      * 根据查询条件获取借款人的充值提现明细列表（分页）
      * @param record （登陆ID，交易状态）
@@ -94,10 +86,9 @@ public interface ILoanerServiceInf {
      * @return
      */
     int selectFundsDetailsForPageCount(TbFundsDetails record);
-    /* ==================================================充值提现明细end==================================================*/
+    //endregion
 
-    /* ==================================================风控项目模版start==================================================*/
-
+    //region 风控项目模版接口
     /**
      * 添加风控项目模版
      * @param record
@@ -140,9 +131,9 @@ public interface ILoanerServiceInf {
      * @return
      */
     List<TbRiskCtlPrjTemp> selectRiskCtlPrjTempByLoanerIdForPage(Long loanerId,PageWhere page);
-    /* ==================================================风控项目模版end==================================================*/
+    //endregion
 
-    /* ==================================================风控项目认证材料模版start==================================================*/
+    //region 风控项目认证材料模版接口
     /**
      * 添加风控项目认证材料模版
      * @param record
@@ -185,5 +176,5 @@ public interface ILoanerServiceInf {
      * @return
      */
     List<TbRcpMaterialsTemp> selectRcpMaterialsTempByPrjIdForPage(Long projectId,PageWhere page);
-    /* ==================================================风控项目认证材料模版end==================================================*/
+    //endregion
 }

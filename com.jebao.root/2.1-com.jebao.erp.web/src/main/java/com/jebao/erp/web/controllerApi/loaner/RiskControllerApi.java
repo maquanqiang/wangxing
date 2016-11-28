@@ -7,6 +7,7 @@ import com.jebao.erp.web.requestModel.loaner.RiskCtlPrjAF;
 import com.jebao.erp.web.responseModel.base.*;
 import com.jebao.erp.web.responseModel.loaner.RcpMaterialsTempVM;
 import com.jebao.erp.web.responseModel.loaner.RiskCtlPrjMTempVM;
+import com.jebao.erp.web.responseModel.loaner.RiskCtlPrjTempListVM;
 import com.jebao.erp.web.responseModel.loaner.RiskCtlPrjTempVM;
 import com.jebao.erp.web.utils.validation.ValidationResult;
 import com.jebao.erp.web.utils.validation.ValidationUtil;
@@ -31,20 +32,21 @@ public class RiskControllerApi extends _BaseController {
     @Autowired
     private ILoanerServiceInf loanerService;
 
-    @RequestMapping(value = "risklist", method = RequestMethod.GET)
+    //region 风控api
+    @RequestMapping(value = "list", method = RequestMethod.GET)
     @ResponseBody
-    public JsonResult risklist(Long loanerId){
+    public JsonResult list(Long loanerId){
         if(loanerId == null || loanerId == 0){
             return new JsonResultList<>(null);
         }
         List<TbRiskCtlPrjTemp> riskctlprjList = loanerService.selectRiskCtlPrjTempByLoanerIdForPage(loanerId,null);
-        List<RiskCtlPrjTempVM> viewModelList = new ArrayList<>();
-        riskctlprjList.forEach(o -> viewModelList.add(new RiskCtlPrjTempVM(o)));
+        List<RiskCtlPrjTempListVM> viewModelList = new ArrayList<>();
+        riskctlprjList.forEach(o -> viewModelList.add(new RiskCtlPrjTempListVM(o)));
         return new JsonResultList<>(viewModelList);
     }
 
-    @RequestMapping("deleteRisk")
-    public @ResponseBody JsonResult deleteRisk(Long id){
+    @RequestMapping("delete")
+    public @ResponseBody JsonResult delete(Long id){
         if(id == null || id == 0){
             return new JsonResultData<>(null);
         }
@@ -56,9 +58,9 @@ public class RiskControllerApi extends _BaseController {
         }
     }
 
-    @RequestMapping(value = "riskdetails", method = RequestMethod.GET)
+    @RequestMapping(value = "details", method = RequestMethod.GET)
     @ResponseBody
-    public JsonResult riskdetails(Long rcptId){
+    public JsonResult details(Long rcptId){
         if(rcptId == null || rcptId == 0){
             return new JsonResultData<>(null);
         }
@@ -82,9 +84,9 @@ public class RiskControllerApi extends _BaseController {
         return new JsonResultData<>(viewModel);
     }
 
-    @RequestMapping(value = "getRisk", method = RequestMethod.GET)
+    @RequestMapping(value = "info", method = RequestMethod.GET)
     @ResponseBody
-    public JsonResult getRisk(Long rcptId){
+    public JsonResult info(Long rcptId){
         if(rcptId == null || rcptId == 0){
             return new JsonResultData<>(null);
         }
@@ -93,8 +95,8 @@ public class RiskControllerApi extends _BaseController {
         return new JsonResultData<>(viewModel);
     }
 
-    @RequestMapping(value = "modifyRisk", produces = "application/json")
-    public @ResponseBody JsonResult modifyRisk(RiskCtlPrjAF form) {
+    @RequestMapping(value = "post",method = RequestMethod.POST, produces = "application/json")
+    public @ResponseBody JsonResult post(RiskCtlPrjAF form) {
         ValidationResult resultValidation = ValidationUtil.validateEntity(form);
         if (resultValidation.isHasErrors()) {
             return new JsonResultError(resultValidation.getErrorMsg());
@@ -131,10 +133,12 @@ public class RiskControllerApi extends _BaseController {
             return new JsonResultError("保存失败");
         }
     }
+    //endregion
 
-    @RequestMapping(value = "riskmaterials", method = RequestMethod.GET)
+    //region 材料api
+    @RequestMapping(value = "materialsList", method = RequestMethod.GET)
     @ResponseBody
-    public JsonResult riskmaterials(Long rcptId){
+    public JsonResult materialsList(Long rcptId){
         if(rcptId == null || rcptId == 0){
             return new JsonResultList<>(null);
         }
@@ -144,9 +148,9 @@ public class RiskControllerApi extends _BaseController {
         return new JsonResultList<>(viewModelList);
     }
 
-    @RequestMapping(value = "getMaterials", method = RequestMethod.GET)
+    @RequestMapping(value = "materials", method = RequestMethod.GET)
     @ResponseBody
-    public JsonResult getMaterials(Long id){
+    public JsonResult materials(Long id){
         if(id == null || id == 0){
             return new JsonResultData<>(null);
         }
@@ -194,4 +198,5 @@ public class RiskControllerApi extends _BaseController {
             return new JsonResultError("添加失败");
         }
     }
+    //endregion
 }

@@ -110,6 +110,7 @@
 </div>
 <!-- /.content-wrapper -->
 #parse("common/footer.html")
+<script src="/content/js/lib/jct.js"></script>
 <!--上传图片-->
 <script src="/content/AdminLTE-2.2.0/plugins/jQuery/jquery.form.js"></script>
 <script>
@@ -131,9 +132,9 @@
                     if(!bootstrapValidator.isValid()){
                         return false;
                     }else{
-/*                        layer.alert('添加成功！',function(){
-                            layer.closeAll();
-                        });*/
+                        /*                        layer.alert('添加成功！',function(){
+                         layer.closeAll();
+                         });*/
                         //TODO 后台逻辑
                         $.axForForm($('#insertFormId'),function(data){
                             if(data.success_is_ok)
@@ -141,7 +142,7 @@
                                 layer.alert('添加成功！',function(){
                                     layer.closeAll();
                                 });
-                                var targetUrl="/loaner/riskmaterials/"+pid;
+                                var targetUrl="/loaner/risk/materials/"+pid;
                                 redirectUrl(targetUrl);
                                 return;
                             }else{
@@ -166,7 +167,7 @@
                         {
                             if(data.error==0)
                             {
-                              //  alert(data.url);
+                                //  alert(data.url);
                                 fileUploadUrl.val(data.url);
                                 return;
                             }
@@ -197,7 +198,7 @@
                     $.get("/api/risk/deleteMaterials","id="+mid,function(response){
                         if (response.success_is_ok){
                             layer.msg('删除成功！', {icon: 1});
-                            var targetUrl="/loaner/riskmaterials/"+pid;
+                            var targetUrl="/loaner/risk/materials/"+pid;
                             redirectUrl(targetUrl);
                             return;
                         }else{
@@ -224,7 +225,7 @@
             });
             /*加载材料*/
             var id = $(this).attr("flag");
-            $.get("/api/risk/getMaterials","id="+id,function(response){
+            $.get("/api/risk/materials","id="+id,function(response){
                 //alert(2);
                 if (response.success_is_ok){
                     if (response.data != null){var model=response.data;
@@ -258,6 +259,6 @@
         });
     }
 </script>
-<script src=$UrlHelperTool.href("/content/script/loaner/riskmaterials.js")></script>
+<script src=$UrlHelperTool.href("/content/script/loaner/risk/materials.js")></script>
 </body>
 </html>

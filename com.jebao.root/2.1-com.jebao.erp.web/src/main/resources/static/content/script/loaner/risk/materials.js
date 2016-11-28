@@ -1,5 +1,5 @@
 /**
- * Created by Administrator on 2016/11/25.
+ * Created by Administrator on 2016/11/28.
  */
 var model = {
     materials: []
@@ -11,7 +11,7 @@ var vm = new Vue({
     //初始化远程数据
     created:function(){
         var dataVal = $("#defaultForm").serializeObject();
-        $.get("/api/risk/riskmaterials",dataVal,function(response){
+        $.get("/api/risk/materialsList",dataVal,function(response){
             if (response.success_is_ok){
                 var data=response.data;
                 vm.materials=data;

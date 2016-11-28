@@ -18,6 +18,7 @@ public class LoanerController extends _BaseController {
     @Autowired
     private ILoanerServiceInf loanerService;
 
+    //region 借款人
     @RequestMapping("index")
     public String index(Model model) {
         List<TbLoaner> list = loanerService.selectLoanerByParamsForPage(null, null);
@@ -30,29 +31,32 @@ public class LoanerController extends _BaseController {
         model.addAttribute("loanerId", id);
         return "loaner/details";
     }
+    //endregion
 
-    @RequestMapping(value = "/risklist/{lId}", method = RequestMethod.GET)
+    //region 风控
+    @RequestMapping(value = "/risk/index/{lId}", method = RequestMethod.GET)
     public String risklist(@PathVariable Long lId, Model model) {
         model.addAttribute("loanerId", lId);
-        return "loaner/risklist";
+        return "loaner/risk/index";
     }
 
-    @RequestMapping(value = "/riskedit/{lId}/rId/{rId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/risk/info/{lId}/rId/{rId}", method = RequestMethod.GET)
     public String riskedit(@PathVariable Long lId,@PathVariable Long rId, Model model) {
         model.addAttribute("loanerId", lId);
         model.addAttribute("rcptId", rId);
-        return "loaner/riskedit";
+        return "loaner/risk/info";
     }
 
-    @RequestMapping(value = "/riskdetails/{rId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/risk/details/{rId}", method = RequestMethod.GET)
     public String riskdetails(@PathVariable Long rId, Model model) {
         model.addAttribute("rcptId", rId);
-        return "loaner/riskdetails";
+        return "loaner/risk/details";
     }
 
-    @RequestMapping(value = "/riskmaterials/{rId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/risk/materials/{rId}", method = RequestMethod.GET)
     public String riskmaterials(@PathVariable Long rId, Model model) {
         model.addAttribute("rcptId", rId);
-        return "loaner/riskmaterials";
+        return "loaner/risk/materials";
     }
+    //endregion
 }

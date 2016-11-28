@@ -17,10 +17,9 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="box box-primary">
-                    <form id="defaultForm"><input type="hidden" name="loanerId" value="${loanerId}"/></form>
+                    <form id="search_form"><input type="hidden" name="loanerId" value="${loanerId}"/></form>
                     <div class="box-body pad table-responsive">
-                        <a href="/loaner/riskedit/${loanerId}/rId/0" class="btn btn-primary" role="button"
-                           target="_blank">添加</a>
+                        <a href="/loaner/risk/info/${loanerId}/rId/0" class="btn btn-primary" role="button">添加</a>
                     </div>
                 </div>
             </div>
@@ -55,14 +54,13 @@
                                                 <td>{{ item.updateTime }}</td>
                                                 <td>
                                                     <a :href="getEditHref(item.loanerId,item.id)"
-                                                       class="btn btn-default btn-xs btn-modify" role="button"
-                                                       target="_blank">修改</a>
+                                                       class="btn btn-default btn-xs" role="button">修改</a>
                                                     <a :href="getDetailHref(item.id)" class="btn btn-default btn-xs"
                                                        role="button" target="_blank">查看详情</a>
                                                     <a :href="getMaterialsHref(item.id)" class="btn btn-default btn-xs"
                                                        role="button" target="_blank">认证材料</a>
                                                     <a href="javascript:;" class="btn btn-default btn-xs remove-msg"
-                                                       role="button" :flag="item.id">删除</a>
+                                                       role="button" @click="openDeleteWin(item.id)">删除</a>
                                                 </td>
                                             </tr>
                                         </template>
@@ -79,33 +77,6 @@
 </div>
 <!-- /.content-wrapper -->
 #parse("common/footer.html")
-<script src=$UrlHelperTool.href("/content/script/loaner/risklist.js")></script>
-<script>
-    $(function () {
-        //删除信息
-        $('#orderlist_table').on('click', '.remove-msg', function () {
-            var id = $(this).attr("flag");
-            layer.open({
-                content: '您是否删除信息?',
-                btn: ['取消', '删除'],
-                yes: function () {
-                    layer.closeAll();
-                },
-                btn2: function () {
-                    $.get("/api/risk/deleteRisk", "id=" + id, function (response) {
-                        if (response.success_is_ok) {
-                            layer.msg('删除成功！', {icon: 1});
-                            var targetUrl = "/loaner/risklist/${loanerId}";
-                            redirectUrl(targetUrl);
-                            return;
-                        } else {
-                            layer.msg('删除失败！', {icon: 1});
-                        }
-                    });
-                }
-            });
-        });
-    });
-</script>
+<script src=$UrlHelperTool.href("/content/script/loaner/risk/index.js")></script>
 </body>
 </html>

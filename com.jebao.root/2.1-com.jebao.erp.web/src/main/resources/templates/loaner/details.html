@@ -92,16 +92,16 @@
                                         </thead>
                                         <tbody>
                                         <tr role="row">
-                                            <td>{{ loaner.maritalStatus }}</td>
+                                            <td>{{ maritalStatusArr[loaner.maritalStatus] }}</td>
                                             <td>{{ loaner.homeAdd }}</td>
                                             <td>{{ loaner.hkadr }}</td>
-                                            <td>{{ loaner.politicsStatus }}</td>
-                                            <td>{{ loaner.education }}</td>
+                                            <td>{{ politicsStatusArr[loaner.politicsStatus] }}</td>
+                                            <td>{{ educationArr[loaner.education] }}</td>
                                             <td>{{ loaner.creditStatus }}</td>
                                             <td>{{ loaner.monthlySalary }}</td>
                                             <td>{{ loaner.workCity }}</td>
-                                            <td>{{ loaner.ishaveHouse }}</td>
-                                            <td>{{ loaner.ishaveCar }}</td>
+                                            <td>{{ haveArr[loaner.ishaveHouse] }}</td>
+                                            <td>{{ haveArr[loaner.ishaveCar] }}</td>
                                             <td>{{ loaner.email }}</td>
                                         </tr>
                                         </tbody>
