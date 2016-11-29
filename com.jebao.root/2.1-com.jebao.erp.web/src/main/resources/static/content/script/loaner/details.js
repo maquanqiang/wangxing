@@ -11,7 +11,10 @@ var model = {
     politicsStatusArr: [],
     //婚姻状况
     maritalStatusArr: [],
-    haveArr: []
+    //有或无
+    haveArr: [],
+    //性别
+    sexArr: []
 };
 // 创建一个 Vue 实例 (ViewModel),它连接 View 与 Model
 var vm = new Vue({
@@ -23,6 +26,7 @@ var vm = new Vue({
         model.politicsStatusArr = new Array("", "团员", "党员", "群众");
         model.maritalStatusArr = new Array("", "已婚", "未婚", "离异", "丧偶");
         model.haveArr = new Array("","有","无");
+        model.sexArr = new Array("","男","女");
     },
     //初始化远程数据
     created:function(){

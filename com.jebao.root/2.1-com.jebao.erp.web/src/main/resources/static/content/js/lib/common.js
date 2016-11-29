@@ -1,22 +1,35 @@
 function redirectUrl(targetUrl) {
     window.location.href=targetUrl;
 };
-$(document).load(function () {
+
+$(window).load(function(){
     activeMenu();
 });
 //根据url地址来判断左侧菜单选中
 function activeMenu() {
     var hrefVal=window.location.pathname;
-    var hiddenHref=$('#_active_mune_id');
-    if(hiddenHref)
-    {
-        hrefVal=hiddenHref.val();
-    }
     var menuObj=$('#ulList').find("a[href$='"+hrefVal+"']");
+    if(typeof menuObj=="undefined"){
+        return;
+    }
     menuObj.parent().addClass('active');
     var menuParent={};
     var idVal="";
-    do {
+    var __i=0;
+    while(idVal!="ulList")
+    {
+        menuParent=  menuObj.parent();
+        idVal=menuParent.attr('id');
+        if(menuParent.hasClass('treeview')&&menuParent.hasClass('active')==false)
+        {
+            menuParent.addClass('active');
+        }
+        menuObj=menuParent;
+        console.log(menuObj);
+        __i=__i+1;
+        if(__i>4)break;
+    }
+   /* do {
         menuParent=  menuObj.parent();
         if(menuParent.hasClass('treeview')&&menuParent.hasClass('active')==false)
         {
@@ -24,7 +37,7 @@ function activeMenu() {
         }
         menuObj=menuParent;
         idVal=menuParent.attr('id');
-    }while (idVal!="ulList")
+    }while (idVal!="ulList")*/
 }
 //表单登录验证封装
 function initValidateForm(obj){
