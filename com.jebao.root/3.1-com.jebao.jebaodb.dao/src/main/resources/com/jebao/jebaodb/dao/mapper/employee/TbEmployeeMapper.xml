@@ -177,6 +177,7 @@
         <result column="edr_expiry_date" property="edrExpiryDate" jdbcType="DATE"/>
         <result column="err_effect_date" property="errEffectDate" jdbcType="DATE"/>
         <result column="err_expiry_date" property="errExpiryDate" jdbcType="DATE"/>
+        <result column="lg_status" property="lgStatus" jdbcType="INTEGER"/>
         <association property="employee" javaType="com.jebao.jebaodb.entity.employee.TbEmployee"
                      resultMap="BaseResultMap"/>
         <association column="dep_id" property="department" javaType="com.jebao.jebaodb.entity.employee.TbDepartment"
@@ -198,32 +199,7 @@
             <include refid="dynamicJoinWehre"/>
         </where>
     </select>
-    <sql id="dynamicWehre">
-        <if test="empName != null">
-            AND emp_name = #{empName,jdbcType=VARCHAR}
-        </if>
-        <if test="empMobilephone != null">
-            AND emp_mobilephone = #{empMobilephone,jdbcType=VARCHAR}
-        </if>
-        <if test="empCardNo != null">
-            AND emp_card_no = #{empCardNo,jdbcType=VARCHAR}
-        </if>
-        <if test="empSex != null">
-            AND emp_sex = #{empSex,jdbcType=TINYINT}
-        </if>
-        <if test="empBirthday != null">
-            AND  emp_birthday = #{empBirthday,jdbcType=DATE}
-        </if>
-        <if test="empStatus != null">
-            AND  emp_status = #{empStatus,jdbcType=INTEGER}
-        </if>
-        <if test="empEntryDate != null">
-            AND  emp_entry_date = #{empEntryDate,jdbcType=DATE}
-        </if>
-        <if test="empDimissionDate != null">
-            AND  emp_dimission_date = #{empDimissionDate,jdbcType=DATE}
-        </if>
-    </sql>
+
     <sql id="dynamicJoinWehre">
         <if test="empId != null and empId>0">
             AND emp_id = #{empId,jdbcType=INTEGER}
@@ -233,6 +209,9 @@
         </if>
         <if test="mobile != null and mobile != ''">
             AND  emp_mobilephone = #{mobile,jdbcType=VARCHAR}
+        </if>
+        <if test="cardNo != null">
+            AND emp_card_no = #{cardNo,jdbcType=VARCHAR}
         </if>
         <if test="teamId > 0">
             AND  dep_id = #{teamId,jdbcType=INTEGER}

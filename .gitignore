@@ -19,3 +19,4 @@ target/
 out/
 
 node_modules/
+sync.ffs_db

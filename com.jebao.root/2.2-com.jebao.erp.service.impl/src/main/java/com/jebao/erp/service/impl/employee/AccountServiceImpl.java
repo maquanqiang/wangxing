@@ -34,6 +34,10 @@ public class AccountServiceImpl implements IAccountServiceInf {
         if (loginEntity==null){
             return new ResultInfo(false,"不存在此用户");
         }
+
+        if (loginEntity.getLgStatus()==null || loginEntity.getLgStatus()!=1){//账户登录状态禁用
+            return new ResultInfo(false,"登录已禁用");
+        }
         String password = new EncryptUtil().encryptToMD5(model.getPassword());
         if(!loginEntity.getLgPassword().equalsIgnoreCase(password)){
             return new ResultInfo(false,"登录密码错误");

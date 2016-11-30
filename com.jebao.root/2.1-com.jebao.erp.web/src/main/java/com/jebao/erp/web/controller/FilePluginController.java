@@ -1,5 +1,6 @@
 package com.jebao.erp.web.controller;
 
+import com.jebao.erp.web.utils.constants.ProjectSetting;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
@@ -34,7 +35,7 @@ import java.util.UUID;
 @RequestMapping("/filePlugin/")
 public class FilePluginController {
     // 图片的存储路径：
-    public static final String ROOT = "D:/upload-dir";//上传文件的根目录--绝对地址
+    public static final String ROOT = getUploadDir();//上传文件的根目录--绝对地址
     //public static final String ROOT = "upload-dir";//上传文件的根目录--相对地址
     private final ResourceLoader resourceLoader;
     private static final HashMap<String, String> FILE_PATH_MAP=getFilePathMap();
@@ -190,6 +191,9 @@ public class FilePluginController {
             }
         }
         return obj;
+    }
+    private static String getUploadDir() {
+        return ProjectSetting.getConfigProperty("project.file.upload.dir");
     }
 
     //上传返回结果
