@@ -17,6 +17,7 @@ public class ProjectTempVM extends ViewModel {
         this.bpPersonalCredit = entity.getRcptPersonalCredit();
         this.bpRiskOpinion = entity.getRcptOpinion();
         this.bpRepayingSource = entity.getRcptRepayingSource();
+        this.bpRcptDesc = entity.getRcptDesc();
     }
 
     private Long rcptId;
@@ -32,6 +33,8 @@ public class ProjectTempVM extends ViewModel {
     private String bpMortgageInfo;
 
     private String bpRiskOpinion;
+
+    private String bpRcptDesc;
 
     public Long getRcptId() {
         return rcptId;
@@ -87,5 +90,13 @@ public class ProjectTempVM extends ViewModel {
 
     public void setBpRiskOpinion(String bpRiskOpinion) {
         this.bpRiskOpinion = bpRiskOpinion;
+    }
+
+    public String getBpRcptDesc() {
+        return bpRcptDesc;
+    }
+
+    public void setBpRcptDesc(String bpRcptDesc) {
+        this.bpRcptDesc = bpRcptDesc;
     }
 }

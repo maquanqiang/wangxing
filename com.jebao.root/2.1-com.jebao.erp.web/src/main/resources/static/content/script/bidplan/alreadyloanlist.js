@@ -13,8 +13,11 @@ var model = {
     //查询条件
     searchObj: {},
     //列表
-    planlist: []
-
+    planlist: [],
+    bpTypeArr:[],
+    bpCycleTypeArr : [],
+    bpInterestPayTypeArr : [],
+    bpStatusArr : []
 };
 
 // 创建一个 Vue 实例 (ViewModel),它连接 View 与 Model
@@ -23,7 +26,16 @@ var vm = new Vue({
     data: model,
     beforeCreate:function(){
         //初始化本地数据
-        model.searchObj = $("#order_search_form").serializeObject(); //初始化 model.search 对象
+        model.bpTypeArr = ["","普通理财","新手专享"];
+        model.bpCycleTypeArr = ["","日","月","季","年"];
+        model.bpInterestPayTypeArr = ["","一次性还本付息","先息后本，按期付息"];
+        model.bpStatusArr = ["待审核",'审核未通过',"招标中","已满标",'已过期','','起息中','还款中','','','已结清']
+
+        //初始化本地数据
+        model.searchObj = $("#defaultForm").serializeObject(); //初始化 model.search 对象
+        model.searchObj.bpStatus = 7;
+        model.searchObj.pageIndex=0;
+        model.searchObj.pageSize=10;
     },
     //初始化远程数据
     created:function(){
@@ -32,14 +44,36 @@ var vm = new Vue({
     //方法，可用于绑定事件或直接调用
     methods: {
         search:function(event){
-            $.get("/api/bidPlan/getPlanListForPage",model.searchObj,function(response){
+            if (typeof event !== "undefined"){ //点击查询按钮的话，是查询第一页数据
+                model.searchObj.page=0;
+            }
+            $("#searchBtn").addClass("disabled");//禁用按钮
+            $.get("/api/bidPlan/getPlanListBySearchCondition",model.searchObj,function(response){
                 if (response.success_is_ok){
                     vm.planlist=response.data;
+                    if (response.count>0){
+                        var pageCount = Math.ceil(response.count / model.rows);
+                        //调用分页
+                        laypage({
+                            cont: $('#pageNum'), //容器。值支持id名、原生dom对象，jquery对象,
+                            pages: pageCount, //总页数
+                            groups: 7, //连续显示分页数
+                            jump: function(obj, first){ //触发分页后的回调
+                                if(!first){ //点击跳页触发函数自身，并传递当前页：obj.curr
+                                    console.log(obj.curr);
+                                    vm.searchObj.page=obj.curr -1;
+                                    vm.search();
+                                }
+                            },
+                            skin: '#3c8dbc'
+                        });
+                    }
                 }
-            })
+                $("#searchBtn").removeClass("disabled");//解除禁用
+            });
         },
         modifyPlanBtn:function(bpId){
-            window.location.href = "/bidplan/updateplandetail/"+bpId;
+            window.location.href = "/bidplan/alreadyLoanDetail/"+bpId;
         }
     }
 });

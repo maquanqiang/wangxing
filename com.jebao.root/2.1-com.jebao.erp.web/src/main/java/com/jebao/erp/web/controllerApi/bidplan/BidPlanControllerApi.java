@@ -5,6 +5,7 @@ import com.jebao.erp.service.inf.loanmanage.ITbBidPlanServiceInf;
 import com.jebao.erp.service.inf.loanmanage.ITbBidRiskDataServiceInf;
 import com.jebao.erp.web.controller._BaseController;
 import com.jebao.erp.web.requestModel.bidplan.AddPlanForm;
+import com.jebao.erp.web.requestModel.bidplan.BidPlanForm;
 import com.jebao.erp.web.requestModel.bidplan.UpdatePlanForm;
 import com.jebao.erp.web.responseModel.base.*;
 import com.jebao.erp.web.responseModel.bidplan.BidPlanVM;
@@ -18,13 +19,13 @@ import com.jebao.jebaodb.entity.loaner.TbRcpMaterialsTemp;
 import com.jebao.jebaodb.entity.loaner.TbRiskCtlPrjTemp;
 import com.jebao.jebaodb.entity.loanmanage.TbBidPlan;
 import com.jebao.jebaodb.entity.loanmanage.TbBidRiskData;
+import com.jebao.jebaodb.entity.loanmanage.search.BidPlanSM;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.xml.ws.RespectBinding;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -233,11 +234,26 @@ public class BidPlanControllerApi extends _BaseController {
         tbBidPlan.setBpStatus(status);
         tbBidPlan.setBpId(bpId);
         tbBidPlan.setBpRemark(remark);
+        if(status==1){
+            tbBidPlan.setBpCreateTime(new Date());
+        }
         int result = bidPlanService.updateByBidIdSelective(tbBidPlan);
         if(result>0){
             return new JsonResultOk("开标成功");
         }else {
             return new JsonResultError("已打回");
         }
+    }
+
+    @RequestMapping("getPlanListBySearchCondition")
+    @ResponseBody
+    public JsonResult getPlanListBySearchCondition(BidPlanForm form, @RequestParam(value = "pageIndex", defaultValue = "0") Integer pageIndex,
+                                                   @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize){
+        PageWhere pageWhere = new PageWhere(pageIndex, pageSize);
+        BidPlanSM bidPlanSM = BidPlanForm.toEntity(form);
+        List<TbBidPlan> tbBidPlans = bidPlanService.selectBySelfConditionForPage(bidPlanSM, pageWhere);
+        List<BidPlanVM> viewModelList = new ArrayList<BidPlanVM>();
+        tbBidPlans.forEach(o -> viewModelList.add(new BidPlanVM(o)));
+        return new JsonResultList<>(viewModelList);
     }
 }

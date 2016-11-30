@@ -23,26 +23,26 @@
                             <div class="form-group">
                                 <div class="input-group margin">
                                     <div class="input-group-addon">项目编号</div>
-                                    <input type="text" class="form-control" placeholder="" name="bpNumber">
+                                    <input type="text" class="form-control" placeholder="" v-model="searchObj.bpNumber">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="input-group margin">
                                     <div class="input-group-addon">标的名称</div>
-                                    <input type="text" class="form-control" placeholder="" name="bpName">
+                                    <input type="text" class="form-control" placeholder="" v-model="searchObj.bpName">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="input-group margin">
                                     <div class="input-group-addon">借款人</div>
-                                    <input type="text" class="form-control" placeholder="" name="bpTrueName">
+                                    <input type="text" class="form-control" placeholder="" v-model="searchObj.bpTrueName">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="input-group margin">
                                     <div class="input-group-addon">标的状态</div>
-                                    <select name="bpStatus"  class="form-control" style="width: 120px;">
-                                        <option>请选择</option>
+                                    <select name="bpStatus"  class="form-control" style="width: 120px;" v-model="searchObj.bpStatus">
+                                        <option value="">请选择</option>
                                         <option value="7">还款中</option>
                                         <option value="10">已还款</option>
                                     </select>
@@ -51,26 +51,27 @@
                             <div class="form-group">
                                 <div class="input-group">
                                     <div class="input-group-addon">时间</div>
-                                    <input type="text" value="" placeholder="" class="form-control" id="StartDate" name="StartDate">
+                                    <input type="text" value="" placeholder="" class="form-control" v-model="searchObj.searchDateSt" id="searchDateSt">
                                 </div>
                                 <div class="input-group" style="margin-left:-5px;">
                                     <div class="input-group-addon">至</div>
-                                    <input type="text" value="" placeholder="" class="form-control" id="EndDate" name="EndDate">
+                                    <input type="text" value="" placeholder="" class="form-control" v-model="searchObj.searchDateEnd" id="searchDateEnd">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <select  class="form-control" style="width: 120px;">
-                                    <option>请选择</option>
-                                    <option value="1">募集开始时间</option>
-                                    <option value="2">募集结束时间</option>
-                                    <option value="3">满标/计息时间</option>
-                                    <option value="4">放款时间</option>
-                                    <option value="5">到期时间</option>
+                                    <option value="">请选择</option>
+                                    <option value="bp_start_time">募集开始时间</option>
+                                    <option value="bp_end_time">募集结束时间</option>
+                                    <option value="bp_full_time">满标时间</option>
+                                    <option value="bp_interest_st">计息时间</option>
+                                    <option value="bp_loan_time">放款时间</option>
+                                    <option value="bp_repay_time">到期时间</option>
                                 </select>
                             </div>
                             <div class="form-group ">
                                 <div class="input-group  margin">
-                                    <div class="btn btn-primary " role="button" target="_self" @click="search">搜索</div>
+                                    <div class="btn btn-primary " role="button" target="_self" id="searchBtn" @click="search">搜索</div>
                                 </div>
                             </div>
                             <div class="form-group ">
@@ -113,25 +114,17 @@
                                         <tr role="row" class="odd" v-for="plan in planlist" track-by="$index">
                                             <td>{{plan.bpNumber}}</td>
                                             <td>{{plan.bpName}}</td>
-                                            <td>
-                                                <div v-if="plan.bpType == 1">普通标</div>
-                                                <div v-if="plan.bpType == 2">专享标</div>
-                                            </td>
+                                            <td>{{bpTypeArr[plan.bpType]}}</td>
                                             <td>{{plan.bpTrueName}}</td>
                                             <td>{{plan.bpLoanMoney}}</td>
                                             <td>{{plan.bpBidMoney}}</td>
                                             <td>{{plan.bpRate}}%</td>
-                                            <td>
-                                                <div v-if="plan.bpCycleType == 1">{{plan.bpPeriods}}日</div>
-                                                <div v-if="plan.bpCycleType == 2">{{plan.bpPeriods}}月</div>
-                                                <div v-if="plan.bpCycleType == 3">{{plan.bpPeriods}}季</div>
-                                                <div v-if="plan.bpCycleType == 4">{{plan.bpPeriods}}年</div>
-                                            </td>
+                                            <td>{{plan.bpPeriodsDisplay}}{{bpCycleTypeArr[plan.bpCycleType]}}</td>
                                             <!--<td>{{plan.bpStartTime}}</td>-->
                                             <!--<td>{{plan.bpEndTime}}</td>-->
                                             <td>{{plan.bpFullTime}}</td>
                                             <td>{{plan.bpRepayTime}}</td>
-                                            <td>{{plan.bpStatus}}</td>
+                                            <td>{{bpStatusArr[plan.bpStatus]}}</td>
                                             <td>
                                                 <a href="javascript:;" class="btn btn-default btn-xs" role="button" @click="modifyPlanBtn(plan.bpId)">查看详情</a>
                                             </td>

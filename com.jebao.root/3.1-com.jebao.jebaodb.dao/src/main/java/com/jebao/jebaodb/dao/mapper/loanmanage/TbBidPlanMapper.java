@@ -2,6 +2,7 @@ package com.jebao.jebaodb.dao.mapper.loanmanage;
 
 import com.jebao.jebaodb.entity.extEntity.PageWhere;
 import com.jebao.jebaodb.entity.loanmanage.TbBidPlan;
+import com.jebao.jebaodb.entity.loanmanage.search.BidPlanSM;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -22,4 +23,9 @@ public interface TbBidPlanMapper {
     List<TbBidPlan> selectByConditionForPage(@Param("record") TbBidPlan record, @Param("pageWhere") PageWhere pageWhere);
 
     int selectByConditionCount(@Param("record") TbBidPlan record);
+
+    List<TbBidPlan> selectBySelfConditionForPage(@Param("record") BidPlanSM record, @Param("pageWhere") PageWhere pageWhere);
+
+    int selectBySelfConditionCount(@Param("record") BidPlanSM record);
+
 }

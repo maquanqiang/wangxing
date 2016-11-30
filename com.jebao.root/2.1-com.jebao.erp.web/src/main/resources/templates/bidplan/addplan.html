@@ -1,6 +1,12 @@
 <!DOCTYPE html>
 <html>
 <head>#parse("common/head.html")
+    <!-- 编辑器引入 BEGIN-->
+    <link rel="stylesheet" href="/content/AdminLTE-2.2.0/kindEditor/themes/default/default.css" />
+    <script charset="utf-8" src="/content/AdminLTE-2.2.0/kindEditor/kindeditor-all-min.js"></script>
+    <script charset="utf-8" src="/content/AdminLTE-2.2.0/kindEditor/lang/zh-CN.js"></script>
+    <script charset="utf-8" src="/content/AdminLTE-2.2.0/kindEditor/kindEditorConfig.js"></script>
+    <!-- 编辑器引入 END-->
 </head>
 <body class="skin-blue sidebar-mini">
 #parse("common/main-header.html")
@@ -52,19 +58,19 @@
                             <div class="form-group">
                                 <div class="input-group margin">
                                     <div class="input-group-addon">募集时间</div>
-                                    <input type="text" placeholder="" class="form-control chooseDate" name="bpStartTime">
+                                    <input type="text" placeholder="" class="form-control chooseDate" id="bpStartTime" name="bpStartTime">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="input-group margin">
                                     <div class="input-group-addon">募集期限</div>
-                                    <input type="text" placeholder="" class="form-control" name="bpOpenTime">
+                                    <input type="text" placeholder="" class="form-control" id="bpOpenTime" name="bpOpenTime">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="input-group margin">
                                     <div class="input-group-addon">募集结束</div>
-                                    <input type="text" placeholder="" class="form-control chooseDate" name="bpEndTime">
+                                    <input type="text" placeholder="" class="form-control chooseDate" id="bpEndTime" name="bpEndTime">
                                 </div>
                             </div>
                             <div class="form-group ">
@@ -100,7 +106,7 @@
                             <div class="form-group margin">
                                 <div class="input-group">
                                     <div class="input-group-addon">借款期限</div>
-                                    <input type="text" placeholder="" class="form-control" name="bpPeriodsDisplay">
+                                    <input type="text" placeholder="" class="form-control" name="bpPeriodsDisplay" id="bpPeriodsDisplay">
                                 </div>
                             </div>
                             <div class="form-group margin">
@@ -118,13 +124,13 @@
                             <div class="form-group margin">
                                 <div class="input-group">
                                     <div class="input-group-addon">预期放款日期</div>
-                                    <input type="text" placeholder="" class="form-control chooseDate" name="bpExpectLoanDate">
+                                    <input type="text" placeholder="" class="form-control chooseDate" id="bpExpectLoanDate" name="bpExpectLoanDate">
                                 </div>
                             </div>
                             <div class="form-group margin">
                                 <div class="input-group">
                                     <div class="input-group-addon">预期还款日期</div>
-                                    <input type="text" placeholder="" class="form-control chooseDate" name="bpExpectRepayDate">
+                                    <input type="text" placeholder="" class="form-control chooseDate" id="bpExpectRepayDate" name="bpExpectRepayDate" readonly>
                                 </div>
                             </div>
                             <div class="form-group margin">
@@ -267,6 +273,19 @@
                                     </div>
                                 </div>
                             </div>
+                    </div>
+                </div>
+            </div>
+            <!--项目详情-->
+            <div class="box-body">
+                <div class="box-title">
+                    <h5>项目详情</h5>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="box box-primary">
+                            <textarea id="kindEditorContent" name="bpDesc" style="height:350px;visibility:hidden;" class="col-xs-12" :value="projectTemp.bpRcptDesc"></textarea>
+                        </div>
                     </div>
                 </div>
             </div>

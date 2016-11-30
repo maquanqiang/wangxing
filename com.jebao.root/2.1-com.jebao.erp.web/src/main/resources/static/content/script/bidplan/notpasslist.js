@@ -67,7 +67,10 @@ var model = {
     //查询条件
     searchObj: {},
     //列表
-    planlist: []
+    planlist: [],
+    bpTypeArr:[],
+    bpCycleTypeArr : [],
+    bpInterestPayTypeArr : []
 };
 
 // 创建一个 Vue 实例 (ViewModel),它连接 View 与 Model
@@ -76,6 +79,10 @@ var vm = new Vue({
     data: model,
     beforeCreate:function(){
         //初始化本地数据
+        model.bpTypeArr = ["","普通理财","新手专享"];
+        model.bpCycleTypeArr = ["","日","月","季","年"];
+        model.bpInterestPayTypeArr = ["","一次性还本付息","先息后本，按期付息"];
+
         model.searchObj.page=0;
         model.searchObj.rows=20;
         model.searchObj.bpStatus=1;
@@ -98,6 +105,7 @@ var vm = new Vue({
                             laypage({
                                 cont: $('#pageNum'), //容器。值支持id名、原生dom对象，jquery对象,
                                 pages: pageCount, //总页数
+                                curr:model.searchObj.page+1,
                                 groups: 7, //连续显示分页数
                                 jump: function(obj, first){ //触发分页后的回调
                                     if(!first){ //点击跳页触发函数自身，并传递当前页：obj.curr

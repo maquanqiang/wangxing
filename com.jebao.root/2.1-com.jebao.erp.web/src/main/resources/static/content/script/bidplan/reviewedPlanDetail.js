@@ -19,7 +19,10 @@ var model = {
     //台账列表
     intentList : [],
     //
-    riskDataList:[]
+    riskDataList:[],
+    principalTotal : 0,
+    interestTotal : 0,
+    total : 0
 
 };
 
@@ -40,6 +43,7 @@ var vm = new Vue({
             if (response.success_is_ok){
                 var data=response.data;
                 vm.plan=data;
+                KindEditor.html("#kindEditorContent", data.bpDesc);
             }
         });
         $.get("/api/bidRiskData/getRiskDataListForPage", dataVal, function (response) {
@@ -53,9 +57,18 @@ var vm = new Vue({
         search:function(event){
         },
         createIntentBtn:function(){
+            vm.intentList = [];
+            vm.principalTotal = 0;
+            vm.interestTotal = 0;
+            vm.total = 0;
             $.get("/api/bidPlan/getLoanFundIntents",vm.plan,function(response){
                 if (response.success_is_ok){
                     vm.intentList = response.data;
+                    for(var i=0; i<vm.intentList.length; i++){
+                        vm.principalTotal +=vm.intentList[i].principal;
+                        vm.interestTotal += vm.intentList[i].interest;
+                    }
+                    vm.total = vm.principalTotal +vm.interestTotal;
                 }
             });
         },

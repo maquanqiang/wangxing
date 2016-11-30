@@ -97,4 +97,15 @@ public class BidPlanController {
         return "bidplan/nolendinglist";
     }
 
+    @RequestMapping("alreadyLoanDetail/{bpId}")
+    public String alreadyLoanDetail(@PathVariable("bpId") Long bpId, Model model) {
+        model.addAttribute("bpId", bpId);
+        return "bidplan/alreadyloandetail";
+    }
+
+    @RequestMapping("noLendingDetail/{bpId}")
+    public String noLendingDetail(@PathVariable("bpId") Long bpId, Model model) {
+        model.addAttribute("bpId", bpId);
+        return "bidplan/nolendingdetail";
+    }
 }

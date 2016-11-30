@@ -747,6 +747,51 @@
         </if>
         AND bp_is_del = 1
     </sql>
+    <sql id="selectBySelfCondition_Where_Clause">
+        <if test="record.bpName != null and record.bpName != ''" >
+            AND bp_name = #{record.bpName,jdbcType=VARCHAR}
+        </if>
+        <if test="record.bpNumber != null" >
+            AND bp_number = #{record.bpNumber,jdbcType=VARCHAR}
+        </if>
+        <if test="record.bpPeriodsDisplay != null" >
+            AND bp_periods_display = #{record.bpPeriodsDisplay,jdbcType=INTEGER}
+        </if>
+        <if test="record.bpPeriods != null" >
+            AND bp_periods = #{record.bpPeriods,jdbcType=INTEGER}
+        </if>
+        <if test="record.bpBidMoney != null" >
+            AND bp_bid_money = #{record.bpBidMoney,jdbcType=DECIMAL}
+        </if>
+        <if test="record.bpRate != null" >
+            AND bp_rate = #{record.bpRate,jdbcType=DECIMAL}
+        </if>
+        <if test="record.bpStatus != null" >
+            AND bp_status = #{record.bpStatus,jdbcType=INTEGER}
+        </if>
+        <if test="record.bpTrueName != null" >
+            AND bp_true_name = #{record.bpTrueName,jdbcType=VARCHAR}
+        </if>
+        <if test="record.bpLoanerType != null" >
+            AND bp_loaner_type = #{record.bpLoanerType,jdbcType=INTEGER}
+        </if>
+        <if test="record.searchDateSt != null" >
+            AND ${record.searchDateType} >= #{record.searchDateSt,jdbcType=VARCHAR}
+        </if>
+        <if test="record.searchDateEnd != null" >
+            AND ${record.searchDateType} >= #{record.searchDateEnd,jdbcType=VARCHAR}
+        </if>
+
+        <!--<if test="record.bpIsDel != null" >-->
+        <!--AND bp_is_del = #{record.bpIsDel,jdbcType=INTEGER}-->
+        <!--</if>-->
+        <if test="record.bpType != null" >
+            AND bp_type = #{record.bpType,jdbcType=INTEGER}
+        </if>
+        AND bp_is_del = 1
+    </sql>
+
+
     <select id="selectForPage" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List" />
@@ -759,6 +804,7 @@
         </if>
         LIMIT #{pageWhere.begin},#{pageWhere.pageSize}
     </select>
+
     <select id="selectByConditionForPage" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List" />
@@ -778,4 +824,25 @@
             <include refid="selectByCondition_Where_Clause" />
         </where>
     </select>
+
+    <select id="selectBySelfConditionForPage" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from tb_bid_plan
+        <where>
+            <include refid="selectBySelfCondition_Where_Clause" />
+        </where>
+        <if test="pageWhere.orderBy!=null">
+            ${pageWhere.orderBy}
+        </if>
+        LIMIT #{pageWhere.begin},#{pageWhere.pageSize}
+    </select>
+    <select id="selectBySelfConditionCount" resultType="java.lang.Integer">
+        select count(*)
+        from tb_bid_plan
+        <where>
+            <include refid="selectBySelfCondition_Where_Clause" />
+        </where>
+    </select>
+
 </mapper>

@@ -44,15 +44,16 @@
                                         <tr role="row" class="odd" v-for="plan in planlist">
                                             <td>{{plan.bpNumber}}</td>
                                             <td>{{plan.bpName}}</td>
-                                            <td>{{plan.bpType}}</td>
+                                            <td>{{bpTypeArr[plan.bpType]}}</td>
                                             <td>{{plan.bpId}}AAAA</td>
                                             <td>{{plan.bpTrueName}}</td>
                                             <td>{{plan.bpBidMoney}}</td>
                                             <td>{{plan.bpRate}}%</td>
-                                            <td>{{plan.bpPeriodsDisplay}}{{plan.bpCycleType}}</td>
+                                            <td>{{plan.bpPeriodsDisplay}}{{bpCycleTypeArr[plan.bpCycleType]}}</td>
                                             <td>{{plan.bpCreateTime}}</td>
                                             <td>
                                                 <a class="btn btn-default btn-xs" role="button" @click="bidPlanViewBtn(plan.bpId)">审核</a>
+                                                <a class="btn btn-default btn-xs" role="button" @click="modifyPlanBtn(plan.bpId)">修改信息</a>
                                                 <a class="btn btn-default btn-xs" role="button" @click="modifyRiskDataBtn(plan.bpId)">修改/添加材料</a>
                                                 <!--<a class="btn btn-default btn-xs" role="button" @click="removeBtn(plan.bpId)">删除</a>-->
                                             </td>

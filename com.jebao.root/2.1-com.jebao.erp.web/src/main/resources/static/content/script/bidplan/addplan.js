@@ -3,13 +3,13 @@
 $(function () {
     $(".select2").select2();
     /*时间选择*/
-    $('.chooseDate').datepicker({
-        format: 'yyyy-mm-dd',
-        weekStart: 1,
-        autoclose: true,
-        todayBtn: 'linked',
-        language: 'cn'
-    });
+    //$('.chooseDate').datepicker({
+    //    format: 'yyyy-mm-dd hh:mm:ss',
+    //    weekStart: 1,
+    //    autoclose: true,
+    //    todayBtn: 'linked',
+    //    language: 'cn'
+    //});
 
 });
 
@@ -38,7 +38,6 @@ var vm = new Vue({
             bpLoanerId : formData
         }
         $.get("/api/bidPlan/getProjList",loanerId,function(response){
-            console.log(response.data);
             if (response.success_is_ok){
                 vm.projList = response.data;
             }
@@ -53,12 +52,16 @@ var vm = new Vue({
                 rcptId : optionVal
             }
             $.get("/api/bidPlan/getProjectTempById",rcptId,function(response){
-                console.log(response.data);
                 if (response.success_is_ok){
                     vm.projectTemp = response.data;
+                    KindEditor.html("#kindEditorContent", vm.projectTemp.bpRcptDesc);
                 }
             });
+        },
+        "bpStartTime" : function(val, oldVal){
+            console.log(val)
         }
+
     },
     //方法，可用于绑定事件或直接调用
     methods: {
@@ -198,6 +201,10 @@ var vm = new Vue({
         search:function(event){
         },
         createIntent:function(){
+            vm.intentList = [];
+            vm.principalTotal = 0;
+            vm.interestTotal = 0;
+            vm.total = 0;
             var formValue = $("#defaultForm").serializeObject();
             $.get("/api/bidPlan/getLoanFundIntents",formValue,function(response){
                 if (response.success_is_ok){
@@ -216,7 +223,7 @@ var vm = new Vue({
             if (!bootstrapValidator.isValid()) {
                 return false;
             }
-            $("")
+            $("#bpPeriods").val($("#bpPeriodsDisplay").val())
             var formValue = $("#defaultForm").serializeObject();
             $.post("/api/bidPlan/doAddPlan",formValue,function(response){
                 if (response.success_is_ok) {
@@ -234,5 +241,47 @@ var vm = new Vue({
             window.location.href = "/bidplan/index";
         }
     }
+    //computed: {
+    //    // 一个计算属性的 getter
+    //    bpEndTime: function () {
+    //
+    //        alert($("#bpStartTime").val())
+    //        date.setHours(date.getHours() + value);
+    //        return date;
+    //    }
+    //}
 });
 
+/*开始时间选择*/
+laydate({
+    elem:'#bpStartTime',
+    istime: true,
+    format: 'YYYY-MM-DD hh:mm:ss'
+});
+/*结束时间选择*/
+laydate({
+    elem:'#bpEndTime',
+    istime: true,
+    format: 'YYYY-MM-DD hh:mm:ss'
+});
+
+laydate({
+    elem:'#bpExpectLoanDate',
+    istime: true,
+    format: 'YYYY-MM-DD hh:mm:ss'
+});
+
+laydate({
+    elem:'#bpExpectRepayDate',
+    istime: true,
+    format: 'YYYY-MM-DD hh:mm:ss'
+});
+
+//
+//$("#bpStartTime").change(function(){
+//    $(this).val();
+//});
+////
+//$("#bpOpenTime").change(function(){
+//    vm.bpOpenTime=$(this).val();
+//});

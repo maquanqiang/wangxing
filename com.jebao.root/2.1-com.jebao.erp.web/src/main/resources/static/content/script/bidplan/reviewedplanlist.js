@@ -67,7 +67,10 @@ var model = {
     //查询条件
     searchObj: {},
     //列表
-    planlist: []
+    planlist: [],
+    bpTypeArr:[],
+    bpCycleTypeArr : [],
+    bpInterestPayTypeArr : []
 };
 
 // 创建一个 Vue 实例 (ViewModel),它连接 View 与 Model
@@ -76,6 +79,10 @@ var vm = new Vue({
     data: model,
     beforeCreate:function(){
         //初始化本地数据
+        model.bpTypeArr = ["","普通理财","新手专享"];
+        model.bpCycleTypeArr = ["","日","月","季","年"];
+        model.bpInterestPayTypeArr = ["","一次性还本付息","先息后本，按期付息"];
+        
         model.searchObj.page=0;
         model.searchObj.rows=10;
         model.searchObj.bpStatus=0;
@@ -102,7 +109,6 @@ var vm = new Vue({
                                 groups: 7, //连续显示分页数
                                 jump: function(obj, first){ //触发分页后的回调
                                     if(!first){ //点击跳页触发函数自身，并传递当前页：obj.curr
-                                        console.log(obj.curr);
                                         vm.searchObj.page=obj.curr -1;
                                         vm.search();
                                     }
@@ -118,6 +124,9 @@ var vm = new Vue({
         },
         modifyRiskDataBtn:function(bpId){
             window.location.href = "/bidplan/bidRiskDataList/"+bpId;
+        },
+        modifyPlanBtn:function(bpId){
+            window.location.href = "/bidplan/updateplandetail/"+bpId;
         },
         removeBtn:function(bpId){
             layer.confirm('确定要删除吗?', {icon: 3, title:'询问'}, function(index){

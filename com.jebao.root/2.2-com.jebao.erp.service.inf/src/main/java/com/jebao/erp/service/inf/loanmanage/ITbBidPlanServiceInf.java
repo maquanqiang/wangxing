@@ -3,6 +3,7 @@ package com.jebao.erp.service.inf.loanmanage;
 import com.jebao.jebaodb.entity.extEntity.PageWhere;
 import com.jebao.jebaodb.entity.loanmanage.TbBidPlan;
 import com.jebao.jebaodb.entity.loanmanage.TbBidRiskData;
+import com.jebao.jebaodb.entity.loanmanage.search.BidPlanSM;
 
 import java.util.List;
 
@@ -20,4 +21,8 @@ public interface ITbBidPlanServiceInf {
     int selectByConditionCount(TbBidPlan record);
 
     int updateByBidIdSelective(TbBidPlan record);
+
+    List<TbBidPlan> selectBySelfConditionForPage(BidPlanSM record, PageWhere pageWhere);
+
+    int selectBySelfConditionCount(BidPlanSM record);
 }

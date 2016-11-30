@@ -6,6 +6,7 @@ import com.jebao.jebaodb.dao.dao.loanmanage.TbBidRiskDataDao;
 import com.jebao.jebaodb.entity.extEntity.PageWhere;
 import com.jebao.jebaodb.entity.loanmanage.TbBidPlan;
 import com.jebao.jebaodb.entity.loanmanage.TbBidRiskData;
+import com.jebao.jebaodb.entity.loanmanage.search.BidPlanSM;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -52,5 +53,16 @@ public class TbBidPlanServiceImpl implements ITbBidPlanServiceInf {
     public int updateByBidIdSelective(TbBidPlan record) {
         int intCount = bidPlanDao.updateByPrimaryKeySelective(record);
         return intCount;
+    }
+
+    @Override
+    public List<TbBidPlan> selectBySelfConditionForPage(BidPlanSM record, PageWhere pageWhere) {
+        return bidPlanDao.selectBySelfConditionForPage(record, pageWhere);
+    }
+
+    @Override
+    public int selectBySelfConditionCount(BidPlanSM record) {
+        int count = bidPlanDao.selectBySelfConditionCount(record);
+        return count;
     }
 }

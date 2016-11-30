@@ -68,7 +68,12 @@ var model = {
     //标的
     plan: {},
     //台账列表
-    intentList : []
+    intentList : [],
+    //
+    riskDataList:[],
+    principalTotal:0,
+    interestTotal : 0,
+    total : 0
 
 };
 
@@ -81,7 +86,6 @@ var vm = new Vue({
     },
     //初始化远程数据
     created:function(){
-        console.log("created");
         var val = $("#bpId").val();
         var dataVal = {
             bpId : val
@@ -90,18 +94,33 @@ var vm = new Vue({
             if (response.success_is_ok){
                 var data=response.data;
                 vm.plan=data;
+                KindEditor.html("#kindEditorContent", data.bpDesc);
             }
         });
+        $.get("/api/bidRiskData/getRiskDataListForPage", dataVal, function (response) {
+            if (response.success_is_ok) {
+                vm.riskDataList = response.data;
+            }
+        })
     },
     //方法，可用于绑定事件或直接调用
     methods: {
         search:function(event){
         },
         createIntentBtn:function(){
+            vm.intentList = [];
+            vm.principalTotal = 0;
+            vm.interestTotal = 0;
+            vm.total = 0;
             var formValue = $("#defaultForm").serializeObject();
             $.get("/api/bidPlan/getLoanFundIntents",formValue,function(response){
                 if (response.success_is_ok){
                     vm.intentList = response.data;
+                    for(var i=0; i<vm.intentList.length; i++){
+                        vm.principalTotal +=vm.intentList[i].principal;
+                        vm.interestTotal += vm.intentList[i].interest;
+                    }
+                    vm.total = vm.principalTotal +vm.interestTotal;
                 }
             });
         },

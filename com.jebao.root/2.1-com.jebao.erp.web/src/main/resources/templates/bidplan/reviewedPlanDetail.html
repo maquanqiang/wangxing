@@ -1,6 +1,12 @@
 <!DOCTYPE html>
 <html>
 <head>#parse("common/head.html")
+    <!-- 编辑器引入 BEGIN-->
+    <link rel="stylesheet" href="/content/AdminLTE-2.2.0/kindEditor/themes/default/default.css" />
+    <script charset="utf-8" src="/content/AdminLTE-2.2.0/kindEditor/kindeditor-all-min.js"></script>
+    <script charset="utf-8" src="/content/AdminLTE-2.2.0/kindEditor/lang/zh-CN.js"></script>
+    <script charset="utf-8" src="/content/AdminLTE-2.2.0/kindEditor/kindEditorConfig.js"></script>
+    <!-- 编辑器引入 END-->
 </head>
 <body class="skin-blue sidebar-mini">
 #parse("common/main-header.html")
@@ -188,9 +194,9 @@
                                         <tr role="row" class="even">
                                             <td>总计</td>
                                             <td></td>
-                                            <td>10000</td>
-                                            <td>1200</td>
-                                            <td>101200</td>
+                                            <td>{{principalTotal}}</td>
+                                            <td>{{interestTotal}}</td>
+                                            <td>{{total}}</td>
                                         </tr>
                                         </tbody>
                                     </table>
@@ -248,6 +254,19 @@
                             </div>
                         </div>
                     </form>
+                </div>
+            </div>
+        </div>
+        <!--项目详情-->
+        <div class="box-body">
+            <div class="box-title">
+                <h5>项目详情</h5>
+            </div>
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="box box-primary">
+                        <textarea id="kindEditorContent" name="bpDesc" style="height:350px;visibility:hidden;" class="col-xs-12" :value="plan.bpDesc"></textarea>
+                    </div>
                 </div>
             </div>
         </div>

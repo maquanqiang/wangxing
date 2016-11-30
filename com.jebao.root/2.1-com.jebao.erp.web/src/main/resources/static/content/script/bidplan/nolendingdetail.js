@@ -66,10 +66,15 @@ $(function () {
 var model = {
     //查询条件
     search: {},
-    //列表
-    planlist: [],
-    //销售级别
-    ranks: []
+    //标的
+    plan: {},
+    //台账列表
+    intentList : [],
+    //
+    riskDataList:[],
+    principalTotal:0,
+    interestTotal : 0,
+    total : 0
 
 };
 
@@ -83,25 +88,42 @@ var vm = new Vue({
     },
     //初始化远程数据
     created:function(){
-        $.get("/bidplan/dplan/getlist",function(response){
+        var val = $("#bpId").val();
+        var dataVal = {
+            bpId : val
+        }
+        $.get("/api/bidPlan/getBidPlanById",dataVal,function(response){
             if (response.success_is_ok){
-                vm.planlist=response.data;
+                var data=response.data;
+                vm.plan=data;
             }
         });
+        $.get("/api/bidRiskData/getRiskDataListForPage", dataVal, function (response) {
+            if (response.success_is_ok) {
+                vm.riskDataList = response.data;
+            }
+        })
     },
     //方法，可用于绑定事件或直接调用
     methods: {
         search:function(event){
-            var model = $("#order_search_form").serializeObject();
-            $.get("/bidplan/dplan/getlist",model,function(response){
-                console.log("model")
-                if (response.success_is_ok){
-                    vm.planlist=response.data;
-                }
-            })
         },
-        remove:function(event, id){
-
+        createIntentBtn:function(){
+            vm.intentList = [];
+            vm.principalTotal = 0;
+            vm.interestTotal = 0;
+            vm.total = 0;
+            $.get("/api/bidPlan/getLoanFundIntents",vm.plan,function(response){
+                if (response.success_is_ok){
+                    vm.intentList = response.data;
+                    for(var i=0; i<vm.intentList.length; i++){
+                        vm.principalTotal +=vm.intentList[i].principal;
+                        vm.interestTotal += vm.intentList[i].interest;
+                    }
+                    vm.total = vm.principalTotal +vm.interestTotal;
+                }
+            });
         }
+
     }
 });

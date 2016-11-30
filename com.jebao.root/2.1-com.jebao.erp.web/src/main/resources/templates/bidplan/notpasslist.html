@@ -42,12 +42,12 @@
                                         <tr role="row" class="odd"  v-for="plan in planlist">
                                             <td>{{plan.bpId}}</td>
                                             <td>{{plan.bpName}}</td>
-                                            <td>{{plan.bpType}}</td>
+                                            <td>{{bpTypeArr[plan.bpType]}}</td>
                                             <td>{{plan.bpId}}AAA</td>
                                             <td>{{plan.bpTrueName}}</td>
                                             <td>{{plan.bpBidMoney}}</td>
                                             <td>{{plan.bpRate}}%</td>
-                                            <td>{{plan.bpPeriodsDisplay}}{{plan.bpCycleType}}</td>
+                                            <td>{{plan.bpPeriodsDisplay}}{{bpCycleTypeArr[plan.bpCycleType]}}</td>
                                             <td>{{plan.bpCreateTime}}</td>
                                             <td>{{plan.bpRemark}}</td>
                                             <td>
@@ -74,5 +74,5 @@
 <!-- /.content-wrapper -->
 #parse("common/footer.html")
 </body>
-<script src=$UrlHelperTool.href("/content/script/bidplan/nolendinglist.js")></script>
+<script src=$UrlHelperTool.href("/content/script/bidplan/notpasslist.js")></script>
 </html>
