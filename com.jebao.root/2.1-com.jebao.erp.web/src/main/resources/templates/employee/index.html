@@ -182,6 +182,15 @@
                     </select>
                 </div>
             </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">允许登录:</label>
+                <div class="col-sm-8">
+                    <select class="form-control" style="width:100%;height: 34px;border-color: #d2d6de;"  name="loginStatus" v-model.number="formData.loginStatus">
+                        <option value="2">否</option>
+                        <option value="1">是</option>
+                    </select>
+                </div>
+            </div>
             <div class="form-group" :class="{hide:formData.empId==0}">
                 <label class="col-sm-3 control-label">在职状态:</label>
                 <div class="col-sm-8">

@@ -16,8 +16,14 @@ $(document).ready(function() {
                 return;
             }else{
                 $("#error_place_id").html(response.msg);
+                $(".verification").click();
             }
         });
+    });
+    $(document).keyup(function(event) {
+        if(event.which==13){
+            $("#submitBtn").click();
+        }
     });
     //点击切换验证码图片
     $(".verification").click(function(){

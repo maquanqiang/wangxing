@@ -124,6 +124,7 @@ var vm = new Vue({
                 methods: {
                     fileupload: function(){
                         var fileUploadUrl = $(openVmModel.form).find(".uploadFileUrl");
+                       // var fileName = $(openVmModel.form).find(".btn-fileupload").val();
                         $("#_myUpload_").ajaxSubmit({
                             dataType:  'json', //数据格式为json
                             success:function(data){
@@ -131,7 +132,8 @@ var vm = new Vue({
                                 {
                                     if(data.error==0)
                                     {
-                                        console.log("data.url:"+data.url);
+/*                                        console.log("data.url:"+data.url);
+                                        console.log("fileName:"+fileName);*/
                                         //  alert(data.url);
                                         fileUploadUrl.val(data.url);
                                         return;

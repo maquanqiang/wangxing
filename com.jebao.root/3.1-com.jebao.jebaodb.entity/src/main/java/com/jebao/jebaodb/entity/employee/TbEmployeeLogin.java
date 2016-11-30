@@ -15,6 +15,8 @@ public class TbEmployeeLogin {
 
     private Date lgLastLoginTime;
 
+    private Integer lgStatus;
+
     public Integer getLgId() {
         return lgId;
     }
@@ -61,5 +63,13 @@ public class TbEmployeeLogin {
 
     public void setLgLastLoginTime(Date lgLastLoginTime) {
         this.lgLastLoginTime = lgLastLoginTime;
+    }
+
+    public Integer getLgStatus() {
+        return lgStatus;
+    }
+
+    public void setLgStatus(Integer lgStatus) {
+        this.lgStatus = lgStatus;
     }
 }

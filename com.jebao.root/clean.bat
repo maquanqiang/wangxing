@@ -1,3 +1,3 @@
 echo mvn clean begin
-mvn clean
+call mvn clean
 echo mvn clean end

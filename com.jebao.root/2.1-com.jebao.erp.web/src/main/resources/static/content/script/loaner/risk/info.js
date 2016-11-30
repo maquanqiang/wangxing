@@ -1,10 +1,6 @@
 /**
  * Created by Administrator on 2016/11/28.
  */
-$(function () {
-    vm.bindFormValidate();
-});
-
 var model = {
     risk: {},
     searchObj: {},
@@ -22,6 +18,9 @@ var vm = new Vue({
     //初始化远程数据
     created: function () {
         this.init();
+    },
+    mounted:function(){
+        this.bindFormValidate();
     },
     //方法，可用于绑定事件或直接调用
     methods: {

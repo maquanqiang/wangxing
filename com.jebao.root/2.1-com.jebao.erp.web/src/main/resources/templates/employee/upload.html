@@ -26,10 +26,17 @@
                         </div><!-- /.box-header -->
                         <form id="form1" enctype="multipart/form-data">
                             <div class="box-body">
-                                <!-- Custom icons for docx, xlsx, pptx, jpg, pdf, zip -->
-                                <input type="file" id="upfile" name="upfile"  />
-                                <input type="hidden" name="dir" value="image">
+                                <div class="col-md-8">
+                                    <!-- Custom icons for docx, xlsx, pptx, jpg, pdf, zip -->
+                                    <input type="file" id="upfile" name="upfile"/>
+                                    <input type="hidden" name="dir" value="image">
+                                </div>
 
+                                <div class="col-md-4">
+                                    <div class="input-group">
+                                        <a href="/fileplugin/file/file/_employee_template.xlsx" class="btn btn-primary" target="_blank">模板下载</a>
+                                    </div>
+                                </div>
                             </div>
                         </form>
                     </div>
@@ -46,16 +53,19 @@
 
                         <div class="box-body">
 
-                            <table class="table">
+                            <table class="table table-bordered table-hover dataTable">
                                 <thead>
                                 <tr>
-                                    <td>1</td>
-                                    <td>1</td>
-                                    <td>1</td>
-                                    <td>1</td>
-                                    <td>1</td>
+                                    <th v-for="cellItem in theads">{{cellItem}}</th>
                                 </tr>
                                 </thead>
+                                <tbody>
+                                <template v-for="rowItem in tbodies">
+                                    <tr>
+                                        <td v-for="cellItem in rowItem">{{cellItem}}</td>
+                                    </tr>
+                                </template>
+                                </tbody>
                             </table>
                         </div>
                         <div class="box-footer">

@@ -53,7 +53,7 @@ var vm = new Vue({
                             groups: 7, //连续显示分页数
                             jump: function(obj, first){ //触发分页后的回调
                                 if(!first){ //点击跳页触发函数自身，并传递当前页：obj.curr
-                                    console.log(obj.curr);
+                                    //console.log(obj.curr);
                                     vm.searchObj.pageIndex=obj.curr -1;
                                     vm.search();
                                 }
@@ -77,6 +77,13 @@ var vm = new Vue({
                             regexp: {
                                 regexp: /^1[3-8]\d{9}$/,
                                 message: '请输入正确的手机号码'
+                            }
+                        }
+                    },
+                    monthlySalary:{
+                        validators: {
+                            numeric: {
+                                message: '请输入数字'
                             }
                         }
                     }
@@ -156,10 +163,10 @@ var vm = new Vue({
                         //console.log(phone);
                         $.get("/api/loaner/doImport",{phone:phone},function(response){
                             if (response.success_is_ok){
+                                vm.openFormVm.error.hide=true;
                                 openVmModel.userInfo=response.data;
                             }else{
-                                console.log(response.error);
-                                //window.alert(response.error);
+                               // console.log(response.error);
                                 vm.openFormVm.error.hide=false;
                                 vm.openFormVm.error.message=response.error;
                             }
@@ -195,6 +202,7 @@ var vm = new Vue({
                         bootstrapValidator.resetForm();
                     }
                     $form[0].reset();
+                    vm.openFormVm.error.hide=true;
                     return false;
                 }
             });
@@ -208,7 +216,7 @@ var vm = new Vue({
             layer.open({
                 title:'修改个人借款用户',
                 content:tempHtml,
-                btn: ['保存', '重置'],
+                btn: ['保存', '取消'],
                 area:['800px'],
                 btn1: function(){
                     var $form = $("#ModifyFormId");
@@ -220,13 +228,13 @@ var vm = new Vue({
                     }
                 },
                 btn2: function(){
-                    var $form =$("#ModifyFormId");
+/*                    var $form =$("#ModifyFormId");
                     var bootstrapValidator =$form.data('bootstrapValidator');
                     if(typeof bootstrapValidator !== "undefined"){
                         bootstrapValidator.resetForm();
                     }
-                    $form[0].reset();
-                    return false;
+                    $form[0].reset();*/
+                    layer.closeAll();
                 }
             });
             vm.createOpenVm("#ModifyFormId",id);

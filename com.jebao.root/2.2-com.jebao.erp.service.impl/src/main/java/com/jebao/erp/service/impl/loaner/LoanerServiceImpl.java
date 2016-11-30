@@ -61,6 +61,14 @@ public class LoanerServiceImpl implements ILoanerServiceInf {
         if(entity == null){
             return 0;
         }
+
+        TbLoaner record = new TbLoaner();
+        record.setlPhone(entity.getlPhone());
+        int result = tbLoanerDao.selectByParamsForPageCount(record);
+        if(result > 0 ){
+            return 0;
+        }
+
         TbLoginInfo loginInfo = tbLoginInfoDao.selectByLoginName(entity.getlPhone());
         if (loginInfo == null) {
             return 0;
@@ -132,6 +140,7 @@ public class LoanerServiceImpl implements ILoanerServiceInf {
 
     @Override
     public int updateLoaner(TbLoaner record) {
+        record.setlUpdateTime(new Date());
         return tbLoanerDao.updateByPrimaryKeySelective(record);
     }
 
