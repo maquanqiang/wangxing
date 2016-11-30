@@ -26,6 +26,7 @@ public class TbEmployeeDao {
      */
     public List<EmployeeInfo> selectEmployeeDetailsInfo(EmployeeSM model){
         if (model==null){model=new EmployeeSM();}
+        if (model.getPageSize()==0){model.setPageSize(10);}
         List<EmployeeInfo> list = mapper.selectEmployeeDetailsInfo(model);
         return list;
     }

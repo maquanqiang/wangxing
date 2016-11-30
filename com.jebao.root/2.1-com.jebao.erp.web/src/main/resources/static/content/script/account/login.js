@@ -16,6 +16,7 @@ $(document).ready(function() {
                 return;
             }else{
                 $("#error_place_id").html(response.msg);
+                $(".verification").click();
             }
         });
     });

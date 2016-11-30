@@ -20,6 +20,7 @@ public class EmployeeInfo {
     private Date errEffectDate;
     //职级失效时间
     private Date errExpiryDate;
+    private Integer lgStatus;
 
     public TbEmployee getEmployee() {
         return employee;
@@ -75,5 +76,13 @@ public class EmployeeInfo {
 
     public void setErrExpiryDate(Date errExpiryDate) {
         this.errExpiryDate = errExpiryDate;
+    }
+
+    public Integer getLgStatus() {
+        return lgStatus;
+    }
+
+    public void setLgStatus(Integer lgStatus) {
+        this.lgStatus = lgStatus;
     }
 }

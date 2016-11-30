@@ -20,6 +20,7 @@ public class EmployeeSM extends PageWhere {
     private int teamId;
     private int rankId;
     private int departmentId;
+    private String cardNo;
 
     public Integer getEmpId() {
         return empId;
@@ -67,5 +68,13 @@ public class EmployeeSM extends PageWhere {
 
     public void setDepartmentId(int departmentId) {
         this.departmentId = departmentId;
+    }
+
+    public String getCardNo() {
+        return cardNo;
+    }
+
+    public void setCardNo(String cardNo) {
+        this.cardNo = cardNo;
     }
 }
