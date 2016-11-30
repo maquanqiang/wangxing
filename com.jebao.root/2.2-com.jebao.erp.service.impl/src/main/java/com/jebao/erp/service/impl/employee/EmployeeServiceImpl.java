@@ -60,11 +60,13 @@ public class EmployeeServiceImpl implements IEmployeeServiceInf {
             resultInfo.setMsg(resultValidation.getErrorMsg().toString());
             return resultInfo;
         }
-        if (model.getTeamId() == 0) {
+        if (model.getTeamId()==null || model.getTeamId() == 0) {
             model.setTeamId(model.getDepartmentId());
         }
+        if (model.getLoginStatus()==0){
+            model.setLoginStatus(2);
+        }
         //endregion
-
         int empId = model.getEmpId();
 
         if (empId == 0) {
@@ -125,12 +127,21 @@ public class EmployeeServiceImpl implements IEmployeeServiceInf {
         employee.setEmpIsDeleted(false);
         employee.setEmpCreateTime(today);//创建时间
         employee.setEmpCreateUser(model.getUserId());//创建人
-        //插入员工基本信息
-        int reval = employeeDao.insert(employee);
-        int empId = employee.getEmpId();//员工id，插入之后有内容
-        if (reval == 0) {
-            return new ResultInfo(false, "添加员工基本信息失败");
+        int empId = 0;
+        try {
+            //插入员工基本信息
+            int reval = employeeDao.insert(employee);
+            empId = employee.getEmpId();//员工id，插入之后有内容
+            if (reval == 0) {
+                return new ResultInfo(false, "添加员工基本信息失败");
+            }
+        } catch (Exception e) {
+            if (e.getMessage().contains("for key 'i_emp_card_no'")){
+                return new ResultInfo(false, "身份证号码为唯一性");
+            }
+            return new ResultInfo(false, "手机号为唯一性");
         }
+
         //员工所属部门
         if (model.getTeamId() > 0) {
             TbEmpDepRelationship empDepRelationship = new TbEmpDepRelationship();
@@ -159,6 +170,7 @@ public class EmployeeServiceImpl implements IEmployeeServiceInf {
         String loginPassword = mobile.substring(mobile.length() - 6);//密码默认手机号码后6位
         String md5Password = new EncryptUtil().encryptToMD5(loginPassword);
         loginEntity.setLgPassword(md5Password);
+        loginEntity.setLgStatus(model.getLoginStatus());//登录状态，是否禁用
         loginDao.insert(loginEntity);//插入员工登录信息
 
         //endregion
@@ -198,8 +210,15 @@ public class EmployeeServiceImpl implements IEmployeeServiceInf {
         TbEmployee employeeEntity = new TbEmployee();
         employeeEntity.setEmpId(empId);//员工id
         employeeEntity.setEmpStatus(model.getStatus());//在职状态
-        //更新员工基本信息
-        employeeDao.updateByPrimaryKeySelective(employeeEntity);
+        try {
+            //更新员工基本信息
+            employeeDao.updateByPrimaryKeySelective(employeeEntity);
+        } catch (Exception e) {
+            if (e.getMessage().contains("for key 'i_emp_card_no'")){
+                return new ResultInfo(false, "身份证号码为唯一性");
+            }
+            return new ResultInfo(false, "手机号为唯一性");
+        }
 
         //region员工所属部门
         if (model.getTeamId() > 0) {
@@ -245,6 +264,16 @@ public class EmployeeServiceImpl implements IEmployeeServiceInf {
                 newEmpRankRelationshipEntity.setErrCreateTime(today);//创建时间
                 newEmpRankRelationshipEntity.setErrCreateUser(model.getUserId());//创建人
                 empRankRelationshipDao.insert(newEmpRankRelationshipEntity);//插入员工职级信息
+            }
+        }
+        //endregion
+
+        //region员工登录状态
+        if (model.getLoginStatus() > 0) {
+            TbEmployeeLogin loginEntity = loginDao.selectByUsername(model.getMobile());
+            if (loginEntity.getLgStatus()!=null && loginEntity.getLgStatus() != model.getLoginStatus()) {
+                loginEntity.setLgStatus(model.getLoginStatus());
+                loginDao.updateByPrimaryKey(loginEntity);
             }
         }
         //endregion

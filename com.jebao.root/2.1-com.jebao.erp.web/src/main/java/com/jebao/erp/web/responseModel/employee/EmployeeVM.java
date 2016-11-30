@@ -36,6 +36,7 @@ public class EmployeeVM extends ViewModel {
             this.rankId = rank.getRankId();
             this.rankName = rank.getRankName();
         }
+        this.loginStatus =entity.getLgStatus()==null?2:entity.getLgStatus();
     }
 
     private int id;
@@ -60,6 +61,7 @@ public class EmployeeVM extends ViewModel {
     private String rankName;
     private int teamId;
     private String teamName;
+    private int loginStatus;
 
     public int getId() {
         return id;
@@ -163,5 +165,13 @@ public class EmployeeVM extends ViewModel {
 
     public void setTeamName(String teamName) {
         this.teamName = teamName;
+    }
+
+    public int getLoginStatus() {
+        return loginStatus;
+    }
+
+    public void setLoginStatus(int loginStatus) {
+        this.loginStatus = loginStatus;
     }
 }

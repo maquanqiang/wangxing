@@ -31,11 +31,15 @@ public class EmployeeIM extends InputModel {
     /**
      * 所属团队
      */
-    private int teamId;
+    private Integer teamId;
     /**
      * 在职状态
      */
     private int status;
+    /**
+     * 登录状态
+     */
+    private int loginStatus;
 
     public int getEmpId() {
         return empId;
@@ -77,11 +81,11 @@ public class EmployeeIM extends InputModel {
         this.rankId = rankId;
     }
 
-    public int getTeamId() {
+    public Integer getTeamId() {
         return teamId;
     }
 
-    public void setTeamId(int teamId) {
+    public void setTeamId(Integer teamId) {
         this.teamId = teamId;
     }
 
@@ -99,5 +103,13 @@ public class EmployeeIM extends InputModel {
 
     public void setDepartmentId(int departmentId) {
         this.departmentId = departmentId;
+    }
+
+    public int getLoginStatus() {
+        return loginStatus;
+    }
+
+    public void setLoginStatus(int loginStatus) {
+        this.loginStatus = loginStatus;
     }
 }
