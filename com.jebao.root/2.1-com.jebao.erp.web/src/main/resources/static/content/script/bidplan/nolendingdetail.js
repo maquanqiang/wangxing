@@ -9,57 +9,6 @@ $(function () {
 
     $(".select2").select2();
 
-    //var autoObj = {
-    //    addInsuredFormValidate: function () {
-    //        var $form = $("#form-inline");
-    //        $form.validate({
-    //            rules: {
-    //                Name: {
-    //                    required: true,
-    //                    realName: $("#insured_card_type")
-    //                },
-    //                CardNo: {
-    //                    required: true,
-    //                    idCard: $("#insured_card_type")
-    //                },
-    //                Birthday: {
-    //                    required: true,
-    //                    date: true
-    //                },
-    //                Gender: {
-    //                    required: true
-    //                }
-    //            },
-    //            messages: {
-    //                Name: {
-    //                    required: "请输入被保险人姓名",
-    //                    realName: "请输入正确的被保险人姓名"
-    //                },
-    //                CardNo: {
-    //                    required: "请输入被保险人证件号码"
-    //                },
-    //                Birthday: {
-    //                    required: "请输入被保险人出生日期"
-    //                },
-    //                Gender: {
-    //                    required: "请选择性别"
-    //                }
-    //            }
-    //
-    //        });
-    //    },
-    //    BindEvent: function () {
-    //
-    //    },
-    //    ButtonEvent: function () {
-    //
-    //    }
-    //};
-    //for (var prop in autoObj) {
-    //    if (typeof autoObj[prop] === "function") {
-    //        //autoObj[prop].apply();
-    //    }
-    //}
 });
 //Vue实例
 //Model
@@ -113,7 +62,7 @@ var vm = new Vue({
             vm.principalTotal = 0;
             vm.interestTotal = 0;
             vm.total = 0;
-            $.get("/api/bidPlan/getLoanFundIntents",vm.plan,function(response){
+            $.post("/api/bidPlan/getLoanFundIntents",vm.plan,function(response){
                 if (response.success_is_ok){
                     vm.intentList = response.data;
                     for(var i=0; i<vm.intentList.length; i++){

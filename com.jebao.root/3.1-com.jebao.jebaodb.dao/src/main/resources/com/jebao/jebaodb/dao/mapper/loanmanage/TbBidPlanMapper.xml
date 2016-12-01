@@ -776,10 +776,14 @@
             AND bp_loaner_type = #{record.bpLoanerType,jdbcType=INTEGER}
         </if>
         <if test="record.searchDateSt != null" >
-            AND ${record.searchDateType} >= #{record.searchDateSt,jdbcType=VARCHAR}
+            <![CDATA[
+              AND ${record.searchDateType}  >=  #{record.searchDateSt,jdbcType=VARCHAR}
+            ]]>
         </if>
         <if test="record.searchDateEnd != null" >
-            AND ${record.searchDateType} >= #{record.searchDateEnd,jdbcType=VARCHAR}
+            <![CDATA[
+              AND ${record.searchDateType}  <=  #{record.searchDateEnd,jdbcType=VARCHAR}
+            ]]>
         </if>
 
         <!--<if test="record.bpIsDel != null" >-->
