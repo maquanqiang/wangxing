@@ -178,7 +178,7 @@ public class EmployeeServiceImpl implements IEmployeeServiceInf {
         //region 记录日志
         TbEmployeeLog logEntity = new TbEmployeeLog();
         logEntity.setElEmpId(empId);
-        String content = String.format("新增员工，所属团队：{0}，职级：{1}", model.getTeamId(), model.getRankId());
+        String content = String.format("新增员工，所属团队：%s，职级：%s", model.getTeamId(), model.getRankId());
         logEntity.setElContent(content);//操作内容
         logEntity.setElOperateTime(today);//操作时间
         logEntity.setElOperator(model.getUserId());//操作人
@@ -283,7 +283,7 @@ public class EmployeeServiceImpl implements IEmployeeServiceInf {
         //region 记录日志
         TbEmployeeLog logEntity = new TbEmployeeLog();
         logEntity.setElEmpId(empId);
-        String content = String.format("修改员工，所属团队：{0}，职级：{1}", model.getTeamId(), model.getRankId());
+        String content = String.format("修改员工，所属团队：%s，职级：%s", model.getTeamId(), model.getRankId());
         logEntity.setElContent(content);//操作内容
         logEntity.setElOperateTime(today);//操作时间
         logEntity.setElOperator(model.getUserId());//操作人

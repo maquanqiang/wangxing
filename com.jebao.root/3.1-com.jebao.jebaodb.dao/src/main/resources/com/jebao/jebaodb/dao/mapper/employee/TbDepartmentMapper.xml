@@ -78,7 +78,38 @@
 
 
   <!--==================================================华丽分割线==================================================-->
-  <select id="selectList" resultMap="BaseResultMap">
-    SELECT <include refid="Base_Column_List"></include> FROM tb_department order by dep_parent_id LIMIT #{pageWhere.begin},#{pageWhere.pageSize}
+  <select id="selectList" resultMap="BaseResultMap" parameterType="com.jebao.jebaodb.entity.employee.search.DepartmentSM">
+    SELECT <include refid="Base_Column_List"></include> FROM tb_department
+    <where>
+      <include refid="dynamicWehre"/>
+    </where>
+    order by dep_parent_id LIMIT #{begin},#{pageSize}
   </select>
+  <select id="selectListCount" resultType="integer" parameterType="com.jebao.jebaodb.entity.employee.search.DepartmentSM">
+    SELECT COUNT(1) FROM tb_department
+    <where>
+      <include refid="dynamicWehre"/>
+    </where>
+  </select>
+  <sql id="dynamicWehre">
+    <if test="name != null and name != ''">
+      AND dep_name LIKE #{name,jdbcType=VARCHAR}
+    </if>
+    <if test="parentId != null">
+      AND (dep_parent_id = #{parentId,jdbcType=INTEGER}
+      <if test="parentAndSelf">
+        or dep_id = #{parentId,jdbcType=INTEGER}
+      </if>
+      )
+    </if>
+    <if test="isDepartment != null">
+      AND  dep_is_department = #{isDepartment,jdbcType=BIT}
+    </if>
+
+  </sql>
+  
+  <delete id="delete" parameterType="integer">
+    DELETE FROM tb_department where dep_id = #{value,jdbcType=INTEGER}
+  </delete>
+
 </mapper>
