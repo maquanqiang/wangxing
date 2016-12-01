@@ -27,7 +27,7 @@ public class AccountController extends _BaseController {
         //检测是否已登录
         boolean isLogin = LoginSessionUtil.isLogin(request, response);
         if (isLogin) {
-            return "home/index";
+            return "redirect:/home/index";
         }
         return "account/login";
     }

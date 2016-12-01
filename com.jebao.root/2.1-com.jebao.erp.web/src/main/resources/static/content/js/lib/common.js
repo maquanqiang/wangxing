@@ -154,3 +154,16 @@ function select2DefaultVal(hiddentId, targetId) {
     $(targetId).select2().select2("val", val)
 };
 
+$(function(){
+    ExplorerIsIE();
+});
+function ExplorerIsIE()
+{
+    var explorer = window.navigator.userAgent.toLowerCase() ;
+    if (explorer.indexOf("msie") >= 0) {
+        var ver=explorer.match(/msie ([\d.]+)/)[1];
+        alert("金额宝后台系统不支持IE浏览器(msie)！请使用谷歌或360浏览器");
+    }else if(explorer.indexOf(".net clr 2.")>=0) {
+        alert("金额宝后台系统不支持IE浏览器(.net clr 2.)！请使用谷歌或360浏览器");
+    }
+}
