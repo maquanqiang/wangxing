@@ -25,7 +25,6 @@ function activeMenu() {
             menuParent.addClass('active');
         }
         menuObj=menuParent;
-        console.log(menuObj);
         __i=__i+1;
         if(__i>4)break;
     }

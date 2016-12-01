@@ -1,10 +1,6 @@
 /**
  * Created by Jack on 2016/11/18.
  */
-$(function () {
-    $("#search_form select.select2").select2();
-});
-
 //Vue实例
 //Model
 var model = {
@@ -57,14 +53,18 @@ var vm = new Vue({
     created:function(){
         this.search();
     },
+    mounted:function(){
+        //在 el 被替换后，做页面元素变动的操作
+        $("#search_form select.select2").select2().on("change",function(){
+            model.searchObj[this.name]=this.value;
+        });
+    },
     //方法，可用于绑定事件或直接调用
     methods: {
         search:function(event){
             if (typeof event !== "undefined"){ //点击查询按钮的话，是查询第一页数据
                 model.searchObj.pageIndex=0;
             }
-            model.searchObj.teamId=$("#teamId").val();
-            model.searchObj.rankId=$("#rankId").val();
             $("#btnSearch").addClass("disabled");//禁用按钮
             $.get("/api/employee/list",model.searchObj,function(response){
                 if (response.success_is_ok){
@@ -94,8 +94,8 @@ var vm = new Vue({
                         item.departmentName =findParentDepartmentFunc(item.teamId);
                     }
                     vm.employees=response.data;
-                    if (response.count>0){
-                        var pageCount = Math.ceil(response.count / model.pageSize);
+                    var pageCount = Math.ceil(response.count / model.pageSize);
+                    if (pageCount>0){
                         //调用分页
                         laypage({
                             cont: $('#pageNum'), //容器。值支持id名、原生dom对象，jquery对象,
@@ -104,7 +104,6 @@ var vm = new Vue({
                             groups: 7, //连续显示分页数
                             jump: function(obj, first){ //触发分页后的回调
                                 if(!first){ //点击跳页触发函数自身，并传递当前页：obj.curr
-                                    console.log(obj.curr);
                                     vm.searchObj.pageIndex=obj.curr -1;
                                     vm.search();
                                 }
@@ -326,6 +325,7 @@ var vm = new Vue({
             layer.confirm('确定要删除吗?', {icon: 3, title:'询问'}, function(index){
                 layer.load(2);
                 $.post("/api/employee/delete",{empId:empId},function(response){
+                    layer.closeAll();
                     if (response.success_is_ok){
                         layer.msg(response.msg);
                         vm.search();
@@ -333,7 +333,7 @@ var vm = new Vue({
                         layer.alert(response.msg);
                     }
                 });
-                layer.closeAll();
+
             });
         }
     }

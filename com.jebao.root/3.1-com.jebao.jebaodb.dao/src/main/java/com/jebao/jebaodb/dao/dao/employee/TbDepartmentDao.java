@@ -2,7 +2,7 @@ package com.jebao.jebaodb.dao.dao.employee;
 
 import com.jebao.jebaodb.dao.mapper.employee.TbDepartmentMapper;
 import com.jebao.jebaodb.entity.employee.TbDepartment;
-import com.jebao.jebaodb.entity.extEntity.PageWhere;
+import com.jebao.jebaodb.entity.employee.search.DepartmentSM;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -23,5 +23,7 @@ public class TbDepartmentDao {
 
     public int updateByPrimaryKey(TbDepartment record){return mapper.updateByPrimaryKey(record);}
 
-    public List<TbDepartment> selectList(PageWhere pageWhere){return mapper.selectList(pageWhere);}
+    public List<TbDepartment> selectList(DepartmentSM model){return mapper.selectList(model);}
+    public int selectListCount(DepartmentSM model){return mapper.selectListCount(model);}
+    public int delete(int depId){return mapper.delete(depId);}
 }

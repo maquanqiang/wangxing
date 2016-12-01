@@ -26,5 +26,10 @@ public class EmployeeController {
         return "employee/upload";
     }
 
+    @RequestMapping("department")
+    public String department(){
+        return "employee/department";
+    }
+
 
 }
