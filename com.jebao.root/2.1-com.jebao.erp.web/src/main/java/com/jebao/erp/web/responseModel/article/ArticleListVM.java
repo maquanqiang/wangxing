@@ -28,7 +28,7 @@ public class ArticleListVM extends ViewModel {
 
     private String title;
 
-    @JsonFormat(timezone = "GMT+8", pattern = "yyyy/MM/dd HH:mm:ss")
+    @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd")
     private Date editDate;
 
     private String createUserName;

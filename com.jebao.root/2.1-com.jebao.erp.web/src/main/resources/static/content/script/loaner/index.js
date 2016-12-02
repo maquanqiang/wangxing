@@ -34,6 +34,9 @@ var vm = new Vue({
         getRiskHref:function(id){
             return "/loaner/risk/index/"+id;
         },
+        getFundsHref:function(loginId){
+            return "/loaner/funds/"+loginId;
+        },
         search:function(event){
             if (typeof event !== "undefined"){ //点击查询按钮的话，是查询第一页数据
                 model.searchObj.pageIndex=0;

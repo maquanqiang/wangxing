@@ -17,7 +17,9 @@ var vm = new Vue({
         $.get("/api/risk/details",dataVal,function(response){
             if (response.success_is_ok){
                 var data=response.data;
-                vm.details=data;
+                if(data!=null) {
+                    vm.details = data;
+                }
             }
         });
     }
