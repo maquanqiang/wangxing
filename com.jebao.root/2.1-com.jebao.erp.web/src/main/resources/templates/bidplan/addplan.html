@@ -70,7 +70,7 @@
                             <div class="form-group">
                                 <div class="input-group margin">
                                     <div class="input-group-addon">募集结束</div>
-                                    <input type="text" placeholder="" class="form-control chooseDate" id="bpEndTime" name="bpEndTime">
+                                    <input type="text" placeholder="" class="form-control" id="bpEndTime" name="bpEndTime" readonly>
                                 </div>
                             </div>
                             <div class="form-group ">
@@ -226,53 +226,52 @@
                         <h5>项目说明</h5>
                     </div>
                     <div class="box box-primary">
-                            <div class="box-body">
-                                <div class="form-group">
-                                    <div class="input-group margin">
-                                        <div class="input-group-addon"><span class="text-red">*</span>产品类型</div>
-                                        <select name="rcptId" id="rcptId" class="form-control" style="width: 160px;" v-model="selected">
-                                            <option value="0">请选择</option>
-                                            <option v-for="temp in projList" :value="temp.rcptId">{{temp.rcptName}}</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="input-group margin">
-                                        <div class="input-group-addon"><span class="text-red">*</span>借款描述</div>
-                                        <input type="text" class="form-control" placeholder="" name="bpBorrowDesc" :value="projectTemp.bpBorrowDesc">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="input-group margin">
-                                        <div class="input-group-addon"><span class="text-red">*</span>资金用途</div>
-                                        <input type="text" class="form-control" placeholder="" name="bpFundsPurpose" :value="projectTemp.bpFundsPurpose">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="input-group margin">
-                                        <div class="input-group-addon"><span class="text-red">*</span>还款来源</div>
-                                        <input type="text" value="" placeholder="" class="form-control" name="bpRepayingSource" :value="projectTemp.bpRepayingSource">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="input-group margin">
-                                        <div class="input-group-addon"><span class="text-red">*</span>抵押信息</div>
-                                        <input type="text"  placeholder="" class="form-control" name="bpMortgageInfo" :value="projectTemp.bpMortgageInfo">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="input-group margin">
-                                        <div class="input-group-addon"><span class="text-red">*</span>个人征信</div>
-                                        <input type="text"  placeholder="" class="form-control" name="bpPersonalCredit" :value="projectTemp.bpPersonalCredit">
-                                    </div>
-                                </div>
-                                <div class="form-group ">
-                                    <div class="input-group margin">
-                                        <div class="input-group-addon"><span class="text-red">*</span>风控意见</div>
-                                        <input type="text"  placeholder="" class="form-control" name="bpRiskOpinion" :value="projectTemp.bpRiskOpinion">
-                                    </div>
+                        <div class="box-body">
+                            <div class="form-group">
+                                <div class="input-group margin">
+                                    <div class="input-group-addon"><span class="text-red">*</span>产品类型</div>
+                                    <select name="rcptId" id="rcptId" class="form-control" style="width: 160px;" v-model="selected">
+                                        <option v-for="temp in projList" :value="temp.rcptId">{{temp.rcptName}}</option>
+                                    </select>
                                 </div>
                             </div>
+                            <div class="form-group">
+                                <div class="input-group margin">
+                                    <div class="input-group-addon"><span class="text-red">*</span>借款描述</div>
+                                    <input type="text" class="form-control" placeholder="" name="bpBorrowDesc" :value="projectTemp.bpBorrowDesc">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group margin">
+                                    <div class="input-group-addon"><span class="text-red">*</span>资金用途</div>
+                                    <input type="text" class="form-control" placeholder="" name="bpFundsPurpose" :value="projectTemp.bpFundsPurpose">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group margin">
+                                    <div class="input-group-addon"><span class="text-red">*</span>还款来源</div>
+                                    <input type="text" value="" placeholder="" class="form-control" name="bpRepayingSource" :value="projectTemp.bpRepayingSource">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group margin">
+                                    <div class="input-group-addon"><span class="text-red">*</span>抵押信息</div>
+                                    <input type="text"  placeholder="" class="form-control" name="bpMortgageInfo" :value="projectTemp.bpMortgageInfo">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group margin">
+                                    <div class="input-group-addon"><span class="text-red">*</span>个人征信</div>
+                                    <input type="text"  placeholder="" class="form-control" name="bpPersonalCredit" :value="projectTemp.bpPersonalCredit">
+                                </div>
+                            </div>
+                            <div class="form-group ">
+                                <div class="input-group margin">
+                                    <div class="input-group-addon"><span class="text-red">*</span>风控意见</div>
+                                    <input type="text"  placeholder="" class="form-control" name="bpRiskOpinion" :value="projectTemp.bpRiskOpinion">
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -292,53 +291,53 @@
         </form>
         <!--认证材料-->
         <!--<div class="row">-->
-            <!--<div class="col-xs-12">-->
-                <!--<div class="box-title">-->
-                    <!--<h5>认证材料</h5>-->
-                <!--</div>-->
-                <!--<div class="form-group ">-->
-                    <!--<a href="javascript:;" class="btn btn-primary " role="button" target="_blank"-->
-                       <!--id="add-material">添加</a>-->
-                <!--</div>-->
-                <!--<div class="box box-primary">-->
-                    <!--<div class="box-body">-->
-                        <!--<div class="dataTables_wrapper">-->
-                            <!--<div class="row">-->
-                                <!--<div class="col-xs-12">-->
-                                    <!--<table class="table table-bordered table-hover dataTable" role="grid"-->
-                                           <!--aria-describedby="orderlist_table_info">-->
-                                        <!--<thead>-->
-                                        <!--<tr role="row">-->
-                                            <!--<th width="25%" class="ui-state-default sorting_disabled" rowspan="1"-->
-                                                <!--colspan="1">材料名称-->
-                                            <!--</th>-->
-                                            <!--<th width="25%" class="ui-state-default sorting_disabled" rowspan="1"-->
-                                                <!--colspan="1">备注-->
-                                            <!--</th>-->
-                                            <!--<th width="25%" class="ui-state-default sorting_disabled" rowspan="1"-->
-                                                <!--colspan="1">操作-->
-                                            <!--</th>-->
-                                        <!--</tr>-->
-                                        <!--</thead>-->
-                                        <!--<tbody>-->
-                                        <!--<tr role="row">-->
-                                            <!--<td>认证材料</td>-->
-                                            <!--<td>认证材料</td>-->
-                                            <!--<td>-->
-                                                <!--<a href="javascript:;" class="btn btn-default btn-xs"-->
-                                                   <!--role="button">预览</a>-->
-                                                <!--<a href="javascript:;" class="btn btn-default btn-xs remove-msg"-->
-                                                   <!--role="button">删除</a>-->
-                                            <!--</td>-->
-                                        <!--</tr>-->
-                                        <!--</tbody>-->
-                                    <!--</table>-->
-                                <!--</div>-->
-                            <!--</div>-->
-                        <!--</div>-->
-                    <!--</div>-->
-                <!--</div>-->
-            <!--</div>-->
+        <!--<div class="col-xs-12">-->
+        <!--<div class="box-title">-->
+        <!--<h5>认证材料</h5>-->
+        <!--</div>-->
+        <!--<div class="form-group ">-->
+        <!--<a href="javascript:;" class="btn btn-primary " role="button" target="_blank"-->
+        <!--id="add-material">添加</a>-->
+        <!--</div>-->
+        <!--<div class="box box-primary">-->
+        <!--<div class="box-body">-->
+        <!--<div class="dataTables_wrapper">-->
+        <!--<div class="row">-->
+        <!--<div class="col-xs-12">-->
+        <!--<table class="table table-bordered table-hover dataTable" role="grid"-->
+        <!--aria-describedby="orderlist_table_info">-->
+        <!--<thead>-->
+        <!--<tr role="row">-->
+        <!--<th width="25%" class="ui-state-default sorting_disabled" rowspan="1"-->
+        <!--colspan="1">材料名称-->
+        <!--</th>-->
+        <!--<th width="25%" class="ui-state-default sorting_disabled" rowspan="1"-->
+        <!--colspan="1">备注-->
+        <!--</th>-->
+        <!--<th width="25%" class="ui-state-default sorting_disabled" rowspan="1"-->
+        <!--colspan="1">操作-->
+        <!--</th>-->
+        <!--</tr>-->
+        <!--</thead>-->
+        <!--<tbody>-->
+        <!--<tr role="row">-->
+        <!--<td>认证材料</td>-->
+        <!--<td>认证材料</td>-->
+        <!--<td>-->
+        <!--<a href="javascript:;" class="btn btn-default btn-xs"-->
+        <!--role="button">预览</a>-->
+        <!--<a href="javascript:;" class="btn btn-default btn-xs remove-msg"-->
+        <!--role="button">删除</a>-->
+        <!--</td>-->
+        <!--</tr>-->
+        <!--</tbody>-->
+        <!--</table>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--</div>-->
         <!--</div>-->
         <!--按钮-->
         <div class="row">
