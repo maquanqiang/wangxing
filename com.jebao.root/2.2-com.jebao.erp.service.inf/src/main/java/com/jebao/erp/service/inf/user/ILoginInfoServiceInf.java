@@ -3,8 +3,8 @@ package com.jebao.erp.service.inf.user;
 import com.jebao.jebaodb.entity.user.TbLoginInfo;
 
 /**
- * Created by Administrator on 2016/11/15.
+ * Created by Administrator on 2016/12/2.
  */
-public interface ITbLoginInfoServiceInf {
+public interface ILoginInfoServiceInf {
     TbLoginInfo selectByLoginName(String loginName);
 }
