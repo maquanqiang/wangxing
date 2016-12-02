@@ -1,8 +1,8 @@
 package com.jebao.jebaodb.dao;
 
 import com.jebao.jebaodb.dao.base._BaseUnitTest;
-import com.jebao.jebaodb.dao.dao.TbLoginInfoDao;
-import com.jebao.jebaodb.entity.TbLoginInfo;
+import com.jebao.jebaodb.dao.dao.user.TbLoginInfoDao;
+import com.jebao.jebaodb.entity.user.TbLoginInfo;
 import com.jebao.jebaodb.entity.extEntity.PageWhere;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,6 +1,6 @@
-package com.jebao.jebaodb.dao.mapper;
+package com.jebao.jebaodb.dao.mapper.user;
 
-import com.jebao.jebaodb.entity.TbUserDetails;
+import com.jebao.jebaodb.entity.user.TbUserDetails;
 import com.jebao.jebaodb.entity.extEntity.PageWhere;
 import org.apache.ibatis.annotations.Param;
 

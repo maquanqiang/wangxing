@@ -42,10 +42,9 @@ var vm = new Vue({
             $.get("/api/loaner/list",model.searchObj,function(response){
                 if (response.success_is_ok){
                     vm.loaners=response.data;
-                    //console.log("count:"+response.count);
-                    //console.log("pageSize:"+model.searchObj.pageSize);
-                    if (response.count>0){
-                        var pageCount = Math.ceil(response.count / model.searchObj.pageSize);
+                    var pageCount = Math.ceil(response.count / model.searchObj.pageSize);
+                    if (pageCount > 0){
+                       // var pageCount = Math.ceil(response.count / model.searchObj.pageSize);
                         //调用分页
                         laypage({
                             cont: $('#pageNum'), //容器。值支持id名、原生dom对象，jquery对象,
@@ -93,18 +92,19 @@ var vm = new Vue({
         post:function($form){
             var $button =$form.parent().parent().children(".layui-layer-btn").children("a:first");
             $button.addClass("btn disabled");
-            layer.load(2);
+            var layerIndex = layer.load(2);
             var submitModel = $form.serializeObject();
             $.post("/api/loaner/post",submitModel,function(response){
                 if (response.success_is_ok){
                     layer.msg(response.msg);
                     vm.search();
+                    layer.closeAll();
                 }else{
                     vm.openFormVm.error.hide=false;
                     vm.openFormVm.error.message=response.msg;
                 }
+                layer.close(layerIndex);
                 $button.removeClass("disabled");
-                layer.closeAll();
             });
         },
         createOpenVm:function(form,id){
@@ -243,6 +243,7 @@ var vm = new Vue({
             layer.confirm('确定要删除吗?', {icon: 3, title:'询问'}, function(index){
                 layer.load(2);
                 $.post("/api/loaner/delete",{id:id},function(response){
+                    layer.closeAll();
                     if (response.success_is_ok){
                         layer.msg(response.msg);
                         vm.search();
@@ -250,7 +251,6 @@ var vm = new Vue({
                         layer.alert(response.msg);
                     }
                 });
-                layer.closeAll();
             });
         }
     }

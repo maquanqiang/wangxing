@@ -1,7 +1,7 @@
-package com.jebao.jebaodb.dao.dao;
+package com.jebao.jebaodb.dao.dao.user;
 
-import com.jebao.jebaodb.dao.mapper.TbBankCityMapper;
-import com.jebao.jebaodb.entity.TbBankCity;
+import com.jebao.jebaodb.dao.mapper.user.TbBankCityMapper;
+import com.jebao.jebaodb.entity.user.TbBankCity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 

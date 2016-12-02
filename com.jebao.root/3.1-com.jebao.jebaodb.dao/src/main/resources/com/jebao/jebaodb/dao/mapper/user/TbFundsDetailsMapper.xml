@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.jebao.jebaodb.dao.mapper.TbFundsDetailsMapper" >
-  <resultMap id="BaseResultMap" type="com.jebao.jebaodb.entity.TbFundsDetails" >
+<mapper namespace="com.jebao.jebaodb.dao.mapper.user.TbFundsDetailsMapper" >
+  <resultMap id="BaseResultMap" type="com.jebao.jebaodb.entity.user.TbFundsDetails" >
     <id column="fd_id" property="fdId" jdbcType="BIGINT" />
     <result column="fd_login_id" property="fdLoginId" jdbcType="BIGINT" />
     <result column="fd_third_account" property="fdThirdAccount" jdbcType="VARCHAR" />
@@ -23,7 +23,7 @@
     from tb_funds_details
     where fd_id = #{fdId,jdbcType=BIGINT}
   </select>
-  <insert id="insert" parameterType="com.jebao.jebaodb.entity.TbFundsDetails" >
+  <insert id="insert" parameterType="com.jebao.jebaodb.entity.user.TbFundsDetails" >
     <selectKey resultType="java.lang.Long" keyProperty="fdId" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
@@ -36,7 +36,7 @@
       #{fdSerialAmount,jdbcType=DECIMAL}, #{fdCommissionCharge,jdbcType=DECIMAL}, #{fdSerialStatus,jdbcType=INTEGER}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.jebao.jebaodb.entity.TbFundsDetails" >
+  <insert id="insertSelective" parameterType="com.jebao.jebaodb.entity.user.TbFundsDetails" >
     <selectKey resultType="java.lang.Long" keyProperty="fdId" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
@@ -100,7 +100,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.jebao.jebaodb.entity.TbFundsDetails" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.jebao.jebaodb.entity.user.TbFundsDetails" >
     update tb_funds_details
     <set >
       <if test="fdLoginId != null" >
@@ -133,7 +133,7 @@
     </set>
     where fd_id = #{fdId,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.jebao.jebaodb.entity.TbFundsDetails" >
+  <update id="updateByPrimaryKey" parameterType="com.jebao.jebaodb.entity.user.TbFundsDetails" >
     update tb_funds_details
     set fd_login_id = #{fdLoginId,jdbcType=BIGINT},
       fd_third_account = #{fdThirdAccount,jdbcType=VARCHAR},

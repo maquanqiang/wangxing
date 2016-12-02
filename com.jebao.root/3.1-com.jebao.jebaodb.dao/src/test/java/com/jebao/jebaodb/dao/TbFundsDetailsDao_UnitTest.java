@@ -1,8 +1,8 @@
 package com.jebao.jebaodb.dao;
 
 import com.jebao.jebaodb.dao.base._BaseUnitTest;
-import com.jebao.jebaodb.dao.dao.TbFundsDetailsDao;
-import com.jebao.jebaodb.entity.TbFundsDetails;
+import com.jebao.jebaodb.dao.dao.user.TbFundsDetailsDao;
+import com.jebao.jebaodb.entity.user.TbFundsDetails;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 

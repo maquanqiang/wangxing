@@ -1,4 +1,4 @@
-package com.jebao.jebaodb.entity;
+package com.jebao.jebaodb.entity.user;
 
 import java.math.BigDecimal;
 import java.util.Date;

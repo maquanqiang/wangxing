@@ -1,6 +1,6 @@
 package com.jebao.erp.service.inf.loaner;
 
-import com.jebao.jebaodb.entity.TbFundsDetails;
+import com.jebao.jebaodb.entity.user.TbFundsDetails;
 import com.jebao.jebaodb.entity.extEntity.PageWhere;
 import com.jebao.jebaodb.entity.loaner.TbLoaner;
 import com.jebao.jebaodb.entity.loaner.TbRcpMaterialsTemp;

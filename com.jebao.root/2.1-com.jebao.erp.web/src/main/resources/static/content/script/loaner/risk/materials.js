@@ -94,8 +94,6 @@ var vm = new Vue({
                 data: openVmModel,
                 beforeCreate:function(){
                     var id =openVmModel.formData.id;
-/*                    console.log("el:"+openVmModel.form);
-                    console.log("createOpenVm-id:"+id);*/
                     //填充窗体数据
                     if (id>0){
                         for (var i=0;i<vm.materials.length;i++){
@@ -124,7 +122,6 @@ var vm = new Vue({
                 methods: {
                     fileupload: function(){
                         var fileUploadUrl = $(openVmModel.form).find(".uploadFileUrl");
-                       // var fileName = $(openVmModel.form).find(".btn-fileupload").val();
                         $("#_myUpload_").ajaxSubmit({
                             dataType:  'json', //数据格式为json
                             success:function(data){
@@ -132,14 +129,10 @@ var vm = new Vue({
                                 {
                                     if(data.error==0)
                                     {
-/*                                        console.log("data.url:"+data.url);
-                                        console.log("fileName:"+fileName);*/
-                                        //  alert(data.url);
                                         fileUploadUrl.val(data.url);
                                         return;
                                     }
                                     alert(data.message);
-                                    //console.log("message:"+data.message);
                                     return;
                                 }
                                 alert("--上传失败---");
@@ -147,8 +140,6 @@ var vm = new Vue({
                                 return;
                             },
                             error:function(xhr){
-                               // console.log("error:"+fileUploadUrl.html());
-                              //  console.log("error:"+xhr.responseText);
                                 alert(fileUploadUrl.html());
                                 alert(xhr.responseText);
                             }
@@ -184,7 +175,6 @@ var vm = new Vue({
             vm.createOpenVm("#insertFormId",id);
         },
         openViewForm:function(id){
-            //console.log(id);
             if (isNaN(id)){id=0;}
             var tempObj= $('#viewMaterialModal').clone();
             tempObj.find('form').prop('id','ViewFormId');

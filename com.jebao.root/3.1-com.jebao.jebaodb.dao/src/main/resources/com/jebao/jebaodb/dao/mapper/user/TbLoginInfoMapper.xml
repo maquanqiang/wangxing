@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.jebao.jebaodb.dao.mapper.TbLoginInfoMapper" >
-  <resultMap id="BaseResultMap" type="com.jebao.jebaodb.entity.TbLoginInfo" >
+<mapper namespace="com.jebao.jebaodb.dao.mapper.user.TbLoginInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.jebao.jebaodb.entity.user.TbLoginInfo" >
     <id column="li_id" property="liId" jdbcType="BIGINT" />
     <result column="li_login_name" property="liLoginName" jdbcType="VARCHAR" />
     <result column="li_password" property="liPassword" jdbcType="VARCHAR" />
@@ -18,7 +18,7 @@
     from tb_login_info
     where li_id = #{liId,jdbcType=BIGINT}
   </select>
-  <insert id="insert" parameterType="com.jebao.jebaodb.entity.TbLoginInfo" >
+  <insert id="insert" parameterType="com.jebao.jebaodb.entity.user.TbLoginInfo" >
     <selectKey resultType="java.lang.Long" keyProperty="liId" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
@@ -27,7 +27,7 @@
     values (#{liLoginName,jdbcType=VARCHAR}, #{liPassword,jdbcType=VARCHAR}, #{liCreateTime,jdbcType=TIMESTAMP},
       #{liLastLoginTime,jdbcType=TIMESTAMP}, #{liIsDel,jdbcType=INTEGER})
   </insert>
-  <insert id="insertSelective" parameterType="com.jebao.jebaodb.entity.TbLoginInfo" >
+  <insert id="insertSelective" parameterType="com.jebao.jebaodb.entity.user.TbLoginInfo" >
     <selectKey resultType="java.lang.Long" keyProperty="liId" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
@@ -67,7 +67,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.jebao.jebaodb.entity.TbLoginInfo" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.jebao.jebaodb.entity.user.TbLoginInfo" >
     update tb_login_info
     <set >
       <if test="liLoginName != null" >
@@ -88,7 +88,7 @@
     </set>
     where li_id = #{liId,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.jebao.jebaodb.entity.TbLoginInfo" >
+  <update id="updateByPrimaryKey" parameterType="com.jebao.jebaodb.entity.user.TbLoginInfo" >
     update tb_login_info
     set li_login_name = #{liLoginName,jdbcType=VARCHAR},
       li_password = #{liPassword,jdbcType=VARCHAR},

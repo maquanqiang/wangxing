@@ -1,7 +1,7 @@
-package com.jebao.jebaodb.dao.dao;
+package com.jebao.jebaodb.dao.dao.user;
 
-import com.jebao.jebaodb.dao.mapper.TbFundsDetailsMapper;
-import com.jebao.jebaodb.entity.TbFundsDetails;
+import com.jebao.jebaodb.dao.mapper.user.TbFundsDetailsMapper;
+import com.jebao.jebaodb.entity.user.TbFundsDetails;
 import com.jebao.jebaodb.entity.extEntity.PageWhere;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.jebao.jebaodb.dao.mapper.TbUserDetailsMapper" >
-  <resultMap id="BaseResultMap" type="com.jebao.jebaodb.entity.TbUserDetails" >
+<mapper namespace="com.jebao.jebaodb.dao.mapper.user.TbUserDetailsMapper" >
+  <resultMap id="BaseResultMap" type="com.jebao.jebaodb.entity.user.TbUserDetails" >
     <id column="ud_id" property="udId" jdbcType="BIGINT" />
     <result column="ud_login_id" property="udLoginId" jdbcType="BIGINT" />
     <result column="ud_nick_name" property="udNickName" jdbcType="VARCHAR" />
@@ -36,7 +36,7 @@
     from tb_user_details
     where ud_id = #{udId,jdbcType=BIGINT}
   </select>
-  <insert id="insert" parameterType="com.jebao.jebaodb.entity.TbUserDetails" >
+  <insert id="insert" parameterType="com.jebao.jebaodb.entity.user.TbUserDetails" >
     <selectKey resultType="java.lang.Long" keyProperty="udId" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
@@ -57,7 +57,7 @@
       #{udBankCardNo,jdbcType=VARCHAR}, #{udCreateTime,jdbcType=TIMESTAMP}, #{udUpdateTime,jdbcType=TIMESTAMP}, 
       #{udIsDel,jdbcType=INTEGER})
   </insert>
-  <insert id="insertSelective" parameterType="com.jebao.jebaodb.entity.TbUserDetails" >
+  <insert id="insertSelective" parameterType="com.jebao.jebaodb.entity.user.TbUserDetails" >
     <selectKey resultType="java.lang.Long" keyProperty="udId" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
@@ -187,7 +187,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.jebao.jebaodb.entity.TbUserDetails" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.jebao.jebaodb.entity.user.TbUserDetails" >
     update tb_user_details
     <set >
       <if test="udLoginId != null" >
@@ -253,7 +253,7 @@
     </set>
     where ud_id = #{udId,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.jebao.jebaodb.entity.TbUserDetails" >
+  <update id="updateByPrimaryKey" parameterType="com.jebao.jebaodb.entity.user.TbUserDetails" >
     update tb_user_details
     set ud_login_id = #{udLoginId,jdbcType=BIGINT},
       ud_nick_name = #{udNickName,jdbcType=VARCHAR},
