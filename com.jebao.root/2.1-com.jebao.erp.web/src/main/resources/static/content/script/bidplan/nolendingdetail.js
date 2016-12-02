@@ -23,7 +23,8 @@ var model = {
     riskDataList:[],
     principalTotal:0,
     interestTotal : 0,
-    total : 0
+    total : 0,
+    loanMoney : 0
 
 };
 
@@ -45,6 +46,7 @@ var vm = new Vue({
             if (response.success_is_ok){
                 var data=response.data;
                 vm.plan=data;
+                vm.loanMoney = data.bpBidMoney-data.bpSurplusMoney;
             }
         });
         $.get("/api/bidRiskData/getRiskDataListForPage", dataVal, function (response) {
@@ -73,6 +75,5 @@ var vm = new Vue({
                 }
             });
         }
-
     }
 });
