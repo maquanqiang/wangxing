@@ -93,6 +93,58 @@ var vm = new Vue({
         },
         reviewedPlanList : function(){
             window.location.href="/bidplan/reviewedPlanList";
+        },
+        createOpenVm:function(form,id){
+            var openVmModel ={
+                form:form,
+                formData:$(form).serializeObject(),
+                error:{hide:true,message:""}
+            };
+            openVmModel.formData.id=id;
+            vm.openFormVm = new Vue({
+                el: openVmModel.form,
+                data: openVmModel,
+                beforeCreate:function(){
+                    var id =openVmModel.formData.id;
+                    /*                    console.log("el:"+openVmModel.form);
+                     console.log("createOpenVm-id:"+id);*/
+                    //填充窗体数据
+                    if (id>0){
+                        for (var i=0;i<vm.riskDataList.length;i++){
+                            var item =vm.riskDataList[i];
+                            if (item.brdId==id){
+                                //openVmModel.formData.no = item.no;
+                                openVmModel.formData.name = item.brdName;
+                                //openVmModel.formData.idNumber = item.idNumber;
+                                openVmModel.formData.remark = item.brdRemark;
+                                openVmModel.formData.path = item.brdPath;
+                                //openVmModel.formData.url = item.url;
+                                //openVmModel.formData.createTime = item.createTime;
+                            }
+                        }
+                    }
+                },
+                created:function(){
+
+                }
+            });
+        },
+        openViewForm:function(id){
+            //console.log(id);
+            if (isNaN(id)){id=0;}
+            var tempObj= $('#viewMaterialModal').clone();
+            tempObj.find('form').prop('id','ViewFormId');
+            var tempHtml=tempObj.html();
+            layer.open({
+                title:'预览材料',
+                content:tempHtml,
+                btn: ['确定'],
+                area:['600px','600px'],
+                btn1: function(){
+                    layer.closeAll();
+                }
+            });
+            vm.createOpenVm("#ViewFormId",id);
         }
     }
 });
