@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.jebao.jebaodb.dao.mapper.TbBankCityMapper" >
-  <resultMap id="BaseResultMap" type="com.jebao.jebaodb.entity.TbBankCity" >
+<mapper namespace="com.jebao.jebaodb.dao.mapper.user.TbBankCityMapper" >
+  <resultMap id="BaseResultMap" type="com.jebao.jebaodb.entity.user.TbBankCity" >
     <id column="bc_city_id" property="bcCityId" jdbcType="INTEGER" />
     <result column="bc_provinces_code" property="bcProvincesCode" jdbcType="VARCHAR" />
     <result column="bc_city_code" property="bcCityCode" jdbcType="VARCHAR" />
@@ -16,7 +16,7 @@
     from tb_bank_city
     where bc_city_id = #{bcCityId,jdbcType=INTEGER}
   </select>
-  <insert id="insert" parameterType="com.jebao.jebaodb.entity.TbBankCity" >
+  <insert id="insert" parameterType="com.jebao.jebaodb.entity.user.TbBankCity" >
     <selectKey resultType="java.lang.Integer" keyProperty="bcCityId" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
@@ -25,7 +25,7 @@
     values (#{bcProvincesCode,jdbcType=VARCHAR}, #{bcCityCode,jdbcType=VARCHAR}, #{bcCityName,jdbcType=VARCHAR}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.jebao.jebaodb.entity.TbBankCity" >
+  <insert id="insertSelective" parameterType="com.jebao.jebaodb.entity.user.TbBankCity" >
     <selectKey resultType="java.lang.Integer" keyProperty="bcCityId" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
@@ -53,7 +53,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.jebao.jebaodb.entity.TbBankCity" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.jebao.jebaodb.entity.user.TbBankCity" >
     update tb_bank_city
     <set >
       <if test="bcProvincesCode != null" >
@@ -68,7 +68,7 @@
     </set>
     where bc_city_id = #{bcCityId,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.jebao.jebaodb.entity.TbBankCity" >
+  <update id="updateByPrimaryKey" parameterType="com.jebao.jebaodb.entity.user.TbBankCity" >
     update tb_bank_city
     set bc_provinces_code = #{bcProvincesCode,jdbcType=VARCHAR},
       bc_city_code = #{bcCityCode,jdbcType=VARCHAR},

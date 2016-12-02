@@ -1,8 +1,8 @@
-package com.jebao.erp.service.impl;
+package com.jebao.erp.service.impl.user;
 
-import com.jebao.erp.service.inf.ITbLoginInfoServiceInf;
-import com.jebao.jebaodb.dao.dao.TbLoginInfoDao;
-import com.jebao.jebaodb.entity.TbLoginInfo;
+import com.jebao.erp.service.inf.user.ITbLoginInfoServiceInf;
+import com.jebao.jebaodb.dao.dao.user.TbLoginInfoDao;
+import com.jebao.jebaodb.entity.user.TbLoginInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

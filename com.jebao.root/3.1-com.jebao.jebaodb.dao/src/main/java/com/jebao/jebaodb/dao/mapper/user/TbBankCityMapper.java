@@ -1,6 +1,6 @@
-package com.jebao.jebaodb.dao.mapper;
+package com.jebao.jebaodb.dao.mapper.user;
 
-import com.jebao.jebaodb.entity.TbBankCity;
+import com.jebao.jebaodb.entity.user.TbBankCity;
 
 public interface TbBankCityMapper {
     int insert(TbBankCity record);

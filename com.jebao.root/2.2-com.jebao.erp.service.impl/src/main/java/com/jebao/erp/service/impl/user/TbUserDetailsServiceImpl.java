@@ -1,8 +1,8 @@
-package com.jebao.erp.service.impl;
+package com.jebao.erp.service.impl.user;
 
-import com.jebao.erp.service.inf.ITbUserDetailsServiceInf;
-import com.jebao.jebaodb.dao.dao.TbUserDetailsDao;
-import com.jebao.jebaodb.entity.TbUserDetails;
+import com.jebao.erp.service.inf.user.ITbUserDetailsServiceInf;
+import com.jebao.jebaodb.dao.dao.user.TbUserDetailsDao;
+import com.jebao.jebaodb.entity.user.TbUserDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

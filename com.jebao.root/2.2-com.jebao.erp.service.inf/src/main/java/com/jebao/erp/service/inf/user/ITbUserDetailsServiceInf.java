@@ -1,6 +1,6 @@
-package com.jebao.erp.service.inf;
+package com.jebao.erp.service.inf.user;
 
-import com.jebao.jebaodb.entity.TbUserDetails;
+import com.jebao.jebaodb.entity.user.TbUserDetails;
 
 /**
  * Created by Administrator on 2016/11/15.
