@@ -252,36 +252,75 @@ var vm = new Vue({
     //}
 });
 
+function endTime(startTime, d){
+    startTime = startTime.replace(/-/g,"/");
+    var date = new Date(startTime);
+    date = date.valueOf();
+    date = date + d * 60 * 60 * 1000;
+    var nd = new Date(date);
+    var time1 = nd.toFormatString("yyyy-MM-dd HH:mm:ss");
+    return time1;
+}
+
+function repayDate(loanDate, d, cycle){
+    d *= 1;
+    cycle *= 1;
+    if(!isNaN(cycle) && isloanDate.length !=0 && !isNaN(d)){
+        if(cycle==1){
+
+        }else if(cycle==2){
+
+        }else if(cycle == 3){
+
+        }else if(cycle ==4 ){
+
+        }
+    }
+}
+
+
 /*开始时间选择*/
 laydate({
     elem:'#bpStartTime',
     istime: true,
-    format: 'YYYY-MM-DD hh:mm:ss'
+    istoday : true,
+    format: 'YYYY-MM-DD hh:mm:ss',
+    choose : function(datas) {
+        var bpOpenTime = $("#bpOpenTime").val();
+        if(bpOpenTime!=null && bpOpenTime != ""){
+            var time = endTime(datas,bpOpenTime);
+            $("#bpEndTime").val(time)
+        }
+    }
 });
 /*结束时间选择*/
-laydate({
-    elem:'#bpEndTime',
-    istime: true,
-    format: 'YYYY-MM-DD hh:mm:ss'
-});
+//laydate({
+//    elem:'#bpEndTime',
+//    istime: true,
+//    istoday : true,
+//    format: 'YYYY-MM-DD hh:mm:ss'
+//});
 
 laydate({
     elem:'#bpExpectLoanDate',
     istime: true,
-    format: 'YYYY-MM-DD hh:mm:ss'
+    format: 'YYYY-MM-DD',
+    istoday : true,
+    choose : function(datas){
+        alert(datas)
+    }
 });
 
 laydate({
     elem:'#bpExpectRepayDate',
     istime: true,
-    format: 'YYYY-MM-DD hh:mm:ss'
+    format: 'YYYY-MM-DD'
 });
 
-//
-//$("#bpStartTime").change(function(){
-//    $(this).val();
-//});
-////
-//$("#bpOpenTime").change(function(){
-//    vm.bpOpenTime=$(this).val();
-//});
+$("#bpOpenTime").change(function(){
+    var bpStartTime = $("#bpStartTime").val();
+    if(bpStartTime!=null && bpStartTime != ""){
+        var time = endTime(bpStartTime,$(this).val());
+        $("#bpEndTime").val(time);
+    }
+});
