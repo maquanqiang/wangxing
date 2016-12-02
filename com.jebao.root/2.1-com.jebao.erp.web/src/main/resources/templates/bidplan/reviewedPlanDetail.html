@@ -297,7 +297,7 @@
                                             <td>{{data.brdRemark}}</td>
                                             <td>
                                                 <a href="javascript:;" class="btn btn-default btn-xs"
-                                                   role="button" @click="viewBtn(data.brdId)">预览</a>
+                                                   role="button" @click="openViewForm(data.brdId)">预览</a>
                                             </td>
                                         </tr>
                                         </tbody>
@@ -319,6 +319,18 @@
             </div>
         </div>
     </section>
+</div>
+<!--预览材料图片-->
+<div class="modal col-xs-12" id="viewMaterialModal">
+    <form class="form-horizontal">
+        <div class="box-body">
+            <div class="form-group">
+                <div class="col-sm-12">
+                    <img name="path" :src="formData.path">
+                </div>
+            </div>
+        </div>
+    </form>
 </div>
 <!-- /.content-wrapper -->
 #parse("common/footer.html")
