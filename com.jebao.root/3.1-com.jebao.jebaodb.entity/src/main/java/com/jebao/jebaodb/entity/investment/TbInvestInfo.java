@@ -1,4 +1,4 @@
-package com.jebao.jebaodb.entity.loanmanage;
+package com.jebao.jebaodb.entity.investment;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -8,31 +8,31 @@ public class TbInvestInfo {
 
     private Long iiLoginId;
 
+    private String iiLoginName;
+
     private String iiTrueName;
 
     private String iiThirdAccount;
-
-    private Date iiCreateTime;
 
     private String iiOrderNumber;
 
     private Long iiBpId;
 
+    private String iiBpName;
+
+    private BigDecimal iiMoney;
+
     private Integer iiFreezeStatus;
 
     private String iiContractUrl;
 
-    private String iiSerialNumber;
+    private String iiBpRepayedPeriods;
+
+    private Date iiCreateTime;
 
     private Date iiUpdateTime;
 
     private Integer iiIsDel;
-
-    private BigDecimal iiMoney;
-
-    private Integer iiInvestChannel;
-
-    private Integer iiPhone;
 
     public Long getIiId() {
         return iiId;
@@ -48,6 +48,14 @@ public class TbInvestInfo {
 
     public void setIiLoginId(Long iiLoginId) {
         this.iiLoginId = iiLoginId;
+    }
+
+    public String getIiLoginName() {
+        return iiLoginName;
+    }
+
+    public void setIiLoginName(String iiLoginName) {
+        this.iiLoginName = iiLoginName == null ? null : iiLoginName.trim();
     }
 
     public String getIiTrueName() {
@@ -66,14 +74,6 @@ public class TbInvestInfo {
         this.iiThirdAccount = iiThirdAccount == null ? null : iiThirdAccount.trim();
     }
 
-    public Date getIiCreateTime() {
-        return iiCreateTime;
-    }
-
-    public void setIiCreateTime(Date iiCreateTime) {
-        this.iiCreateTime = iiCreateTime;
-    }
-
     public String getIiOrderNumber() {
         return iiOrderNumber;
     }
@@ -88,6 +88,22 @@ public class TbInvestInfo {
 
     public void setIiBpId(Long iiBpId) {
         this.iiBpId = iiBpId;
+    }
+
+    public String getIiBpName() {
+        return iiBpName;
+    }
+
+    public void setIiBpName(String iiBpName) {
+        this.iiBpName = iiBpName == null ? null : iiBpName.trim();
+    }
+
+    public BigDecimal getIiMoney() {
+        return iiMoney;
+    }
+
+    public void setIiMoney(BigDecimal iiMoney) {
+        this.iiMoney = iiMoney;
     }
 
     public Integer getIiFreezeStatus() {
@@ -106,12 +122,20 @@ public class TbInvestInfo {
         this.iiContractUrl = iiContractUrl == null ? null : iiContractUrl.trim();
     }
 
-    public String getIiSerialNumber() {
-        return iiSerialNumber;
+    public String getIiBpRepayedPeriods() {
+        return iiBpRepayedPeriods;
     }
 
-    public void setIiSerialNumber(String iiSerialNumber) {
-        this.iiSerialNumber = iiSerialNumber == null ? null : iiSerialNumber.trim();
+    public void setIiBpRepayedPeriods(String iiBpRepayedPeriods) {
+        this.iiBpRepayedPeriods = iiBpRepayedPeriods == null ? null : iiBpRepayedPeriods.trim();
+    }
+
+    public Date getIiCreateTime() {
+        return iiCreateTime;
+    }
+
+    public void setIiCreateTime(Date iiCreateTime) {
+        this.iiCreateTime = iiCreateTime;
     }
 
     public Date getIiUpdateTime() {
@@ -128,29 +152,5 @@ public class TbInvestInfo {
 
     public void setIiIsDel(Integer iiIsDel) {
         this.iiIsDel = iiIsDel;
-    }
-
-    public BigDecimal getIiMoney() {
-        return iiMoney;
-    }
-
-    public void setIiMoney(BigDecimal iiMoney) {
-        this.iiMoney = iiMoney;
-    }
-
-    public Integer getIiInvestChannel() {
-        return iiInvestChannel;
-    }
-
-    public void setIiInvestChannel(Integer iiInvestChannel) {
-        this.iiInvestChannel = iiInvestChannel;
-    }
-
-    public Integer getIiPhone() {
-        return iiPhone;
-    }
-
-    public void setIiPhone(Integer iiPhone) {
-        this.iiPhone = iiPhone;
     }
 }

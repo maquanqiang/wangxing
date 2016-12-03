@@ -341,22 +341,24 @@
                                         <thead>
                                         <tr role="row">
                                             <th width="14%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">资金来源</th>
+                                            <th width="14%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">用户名</th>
                                             <th width="14%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">投资方姓名</th>
-                                            <th width="14%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">投资人电话</th>
                                             <th width="14%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">投资金额</th>
                                             <th width="14%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">投资比例</th>
-                                            <th width="14%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">款项计划表</th>
+                                            <th width="14%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">投资时间</th>
+                                            <th width="14%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">合同</th>
                                             <th width="14%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">操作</th>
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        <tr role="row">
+                                        <tr role="row" v-for="data in inestInfoList">
                                             <td>个人</td>
-                                            <td>常寒梅</td>
-                                            <td>15966356987</td>
-                                            <td>50000元</td>
-                                            <td>100%</td>
-                                            <td>款项计划表</td>
+                                            <td>{{data.loginName}}</td>
+                                            <td>{{data.trueName}}</td>
+                                            <td>{{data.money}}</td>
+                                            <td>{{(data.money/bpBidMoney)}}</td>
+                                            <td>{{data.createTime}}</td>
+                                            <td>0份</td>
                                             <td>
                                                 <a href="javascript:;" class="btn btn-default btn-xs" role="button" target="_blank">查看</a>
                                             </td>
@@ -371,53 +373,53 @@
             </div>
         </div>
         <!--标的投资记录-->
-        <div class="row">
-            <div class="col-xs-12">
-                <div class="box-title">
-                    <h5>标的投资记录</h5>
-                </div>
-                <div class="box box-primary">
-                    <div class="box-body">
-                        <div class="dataTables_wrapper">
-                            <div class="row">
-                                <div class="col-xs-12">
-                                    <table class="table table-bordered table-hover dataTable" role="grid" aria-describedby="orderlist_table_info">
-                                        <thead>
-                                        <tr role="row">
-                                            <th width="16%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">用户名</th>
-                                            <th width="16%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">真实姓名</th>
-                                            <th width="16%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">手机号</th>
-                                            <th width="16%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">投资时间</th>
-                                            <th width="16%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">投资金额</th>
-                                            <th width="16%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">投资来源</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        <tr role="row">
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                        </tr>
-                                        <tr role="row">
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                        </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <!--<div class="row">-->
+            <!--<div class="col-xs-12">-->
+                <!--<div class="box-title">-->
+                    <!--<h5>标的投资记录</h5>-->
+                <!--</div>-->
+                <!--<div class="box box-primary">-->
+                    <!--<div class="box-body">-->
+                        <!--<div class="dataTables_wrapper">-->
+                            <!--<div class="row">-->
+                                <!--<div class="col-xs-12">-->
+                                    <!--<table class="table table-bordered table-hover dataTable" role="grid" aria-describedby="orderlist_table_info">-->
+                                        <!--<thead>-->
+                                        <!--<tr role="row">-->
+                                            <!--<th width="16%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">用户名</th>-->
+                                            <!--<th width="16%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">真实姓名</th>-->
+                                            <!--<th width="16%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">手机号</th>-->
+                                            <!--<th width="16%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">投资时间</th>-->
+                                            <!--<th width="16%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">投资金额</th>-->
+                                            <!--<th width="16%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">投资来源</th>-->
+                                        <!--</tr>-->
+                                        <!--</thead>-->
+                                        <!--<tbody>-->
+                                        <!--<tr role="row">-->
+                                            <!--<td></td>-->
+                                            <!--<td></td>-->
+                                            <!--<td></td>-->
+                                            <!--<td></td>-->
+                                            <!--<td></td>-->
+                                            <!--<td></td>-->
+                                        <!--</tr>-->
+                                        <!--<tr role="row">-->
+                                            <!--<td></td>-->
+                                            <!--<td></td>-->
+                                            <!--<td></td>-->
+                                            <!--<td></td>-->
+                                            <!--<td></td>-->
+                                            <!--<td></td>-->
+                                        <!--</tr>-->
+                                        <!--</tbody>-->
+                                    <!--</table>-->
+                                <!--</div>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
         <!--按钮-->
         <div class="row">
             <div class="col-xs-12">

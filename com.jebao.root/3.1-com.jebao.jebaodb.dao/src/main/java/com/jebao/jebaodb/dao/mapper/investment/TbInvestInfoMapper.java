@@ -1,7 +1,7 @@
-package com.jebao.jebaodb.dao.mapper.loanmanage;
+package com.jebao.jebaodb.dao.mapper.investment;
 
 import com.jebao.jebaodb.entity.extEntity.PageWhere;
-import com.jebao.jebaodb.entity.loanmanage.TbInvestInfo;
+import com.jebao.jebaodb.entity.investment.TbInvestInfo;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -22,6 +22,4 @@ public interface TbInvestInfoMapper {
     List<TbInvestInfo> selectByConditionForPage(@Param("record") TbInvestInfo record, @Param("pageWhere") PageWhere pageWhere);
 
     int selectByConditionCount(@Param("record") TbInvestInfo record);
-
-    List<TbInvestInfo> selectAllByCondition(@Param("record") TbInvestInfo record);
 }

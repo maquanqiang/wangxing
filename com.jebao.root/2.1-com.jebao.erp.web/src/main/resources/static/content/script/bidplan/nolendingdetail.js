@@ -24,7 +24,8 @@ var model = {
     principalTotal:0,
     interestTotal : 0,
     total : 0,
-    loanMoney : 0
+    loanMoney : 0,
+    investInfoList : []
 
 };
 
@@ -52,6 +53,11 @@ var vm = new Vue({
         $.get("/api/bidRiskData/getRiskDataListForPage", dataVal, function (response) {
             if (response.success_is_ok) {
                 vm.riskDataList = response.data;
+            }
+        })
+        $.get("/api/investment/list", dataVal, function (response) {
+            if (response.success_is_ok) {
+                vm.investInfoList = response.data;
             }
         })
     },
