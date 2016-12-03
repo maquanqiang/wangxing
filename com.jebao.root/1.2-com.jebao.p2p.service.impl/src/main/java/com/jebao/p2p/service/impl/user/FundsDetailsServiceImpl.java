@@ -1,9 +1,9 @@
-package com.jebao.erp.service.impl.user;
+package com.jebao.p2p.service.impl.user;
 
-import com.jebao.erp.service.inf.user.IFundsDetailsServiceInf;
 import com.jebao.jebaodb.dao.dao.user.TbFundsDetailsDao;
 import com.jebao.jebaodb.entity.extEntity.PageWhere;
 import com.jebao.jebaodb.entity.user.TbFundsDetails;
+import com.jebao.p2p.service.inf.user.IFundsDetailsServiceInf;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,17 +14,20 @@ import java.util.List;
  */
 @Service
 public class FundsDetailsServiceImpl implements IFundsDetailsServiceInf {
-
     @Autowired
     private TbFundsDetailsDao tbFundsDetailsDao;
 
     @Override
-    public List<TbFundsDetails> selectByParamsForPage(TbFundsDetails record, PageWhere pageWhere) {
-        return tbFundsDetailsDao.selectByParamsForPage(record,pageWhere);
+    public List<TbFundsDetails> selectFundsDetailsByLoginIdForPage(Long loginId, PageWhere page) {
+        TbFundsDetails record = new TbFundsDetails();
+        record.setFdLoginId(loginId);
+        return tbFundsDetailsDao.selectByParamsForPage(record, page);
     }
 
     @Override
-    public int selectByParamsForPageCount(TbFundsDetails record){
+    public int selectFundsDetailsByLoginIdForPageCount(Long loginId) {
+        TbFundsDetails record = new TbFundsDetails();
+        record.setFdLoginId(loginId);
         return tbFundsDetailsDao.selectByParamsForPageCount(record);
     }
 }

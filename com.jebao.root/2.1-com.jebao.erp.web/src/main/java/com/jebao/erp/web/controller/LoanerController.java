@@ -59,4 +59,16 @@ public class LoanerController extends _BaseController {
         return "loaner/risk/materials";
     }
     //endregion
+
+    //region 资金信息
+    @RequestMapping(value = "/funds/{id}", method = RequestMethod.GET)
+    public String funds(@PathVariable Long id, Model model) {
+        model.addAttribute("loginId", id);
+        return "loaner/funds";
+    }
+    //endregion
+
+    //region 借款信息
+
+    //endregion
 }

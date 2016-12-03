@@ -161,7 +161,9 @@
         WHERE
         <include refid="selectByParams_Where_Clause" />
         order by fd_id DESC
-        LIMIT #{pageWhere.begin},#{pageWhere.pageSize}
+        <if test="pageWhere != null">
+            LIMIT #{pageWhere.begin},#{pageWhere.pageSize}
+        </if>
     </select>
     <select id="selectByParamsForPageCount" resultType="java.lang.Integer">
         select count(*)

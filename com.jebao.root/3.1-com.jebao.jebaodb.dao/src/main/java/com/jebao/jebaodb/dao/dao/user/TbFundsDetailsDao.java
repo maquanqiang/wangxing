@@ -40,10 +40,16 @@ public class TbFundsDetailsDao {
     }
     public List<TbFundsDetails> selectByParamsForPage(TbFundsDetails record,PageWhere pageWhere)
     {
+        if (record == null){
+            record = new TbFundsDetails();
+        }
         return tbFundsDetailsMapper.selectByParamsForPage(record, pageWhere);
     }
     public int selectByParamsForPageCount(TbFundsDetails record)
     {
+        if (record == null){
+            record = new TbFundsDetails();
+        }
         return tbFundsDetailsMapper.selectByParamsForPageCount(record);
     }
 }

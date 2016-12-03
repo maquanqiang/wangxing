@@ -34,7 +34,9 @@ var vm = new Vue({
         $.get("/api/loaner/details",dataVal,function(response){
             if (response.success_is_ok){
                 var data=response.data;
-                vm.loaner=data;
+                if(data!=null) {
+                    vm.loaner = data;
+                }
             }
         });
     }

@@ -14,6 +14,7 @@
     </section>
     <!-- Main content -->
     <section class="content">
+        <form id="search_form"><input type="hidden" name="loginId" value="${loginId}"/></form>
         <!--资金概况-->
         <div class="box-title">
             <h5>资金概况</h5>
@@ -78,10 +79,10 @@
                                         </thead>
                                         <tbody>
                                         <tr role="row">
-                                            <td>2</td>
-                                            <td>500</td>
-                                            <td>3</td>
-                                            <td>500</td>
+                                            <td>{{ fundsSum.czCount }}</td>
+                                            <td>{{ fundsSum.czAmounts }}</td>
+                                            <td>{{ fundsSum.txCount }}</td>
+                                            <td>{{ fundsSum.txAmounts }}</td>
                                         </tr>
                                         </tbody>
                                     </table>
@@ -115,24 +116,23 @@
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        <tr role="row">
-                                            <td>0000101011</td>
-                                            <td>长山龙姝姝</td>
-                                            <td>100</td>
-                                            <td>2016/10/01 8:01:09</td>
-                                            <td>2</td>
-                                            <td>充值</td>
-                                        </tr>
-                                        <tr role="row">
-                                            <td>0000101012</td>
-                                            <td>长山龙姝姝</td>
-                                            <td>100</td>
-                                            <td>2016/10/01 8:01:09</td>
-                                            <td>2</td>
-                                            <td>充值</td>
-                                        </tr>
+                                        <template v-for="item in fundsDetails">
+                                            <tr role="row">
+                                                <td>{{ item.serialNumber }}</td>
+                                                <td>长山龙姝姝</td>
+                                                <td>{{ item.serialAmount }}</td>
+                                                <td>{{ item.serialTime }}</td>
+                                                <td>{{ item.commissionCharge }}</td>
+                                                <td>{{ item.serialTypeName }}</td>
+                                            </tr>
+                                        </template>
                                         </tbody>
                                     </table>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12 pagination">
+                                    <div id="pageNum"></div>
                                 </div>
                             </div>
                         </div>
@@ -144,5 +144,6 @@
 </div>
 <!-- /.content-wrapper -->
 #parse("common/footer.html")
+<script src=$UrlHelperTool.href("/content/script/loaner/funds.js")></script>
 </body>
 </html>
