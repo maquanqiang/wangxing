@@ -1,6 +1,31 @@
 /**
  * Created by Jack on 2016/11/30.
  */
+// define the item component
+Vue.component('tree-item', {
+    template: '#item-template',
+    props: {
+        model: Object
+    },
+    data: function () {
+        return {
+            open: true
+        }
+    },
+    computed: {
+        hasChildren: function () {
+            return this.model.children &&
+                this.model.children.length
+        }
+    },
+    methods: {
+        toggle: function () {
+            if (this.hasChildren) {
+                this.open = !this.open
+            }
+        }
+    }
+});
 
 var model = {
     //查询条件
@@ -10,7 +35,6 @@ var model = {
     //团队
     teams:[],
     dataList:[],
-    treeList:[],
     //弹窗vm实例
     openFormVm:{}
 };
@@ -18,6 +42,28 @@ var model = {
 var vm = new Vue({
     el:".content",
     data:model,
+    computed:{
+        treeData:function(){
+            var dataSource = this.teams;
+            if (dataSource.length === 0){
+                return {name:"金额宝"};
+            }
+            var findChildrenFunc = function(teamId){
+                var children = [];
+                for (var i=0;i<dataSource.length;i++){
+                    var item = dataSource[i];
+                    if (item.parentId === teamId){
+                        var itemChildren = findChildrenFunc(item.id);
+                        item.children = itemChildren;
+                        children.push(item);
+                    }
+                }
+                return children;
+            }
+            var children = findChildrenFunc(0);
+            return {name:"金额宝",children:children};
+        },
+    },
     beforeCreate:function(){
         //初始化数据
         model.searchObj=$("#search_form").serializeObject();
@@ -37,17 +83,12 @@ var vm = new Vue({
                 });
                 vm.teams=teams;
                 vm.departments=departments;
+                vm.search();//此页面vm.search 查询依赖于vm.teams
             }
         });
     },
     created:function(){
         //this.search();
-        var waitTeamsMounted = setInterval(function(){
-            if (vm.teams.length>0){
-                vm.search();
-                clearInterval(waitTeamsMounted)
-            }
-        },300);
     },
     mounted:function(){
         //在 el 被替换后，做页面元素变动的操作
@@ -55,6 +96,7 @@ var vm = new Vue({
             model.searchObj[this.name]=this.value;
         });
     },
+
     methods:{
         //查询
         search:function(event){
@@ -216,6 +258,8 @@ var vm = new Vue({
         },
     }
 });
+
+
 
 
 
