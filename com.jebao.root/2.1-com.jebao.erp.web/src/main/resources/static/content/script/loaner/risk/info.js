@@ -100,12 +100,12 @@ var vm = new Vue({
             });
         },
         save: function(){
-            $("#btn-save").addClass("btn disabled");
-            layer.load(2);
             var bootstrapValidator = $("#order_search_form").data('bootstrapValidator').validate();
             if(!bootstrapValidator.isValid()){
                 return false;
             }
+            $("#btn-save").addClass("btn disabled");
+            layer.load(2);
             var submitModel = $("#order_search_form").serializeObject();
             $.post("/api/risk/post",submitModel,function(response){
                 if (response.success_is_ok){
