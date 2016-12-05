@@ -61,6 +61,10 @@ public class TbInvestInfoDao {
     }
 
 
+    public List<TbInvestInfo> selectBybpId(@Param("record")TbInvestInfo record, @Param("pageWhere")PageWhere pageWhere){
+        return mapper.selectByBpId(record, pageWhere);
+    }
+
     @Transactional
     public int insertForTransactional(TbInvestInfo record) {
         return mapper.insert(record);

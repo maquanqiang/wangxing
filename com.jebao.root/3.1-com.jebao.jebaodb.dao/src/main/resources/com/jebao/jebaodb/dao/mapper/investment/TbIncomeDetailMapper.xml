@@ -23,12 +23,13 @@
     <result column="ind_create_time" property="indCreateTime" jdbcType="TIMESTAMP" />
     <result column="ind_update_time" property="indUpdateTime" jdbcType="TIMESTAMP" />
     <result column="ind_is_del" property="indIsDel" jdbcType="INTEGER" />
+    <result column="ind_bp_id" property="indBpId" jdbcType="BIGINT" />
   </resultMap>
   <sql id="Base_Column_List" >
     ind_id, ind_ii_id, ind_login_id, ind_true_name, ind_third_account, ind_bp_number, 
     ind_bp_name, ind_periods, ind_date_time, ind_fact_date_time, ind_overdue_days, ind_overdue_money, 
     ind_fund_type, ind_money, ind_fact_moeny, ind_interest_st, ind_interest_et, ind_status, 
-    ind_create_time, ind_update_time, ind_is_del
+    ind_create_time, ind_update_time, ind_is_del, ind_bp_id
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select 
@@ -43,7 +44,7 @@
       ind_fact_date_time, ind_overdue_days, ind_overdue_money, 
       ind_fund_type, ind_money, ind_fact_moeny, 
       ind_interest_st, ind_interest_et, ind_status, 
-      ind_create_time, ind_update_time, ind_is_del
+      ind_create_time, ind_update_time, ind_is_del, ind_bp_id
       )
     values (#{indId,jdbcType=BIGINT}, #{indIiId,jdbcType=BIGINT}, #{indLoginId,jdbcType=BIGINT}, 
       #{indTrueName,jdbcType=VARCHAR}, #{indThirdAccount,jdbcType=VARCHAR}, #{indBpNumber,jdbcType=VARCHAR}, 
@@ -51,7 +52,8 @@
       #{indFactDateTime,jdbcType=TIMESTAMP}, #{indOverdueDays,jdbcType=INTEGER}, #{indOverdueMoney,jdbcType=DECIMAL}, 
       #{indFundType,jdbcType=INTEGER}, #{indMoney,jdbcType=DECIMAL}, #{indFactMoeny,jdbcType=DECIMAL}, 
       #{indInterestSt,jdbcType=TIMESTAMP}, #{indInterestEt,jdbcType=TIMESTAMP}, #{indStatus,jdbcType=INTEGER}, 
-      #{indCreateTime,jdbcType=TIMESTAMP}, #{indUpdateTime,jdbcType=TIMESTAMP}, #{indIsDel,jdbcType=INTEGER}
+      #{indCreateTime,jdbcType=TIMESTAMP}, #{indUpdateTime,jdbcType=TIMESTAMP}, #{indIsDel,jdbcType=INTEGER},
+      #{indBpId,jdbcType=BIGINT}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.jebao.jebaodb.entity.investment.TbIncomeDetail" >
@@ -120,6 +122,9 @@
       <if test="indIsDel != null" >
         ind_is_del,
       </if>
+      <if test="indIiId != null" >
+          ind_bp_id,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="indId != null" >
@@ -185,6 +190,9 @@
       <if test="indIsDel != null" >
         #{indIsDel,jdbcType=INTEGER},
       </if>
+        <if test="indBpId != null" >
+            #{indBpId,jdbcType=BIGINT},
+        </if>
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.jebao.jebaodb.entity.investment.TbIncomeDetail" >
@@ -250,6 +258,9 @@
       <if test="indIsDel != null" >
         ind_is_del = #{indIsDel,jdbcType=INTEGER},
       </if>
+        <if test="indBpId != null" >
+            ind_bp_id = #{indBpId,jdbcType=BIGINT},
+        </if>
         ind_update_time = NOW()
     </set>
     where ind_id = #{indId,jdbcType=BIGINT}
@@ -275,72 +286,81 @@
       ind_status = #{indStatus,jdbcType=INTEGER},
       ind_create_time = #{indCreateTime,jdbcType=TIMESTAMP},
       ind_update_time = #{indUpdateTime,jdbcType=TIMESTAMP},
-      ind_is_del = #{indIsDel,jdbcType=INTEGER}
+      ind_is_del = #{indIsDel,jdbcType=INTEGER},
+      ind_bp_id = #{indBpId,jdbcType=BIGINT}
     where ind_id = #{indId,jdbcType=BIGINT}
   </update>
 
     <!--==================================================华丽分割线==================================================-->
-    <sql id="">
-        <if test="indIiId != null" >
-            ind_ii_id = #{indIiId,jdbcType=BIGINT},
+    <sql id="selectByCondition_Where_Clause">
+        <if test="record.indIiId != null" >
+          AND ind_ii_id = #{record.indIiId,jdbcType=BIGINT}
         </if>
-        <if test="indLoginId != null" >
-            ind_login_id = #{indLoginId,jdbcType=BIGINT},
+        <if test="record.indLoginId != null" >
+          AND ind_login_id = #{record.indLoginId,jdbcType=BIGINT}
         </if>
-        <if test="indTrueName != null" >
-            ind_true_name = #{indTrueName,jdbcType=VARCHAR},
+        <if test="record.indTrueName != null" >
+          AND ind_true_name = #{record.indTrueName,jdbcType=VARCHAR}
         </if>
-        <if test="indThirdAccount != null" >
-            ind_third_account = #{indThirdAccount,jdbcType=VARCHAR},
+        <if test="record.indThirdAccount != null" >
+           AND  ind_third_account = #{record.indThirdAccount,jdbcType=VARCHAR}
         </if>
-        <if test="indBpNumber != null" >
-            ind_bp_number = #{indBpNumber,jdbcType=VARCHAR},
+        <if test="record.indBpNumber != null" >
+           AND  ind_bp_number = #{record.indBpNumber,jdbcType=VARCHAR}
         </if>
-        <if test="indBpName != null" >
-            ind_bp_name = #{indBpName,jdbcType=VARCHAR},
+        <if test="record.indBpName != null" >
+           AND  ind_bp_name = #{record.indBpName,jdbcType=VARCHAR}
         </if>
-        <if test="indPeriods != null" >
-            ind_periods = #{indPeriods,jdbcType=INTEGER},
+        <if test="record.indPeriods != null" >
+           AND  ind_periods = #{record.indPeriods,jdbcType=INTEGER}
         </if>
-        <if test="indDateTime != null" >
-            ind_date_time = #{indDateTime,jdbcType=TIMESTAMP},
+        <if test="record.indDateTime != null" >
+           AND  ind_date_time = #{record.indDateTime,jdbcType=TIMESTAMP}
         </if>
-        <if test="indFactDateTime != null" >
-            ind_fact_date_time = #{indFactDateTime,jdbcType=TIMESTAMP},
+        <if test="record.indFactDateTime != null" >
+           AND  ind_fact_date_time = #{record.indFactDateTime,jdbcType=TIMESTAMP}
         </if>
-        <if test="indOverdueDays != null" >
-            ind_overdue_days = #{indOverdueDays,jdbcType=INTEGER},
+        <if test="record.indOverdueDays != null" >
+           AND  ind_overdue_days = #{record.indOverdueDays,jdbcType=INTEGER}
         </if>
-        <if test="indOverdueMoney != null" >
-            ind_overdue_money = #{indOverdueMoney,jdbcType=DECIMAL},
+        <if test="record.indOverdueMoney != null" >
+           AND  ind_overdue_money = #{record.indOverdueMoney,jdbcType=DECIMAL}
         </if>
-        <if test="indFundType != null" >
-            ind_fund_type = #{indFundType,jdbcType=INTEGER},
+        <if test="record.indFundType != null" >
+           AND  ind_fund_type = #{record.indFundType,jdbcType=INTEGER}
         </if>
-        <if test="indMoney != null" >
-            ind_money = #{indMoney,jdbcType=DECIMAL},
+        <if test="record.indMoney != null" >
+           AND  ind_money = #{record.indMoney,jdbcType=DECIMAL}
         </if>
-        <if test="indFactMoeny != null" >
-            ind_fact_moeny = #{indFactMoeny,jdbcType=DECIMAL},
+        <if test="record.indFactMoeny != null" >
+           AND  ind_fact_moeny = #{record.indFactMoeny,jdbcType=DECIMAL}
         </if>
-        <if test="indInterestSt != null" >
-            ind_interest_st = #{indInterestSt,jdbcType=TIMESTAMP},
+        <if test="record.indInterestSt != null" >
+           AND  ind_interest_st = #{record.indInterestSt,jdbcType=TIMESTAMP}
         </if>
-        <if test="indInterestEt != null" >
-            ind_interest_et = #{indInterestEt,jdbcType=TIMESTAMP},
+        <if test="record.indInterestEt != null" >
+           AND  ind_interest_et = #{record.indInterestEt,jdbcType=TIMESTAMP}
         </if>
-        <if test="indStatus != null" >
-            ind_status = #{indStatus,jdbcType=INTEGER},
+        <if test="record.indStatus != null" >
+           AND  ind_status = #{record.indStatus,jdbcType=INTEGER}
         </if>
-        <if test="indCreateTime != null" >
-            ind_create_time = #{indCreateTime,jdbcType=TIMESTAMP},
+        <if test="record.indCreateTime != null" >
+           AND  ind_create_time = #{record.indCreateTime,jdbcType=TIMESTAMP}
         </if>
-        <if test="indUpdateTime != null" >
-            ind_update_time = #{indUpdateTime,jdbcType=TIMESTAMP},
+        <if test="record.indUpdateTime != null" >
+           AND  ind_update_time = #{record.indUpdateTime,jdbcType=TIMESTAMP}
+        </if>
+        <if test="record.indBpId != null" >
+           AND  ind_bp_id = #{record.indBpId,jdbcType=BIGINT}
+        </if>
+        <if test="record.bpTrueName != null" >
+            AND bp_true_name = #{record.bpTrueName,jdbcType=VARCHAR}
         </if>
             ind_is_del = 1
     </sql>
-
+    <resultMap id="myResultMap" type="com.jebao.jebaodb.entity.investment.TbIncomeDetail" >
+        <result column="bp_true_name" property="bpTrueName" jdbcType="VARCHAR" />
+    </resultMap>
 
     <select id="selectForPage" resultMap="BaseResultMap">
         select
@@ -370,4 +390,33 @@
             <include refid="selectByCondition_Where_Clause" />
         </where>
     </select>
+
+    <select id="selectGroupByConditionForPage" resultMap="myResultMap">
+        SELECT
+            ind_bp_number,
+            ind_bp_name,
+            ind_true_name,
+            ind_periods,
+            ind_date_time,
+            ind_fact_date_time,
+            ind_overdue_days,
+            sum(ind_overdue_money) AS ind_overdue_money,
+            ind_fund_type,
+            sum(ind_money) AS ind_money,
+            sum(ind_fact_moeny) AS ind_fact_money,
+            ind_status,
+            bp_true_name
+        FROM
+            tb_income_detail LEFT JOIN tb_bid_plan ON ind_bp_id = bp_id
+        <where>
+            <include refid="selectByCondition_Where_Clause" />
+        </where>
+        GROUP BY
+            ind_bp_number, ind_fund_type DESC, ind_periods
+        <if test="pageWhere.orderBy!=null">
+            ${pageWhere.orderBy}
+        </if>
+        LIMIT #{pageWhere.begin},#{pageWhere.pageSize}
+    </select>
+
 </mapper>

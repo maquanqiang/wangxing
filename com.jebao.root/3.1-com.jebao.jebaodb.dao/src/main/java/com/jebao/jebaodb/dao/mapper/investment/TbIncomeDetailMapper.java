@@ -3,6 +3,7 @@ package com.jebao.jebaodb.dao.mapper.investment;
 
 import com.jebao.jebaodb.entity.extEntity.PageWhere;
 import com.jebao.jebaodb.entity.investment.TbIncomeDetail;
+import com.jebao.jebaodb.entity.postLoan.search.RepaymentDetailSM;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -23,4 +24,6 @@ public interface TbIncomeDetailMapper {
     List<TbIncomeDetail> selectByConditionForPage(@Param("record") TbIncomeDetail record, @Param("pageWhere") PageWhere pageWhere);
 
     int selectByConditionCount(@Param("record") TbIncomeDetail record);
+
+    List<TbIncomeDetail> selectGroupByConditionForPage(@Param("record") RepaymentDetailSM record, @Param("pageWhere") PageWhere pageWhere);
 }

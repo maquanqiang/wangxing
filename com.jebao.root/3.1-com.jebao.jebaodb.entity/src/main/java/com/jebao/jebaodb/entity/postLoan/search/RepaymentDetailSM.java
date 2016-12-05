@@ -1,9 +1,13 @@
-package com.jebao.jebaodb.entity.investment;
+package com.jebao.jebaodb.entity.postLoan.search;
 
 import java.math.BigDecimal;
 import java.util.Date;
 
-public class TbIncomeDetail {
+/**
+ * Created by Lee on 2016/11/17.
+ */
+public class RepaymentDetailSM {
+
     private Long indId;
 
     private Long indBpId;
@@ -48,10 +52,56 @@ public class TbIncomeDetail {
 
     private Integer indIsDel;
 
-    //------------------------------------------
-    private String bpTrueName;              //借款人姓名
+    private String bpTrueName;
+
+    //------------------时间条件查询接收-----------------
+    private String searchDateSt;
+
+    private String searchDateEnd;
+
+    private String searchDateType;
 
 
+
+    public String getBpTrueName() {
+        return bpTrueName;
+    }
+
+    public void setBpTrueName(String bpTrueName) {
+        this.bpTrueName = bpTrueName;
+    }
+
+    public String getSearchDateSt() {
+        return searchDateSt;
+    }
+
+    public void setSearchDateSt(String searchDateSt) {
+        this.searchDateSt = searchDateSt;
+    }
+
+    public String getSearchDateEnd() {
+        return searchDateEnd;
+    }
+
+    public void setSearchDateEnd(String searchDateEnd) {
+        this.searchDateEnd = searchDateEnd;
+    }
+
+    public String getSearchDateType() {
+        return searchDateType;
+    }
+
+    public void setSearchDateType(String searchDateType) {
+        this.searchDateType = searchDateType;
+    }
+
+    public Long getIndIiId() {
+        return indIiId;
+    }
+
+    public void setIndIiId(Long indIiId) {
+        this.indIiId = indIiId;
+    }
 
     public Long getIndId() {
         return indId;
@@ -61,12 +111,12 @@ public class TbIncomeDetail {
         this.indId = indId;
     }
 
-    public Long getIndIiId() {
-        return indIiId;
+    public Long getIndBpId() {
+        return indBpId;
     }
 
-    public void setIndIiId(Long indIiId) {
-        this.indIiId = indIiId;
+    public void setIndBpId(Long indBpId) {
+        this.indBpId = indBpId;
     }
 
     public Long getIndLoginId() {
@@ -82,7 +132,7 @@ public class TbIncomeDetail {
     }
 
     public void setIndTrueName(String indTrueName) {
-        this.indTrueName = indTrueName == null ? null : indTrueName.trim();
+        this.indTrueName = indTrueName;
     }
 
     public String getIndThirdAccount() {
@@ -90,7 +140,7 @@ public class TbIncomeDetail {
     }
 
     public void setIndThirdAccount(String indThirdAccount) {
-        this.indThirdAccount = indThirdAccount == null ? null : indThirdAccount.trim();
+        this.indThirdAccount = indThirdAccount;
     }
 
     public String getIndBpNumber() {
@@ -98,7 +148,7 @@ public class TbIncomeDetail {
     }
 
     public void setIndBpNumber(String indBpNumber) {
-        this.indBpNumber = indBpNumber == null ? null : indBpNumber.trim();
+        this.indBpNumber = indBpNumber;
     }
 
     public String getIndBpName() {
@@ -106,7 +156,7 @@ public class TbIncomeDetail {
     }
 
     public void setIndBpName(String indBpName) {
-        this.indBpName = indBpName == null ? null : indBpName.trim();
+        this.indBpName = indBpName;
     }
 
     public Integer getIndPeriods() {
@@ -219,21 +269,5 @@ public class TbIncomeDetail {
 
     public void setIndIsDel(Integer indIsDel) {
         this.indIsDel = indIsDel;
-    }
-
-    public Long getIndBpId() {
-        return indBpId;
-    }
-
-    public void setIndBpId(Long indBpId) {
-        this.indBpId = indBpId;
-    }
-
-    public String getBpTrueName() {
-        return bpTrueName;
-    }
-
-    public void setBpTrueName(String bpTrueName) {
-        this.bpTrueName = bpTrueName;
     }
 }

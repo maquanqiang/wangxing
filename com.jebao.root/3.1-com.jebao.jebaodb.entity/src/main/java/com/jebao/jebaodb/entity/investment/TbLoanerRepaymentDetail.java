@@ -38,6 +38,8 @@ public class TbLoanerRepaymentDetail {
 
     private Integer lrdIsDel;
 
+    private Date lrdFactDateTime;
+
     public Long getLrdId() {
         return lrdId;
     }
@@ -172,5 +174,13 @@ public class TbLoanerRepaymentDetail {
 
     public void setLrdIsDel(Integer lrdIsDel) {
         this.lrdIsDel = lrdIsDel;
+    }
+
+    public Date getLrdFactDateTime() {
+        return lrdFactDateTime;
+    }
+
+    public void setLrdFactDateTime(Date lrdFactDateTime) {
+        this.lrdFactDateTime = lrdFactDateTime;
     }
 }

@@ -22,4 +22,7 @@ public interface TbInvestInfoMapper {
     List<TbInvestInfo> selectByConditionForPage(@Param("record") TbInvestInfo record, @Param("pageWhere") PageWhere pageWhere);
 
     int selectByConditionCount(@Param("record") TbInvestInfo record);
+
+    List<TbInvestInfo> selectByBpId(@Param("record") TbInvestInfo record, @Param("pageWhere") PageWhere pageWhere);
+
 }

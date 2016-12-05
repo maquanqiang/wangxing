@@ -17,4 +17,7 @@ public interface IInvestInfoServiceInf {
     List<TbInvestInfo> selectByConditionForPage(TbInvestInfo record, PageWhere pageWhere);
 
     int selectByConditionCount(TbInvestInfo record);
+
+    List<TbInvestInfo> selectByBpId(TbInvestInfo record, PageWhere pageWhere);
+
 }

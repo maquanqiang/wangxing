@@ -61,7 +61,7 @@ var vm = new Vue({
             vm.principalTotal = 0;
             vm.interestTotal = 0;
             vm.total = 0;
-            $.get("/api/bidPlan/getLoanFundIntents",vm.plan,function(response){
+            $.post("/api/bidPlan/getLoanFundIntents",vm.plan,function(response){
                 if (response.success_is_ok){
                     vm.intentList = response.data;
                     for(var i=0; i<vm.intentList.length; i++){

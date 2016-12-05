@@ -210,8 +210,8 @@ var vm = new Vue({
                 if (response.success_is_ok){
                     vm.intentList = response.data;
                     for(var i=0; i<vm.intentList.length; i++){
-                        vm.principalTotal +=vm.intentList[i].principal;
-                        vm.interestTotal += vm.intentList[i].interest;
+                        vm.principalTotal += parseFloat(vm.intentList[i].principal);
+                        vm.interestTotal += parseFloat(vm.intentList[i].interest);
                     }
                     vm.total = vm.principalTotal +vm.interestTotal;
                 }
@@ -263,18 +263,21 @@ function endTime(startTime, d){
 }
 
 function repayDate(loanDate, d, cycle){
-    d *= 1;
-    cycle *= 1;
-    if(!isNaN(cycle) && isloanDate.length !=0 && !isNaN(d)){
-        if(cycle==1){
-
-        }else if(cycle==2){
-
-        }else if(cycle == 3){
-
-        }else if(cycle ==4 ){
-
+    if(cycle!="" && loanDate != "" && d != ""){
+        loanDate = loanDate.replace(/-/g,"/");
+        var date = new Date(loanDate);
+        if(cycle==1){   //天
+           date.setDate(date.getDate() + d*1);
+        }else if(cycle==2){ //月
+           date.setMonth(date.getMonth() + d*1);
+        }else if(cycle == 3){   //季
+           date.setMonth(date.getMonth() + (d*3));
+        }else if(cycle ==4 ){   //年
+           date.setFullYear(date.getFullYear() + d*1);
         }
+        return date.toFormatString("yyyy-MM-dd");
+    }else{
+        return null;
     }
 }
 
@@ -307,15 +310,13 @@ laydate({
     format: 'YYYY-MM-DD',
     istoday : true,
     choose : function(datas){
-        alert(datas)
+        var d = $("#bpPeriodsDisplay").val();
+        var cycle = $("#bpCycleType").val();
+        var date = repayDate(datas, d, cycle);
+        $("#bpExpectRepayDate").val(date);
     }
 });
 
-laydate({
-    elem:'#bpExpectRepayDate',
-    istime: true,
-    format: 'YYYY-MM-DD'
-});
 
 $("#bpOpenTime").change(function(){
     var bpStartTime = $("#bpStartTime").val();
@@ -323,4 +324,19 @@ $("#bpOpenTime").change(function(){
         var time = endTime(bpStartTime,$(this).val());
         $("#bpEndTime").val(time);
     }
+});
+
+
+$("#bpPeriodsDisplay").change(function(){
+    var datas = $("#bpExpectLoanDate").val();
+    var cycle = $("#bpCycleType").val();
+    var date = repayDate(datas, $(this).val(), cycle);
+    $("#bpExpectRepayDate").val(date);
+});
+
+$("#bpCycleType").change(function(){
+    var datas = $("#bpExpectLoanDate").val();
+    var d = $("#bpPeriodsDisplay").val();
+    var date = repayDate(datas, d, $(this).val());
+    $("#bpExpectRepayDate").val(date);
 });

@@ -26,7 +26,7 @@ public class InvestInfoServiceImpl implements IInvestInfoServiceInf {
         //endregion
         Long id = record.getIiId();
         int result = 0;
-        if (id == 0) {
+        if (id == null) {
             result = addInvestInfo(record);//新增
         } else {
             result = updateByBidIdSelective(record);//修改
@@ -56,6 +56,12 @@ public class InvestInfoServiceImpl implements IInvestInfoServiceInf {
     public int selectByConditionCount(TbInvestInfo record) {
         int count = investInfoDao.selectByConditionCount(record);
         return count;
+    }
+
+    @Override
+    public List<TbInvestInfo> selectByBpId(TbInvestInfo record, PageWhere pageWhere) {
+        List<TbInvestInfo> tbInvestInfos = investInfoDao.selectBybpId(record, pageWhere);
+        return tbInvestInfos;
     }
 
     public int updateByBidIdSelective(TbInvestInfo record) {

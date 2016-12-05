@@ -3,6 +3,7 @@ package com.jebao.jebaodb.dao.dao.investment;
 import com.jebao.jebaodb.dao.mapper.investment.TbIncomeDetailMapper;
 import com.jebao.jebaodb.entity.extEntity.PageWhere;
 import com.jebao.jebaodb.entity.investment.TbIncomeDetail;
+import com.jebao.jebaodb.entity.postLoan.search.RepaymentDetailSM;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -60,6 +61,15 @@ public class TbIncomeDetailDao {
         return mapper.selectByConditionCount(record);
     }
 
+    /**
+     * 分组查询还款情况表
+     * @param record
+     * @param pageWhere
+     * @return
+     */
+    public List<TbIncomeDetail> selectGroupByConditionForPage(@Param("record")RepaymentDetailSM record, @Param("pageWhere")PageWhere pageWhere){
+        return mapper.selectGroupByConditionForPage(record, pageWhere);
+    }
 
     @Transactional
     public int insertForTransactional(TbIncomeDetail record) {

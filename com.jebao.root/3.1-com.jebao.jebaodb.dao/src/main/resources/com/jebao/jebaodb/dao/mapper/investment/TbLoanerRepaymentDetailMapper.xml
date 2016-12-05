@@ -19,11 +19,13 @@
     <result column="lrd_create_time" property="lrdCreateTime" jdbcType="TIMESTAMP" />
     <result column="lrd_update_time" property="lrdUpdateTime" jdbcType="TIMESTAMP" />
     <result column="lrd_is_del" property="lrdIsDel" jdbcType="INTEGER" />
+      <result column="lrd_fact_date_time" property="lrdFactDateTime" jdbcType="TIMESTAMP" />
+
   </resultMap>
   <sql id="Base_Column_List" >
     lrd_id, lrd_bp_id, lrd_bp_number, lrd_bp_name, lrd_date_time, lrd_periods, lrd_fund_type, 
     lrd_money, lrd_fact_money, lrd_interest_st, lrd_interest_et, lrd_overdue_days, lrd_overdue_money, 
-    lrd_status, lrd_create_time, lrd_update_time, lrd_is_del
+    lrd_status, lrd_create_time, lrd_update_time, lrd_is_del, lrd_fact_date_time
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select 
@@ -37,13 +39,13 @@
       lrd_fund_type, lrd_money, lrd_fact_money, 
       lrd_interest_st, lrd_interest_et, lrd_overdue_days, 
       lrd_overdue_money, lrd_status, lrd_create_time, 
-      lrd_update_time, lrd_is_del)
+      lrd_update_time, lrd_is_del, lrd_fact_date_time)
     values (#{lrdId,jdbcType=BIGINT}, #{lrdBpId,jdbcType=BIGINT}, #{lrdBpNumber,jdbcType=VARCHAR}, 
       #{lrdBpName,jdbcType=VARCHAR}, #{lrdDateTime,jdbcType=TIMESTAMP}, #{lrdPeriods,jdbcType=INTEGER}, 
       #{lrdFundType,jdbcType=INTEGER}, #{lrdMoney,jdbcType=DECIMAL}, #{lrdFactMoney,jdbcType=DECIMAL}, 
       #{lrdInterestSt,jdbcType=TIMESTAMP}, #{lrdInterestEt,jdbcType=TIMESTAMP}, #{lrdOverdueDays,jdbcType=INTEGER}, 
       #{lrdOverdueMoney,jdbcType=DECIMAL}, #{lrdStatus,jdbcType=INTEGER}, #{lrdCreateTime,jdbcType=TIMESTAMP}, 
-      #{lrdUpdateTime,jdbcType=TIMESTAMP}, #{lrdIsDel,jdbcType=INTEGER})
+      #{lrdUpdateTime,jdbcType=TIMESTAMP}, #{lrdIsDel,jdbcType=INTEGER} , #{lrdFactDateTime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.jebao.jebaodb.entity.investment.TbLoanerRepaymentDetail" >
     insert into tb_loaner_repayment_detail
@@ -99,6 +101,9 @@
       <if test="lrdIsDel != null" >
         lrd_is_del,
       </if>
+        <if test="lrdFactDateTime != null" >
+            lrd_fact_date_time,
+        </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="lrdId != null" >
@@ -152,6 +157,9 @@
       <if test="lrdIsDel != null" >
         #{lrdIsDel,jdbcType=INTEGER},
       </if>
+        <if test="lrdFactDateTime != null" >
+            #{lrdFactDateTime,jdbcType=TIMESTAMP},
+        </if>
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.jebao.jebaodb.entity.investment.TbLoanerRepaymentDetail" >
@@ -205,6 +213,9 @@
       <if test="lrdIsDel != null" >
         lrd_is_del = #{lrdIsDel,jdbcType=INTEGER},
       </if>
+        <if test="lrdFactDateTime != null" >
+            lrd_fact_date_time = #{lrdFactDateTime,jdbcType=TIMESTAMP},
+        </if>
         lrd_update_time = NOW()
     </set>
     where lrd_id = #{lrdId,jdbcType=BIGINT}
@@ -226,7 +237,8 @@
       lrd_status = #{lrdStatus,jdbcType=INTEGER},
       lrd_create_time = #{lrdCreateTime,jdbcType=TIMESTAMP},
       lrd_update_time = #{lrdUpdateTime,jdbcType=TIMESTAMP},
-      lrd_is_del = #{lrdIsDel,jdbcType=INTEGER}
+      lrd_is_del = #{lrdIsDel,jdbcType=INTEGER},
+      lrd_fact_date_time = #{lrdFactDateTime,jdbcType=TIMESTAMP}
     where lrd_id = #{lrdId,jdbcType=BIGINT}
   </update>
 
@@ -276,6 +288,9 @@
         </if>
         <if test="lrdUpdateTime != null" >
             lrd_update_time = #{lrdUpdateTime,jdbcType=TIMESTAMP},
+        </if>
+        <if test="lrdFactDateTime != null" >
+            lrd_fact_date_time = #{lrdFactDateTime,jdbcType=TIMESTAMP},
         </if>
             lrd_is_del = 1
     </sql>

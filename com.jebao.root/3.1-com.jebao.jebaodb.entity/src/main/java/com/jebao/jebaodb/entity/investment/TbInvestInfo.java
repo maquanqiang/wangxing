@@ -34,6 +34,13 @@ public class TbInvestInfo {
 
     private Integer iiIsDel;
 
+
+    //---------------------------------
+    private BigDecimal bpBidMoney;
+
+
+
+
     public Long getIiId() {
         return iiId;
     }
@@ -152,5 +159,13 @@ public class TbInvestInfo {
 
     public void setIiIsDel(Integer iiIsDel) {
         this.iiIsDel = iiIsDel;
+    }
+
+    public BigDecimal getBpBidMoney() {
+        return bpBidMoney;
+    }
+
+    public void setBpBidMoney(BigDecimal bpBidMoney) {
+        this.bpBidMoney = bpBidMoney;
     }
 }

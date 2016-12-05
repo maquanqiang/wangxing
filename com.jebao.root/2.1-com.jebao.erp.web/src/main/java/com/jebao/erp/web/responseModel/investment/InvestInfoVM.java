@@ -26,6 +26,7 @@ public class InvestInfoVM extends ViewModel {
         this.setBpRepayedPeriods(entity.getIiBpRepayedPeriods());
         this.setCreateTime(entity.getIiCreateTime());
         this.setLoginName(entity.getIiLoginName());
+        this.setBpBidMoney(entity.getBpBidMoney());
     }
 
 
@@ -54,6 +55,8 @@ public class InvestInfoVM extends ViewModel {
     private String bpRepayedPeriods;
     @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd")
     private Date createTime;
+
+    private BigDecimal bpBidMoney;
 
     public Long getId() {
         return id;
@@ -157,5 +160,13 @@ public class InvestInfoVM extends ViewModel {
 
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
+    }
+
+    public BigDecimal getBpBidMoney() {
+        return bpBidMoney;
+    }
+
+    public void setBpBidMoney(BigDecimal bpBidMoney) {
+        this.bpBidMoney = bpBidMoney;
     }
 }

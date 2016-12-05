@@ -208,47 +208,57 @@
   </update>
 
     <!--==================================================华丽分割线==================================================-->
+    <resultMap type="com.jebao.jebaodb.entity.investment.TbInvestInfo" id="selectListByBpId" extends="BaseResultMap">
+        <result column="bp_bid_money" property="bpBidMoney" jdbcType="DECIMAL" />
+    </resultMap>
+
+    <sql id="bp_Column_List" >
+        ii_id, ii_login_id, ii_login_name, ii_true_name, ii_third_account, ii_order_number,
+        ii_bp_id, ii_bp_name, ii_money, ii_freeze_status, ii_contract_url, ii_bp_repayed_periods,
+        ii_create_time, ii_update_time, ii_is_del, bp_bid_money
+    </sql>
+
     <sql id="selectByCondition_Where_Clause">
-        <if test="iiLoginId != null" >
-            ii_login_id = #{iiLoginId,jdbcType=BIGINT},
+        <if test="record.iiLoginId != null" >
+            ii_login_id = #{record.iiLoginId,jdbcType=BIGINT}
         </if>
-        <if test="iiLoginName != null" >
-            ii_login_name = #{iiLoginName,jdbcType=VARCHAR},
+        <if test="record.iiLoginName != null" >
+            ii_login_name = #{record.iiLoginName,jdbcType=VARCHAR}
         </if>
-        <if test="iiTrueName != null" >
-            ii_true_name = #{iiTrueName,jdbcType=VARCHAR},
+        <if test="record.iiTrueName != null" >
+            ii_true_name = #{record.iiTrueName,jdbcType=VARCHAR}
         </if>
-        <if test="iiThirdAccount != null" >
-            ii_third_account = #{iiThirdAccount,jdbcType=VARCHAR},
+        <if test="record.iiThirdAccount != null" >
+            ii_third_account = #{record.iiThirdAccount,jdbcType=VARCHAR}
         </if>
-        <if test="iiOrderNumber != null" >
-            ii_order_number = #{iiOrderNumber,jdbcType=VARCHAR},
+        <if test="record.iiOrderNumber != null" >
+            ii_order_number = #{record.iiOrderNumber,jdbcType=VARCHAR}
         </if>
-        <if test="iiBpId != null" >
-            ii_bp_id = #{iiBpId,jdbcType=BIGINT},
+        <if test="record.iiBpId != null" >
+            ii_bp_id = #{record.iiBpId,jdbcType=BIGINT}
         </if>
-        <if test="iiBpName != null" >
-            ii_bp_name = #{iiBpName,jdbcType=VARCHAR},
+        <if test="record.iiBpName != null" >
+            ii_bp_name = #{record.iiBpName,jdbcType=VARCHAR}
         </if>
-        <if test="iiMoney != null" >
-            ii_money = #{iiMoney,jdbcType=DECIMAL},
+        <if test="record.iiMoney != null" >
+            ii_money = #{record.iiMoney,jdbcType=DECIMAL}
         </if>
-        <if test="iiFreezeStatus != null" >
-            ii_freeze_status = #{iiFreezeStatus,jdbcType=INTEGER},
+        <if test="record.iiFreezeStatus != null" >
+            ii_freeze_status = #{record.iiFreezeStatus,jdbcType=INTEGER}
         </if>
-        <if test="iiContractUrl != null" >
-            ii_contract_url = #{iiContractUrl,jdbcType=VARCHAR},
+        <if test="record.iiContractUrl != null" >
+            ii_contract_url = #{record.iiContractUrl,jdbcType=VARCHAR}
         </if>
-        <if test="iiBpRepayedPeriods != null" >
-            ii_bp_repayed_periods = #{iiBpRepayedPeriods,jdbcType=CHAR},
+        <if test="record.iiBpRepayedPeriods != null" >
+            ii_bp_repayed_periods = #{record.iiBpRepayedPeriods,jdbcType=CHAR}
         </if>
-        <if test="iiCreateTime != null" >
-            ii_create_time = #{iiCreateTime,jdbcType=TIMESTAMP},
+        <if test="record.iiCreateTime != null" >
+            ii_create_time = #{record.iiCreateTime,jdbcType=TIMESTAMP}
         </if>
-        <if test="iiUpdateTime != null" >
-            ii_update_time = #{iiUpdateTime,jdbcType=TIMESTAMP},
+        <if test="record.iiUpdateTime != null" >
+            ii_update_time = #{record.iiUpdateTime,jdbcType=TIMESTAMP}
         </if>
-        ii_is_del = 1
+        AND ii_is_del = 1
     </sql>
 
     <select id="selectForPage" resultMap="BaseResultMap">
@@ -278,5 +288,13 @@
         <where>
             <include refid="selectByCondition_Where_Clause" />
         </where>
+    </select>
+
+    <select id="selectByBpId" resultMap="selectListByBpId">
+        select
+        <include refid="bp_Column_List" />
+        from tb_invest_info, tb_bid_plan
+        where ii_bp_id = bp_id and
+        <include refid="selectByCondition_Where_Clause" />
     </select>
 </mapper>
