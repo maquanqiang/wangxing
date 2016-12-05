@@ -7,6 +7,8 @@ import com.jebao.jebaodb.entity.loaner.TbLoaner;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.math.BigDecimal;
+import java.math.MathContext;
 import java.util.Date;
 import java.util.List;
 
@@ -18,6 +20,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class TbLoanerDao_UnitTest extends _BaseUnitTest {
     @Autowired
     private TbLoanerDao tbLoanerDao;
+
+    @Test
+    public void testExample(){
+        BigDecimal bNum1 = new BigDecimal(5123l);
+        BigDecimal bNum2  = new BigDecimal(0.135);
+        BigDecimal newNum = bNum1.multiply(bNum2).setScale(2,BigDecimal.ROUND_HALF_UP);
+        System.out.println(newNum.toString());
+    }
 
     @Test
     public void insertExample()

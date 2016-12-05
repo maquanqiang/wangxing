@@ -50,9 +50,9 @@ public class FundsControllerApi {
         return new JsonResultList<>(viewModelList, count);
     }
 
-    @RequestMapping(value = "fundsSum", method = RequestMethod.GET)
+    @RequestMapping(value = "statistics", method = RequestMethod.GET)
     @ResponseBody
-    public JsonResult fundsSum(Long loginId) {
+    public JsonResult statistics(Long loginId) {
         if (loginId == null || loginId == 0) {
             return new JsonResultData<>(null);
         }

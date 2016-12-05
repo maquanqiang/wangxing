@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>#parse("common/head.html")
+</head>
+<body class="skin-blue sidebar-mini">
+#parse("common/main-header.html")
+<!-- Left side column. contains the logo and sidebar -->
+#parse("common/main-sidebar.html")
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h1>借款人信息</h1>
+    </section>
+    <!-- Main content -->
+    <section class="content">
+        <form id="search_form"><input type="hidden" name="loanerId" value="${loanerId}"/></form>
+        <!--借款金额统计-->
+        <div class="box-title">
+            <h5>借款金额统计</h5>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box box-primary">
+                    <div class="box-body">
+                        <div id="orderlist_table_wrapper" class="dataTables_wrapper">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <table id="orderlist_table" class="table table-bordered table-hover dataTable" role="grid" aria-describedby="orderlist_table_info">
+                                        <thead>
+                                        <tr role="row">
+                                            <th width="5%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">实际借款金额</th>
+                                            <th width="7%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">实际借款笔数</th>
+                                            <th width="7%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">已还金额</th>
+                                            <th width="7%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">待还金额</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr role="row">
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--借款记录-->
+        <div class="box-title">
+            <h5>借款记录</h5>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box box-primary">
+                    <div class="box-body">
+                        <div class="dataTables_wrapper">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <table id="" class="table table-bordered table-hover dataTable" role="grid" aria-describedby="orderlist_table_info">
+                                        <thead>
+                                        <tr role="row">
+                                            <th width="5%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">序号</th>
+                                            <th width="10%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">项目编号</th>
+                                            <th width="10%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">标的名称</th>
+                                            <th width="7%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">期限（天）</th>
+                                            <th width="8%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">募集总额（元）</th>
+                                            <th width="7%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">利率%</th>
+                                            <th width="10%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">实际募集金额</th>
+                                            <th width="8%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">利息（元）</th>
+                                            <th width="8%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">到期时间</th>
+                                            <th width="10%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">投资（记录）详情</th>
+                                            <th width="8%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">查看合同</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <template v-for="item in loanrecords">
+                                            <tr role="row">
+                                                <td>{{ item.id }}</td>
+                                                <td>{{ item.number }}</td>
+                                                <td>{{ item.name }}</td>
+                                                <td>{{ item.periods }}</td>
+                                                <td>{{ item.bidMoney }}</td>
+                                                <td>{{ item.rate }}</td>
+                                                <td>{{ item.loanMoney }}</td>
+                                                <td>{{ item.interestMoney }}</td>
+                                                <td>{{ item.repayTime }}</td>
+                                                <td>
+                                                    <a href="javascript:;" class="btn btn-default btn-xs" role="button" target="_blank">查看</a>
+                                                </td>
+                                                <td>
+                                                    <a href="javascript:;" class="btn btn-default btn-xs" role="button" target="_blank">查看</a>
+                                                </td>
+                                            </tr>
+                                        </template>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+<!-- /.content-wrapper -->
+#parse("common/footer.html")
+<script src=$UrlHelperTool.href("/content/script/loaner/loanrecord.js")></script>
+</body>
+</html>

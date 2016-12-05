@@ -69,6 +69,10 @@ public class LoanerController extends _BaseController {
     //endregion
 
     //region 借款信息
-
+    @RequestMapping(value = "/loanrecord/{id}", method = RequestMethod.GET)
+    public String loanrecord(@PathVariable Long id, Model model) {
+        model.addAttribute("loanerId", id);
+        return "loaner/loanrecord";
+    }
     //endregion
 }
