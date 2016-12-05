@@ -1,10 +1,8 @@
-package com.jebao.jebaodb.dao.dao.loanmanage;
+package com.jebao.jebaodb.dao.dao.investment;
 
-import com.jebao.jebaodb.dao.mapper.loanmanage.TbBidPlanMapper;
-import com.jebao.jebaodb.dao.mapper.loanmanage.TbInvestInfoMapper;
+import com.jebao.jebaodb.dao.mapper.investment.TbInvestInfoMapper;
 import com.jebao.jebaodb.entity.extEntity.PageWhere;
-import com.jebao.jebaodb.entity.loanmanage.TbBidPlan;
-import com.jebao.jebaodb.entity.loanmanage.TbInvestInfo;
+import com.jebao.jebaodb.entity.investment.TbInvestInfo;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -44,7 +42,7 @@ public class TbInvestInfoDao {
     }
 
     /**
-     * 按条件分页排序查询
+     * 系统条件分页排序查询
      * @param record
      * @param pageWhere
      * @return
@@ -54,7 +52,7 @@ public class TbInvestInfoDao {
     }
 
     /**
-     * 带条件查询统计
+     * 系统条件查询统计
      * @param record
      * @return
      */
@@ -62,14 +60,11 @@ public class TbInvestInfoDao {
         return mapper.selectByConditionCount(record);
     }
 
-    /**
-     * 带条件查询所有
-     * @param record
-     * @return
-     */
-    public List<TbInvestInfo> selectAllByCondition(@Param("record")TbInvestInfo record) {
-        return mapper.selectAllByCondition(record);
+
+    public List<TbInvestInfo> selectBybpId(@Param("record")TbInvestInfo record, @Param("pageWhere")PageWhere pageWhere){
+        return mapper.selectByBpId(record, pageWhere);
     }
+
     @Transactional
     public int insertForTransactional(TbInvestInfo record) {
         return mapper.insert(record);

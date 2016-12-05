@@ -62,8 +62,6 @@ public class TbBidPlan {
 
     private Date bpInterestSt;
 
-    private Date bpInterestEt;
-
     private String bpRemark;
 
     private Date bpExpectLoanDate;
@@ -324,14 +322,6 @@ public class TbBidPlan {
 
     public void setBpInterestSt(Date bpInterestSt) {
         this.bpInterestSt = bpInterestSt;
-    }
-
-    public Date getBpInterestEt() {
-        return bpInterestEt;
-    }
-
-    public void setBpInterestEt(Date bpInterestEt) {
-        this.bpInterestEt = bpInterestEt;
     }
 
     public String getBpRemark() {

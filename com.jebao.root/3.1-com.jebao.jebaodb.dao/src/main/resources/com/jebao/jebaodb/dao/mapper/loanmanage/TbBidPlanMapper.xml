@@ -31,7 +31,6 @@
         <result column="bp_interest_pay_type" property="bpInterestPayType" jdbcType="INTEGER" />
         <result column="bp_open_time" property="bpOpenTime" jdbcType="INTEGER" />
         <result column="bp_interest_st" property="bpInterestSt" jdbcType="TIMESTAMP" />
-        <result column="bp_interest_et" property="bpInterestEt" jdbcType="TIMESTAMP" />
         <result column="bp_remark" property="bpRemark" jdbcType="VARCHAR" />
         <result column="bp_expect_loan_date" property="bpExpectLoanDate" jdbcType="TIMESTAMP" />
         <result column="bp_expect_repay_date" property="bpExpectRepayDate" jdbcType="TIMESTAMP" />
@@ -55,7 +54,7 @@
         bp_surplus_money, bp_loan_money, bp_bid_money, bp_rate, bp_start_time, bp_end_time,
         bp_start_money, bp_rise_money, bp_top_money, bp_full_time, bp_status, bp_create_time,
         bp_update_time, bp_loan_time, bp_repay_time, bp_loaner_id, bp_true_name, bp_login_id,
-        bp_loaner_type, bp_interest_pay_type, bp_open_time, bp_interest_st, bp_interest_et,
+        bp_loaner_type, bp_interest_pay_type, bp_open_time, bp_interest_st,
         bp_remark, bp_expect_loan_date, bp_expect_repay_date, bp_service_charge_rate, bp_late_rate,
         bp_borrow_desc, bp_funds_purpose, bp_repaying_source, bp_personal_credit, bp_mortgage_info,
         bp_risk_opinion, bp_repayed_periods, bp_is_del, bp_type
@@ -81,7 +80,7 @@
         bp_create_time, bp_update_time, bp_loan_time,
         bp_repay_time, bp_loaner_id, bp_true_name,
         bp_login_id, bp_loaner_type, bp_interest_pay_type,
-        bp_open_time, bp_interest_st, bp_interest_et,
+        bp_open_time, bp_interest_st,
         bp_remark, bp_expect_loan_date, bp_expect_repay_date,
         bp_service_charge_rate, bp_late_rate, bp_borrow_desc,
         bp_funds_purpose, bp_repaying_source, bp_personal_credit,
@@ -96,7 +95,7 @@
         #{bpCreateTime,jdbcType=TIMESTAMP}, #{bpUpdateTime,jdbcType=TIMESTAMP}, #{bpLoanTime,jdbcType=TIMESTAMP},
         #{bpRepayTime,jdbcType=TIMESTAMP}, #{bpLoanerId,jdbcType=BIGINT}, #{bpTrueName,jdbcType=VARCHAR},
         #{bpLoginId,jdbcType=BIGINT}, #{bpLoanerType,jdbcType=INTEGER}, #{bpInterestPayType,jdbcType=INTEGER},
-        #{bpOpenTime,jdbcType=INTEGER}, #{bpInterestSt,jdbcType=TIMESTAMP}, #{bpInterestEt,jdbcType=TIMESTAMP},
+        #{bpOpenTime,jdbcType=INTEGER}, #{bpInterestSt,jdbcType=TIMESTAMP},
         #{bpRemark,jdbcType=VARCHAR}, #{bpExpectLoanDate,jdbcType=TIMESTAMP}, #{bpExpectRepayDate,jdbcType=TIMESTAMP},
         #{bpServiceChargeRate,jdbcType=DECIMAL}, #{bpLateRate,jdbcType=DECIMAL}, #{bpBorrowDesc,jdbcType=VARCHAR},
         #{bpFundsPurpose,jdbcType=VARCHAR}, #{bpRepayingSource,jdbcType=VARCHAR}, #{bpPersonalCredit,jdbcType=VARCHAR},
@@ -192,9 +191,6 @@
             </if>
             <if test="bpInterestSt != null" >
                 bp_interest_st,
-            </if>
-            <if test="bpInterestEt != null" >
-                bp_interest_et,
             </if>
             <if test="bpRemark != null" >
                 bp_remark,
@@ -329,9 +325,6 @@
             </if>
             <if test="bpInterestSt != null" >
                 #{bpInterestSt,jdbcType=TIMESTAMP},
-            </if>
-            <if test="bpInterestEt != null" >
-                #{bpInterestEt,jdbcType=TIMESTAMP},
             </if>
             <if test="bpRemark != null" >
                 #{bpRemark,jdbcType=VARCHAR},
@@ -468,9 +461,6 @@
             <if test="bpInterestSt != null" >
                 bp_interest_st = #{bpInterestSt,jdbcType=TIMESTAMP},
             </if>
-            <if test="bpInterestEt != null" >
-                bp_interest_et = #{bpInterestEt,jdbcType=TIMESTAMP},
-            </if>
             <if test="bpRemark != null" >
                 bp_remark = #{bpRemark,jdbcType=VARCHAR},
             </if>
@@ -549,7 +539,6 @@
         bp_interest_pay_type = #{bpInterestPayType,jdbcType=INTEGER},
         bp_open_time = #{bpOpenTime,jdbcType=INTEGER},
         bp_interest_st = #{bpInterestSt,jdbcType=TIMESTAMP},
-        bp_interest_et = #{bpInterestEt,jdbcType=TIMESTAMP},
         bp_remark = #{bpRemark,jdbcType=VARCHAR},
         bp_expect_loan_date = #{bpExpectLoanDate,jdbcType=TIMESTAMP},
         bp_expect_repay_date = #{bpExpectRepayDate,jdbcType=TIMESTAMP},
@@ -596,7 +585,6 @@
       bp_interest_pay_type = #{bpInterestPayType,jdbcType=INTEGER},
       bp_open_time = #{bpOpenTime,jdbcType=INTEGER},
       bp_interest_st = #{bpInterestSt,jdbcType=TIMESTAMP},
-      bp_interest_et = #{bpInterestEt,jdbcType=TIMESTAMP},
       bp_remark = #{bpRemark,jdbcType=VARCHAR},
       bp_expect_loan_date = #{bpExpectLoanDate,jdbcType=TIMESTAMP},
       bp_expect_repay_date = #{bpExpectRepayDate,jdbcType=TIMESTAMP},
@@ -699,9 +687,6 @@
         </if>
         <if test="record.bpInterestSt != null" >
           AND bp_interest_st = #{record.bpInterestSt,jdbcType=TIMESTAMP}
-        </if>
-        <if test="record.bpInterestEt != null" >
-          AND bp_interest_et = #{record.bpInterestEt,jdbcType=TIMESTAMP}
         </if>
         <if test="record.bpRemark != null" >
           AND bp_remark = #{record.bpRemark,jdbcType=VARCHAR}

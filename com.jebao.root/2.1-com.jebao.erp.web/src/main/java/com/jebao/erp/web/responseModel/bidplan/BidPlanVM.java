@@ -40,7 +40,6 @@ public class BidPlanVM extends ViewModel {
         this.bpInterestPayType = entity.getBpInterestPayType();
         this.bpOpenTime = entity.getBpOpenTime();
         this.bpInterestSt = entity.getBpInterestSt();
-        this.bpInterestEt = entity.getBpInterestEt();
         this.bpRemark = entity.getBpRemark();
         this.bpExpectLoanDate = entity.getBpExpectLoanDate();
         this.bpExpectRepayDate = entity.getBpExpectRepayDate();
@@ -115,8 +114,6 @@ public class BidPlanVM extends ViewModel {
     private Integer bpOpenTime;
     @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd")
     private Date bpInterestSt;
-    @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd")
-    private Date bpInterestEt;
 
     private String bpRemark;
     @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd")
@@ -385,14 +382,6 @@ public class BidPlanVM extends ViewModel {
 
     public void setBpInterestSt(Date bpInterestSt) {
         this.bpInterestSt = bpInterestSt;
-    }
-
-    public Date getBpInterestEt() {
-        return bpInterestEt;
-    }
-
-    public void setBpInterestEt(Date bpInterestEt) {
-        this.bpInterestEt = bpInterestEt;
     }
 
     public String getBpRemark() {
