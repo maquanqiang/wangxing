@@ -35,6 +35,9 @@ var vm = new Vue({
             autoclose: true,
             todayBtn: 'linked',
             language: 'cn'
+        }).on('changeDate', function(){
+            var newDate = $(this).val();
+            model.article.editDate=newDate;
         });
     },
     //方法，可用于绑定事件或直接调用
@@ -91,19 +94,20 @@ var vm = new Vue({
             });
         },
         save: function(){
-            $("#btn-save").addClass("btn disabled");
-            layer.load(2);
             var bootstrapValidator = $("#order_search_form").data('bootstrapValidator').validate();
             if(!bootstrapValidator.isValid()){
                 return false;
             }
-            console.log("post111");
+            $("#btn-save").addClass("btn disabled");
+            layer.load(2);
+           // console.log("post111");
             var submitModel = $("#order_search_form").serializeObject();
-            console.log(submitModel);
+           // console.log(submitModel);
             $.post("/api/article/post",submitModel,function(response){
-                console.log("post2222");
+            //    console.log("post2222");
                 if (response.success_is_ok){
                     layer.msg(response.msg);
+                    console.log(response.msg);
                     var targetUrl="/article/index";
                     redirectUrl(targetUrl);
                     return;
