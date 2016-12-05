@@ -2,6 +2,8 @@ package com.jebao.jebaodb.entity.employee.search;
 
 import com.jebao.jebaodb.entity.extEntity.PageWhere;
 
+import java.util.Date;
+
 /**
  * Created by Jack on 2016/11/16.
  * 查询model，装载查询条件
@@ -21,6 +23,7 @@ public class EmployeeSM extends PageWhere {
     private int rankId;
     private int departmentId;
     private String cardNo;
+    private Date historyDate;
 
     public Integer getEmpId() {
         return empId;
@@ -76,5 +79,13 @@ public class EmployeeSM extends PageWhere {
 
     public void setCardNo(String cardNo) {
         this.cardNo = cardNo;
+    }
+
+    public Date getHistoryDate() {
+        return historyDate == null?new Date():historyDate;
+    }
+
+    public void setHistoryDate(Date historyDate) {
+        this.historyDate = historyDate;
     }
 }

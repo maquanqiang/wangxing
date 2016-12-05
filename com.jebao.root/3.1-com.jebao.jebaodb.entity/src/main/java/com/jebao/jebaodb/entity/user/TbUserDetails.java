@@ -17,6 +17,8 @@ public class TbUserDetails {
 
     private String udInvitationCode;
 
+    private Integer udCustomerManagerId;
+
     private Integer udPlatform;
 
     private String udThirdAccount;
@@ -211,5 +213,13 @@ public class TbUserDetails {
 
     public void setUdIsDel(Integer udIsDel) {
         this.udIsDel = udIsDel;
+    }
+
+    public Integer getUdCustomerManagerId() {
+        return udCustomerManagerId;
+    }
+
+    public void setUdCustomerManagerId(Integer udCustomerManagerId) {
+        this.udCustomerManagerId = udCustomerManagerId;
     }
 }
