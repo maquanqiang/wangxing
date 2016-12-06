@@ -45,14 +45,14 @@ var vm = new Vue({
     methods: {
         search:function(event){
             if (typeof event !== "undefined"){ //点击查询按钮的话，是查询第一页数据
-                model.searchObj.page=0;
+                model.searchObj.pageIndex=0;
             }
             $("#searchBtn").addClass("disabled");//禁用按钮
             $.get("/api/bidPlan/getPlanListBySearchCondition",model.searchObj,function(response){
                 if (response.success_is_ok){
                     vm.planlist=response.data;
                     if (response.count>0){
-                        var pageCount = Math.ceil(response.count / model.rows);
+                        var pageCount = Math.ceil(response.count / model.pageSize);
                         //调用分页
                         laypage({
                             cont: $('#pageNum'), //容器。值支持id名、原生dom对象，jquery对象,
@@ -61,7 +61,7 @@ var vm = new Vue({
                             jump: function(obj, first){ //触发分页后的回调
                                 if(!first){ //点击跳页触发函数自身，并传递当前页：obj.curr
                                     console.log(obj.curr);
-                                    vm.searchObj.page=obj.curr -1;
+                                    vm.searchObj.pageIndex=obj.curr -1;
                                     vm.search();
                                 }
                             },

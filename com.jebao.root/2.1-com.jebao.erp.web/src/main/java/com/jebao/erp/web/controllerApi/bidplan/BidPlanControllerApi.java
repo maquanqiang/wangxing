@@ -1,5 +1,6 @@
 package com.jebao.erp.web.controllerApi.bidplan;
 
+import com.jebao.erp.service.inf.investment.IInvestInfoServiceInf;
 import com.jebao.erp.service.inf.loaner.ILoanerServiceInf;
 import com.jebao.erp.service.inf.loanmanage.ITbBidPlanServiceInf;
 import com.jebao.erp.service.inf.loanmanage.ITbBidRiskDataServiceInf;
@@ -7,6 +8,7 @@ import com.jebao.erp.web.controller._BaseController;
 import com.jebao.erp.web.requestModel.bidplan.AddPlanForm;
 import com.jebao.erp.web.requestModel.bidplan.BidPlanForm;
 import com.jebao.erp.web.requestModel.bidplan.UpdatePlanForm;
+import com.jebao.erp.web.requestModel.investment.RepaymentForm;
 import com.jebao.erp.web.responseModel.base.*;
 import com.jebao.erp.web.responseModel.bidplan.BidPlanVM;
 import com.jebao.erp.web.responseModel.bidplan.LoanIntentVM;
@@ -14,6 +16,7 @@ import com.jebao.erp.web.responseModel.bidplan.ProjTempNameVM;
 import com.jebao.erp.web.responseModel.bidplan.ProjectTempVM;
 import com.jebao.erp.web.utils.toolbox.BetweenDays;
 import com.jebao.jebaodb.entity.extEntity.PageWhere;
+import com.jebao.jebaodb.entity.investment.TbInvestInfo;
 import com.jebao.jebaodb.entity.loaner.TbLoaner;
 import com.jebao.jebaodb.entity.loaner.TbRcpMaterialsTemp;
 import com.jebao.jebaodb.entity.loaner.TbRiskCtlPrjTemp;
@@ -45,6 +48,8 @@ public class BidPlanControllerApi extends _BaseController {
     private ILoanerServiceInf loanerService;
     @Autowired
     private ITbBidRiskDataServiceInf riskDataService;
+    @Autowired
+    private IInvestInfoServiceInf investInfoService;
 
     @RequestMapping("removeBidPlan")
     @ResponseBody
@@ -256,4 +261,31 @@ public class BidPlanControllerApi extends _BaseController {
         tbBidPlans.forEach(o -> viewModelList.add(new BidPlanVM(o)));
         return new JsonResultList<>(viewModelList);
     }
+
+//    @RequestMapping("doLoan")
+//    @ResponseBody
+//    public JsonResult doLoan(RepaymentForm form){
+//
+//        boolean flag = true;
+//        TbInvestInfo tbInvestInfo = new TbInvestInfo();
+//        tbInvestInfo.setIiBpId(form.getBpId());
+//
+//        PageWhere pageWhere = new PageWhere(0, 10000);
+//        List<TbInvestInfo> tbInvestInfos = investInfoService.selectByBpId(tbInvestInfo, pageWhere);
+//
+//        //调用富友接口
+//        tbInvestInfos.forEach(o -> );
+//
+//
+//
+//        if(flag){
+//            //修改投资列表状态
+//
+//
+//        }
+//
+//
+//
+//
+//    }
 }

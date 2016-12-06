@@ -71,6 +71,10 @@ public class TbIncomeDetailDao {
         return mapper.selectGroupByConditionForPage(record, pageWhere);
     }
 
+    public int selectGroupByConditionCount(@Param("record")RepaymentDetailSM record, @Param("pageWhere")PageWhere pageWhere){
+        return mapper.selectGroupByConditionCount(record, pageWhere);
+    }
+
     @Transactional
     public int insertForTransactional(TbIncomeDetail record) {
         return mapper.insert(record);
