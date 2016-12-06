@@ -147,6 +147,18 @@
     where fd_id = #{fdId,jdbcType=BIGINT}
   </update>
     <!--==================================================华丽分割线==================================================-->
+    <resultMap id="StatisticsResultMap" type="com.jebao.jebaodb.entity.user.FundsStatistics">
+        <result column="total_trades" property="totalTrades" jdbcType="INTEGER"/>
+        <result column="total_amounts" property="totalAmounts" jdbcType="DECIMAL"/>
+        <result column="serial_type_id" property="serialTypeId" jdbcType="INTEGER"/>
+    </resultMap>
+    <select id="statisticsByLoginId" resultMap="StatisticsResultMap" parameterType="java.lang.Long">
+        select COUNT(1) as total_trades,SUM(fd_serial_amount) as total_amounts,fd_serial_type_id as serial_type_id
+        from tb_funds_details
+        where fd_serial_status=1
+        AND fd_login_id=#{fdLoginId,jdbcType=BIGINT}
+        GROUP BY fd_serial_type_id
+    </select>
     <select id="selectForPage" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>

@@ -8,6 +8,7 @@ import com.jebao.erp.web.responseModel.base.JsonResultList;
 import com.jebao.erp.web.responseModel.loaner.FundsDetailsVM;
 import com.jebao.erp.web.responseModel.loaner.FundsSumVM;
 import com.jebao.jebaodb.entity.extEntity.PageWhere;
+import com.jebao.jebaodb.entity.user.FundsStatistics;
 import com.jebao.jebaodb.entity.user.TbFundsDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -57,33 +58,20 @@ public class FundsControllerApi {
             return new JsonResultData<>(null);
         }
 
-        TbFundsDetails record = new TbFundsDetails();
-        record.setFdLoginId(loginId);
-        record.setFdSerialStatus(1);
-        List<TbFundsDetails> fdList = fundsDetailsService.selectByParamsForPage(record, null);
-        if(fdList == null || fdList.size() == 0) {
+        List<FundsStatistics> fsList = fundsDetailsService.statisticsByLoginId(loginId);
+        if(fsList == null || fsList.size() == 0) {
             return new JsonResultData<>(null);
         }
-
-        int czCount = 0;
-        int txCount = 0;
-        BigDecimal czAmounts = new BigDecimal(0l);
-        BigDecimal txAmounts = new BigDecimal(0l);
-        for (TbFundsDetails detail : fdList) {
-            if (detail.getFdSerialTypeId() == 1) {
-                czCount++;
-                czAmounts = czAmounts.add(detail.getFdSerialAmount());
-            } else if (detail.getFdSerialTypeId() == 2) {
-                txCount++;
-                txAmounts = txAmounts.add(detail.getFdSerialAmount());
+        FundsSumVM viewModel = new FundsSumVM();
+        for(FundsStatistics fs : fsList){
+            if(fs.getSerialTypeId() == 1){
+                viewModel.setCzCount(fs.getTotalTrades());
+                viewModel.setCzAmounts(fs.getTotalAmounts());
+            }else if(fs.getSerialTypeId() == 2){
+                viewModel.setTxCount(fs.getTotalTrades());
+                viewModel.setTxAmounts(fs.getTotalAmounts());
             }
         }
-
-        FundsSumVM viewModel = new FundsSumVM();
-        viewModel.setTxCount(txCount);
-        viewModel.setTxAmounts(txAmounts);
-        viewModel.setCzCount(czCount);
-        viewModel.setCzAmounts(czAmounts);
         return new JsonResultData<>(viewModel);
     }
 }

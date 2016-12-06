@@ -1,6 +1,7 @@
 package com.jebao.jebaodb.dao.dao.user;
 
 import com.jebao.jebaodb.dao.mapper.user.TbFundsDetailsMapper;
+import com.jebao.jebaodb.entity.user.FundsStatistics;
 import com.jebao.jebaodb.entity.user.TbFundsDetails;
 import com.jebao.jebaodb.entity.extEntity.PageWhere;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +34,10 @@ public class TbFundsDetailsDao {
     public int updateByPrimaryKey(TbFundsDetails record)
     {
         return tbFundsDetailsMapper.updateByPrimaryKey(record);
+    }
+
+    public  List<FundsStatistics> statisticsByLoginId(Long loginId){
+        return tbFundsDetailsMapper.statisticsByLoginId(loginId);
     }
     public List<TbFundsDetails> selectForPage(PageWhere pageWhere)
     {
