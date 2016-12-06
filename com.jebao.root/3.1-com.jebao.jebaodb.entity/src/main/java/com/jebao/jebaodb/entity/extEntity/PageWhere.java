@@ -4,6 +4,9 @@ package com.jebao.jebaodb.entity.extEntity;
  * Created by Administrator on 2016/10/21.
  */
 public class PageWhere {
+    public PageWhere(){
+        pageInit(0,10);
+    }
     /**
      *
      * @param pageIndex 页号-开始页为0页

@@ -1,6 +1,8 @@
 package com.jebao.erp.web.controllerApi.employee;
 
+import com.jebao.erp.service.inf.employee.IDepartmentServiceInf;
 import com.jebao.erp.service.inf.employee.IEmployeeServiceInf;
+import com.jebao.erp.service.inf.employee.IRankServiceInf;
 import com.jebao.erp.web.controller.FilePluginController;
 import com.jebao.erp.web.controller._BaseController;
 import com.jebao.erp.web.responseModel.base.JsonResult;
@@ -10,10 +12,15 @@ import com.jebao.erp.web.utils.excel.ExcelUtil;
 import com.jebao.erp.web.utils.session.CurrentUser;
 import com.jebao.erp.web.utils.session.LoginSessionUtil;
 import com.jebao.jebaodb.entity.employee.EmployeeInfo;
+import com.jebao.jebaodb.entity.employee.TbDepartment;
+import com.jebao.jebaodb.entity.employee.TbRank;
 import com.jebao.jebaodb.entity.employee.input.EmployeeIM;
+import com.jebao.jebaodb.entity.employee.search.DepartmentSM;
 import com.jebao.jebaodb.entity.employee.search.EmployeeSM;
+import com.jebao.jebaodb.entity.employee.search.RankSM;
 import com.jebao.jebaodb.entity.extEntity.ResultData;
 import com.jebao.jebaodb.entity.extEntity.ResultInfo;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -33,6 +40,10 @@ public class EmployeeControllerApi extends _BaseController {
 
     @Autowired
     private IEmployeeServiceInf employeeService;
+    @Autowired
+    private IDepartmentServiceInf departmentService;
+    @Autowired
+    private IRankServiceInf rankService;
 
     @RequestMapping("list")
     public JsonResult list(EmployeeSM model) {
@@ -85,6 +96,7 @@ public class EmployeeControllerApi extends _BaseController {
         String filePath = Paths.get(FilePluginController.ROOT, "projectFile\\file\\p0",filename).toString();
         List<HashMap<String,Object>> mapList =new ExcelUtil().readFileToKv(filePath);
         List<EmployeeIM> modelList = new ArrayList<>();
+
         for (int i=0;i<mapList.size();i++){
             HashMap<String,Object> item = mapList.get(i);
 
@@ -108,9 +120,25 @@ public class EmployeeControllerApi extends _BaseController {
             model.setName(item.get("员工姓名").toString());
             model.setMobile(mobile);
             model.setCardNo(cardNo);
-            model.setRankId(3);
-            model.setDepartmentId(1);
-            model.setTeamId(1);
+            RankSM rankSM = new RankSM();
+            rankSM.setName(item.get("员工职级").toString());
+            List<TbRank> rankList = rankService.getRankList(rankSM);
+            if (rankList == null || rankList.size() == 0){
+                return new ResultInfo(false,"员工:"+model.getName()+" 数据错误:员工职级填写错误");
+            }
+            model.setRankId(rankList.get(0).getRankId());
+            DepartmentSM departmentSM = new DepartmentSM();
+            String teamName = item.get("所属团队").toString();
+            if(StringUtils.isBlank(teamName)){
+                teamName=item.get("所属部门").toString();
+            }
+            departmentSM.setName(teamName);
+            List<TbDepartment> departmentList = departmentService.getDepartmentList(departmentSM);
+            if (departmentList == null || departmentList.size() == 0){
+                return new ResultInfo(false,"员工:"+model.getName()+" 数据错误:员工所属部门/团队填写错误");
+            }
+            model.setDepartmentId(departmentList.get(0).getDepId());
+            model.setTeamId(departmentList.get(0).getDepId());
             modelList.add(model);
         }
         int existsNum =mapList.size()-modelList.size();
