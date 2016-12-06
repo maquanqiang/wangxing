@@ -21,4 +21,5 @@ public interface IIncomeDetailServiceInf {
 
     List<TbIncomeDetail> selectGroupByConditionForPage(RepaymentDetailSM record, PageWhere pageWhere);
 
+    int selectGroupByConditionCount(RepaymentDetailSM record, PageWhere pageWhere);
 }

@@ -418,5 +418,11 @@
         </if>
         LIMIT #{pageWhere.begin},#{pageWhere.pageSize}
     </select>
-
+    <select id="selectGroupByConditionCount" resultType="java.lang.Integer">
+        select count(*)
+        from tb_income_detail
+        <where>
+            <include refid="selectByCondition_Where_Clause" />
+        </where>
+    </select>
 </mapper>

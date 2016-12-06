@@ -26,4 +26,6 @@ public interface TbIncomeDetailMapper {
     int selectByConditionCount(@Param("record") TbIncomeDetail record);
 
     List<TbIncomeDetail> selectGroupByConditionForPage(@Param("record") RepaymentDetailSM record, @Param("pageWhere") PageWhere pageWhere);
+
+    int selectGroupByConditionCount(@Param("record") RepaymentDetailSM record, @Param("pageWhere") PageWhere pageWhere);
 }

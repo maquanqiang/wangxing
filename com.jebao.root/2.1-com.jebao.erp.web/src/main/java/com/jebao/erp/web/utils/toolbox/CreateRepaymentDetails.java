@@ -13,74 +13,75 @@ import java.util.*;
  */
 public class CreateRepaymentDetails {
 
-        public static List<RepaymentDetail> create(BigDecimal money,BigDecimal bpRate, Integer periods, Date interestSt, Integer bpCycleType, Integer payType){
+    public static List<RepaymentDetail> create(BigDecimal money,BigDecimal bpRate, Integer periods, Date interestSt, Integer bpCycleType, Integer payType){
 
-            Date nextRepayDate = null;
-            List<RepaymentDetail> loanFundIntents = new ArrayList<>();
-            Calendar now = Calendar.getInstance();
-            if(payType == 1){     //一次性还本付息
-                //借款人还款
-                nextRepayDate = repayDate(bpCycleType, interestSt, periods);
-                RepaymentDetail interest = new RepaymentDetail();       //利息
-                interest.setRepayDate(nextRepayDate);
-                interest.setIntentPeriod(1);
-                interest.setFundType(2);
-                interest.setInterestSt(interestSt);
+        Date nextRepayDate = null;
+        List<RepaymentDetail> loanFundIntents = new ArrayList<>();
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(interestSt);
 
-                now.setTime(nextRepayDate);
-                if(nextRepayDate.getDate()==interestSt.getDate()){
-                    now.add(Calendar.DATE, -1);
-                }
-                interest.setInterestEt(now.getTime());
-                int days = BetweenDays.differentDays(interestSt, nextRepayDate);
-                BigDecimal interestMoney = money.multiply(bpRate).multiply(new BigDecimal(days))
-                        .divide(new BigDecimal(100 * 365), 2, BigDecimal.ROUND_HALF_UP);
-                interest.setMoney(interestMoney);
+        Calendar now = Calendar.getInstance();
+        if(payType == 1){     //一次性还本付息
+            nextRepayDate = repayDate(bpCycleType, interestSt, periods);
+            RepaymentDetail interest = new RepaymentDetail();       //利息
+            interest.setRepayDate(nextRepayDate);
+            interest.setIntentPeriod(1);
+            interest.setFundType(2);
+            interest.setInterestSt(interestSt);
 
-                loanFundIntents.add(interest);
-            }else if(payType == 2){
-
-                //按期付息
-                nextRepayDate = interestSt;
-                Date interestEt;
-                for(int i=1; i<=periods; i++){
-                    RepaymentDetail loanIntent = new RepaymentDetail();
-                    loanIntent.setInterestSt(nextRepayDate);
-                    Date repayDate = repayDate(bpCycleType, interestSt, i);
-                    now.setTime(repayDate);
-                    int days = BetweenDays.differentDays(nextRepayDate, now.getTime());
-                    nextRepayDate = now.getTime();
-                    if(nextRepayDate.getDate()==interestSt.getDate()){
-                        now.add(Calendar.DATE, -1);
-                        interestEt = now.getTime();
-                    }else{
-                        interestEt = now.getTime();
-                    }
-                    BigDecimal interest = money.multiply(bpRate).multiply(new BigDecimal(days))
-                            .divide(new BigDecimal(100 * 365), 2, BigDecimal.ROUND_HALF_UP);
-
-                    loanIntent.setIntentPeriod(i);
-                    loanIntent.setInterestEt(interestEt);
-                    loanIntent.setFundType(2);
-                    loanIntent.setRepayDate(nextRepayDate);
-                    loanIntent.setMoney(interest);
-
-                    loanFundIntents.add(loanIntent);
-                }
+            now.setTime(nextRepayDate);
+            if(now.get(GregorianCalendar.DAY_OF_MONTH)==calendar.get(GregorianCalendar.DAY_OF_MONTH)){
+                now.add(Calendar.DATE, -1);
             }
+            interest.setInterestEt(now.getTime());
+            int days = BetweenDays.differentDays(interestSt, nextRepayDate);
+            BigDecimal interestMoney = money.multiply(bpRate).multiply(new BigDecimal(days))
+                    .divide(new BigDecimal(100 * 365), 2, BigDecimal.ROUND_HALF_UP);
+            interest.setMoney(interestMoney);
 
+            loanFundIntents.add(interest);
+        }else if(payType == 2){ //按期付息
 
+            nextRepayDate = interestSt;
+            Date interestEt;
+            for(int i=1; i<=periods; i++){
+                RepaymentDetail loanIntent = new RepaymentDetail();
+                loanIntent.setInterestSt(nextRepayDate);
+                Date repayDate = repayDate(bpCycleType, interestSt, i);
+                now.setTime(repayDate);
+                int days = BetweenDays.differentDays(nextRepayDate, now.getTime());
+                nextRepayDate = now.getTime();
+                if(now.get(GregorianCalendar.DAY_OF_MONTH)==calendar.get(GregorianCalendar.DAY_OF_MONTH)){
+                    now.add(Calendar.DATE, -1);
+                    interestEt = now.getTime();
+                }else{
+                    interestEt = now.getTime();
+                }
+                BigDecimal interest = money.multiply(bpRate).multiply(new BigDecimal(days))
+                        .divide(new BigDecimal(100 * 365), 2, BigDecimal.ROUND_HALF_UP);
 
-            RepaymentDetail pLoanIntent = new RepaymentDetail();
-            pLoanIntent.setFundType(1);
-            pLoanIntent.setMoney(money);
-            pLoanIntent.setIntentPeriod(periods);
-            pLoanIntent.setRepayDate(nextRepayDate);
+                loanIntent.setIntentPeriod(i);
+                loanIntent.setInterestEt(interestEt);
+                loanIntent.setFundType(2);
+                loanIntent.setRepayDate(nextRepayDate);
+                loanIntent.setMoney(interest);
 
-            loanFundIntents.add(pLoanIntent);
-
-            return loanFundIntents;
+                loanFundIntents.add(loanIntent);
+            }
         }
+
+
+
+        RepaymentDetail pLoanIntent = new RepaymentDetail();
+        pLoanIntent.setFundType(1);
+        pLoanIntent.setMoney(money);
+        pLoanIntent.setIntentPeriod(periods);
+        pLoanIntent.setRepayDate(nextRepayDate);
+
+        loanFundIntents.add(pLoanIntent);
+
+        return loanFundIntents;
+    }
 
 
     public static Date repayDate(Integer bpCycleType, Date interestSt, Integer periods){

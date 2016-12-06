@@ -9,12 +9,20 @@ $(function () {
 
     $(".select2").select2();
 
+    /*时间选择*/
+    $('.chooseDate').datepicker({
+        format: 'yyyy-mm-dd',
+        weekStart: 1,
+        autoclose: true,
+        todayBtn: 'linked',
+        language: 'cn'
+    });
 });
 //Vue实例
 //Model
 var model = {
     //查询条件
-    search: {},
+    searchObj: {},
     //标的
     plan: {},
     //台账列表
@@ -31,6 +39,10 @@ var vm = new Vue({
     data: model,
     beforeCreate:function(){
         //初始化本地数据
+        model.searchObj = $("#defaultForm").serializeObject(); //初始化 model.search 对象
+        model.searchObj.bpStatus = 7;
+        model.searchObj.pageIndex=0;
+        model.searchObj.pageSize=10;
     },
     //初始化远程数据
     created:function(){
@@ -39,45 +51,68 @@ var vm = new Vue({
     //方法，可用于绑定事件或直接调用
     methods: {
         search:function(event){
-            $.get("/api/incomeDetail/repaymentList",function(response){
-                if (response.success_is_ok){
-                    vm.incomeDetailList=response.data;
+            if (typeof event !== "undefined"){ //点击查询按钮的话，是查询第一页数据
+                model.searchObj.pageIndex=0;
+            }
+            $("#searchBtn").addClass("disabled");//禁用按钮
+            $.get("/api/incomeDetail/repaymentList",model.searchObj,function(response) {
+                if (response.success_is_ok) {
+                    vm.incomeDetailList = response.data;
+                    if (response.count > 0) {
+                        var pageCount = Math.ceil(response.count / model.pageSize);
+                        //调用分页
+                        laypage({
+                            cont: $('#pageNum'), //容器。值支持id名、原生dom对象，jquery对象,
+                            pages: pageCount, //总页数
+                            curr: model.searchObj.pageSize + 1,
+                            groups: 7, //连续显示分页数
+                            jump: function (obj, first) { //触发分页后的回调
+                                if (!first) { //点击跳页触发函数自身，并传递当前页：obj.curr
+                                    console.log(obj.curr);
+                                    vm.searchObj.pageIndex = obj.curr - 1;
+                                    vm.search();
+                                }
+                            },
+                            skin: '#3c8dbc'
+                        });
+                    }
                 }
-            });
+                $("#searchBtn").removeClass("disabled");//解除禁用
+            })
         }
     }
 });
 
-laydate({
-    elem:'#bpInterestSt',
-    istime: true,
-    format: 'YYYY-MM-DD',
-    istoday : true,
-    choose : function(datas){
-        var d = vm.plan.bpPeriodsDisplay;
-        var cycle = vm.plan.bpCycleType;
-        var date = repayDate(datas, d, cycle);
-        $("#bpRepayTime").val(date);
-    }
-});
-
-
-function repayDate(loanDate, d, cycle){
-    if(cycle!="" && loanDate != "" && d != ""){
-        loanDate = loanDate.replace(/-/g,"/");
-        var date = new Date(loanDate);
-        if(cycle==1){   //天
-            date.setDate(date.getDate() + d*1);
-        }else if(cycle==2){ //月
-            date.setMonth(date.getMonth() + d*1);
-        }else if(cycle == 3){   //季
-            date.setMonth(date.getMonth() + (d*3));
-        }else if(cycle ==4 ){   //年
-            date.setFullYear(date.getFullYear() + d*1);
-        }
-        return date.toFormatString("yyyy-MM-dd");
-    }else{
-        return null;
-    }
-}
+//laydate({
+//    elem:'#bpInterestSt',
+//    istime: true,
+//    format: 'YYYY-MM-DD',
+//    istoday : true,
+//    choose : function(datas){
+//        var d = vm.plan.bpPeriodsDisplay;
+//        var cycle = vm.plan.bpCycleType;
+//        var date = repayDate(datas, d, cycle);
+//        $("#bpRepayTime").val(date);
+//    }
+//});
+//
+//
+//function repayDate(loanDate, d, cycle){
+//    if(cycle!="" && loanDate != "" && d != ""){
+//        loanDate = loanDate.replace(/-/g,"/");
+//        var date = new Date(loanDate);
+//        if(cycle==1){   //天
+//            date.setDate(date.getDate() + d*1);
+//        }else if(cycle==2){ //月
+//            date.setMonth(date.getMonth() + d*1);
+//        }else if(cycle == 3){   //季
+//            date.setMonth(date.getMonth() + (d*3));
+//        }else if(cycle ==4 ){   //年
+//            date.setFullYear(date.getFullYear() + d*1);
+//        }
+//        return date.toFormatString("yyyy-MM-dd");
+//    }else{
+//        return null;
+//    }
+//}
 

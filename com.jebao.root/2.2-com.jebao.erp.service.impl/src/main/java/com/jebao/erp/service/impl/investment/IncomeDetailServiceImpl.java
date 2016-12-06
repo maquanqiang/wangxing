@@ -65,6 +65,11 @@ public class IncomeDetailServiceImpl implements IIncomeDetailServiceInf {
         return incomeDetailDao.selectGroupByConditionForPage(record, pageWhere);
     }
 
+    @Override
+    public int selectGroupByConditionCount(RepaymentDetailSM record, PageWhere pageWhere) {
+        return incomeDetailDao.selectGroupByConditionCount(record, pageWhere);
+    }
+
 
     public int updateByBidIdSelective(TbIncomeDetail record) {
         int result = incomeDetailDao.updateByPrimaryKeySelective(record);

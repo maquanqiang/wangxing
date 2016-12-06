@@ -47,6 +47,13 @@ var vm = new Vue({
                 var data=response.data;
                 vm.plan=data;
                 vm.loanMoney = data.bpBidMoney-data.bpSurplusMoney;
+                var bpFullTime = new Date(data.bpFullTime).toFormatString("yyyy-MM-dd");
+                $("#bpInterestSt").val(bpFullTime);
+
+                var d = data.bpPeriodsDisplay;
+                var cycle = data.bpCycleType;
+                var date = repayDate(bpFullTime, d, cycle);
+                $("#bpRepayTime").val(date);
             }
         });
         $.get("/api/bidRiskData/getRiskDataListForPage", dataVal, function (response) {
@@ -62,9 +69,42 @@ var vm = new Vue({
     },
     //方法，可用于绑定事件或直接调用
     methods: {
+        //表单登录验证封装
+        myInitValidateForm: function (obj) {
+            obj.bootstrapValidator({
+                fields: {
+                    bpInterestSt: {
+                        validators: {
+                            notEmpty: {
+                                message: '起息时间不能为空'
+                            }
+                        }
+                    },
+                    bpLoanMoney: {
+                        validators: {
+                            notEmpty: {
+                                message: '放款金额不能为空'
+                            }
+                        }
+                    },
+                    bpRepayTime: {
+                        validators: {
+                            notEmpty: {
+                                message: '还款时间不能为空'
+                            }
+                        }
+                    }
+                }
+            })
+        },
         search:function(event){
         },
         createIntentBtn:function(){
+            vm.myInitValidateForm($('#defaultForm'));
+            var bootstrapValidator = $("#defaultForm").data('bootstrapValidator').validate();
+            if (!bootstrapValidator.isValid()) {
+                return false;
+            }
             var form = $("#defaultForm").serializeObject();
             $.post("/api/investInfo/createRepaymentDetails",form,function(response){
                 if (response.success_is_ok){
@@ -72,10 +112,10 @@ var vm = new Vue({
                     for(var i=0; i<vm.intentList.length; i++){
                         vm.total += parseFloat(vm.intentList[i].money);
                     }
-                    layer.alert("借款人还款明细生成，正在生成投资人收入明细");
+                    layer.alert("借款人还款明细生成，正在生成投资人收入明细",5);
                     $.post("/api/investInfo/createIncomeDetails",form,function(response){
                         if (response.success_is_ok){
-                            layer.alert(response.msg);
+                            layer.alert(response.msg,5);
                         }
                     })
                 }
