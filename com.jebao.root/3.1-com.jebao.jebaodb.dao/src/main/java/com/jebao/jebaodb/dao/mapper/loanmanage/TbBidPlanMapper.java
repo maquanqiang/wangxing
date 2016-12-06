@@ -1,6 +1,7 @@
 package com.jebao.jebaodb.dao.mapper.loanmanage;
 
 import com.jebao.jebaodb.entity.extEntity.PageWhere;
+import com.jebao.jebaodb.entity.loaner.LoanTotal;
 import com.jebao.jebaodb.entity.loanmanage.TbBidPlan;
 import com.jebao.jebaodb.entity.loanmanage.search.BidPlanSM;
 import org.apache.ibatis.annotations.Param;
@@ -28,4 +29,5 @@ public interface TbBidPlanMapper {
 
     int selectBySelfConditionCount(@Param("record") BidPlanSM record);
 
+    LoanTotal statisticsByLoanerId(Long loanerId);
 }

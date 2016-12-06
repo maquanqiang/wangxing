@@ -9,7 +9,9 @@ var model = {
     //充值提现明细列表
     fundsDetails:[],
     //充值提现汇总
-    fundsSum:{}
+    fundsSum:{},
+    //资金概况
+    fundsGk:{}
 };
 
 // 创建一个 Vue 实例 (ViewModel),它连接 View 与 Model
@@ -31,6 +33,14 @@ var vm = new Vue({
                 var data=response.data;
                 if(data!=null){
                     vm.fundsSum=data;
+                }
+            }
+        });
+        $.get("/api/funds/total",dataVal,function(response){
+            if (response.success_is_ok){
+                var data=response.data;
+                if(data!=null){
+                    vm.fundsGk=data;
                 }
             }
         });

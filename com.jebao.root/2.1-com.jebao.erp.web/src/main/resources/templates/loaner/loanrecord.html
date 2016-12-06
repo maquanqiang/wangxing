@@ -37,10 +37,10 @@
                                         </thead>
                                         <tbody>
                                         <tr role="row">
-                                            <td>0</td>
-                                            <td>0</td>
-                                            <td>0</td>
-                                            <td>0</td>
+                                            <td>{{ loanSum.jkAmounts }}</td>
+                                            <td>{{ loanSum.jkCount }}</td>
+                                            <td>{{ loanSum.yhAmounts }}</td>
+                                            <td>{{ loanSum.dhAmounts }}</td>
                                         </tr>
                                         </tbody>
                                     </table>
@@ -79,7 +79,7 @@
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        <template v-for="item in loanrecords">
+                                        <template v-for="item in loanRecords">
                                             <tr role="row">
                                                 <td>{{ item.id }}</td>
                                                 <td>{{ item.number }}</td>

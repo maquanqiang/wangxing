@@ -1,11 +1,13 @@
 package com.jebao.erp.web.responseModel.loaner;
 
+import com.jebao.erp.web.responseModel.ViewModel;
+
 import java.math.BigDecimal;
 
 /**
  * Created by Administrator on 2016/12/5.
  */
-public class LoanRecordSumVM {
+public class LoanRecordSumVM extends ViewModel {
     //实际借款笔数
     private int jkCount;
 

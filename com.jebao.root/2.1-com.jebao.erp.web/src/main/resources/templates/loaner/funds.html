@@ -39,12 +39,12 @@
                                         </thead>
                                         <tbody>
                                         <tr role="row">
-                                            <td>0</td>
-                                            <td>0</td>
-                                            <td>0</td>
-                                            <td>0</td>
-                                            <td>0</td>
-                                            <td>0</td>
+                                            <td>{{ fundsGk.balance }}</td>
+                                            <td>{{ fundsGk.jkAmounts }}</td>
+                                            <td>{{ fundsGk.jkInterests }}</td>
+                                            <td>{{ fundsGk.serviceCharge }}</td>
+                                            <td>{{ fundsGk.dhAmounts }}</td>
+                                            <td>{{ fundsGk.dhInterests }}</td>
                                         </tr>
                                         </tbody>
                                     </table>
@@ -117,7 +117,7 @@
                                         <template v-for="item in fundsDetails">
                                             <tr role="row">
                                                 <td>{{ item.serialNumber }}</td>
-                                                <td>长山龙姝姝</td>
+                                                <td></td>
                                                 <td>{{ item.serialAmount }}</td>
                                                 <td>{{ item.serialTime }}</td>
                                                 <td>{{ item.commissionCharge }}</td>

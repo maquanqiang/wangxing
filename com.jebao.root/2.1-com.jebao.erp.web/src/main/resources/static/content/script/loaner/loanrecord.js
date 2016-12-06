@@ -7,7 +7,7 @@ var model = {
     //查询条件
     searchObj: {},
     //借款记录列表
-    loanrecords:[],
+    loanRecords:[],
     //借款汇总
     loanSum:{}
 };
@@ -25,15 +25,15 @@ var vm = new Vue({
     //初始化远程数据
     created:function(){
         this.search();
-/*        var dataVal = $("#search_form").serializeObject();
-        $.get("/api/funds/statistics",dataVal,function(response){
+        var dataVal = $("#search_form").serializeObject();
+        $.get("/api/loanrecord/statistics",dataVal,function(response){
             if (response.success_is_ok){
                 var data=response.data;
                 if(data!=null){
-                    vm.fundsSum=data;
+                    vm.loanSum=data;
                 }
             }
-        });*/
+        });
     },
     //方法，可用于绑定事件或直接调用
     methods: {
@@ -43,7 +43,7 @@ var vm = new Vue({
             }
             $.get("/api/loanrecord/list",model.searchObj,function(response){
                 if (response.success_is_ok){
-                    vm.loanrecords=response.data;
+                    vm.loanRecords=response.data;
                     var pageCount = Math.ceil(response.count / model.searchObj.pageSize);
                     if (pageCount > 0){
                         //调用分页

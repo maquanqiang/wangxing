@@ -3,9 +3,12 @@ package com.jebao.erp.web.controllerApi.loaner;
 import com.jebao.erp.service.inf.loanmanage.ITbBidPlanServiceInf;
 import com.jebao.erp.web.requestModel.loaner.LoanRecordSM;
 import com.jebao.erp.web.responseModel.base.JsonResult;
+import com.jebao.erp.web.responseModel.base.JsonResultData;
 import com.jebao.erp.web.responseModel.base.JsonResultList;
+import com.jebao.erp.web.responseModel.loaner.LoanRecordSumVM;
 import com.jebao.erp.web.responseModel.loaner.LoanRecordVM;
 import com.jebao.jebaodb.entity.extEntity.PageWhere;
+import com.jebao.jebaodb.entity.loaner.LoanTotal;
 import com.jebao.jebaodb.entity.loanmanage.TbBidPlan;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,7 +27,7 @@ import java.util.List;
 @RequestMapping("api/loanrecord/")
 public class LoanRecordControllerApi {
     @Autowired
-   private ITbBidPlanServiceInf tbBidPlanService;
+    private ITbBidPlanServiceInf tbBidPlanService;
 
     @RequestMapping(value = "list", method = RequestMethod.GET)
     @ResponseBody
@@ -48,41 +52,22 @@ public class LoanRecordControllerApi {
         return new JsonResultList<>(viewModelList, count);
     }
 
-/*    @RequestMapping(value = "statistics", method = RequestMethod.GET)
+    @RequestMapping(value = "statistics", method = RequestMethod.GET)
     @ResponseBody
     public JsonResult statistics(Long loanerId) {
         if (loanerId == null || loanerId == 0) {
             return new JsonResultData<>(null);
         }
 
-        TbBidPlan record = new TbBidPlan();
-        record.setBpLoanerId(loanerId);
-        List<TbBidPlan> bpList = tbBidPlanService.selectByConditionForPage(record, null);
-        if(bpList == null || bpList.size() == 0) {
+        LoanTotal loanTotal = tbBidPlanService.totalLoanByLoanerId(loanerId);
+        if(loanTotal == null){
             return new JsonResultData<>(null);
         }
-
-        int jkCount = 0;//实际借款笔数
-        BigDecimal jkAmounts = new BigDecimal(0l);//实际借款金额
-        BigDecimal yhAmounts = new BigDecimal(0l);//已还金额
-        BigDecimal dhAmounts = new BigDecimal(0l);//待还金额
-
-        for (TbBidPlan plan : bpList) {
-
-           *//* if (detail.getFdSerialTypeId() == 1) {
-                czCount++;
-                czAmounts = czAmounts.add(detail.getFdSerialAmount());
-            } else if (detail.getFdSerialTypeId() == 2) {
-                txCount++;
-                txAmounts = txAmounts.add(detail.getFdSerialAmount());
-            }*//*
-        }
-
         LoanRecordSumVM viewModel = new LoanRecordSumVM();
-        viewModel.setTxCount(txCount);
-        viewModel.setTxAmounts(txAmounts);
-        viewModel.setCzCount(czCount);
-        viewModel.setCzAmounts(czAmounts);
+        viewModel.setJkCount(loanTotal.getTotalTrades());
+        viewModel.setJkAmounts(loanTotal.getTotalAmounts());
+        viewModel.setDhAmounts(new BigDecimal(0));
+        viewModel.setYhAmounts(new BigDecimal(0));
         return new JsonResultData<>(viewModel);
-    }*/
+    }
 }
