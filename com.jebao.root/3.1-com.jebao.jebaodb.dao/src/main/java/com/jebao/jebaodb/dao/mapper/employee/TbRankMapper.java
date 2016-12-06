@@ -1,8 +1,7 @@
 package com.jebao.jebaodb.dao.mapper.employee;
 
 import com.jebao.jebaodb.entity.employee.TbRank;
-import com.jebao.jebaodb.entity.extEntity.PageWhere;
-import org.apache.ibatis.annotations.Param;
+import com.jebao.jebaodb.entity.employee.search.RankSM;
 
 import java.util.List;
 
@@ -17,5 +16,5 @@ public interface TbRankMapper {
 
     int updateByPrimaryKey(TbRank record);
 
-    List<TbRank> selectList(@Param("pageWhere") PageWhere pageWhere);
+    List<TbRank> selectList(RankSM model);
 }
