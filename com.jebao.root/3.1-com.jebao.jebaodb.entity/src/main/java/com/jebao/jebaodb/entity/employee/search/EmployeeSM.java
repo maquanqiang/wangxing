@@ -9,9 +9,6 @@ import java.util.Date;
  * 查询model，装载查询条件
  */
 public class EmployeeSM extends PageWhere {
-    public EmployeeSM(){
-        super(0,10);
-    }
 
     private Integer empId;
     private String name;

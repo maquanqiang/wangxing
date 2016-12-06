@@ -3,10 +3,10 @@ package com.jebao.jebaodb.entity.employee.search;
 import com.jebao.jebaodb.entity.extEntity.PageWhere;
 
 /**
- * Created by Jack on 2016/11/30.
+ * Created by Jack on 2016/12/5.
  */
-public class DepartmentSM extends PageWhere{
-    public DepartmentSM(){
+public class RankSM extends PageWhere {
+    public RankSM(){
         super(0,1000);
     }
     private String name;
@@ -15,10 +15,6 @@ public class DepartmentSM extends PageWhere{
      * 根据parentId查询时，是否包含parent自身
      */
     private boolean parentAndSelf;
-    /**
-     * 是否只查看部级，1是2否
-     */
-    private Boolean isDepartment;
 
     public String getName() {
         return name;
@@ -42,13 +38,5 @@ public class DepartmentSM extends PageWhere{
 
     public void setParentAndSelf(boolean parentAndSelf) {
         this.parentAndSelf = parentAndSelf;
-    }
-
-    public Boolean getIsDepartment() {
-        return isDepartment;
-    }
-
-    public void setIsDepartment(Boolean isDepartment) {
-        this.isDepartment = isDepartment;
     }
 }
