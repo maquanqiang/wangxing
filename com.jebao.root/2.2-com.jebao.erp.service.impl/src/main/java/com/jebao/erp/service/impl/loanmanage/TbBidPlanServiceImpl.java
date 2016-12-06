@@ -4,6 +4,7 @@ import com.jebao.erp.service.inf.loanmanage.ITbBidPlanServiceInf;
 import com.jebao.jebaodb.dao.dao.loanmanage.TbBidPlanDao;
 import com.jebao.jebaodb.dao.dao.loanmanage.TbBidRiskDataDao;
 import com.jebao.jebaodb.entity.extEntity.PageWhere;
+import com.jebao.jebaodb.entity.loaner.LoanTotal;
 import com.jebao.jebaodb.entity.loanmanage.TbBidPlan;
 import com.jebao.jebaodb.entity.loanmanage.TbBidRiskData;
 import com.jebao.jebaodb.entity.loanmanage.search.BidPlanSM;
@@ -64,5 +65,10 @@ public class TbBidPlanServiceImpl implements ITbBidPlanServiceInf {
     public int selectBySelfConditionCount(BidPlanSM record) {
         int count = bidPlanDao.selectBySelfConditionCount(record);
         return count;
+    }
+
+    @Override
+    public LoanTotal totalLoanByLoanerId(Long loanerId){
+        return bidPlanDao.statisticsByLoanerId(loanerId);
     }
 }

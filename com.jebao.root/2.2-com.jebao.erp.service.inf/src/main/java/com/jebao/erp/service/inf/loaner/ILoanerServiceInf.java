@@ -1,6 +1,5 @@
 package com.jebao.erp.service.inf.loaner;
 
-import com.jebao.jebaodb.entity.user.TbFundsDetails;
 import com.jebao.jebaodb.entity.extEntity.PageWhere;
 import com.jebao.jebaodb.entity.loaner.TbLoaner;
 import com.jebao.jebaodb.entity.loaner.TbRcpMaterialsTemp;
@@ -69,23 +68,6 @@ public interface ILoanerServiceInf {
      * @return
      */
     List<TbLoaner> selectLoanerByParamsForPage(TbLoaner record,PageWhere page);
-    //endregion
-
-    //region 充值提现明细接口
-    /**
-     * 根据查询条件获取借款人的充值提现明细列表（分页）
-     * @param record （登陆ID，交易状态）
-     * @param page
-     * @return
-     */
-    List<TbFundsDetails> selectFundsDetailsForPage(TbFundsDetails record,PageWhere page);
-
-    /**
-     * 根据查询条件统计借款人的充值提现明细信息总数
-     * @param record （登陆ID，交易状态）
-     * @return
-     */
-    int selectFundsDetailsForPageCount(TbFundsDetails record);
     //endregion
 
     //region 风控项目模版接口

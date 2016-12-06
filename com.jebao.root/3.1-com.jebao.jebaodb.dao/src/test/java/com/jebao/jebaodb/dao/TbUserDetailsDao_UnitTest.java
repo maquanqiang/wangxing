@@ -35,11 +35,12 @@ public class TbUserDetailsDao_UnitTest extends _BaseUnitTest {
     public void insertSelectiveExample() {
         TbUserDetails record = new TbUserDetails();
         record.setUdIsDel(1);
-        record.setUdLoginId((long)1);
-        record.setUdNickName("三刀");
-        record.setUdTrueName("王五");
-        record.setUdThirdAccount("15901048116");
-        record.setUdIdNumber("412824198402074715");
+        record.setUdLoginId(17l);
+        record.setUdNickName("龙龙");
+        record.setUdTrueName("闫晓龙");
+        record.setUdThirdAccount("15522699687");
+        record.setUdIdNumber("140222199110207012");
+        record.setUdEmail("yanxiaolong1020@163.com");
         record.setUdCreateTime(new Date());
         record.setUdUpdateTime(new Date());
         int result= tbUserDetailsDao.insertSelective(record);

@@ -1,6 +1,7 @@
 package com.jebao.erp.service.inf.loanmanage;
 
 import com.jebao.jebaodb.entity.extEntity.PageWhere;
+import com.jebao.jebaodb.entity.loaner.LoanTotal;
 import com.jebao.jebaodb.entity.loanmanage.TbBidPlan;
 import com.jebao.jebaodb.entity.loanmanage.TbBidRiskData;
 import com.jebao.jebaodb.entity.loanmanage.search.BidPlanSM;
@@ -25,4 +26,11 @@ public interface ITbBidPlanServiceInf {
     List<TbBidPlan> selectBySelfConditionForPage(BidPlanSM record, PageWhere pageWhere);
 
     int selectBySelfConditionCount(BidPlanSM record);
+
+    /**
+     * 借款资金统计
+     * @param loanerId
+     * @return
+     */
+    LoanTotal totalLoanByLoanerId(Long loanerId);
 }

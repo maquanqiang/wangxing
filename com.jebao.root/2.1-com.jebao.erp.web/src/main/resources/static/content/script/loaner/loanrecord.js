@@ -1,17 +1,15 @@
 /**
- * Created by Administrator on 2016/12/2.
+ * Created by Administrator on 2016/12/5.
  */
 //Vue实例
 //Model
 var model = {
     //查询条件
     searchObj: {},
-    //充值提现明细列表
-    fundsDetails:[],
-    //充值提现汇总
-    fundsSum:{},
-    //资金概况
-    fundsGk:{}
+    //借款记录列表
+    loanRecords:[],
+    //借款汇总
+    loanSum:{}
 };
 
 // 创建一个 Vue 实例 (ViewModel),它连接 View 与 Model
@@ -28,19 +26,11 @@ var vm = new Vue({
     created:function(){
         this.search();
         var dataVal = $("#search_form").serializeObject();
-        $.get("/api/funds/statistics",dataVal,function(response){
+        $.get("/api/loanrecord/statistics",dataVal,function(response){
             if (response.success_is_ok){
                 var data=response.data;
                 if(data!=null){
-                    vm.fundsSum=data;
-                }
-            }
-        });
-        $.get("/api/funds/total",dataVal,function(response){
-            if (response.success_is_ok){
-                var data=response.data;
-                if(data!=null){
-                    vm.fundsGk=data;
+                    vm.loanSum=data;
                 }
             }
         });
@@ -51,9 +41,9 @@ var vm = new Vue({
             if (typeof event !== "undefined") { //点击查询按钮的话，是查询第一页数据
                 model.searchObj.pageIndex = 0;
             }
-            $.get("/api/funds/details",model.searchObj,function(response){
+            $.get("/api/loanrecord/list",model.searchObj,function(response){
                 if (response.success_is_ok){
-                    vm.fundsDetails=response.data;
+                    vm.loanRecords=response.data;
                     var pageCount = Math.ceil(response.count / model.searchObj.pageSize);
                     if (pageCount > 0){
                         //调用分页

@@ -2,13 +2,11 @@ package com.jebao.erp.service.impl.loaner;
 
 import com.jebao.common.utils.idcard.IdCardUtil;
 import com.jebao.erp.service.inf.loaner.ILoanerServiceInf;
-import com.jebao.jebaodb.dao.dao.user.TbFundsDetailsDao;
 import com.jebao.jebaodb.dao.dao.user.TbLoginInfoDao;
 import com.jebao.jebaodb.dao.dao.user.TbUserDetailsDao;
 import com.jebao.jebaodb.dao.dao.loaner.TbLoanerDao;
 import com.jebao.jebaodb.dao.dao.loaner.TbRcpMaterialsTempDao;
 import com.jebao.jebaodb.dao.dao.loaner.TbRiskCtlPrjTempDao;
-import com.jebao.jebaodb.entity.user.TbFundsDetails;
 import com.jebao.jebaodb.entity.user.TbLoginInfo;
 import com.jebao.jebaodb.entity.user.TbUserDetails;
 import com.jebao.jebaodb.entity.extEntity.PageWhere;
@@ -31,8 +29,6 @@ public class LoanerServiceImpl implements ILoanerServiceInf {
     private TbLoginInfoDao tbLoginInfoDao;
     @Autowired
     private TbUserDetailsDao tbUserDetailsDao;
-    @Autowired
-    private TbFundsDetailsDao tbFundsDetailsDao;
     @Autowired
     private TbRiskCtlPrjTempDao tbRiskCtlPrjTempDao;
     @Autowired
@@ -174,16 +170,6 @@ public class LoanerServiceImpl implements ILoanerServiceInf {
     @Override
     public List<TbLoaner> selectLoanerByParamsForPage(TbLoaner record, PageWhere page) {
         return tbLoanerDao.selectByParamsForPage(record, page);
-    }
-
-    @Override
-    public List<TbFundsDetails> selectFundsDetailsForPage(TbFundsDetails record, PageWhere page) {
-        return tbFundsDetailsDao.selectByParamsForPage(record, page);
-    }
-
-    @Override
-    public int selectFundsDetailsForPageCount(TbFundsDetails record) {
-        return tbFundsDetailsDao.selectByParamsForPageCount(record);
     }
 
     @Override

@@ -2,7 +2,7 @@ package com.jebao.jebaodb.dao.dao.employee;
 
 import com.jebao.jebaodb.dao.mapper.employee.TbRankMapper;
 import com.jebao.jebaodb.entity.employee.TbRank;
-import com.jebao.jebaodb.entity.extEntity.PageWhere;
+import com.jebao.jebaodb.entity.employee.search.RankSM;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -21,5 +21,5 @@ public class TbRankDao {
 
     public int updateByPrimaryKey(TbRank record){return mapper.updateByPrimaryKey(record);}
 
-    public List<TbRank> selectList(PageWhere pageWhere){return mapper.selectList(pageWhere);}
+    public List<TbRank> selectList(RankSM model){return mapper.selectList(model);}
 }
