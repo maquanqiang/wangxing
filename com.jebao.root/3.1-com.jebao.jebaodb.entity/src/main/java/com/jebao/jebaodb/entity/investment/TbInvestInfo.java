@@ -4,6 +4,14 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 public class TbInvestInfo {
+
+
+    public final static int STATUS_FREEZE = 1;          //冻结中
+    public final static int STATUS_REPAYING = 2;        //还款中
+    public final static int STATUS_COMPLETE = 3;        //已完成
+    public final static int STATUS_UNFREEZE = 4;        //流标
+
+
     private Long iiId;
 
     private Long iiLoginId;
@@ -14,7 +22,7 @@ public class TbInvestInfo {
 
     private String iiThirdAccount;
 
-    private String iiOrderNumber;
+    private String iiContractNo;
 
     private Long iiBpId;
 
@@ -26,7 +34,7 @@ public class TbInvestInfo {
 
     private String iiContractUrl;
 
-    private String iiBpRepayedPeriods;
+    private Integer iiBpRepayedPeriods;
 
     private Date iiCreateTime;
 
@@ -34,6 +42,7 @@ public class TbInvestInfo {
 
     private Integer iiIsDel;
 
+    private String iiSsn;
 
     //---------------------------------
     private BigDecimal bpBidMoney;
@@ -81,14 +90,6 @@ public class TbInvestInfo {
         this.iiThirdAccount = iiThirdAccount == null ? null : iiThirdAccount.trim();
     }
 
-    public String getIiOrderNumber() {
-        return iiOrderNumber;
-    }
-
-    public void setIiOrderNumber(String iiOrderNumber) {
-        this.iiOrderNumber = iiOrderNumber == null ? null : iiOrderNumber.trim();
-    }
-
     public Long getIiBpId() {
         return iiBpId;
     }
@@ -129,14 +130,6 @@ public class TbInvestInfo {
         this.iiContractUrl = iiContractUrl == null ? null : iiContractUrl.trim();
     }
 
-    public String getIiBpRepayedPeriods() {
-        return iiBpRepayedPeriods;
-    }
-
-    public void setIiBpRepayedPeriods(String iiBpRepayedPeriods) {
-        this.iiBpRepayedPeriods = iiBpRepayedPeriods == null ? null : iiBpRepayedPeriods.trim();
-    }
-
     public Date getIiCreateTime() {
         return iiCreateTime;
     }
@@ -167,5 +160,29 @@ public class TbInvestInfo {
 
     public void setBpBidMoney(BigDecimal bpBidMoney) {
         this.bpBidMoney = bpBidMoney;
+    }
+
+    public String getIiSsn() {
+        return iiSsn;
+    }
+
+    public void setIiSsn(String iiSsn) {
+        this.iiSsn = iiSsn;
+    }
+
+    public Integer getIiBpRepayedPeriods() {
+        return iiBpRepayedPeriods;
+    }
+
+    public void setIiBpRepayedPeriods(Integer iiBpRepayedPeriods) {
+        this.iiBpRepayedPeriods = iiBpRepayedPeriods;
+    }
+
+    public String getIiContractNo() {
+        return iiContractNo;
+    }
+
+    public void setIiContractNo(String iiContractNo) {
+        this.iiContractNo = iiContractNo;
     }
 }

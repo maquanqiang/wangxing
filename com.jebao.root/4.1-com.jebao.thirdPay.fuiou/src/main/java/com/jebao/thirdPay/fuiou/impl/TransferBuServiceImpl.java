@@ -7,11 +7,13 @@ import com.jebao.thirdPay.fuiou.util.PrintUtil;
 import com.jebao.thirdPay.fuiou.util.RegexUtil;
 import com.jebao.thirdPay.fuiou.util.SecurityUtils;
 import com.jebao.thirdPay.fuiou.util.XmlUtil;
+import org.springframework.stereotype.Service;
 
 /**
  * 富友--划拨(个人与个人之间)
  * Created by Administrator on 2016/9/26.
  */
+@Service
 public class TransferBuServiceImpl {
     public TransferBuResponse post(String httpUrl, TransferBuRequest reqData) throws Exception {
         String signatureStr = SecurityUtils.sign(reqData.requestSignPlain());

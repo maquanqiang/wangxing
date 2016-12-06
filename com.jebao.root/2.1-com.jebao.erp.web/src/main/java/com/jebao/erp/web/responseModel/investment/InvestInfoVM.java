@@ -17,7 +17,7 @@ public class InvestInfoVM extends ViewModel {
         this.setLoginId(entity.getIiLoginId());
         this.setTrueName(entity.getIiTrueName());
         this.setThirdAccount(entity.getIiThirdAccount());
-        this.setOrderNumber(entity.getIiOrderNumber());
+        this.setSsn(entity.getIiSsn());
         this.setBpId(entity.getIiBpId());
         this.setBpName(entity.getIiBpName());
         this.setMoney(entity.getIiMoney());
@@ -40,7 +40,7 @@ public class InvestInfoVM extends ViewModel {
 
     private String thirdAccount;
 
-    private String orderNumber;
+    private String ssn;
 
     private Long bpId;
 
@@ -52,7 +52,7 @@ public class InvestInfoVM extends ViewModel {
 
     private String contractUrl;
 
-    private String bpRepayedPeriods;
+    private Integer bpRepayedPeriods;
     @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd")
     private Date createTime;
 
@@ -98,14 +98,6 @@ public class InvestInfoVM extends ViewModel {
         this.thirdAccount = thirdAccount;
     }
 
-    public String getOrderNumber() {
-        return orderNumber;
-    }
-
-    public void setOrderNumber(String orderNumber) {
-        this.orderNumber = orderNumber;
-    }
-
     public Long getBpId() {
         return bpId;
     }
@@ -146,14 +138,6 @@ public class InvestInfoVM extends ViewModel {
         this.contractUrl = contractUrl;
     }
 
-    public String getBpRepayedPeriods() {
-        return bpRepayedPeriods;
-    }
-
-    public void setBpRepayedPeriods(String bpRepayedPeriods) {
-        this.bpRepayedPeriods = bpRepayedPeriods;
-    }
-
     public Date getCreateTime() {
         return createTime;
     }
@@ -168,5 +152,21 @@ public class InvestInfoVM extends ViewModel {
 
     public void setBpBidMoney(BigDecimal bpBidMoney) {
         this.bpBidMoney = bpBidMoney;
+    }
+
+    public String getSsn() {
+        return ssn;
+    }
+
+    public void setSsn(String ssn) {
+        this.ssn = ssn;
+    }
+
+    public Integer getBpRepayedPeriods() {
+        return bpRepayedPeriods;
+    }
+
+    public void setBpRepayedPeriods(Integer bpRepayedPeriods) {
+        this.bpRepayedPeriods = bpRepayedPeriods;
     }
 }

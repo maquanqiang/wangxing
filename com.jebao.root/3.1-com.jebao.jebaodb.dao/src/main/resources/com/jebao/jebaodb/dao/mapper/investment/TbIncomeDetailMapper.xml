@@ -358,7 +358,7 @@
         </if>
             ind_is_del = 1
     </sql>
-    <resultMap id="myResultMap" type="com.jebao.jebaodb.entity.investment.TbIncomeDetail" >
+    <resultMap id="myResultMap" type="com.jebao.jebaodb.entity.investment.TbIncomeDetail" extends="BaseResultMap">
         <result column="bp_true_name" property="bpTrueName" jdbcType="VARCHAR" />
     </resultMap>
 

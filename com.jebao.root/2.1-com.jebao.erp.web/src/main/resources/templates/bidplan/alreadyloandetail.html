@@ -40,7 +40,6 @@
                                 <div class="input-group margin">
                                     <div class="input-group-addon">产品类型</div>
                                     <select :value="plan.bpType" name="bpType" class="form-control" style="width: 160px;" disabled>
-                                        <option value="0">请选择</option>
                                         <option value="1">普通理财</option>
                                         <option value="2">新手专享</option>
                                     </select>
@@ -104,7 +103,6 @@
                                 <div class="input-group">
                                     <div class="input-group-addon">周期选项</div>
                                     <select name="bpCycleType" :value="plan.bpCycleType" class="form-control" style="width: 160px;" disabled>
-                                        <option value="0">请选择</option>
                                         <option value="1">日</option>
                                         <option value="2">月</option>
                                         <option value="3">季</option>
@@ -129,7 +127,6 @@
                                     <div class="input-group-addon">还款方式</div>
                                     <select :value="plan.bpInterestPayType" class="form-control"
                                             style="width: 160px;" name="bpInterestPayType" disabled>
-                                        <option value="0">请选择</option>
                                         <option value="1">一次性还本付息</option>
                                         <option value="2">先息后本，按期付息</option>
                                     </select>
@@ -157,7 +154,7 @@
         <div class="row">
             <div class="col-xs-12">
                 <div class="box-title">
-                    <h5>预期放款计划</h5>
+                    <h5>借款人还款计划</h5>
                 </div>
                 <div class="form-group ">
                     <a href="javascript:;" class="btn btn-primary " role="button" @click="createIntentBtn">生成</a>
@@ -172,8 +169,7 @@
                                         <tr role="row">
                                             <th width="20%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">期次</th>
                                             <th width="20%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">还款日期</th>
-                                            <th width="20%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">还款本金</th>
-                                            <th width="20%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">还款利息</th>
+                                            <th width="20%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">还款类型</th>
                                             <th width="20%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">还款金额</th>
                                         </tr>
                                         </thead>
@@ -181,15 +177,13 @@
                                         <tr role="row" class="odd" v-for="intent in intentList">
                                             <td>{{intent.intentPeriod}}</td>
                                             <td>{{intent.repayDate}}</td>
-                                            <td>{{intent.principal}}</td>
-                                            <td>{{intent.interest}}</td>
-                                            <td>{{intent.total}}</td>
+                                            <td>{{fundType[intent.fundType]}}</td>
+                                            <td>{{intent.money}}</td>
                                         </tr>
                                         <tr role="row" class="even">
                                             <td>总计</td>
                                             <td></td>
-                                            <td>{{principalTotal}}</td>
-                                            <td>{{interestTotal}}</td>
+                                            <td></td>
                                             <td>{{total}}</td>
                                         </tr>
                                         </tbody>
@@ -213,37 +207,37 @@
                             <div class="form-group">
                                 <div class="input-group margin">
                                     <div class="input-group-addon">借款描述</div>
-                                    <input type="text" class="form-control" placeholder="" :value="plan.bpBorrowDesc" >
+                                    <input type="text" class="form-control" placeholder="" :value="plan.bpBorrowDesc" readonly>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="input-group margin">
                                     <div class="input-group-addon">资金用途</div>
-                                    <input type="text" class="form-control" placeholder="" :value="plan.bpFundsPurpose">
+                                    <input type="text" class="form-control" placeholder="" :value="plan.bpFundsPurpose" readonly>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="input-group margin">
                                     <div class="input-group-addon">还款来源</div>
-                                    <input type="text" :value="plan.bpRepayingSource" placeholder="" class="form-control">
+                                    <input type="text" :value="plan.bpRepayingSource" placeholder="" class="form-control" readonly>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="input-group margin">
                                     <div class="input-group-addon">抵押信息</div>
-                                    <input type="text"  placeholder="" class="form-control" :value="plan.bpMortgageInfo" >
+                                    <input type="text"  placeholder="" class="form-control" :value="plan.bpMortgageInfo" readonly>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="input-group margin">
                                     <div class="input-group-addon">个人征信</div>
-                                    <input type="text"  placeholder="" class="form-control" :value="plan.bpPersonalCredit" >
+                                    <input type="text"  placeholder="" class="form-control" :value="plan.bpPersonalCredit" readonly>
                                 </div>
                             </div>
                             <div class="form-group ">
                                 <div class="input-group margin">
                                     <div class="input-group-addon">风控意见</div>
-                                    <input type="text"  placeholder="" class="form-control" :value="plan.bpRiskOpinion" >
+                                    <input type="text"  placeholder="" class="form-control" :value="plan.bpRiskOpinion" readonly>
                                 </div>
                             </div>
                         </div>
@@ -278,7 +272,7 @@
                                             <td>{{data.brdRemark}}</td>
                                             <td>
                                                 <a href="javascript:;" class="btn btn-default btn-xs"
-                                                   role="button" @click="viewBtn(data.brdId)">预览</a>
+                                                   role="button" @click="openViewForm(data.brdId)">预览</a>
                                             </td>
                                         </tr>
                                         </tbody>
@@ -302,20 +296,20 @@
                             <div class="form-group">
                                 <div class="input-group margin">
                                     <div class="input-group-addon"><span class="text-red">*</span>放款金额</div>
-                                    <input type="text" class="form-control" placeholder="" name="" value="5000" readonly>
+                                    <input type="text" class="form-control" placeholder="" :value="plan.bpLoanMoney" readonly>
                                     <div class="input-group-addon">元</div>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="input-group margin">
                                     <div class="input-group-addon"><span class="text-red">*</span>起息时间</div>
-                                    <input type="text" class="form-control" placeholder="" name="" value="2016-10-21" readonly>
+                                    <input type="text" class="form-control" placeholder="" :value="plan.bpInterestSt" readonly>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="input-group margin">
                                     <div class="input-group-addon"><span class="text-red">*</span>还款日期</div>
-                                    <input type="text" class="form-control" placeholder="" name="" value="2017-10-21" readonly>
+                                    <input type="text" class="form-control" placeholder="" :value="plan.bpRepayTime" readonly>
                                 </div>
                             </div>
                         </div>
@@ -338,24 +332,26 @@
                                         <thead>
                                         <tr role="row">
                                             <th width="14%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">资金来源</th>
+                                            <th width="14%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">用户名</th>
                                             <th width="14%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">投资方姓名</th>
-                                            <th width="14%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">投资人电话</th>
                                             <th width="14%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">投资金额</th>
                                             <th width="14%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">投资比例</th>
-                                            <th width="14%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">款项计划表</th>
+                                            <th width="14%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">投资时间</th>
+                                            <th width="14%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">合同</th>
                                             <th width="14%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">操作</th>
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        <tr role="row">
+                                        <tr role="row" v-for="data in investInfoList">
                                             <td>个人</td>
-                                            <td>常寒梅</td>
-                                            <td>15966356987</td>
-                                            <td>50000元</td>
-                                            <td>100%</td>
-                                            <td>款项计划表</td>
+                                            <td>{{data.loginName}}</td>
+                                            <td>{{data.trueName}}</td>
+                                            <td>{{data.money}}</td>
+                                            <td>{{(data.money/plan.bpBidMoney)*100}}%</td>
+                                            <td>{{data.createTime}}</td>
+                                            <td>0份</td>
                                             <td>
-                                                <a href="javascript:;" class="btn btn-default btn-xs" role="button" target="_blank">查看</a>
+                                                <a href="javascript:;" class="btn btn-default btn-xs" role="button" target="_blank">查看合同</a>
                                             </td>
                                         </tr>
                                         </tbody>
@@ -368,53 +364,53 @@
             </div>
         </div>
         <!--标的投资记录-->
-        <div class="row">
-            <div class="col-xs-12">
-                <div class="box-title">
-                    <h5>标的投资记录</h5>
-                </div>
-                <div class="box box-primary">
-                    <div class="box-body">
-                        <div class="dataTables_wrapper">
-                            <div class="row">
-                                <div class="col-xs-12">
-                                    <table class="table table-bordered table-hover dataTable" role="grid" aria-describedby="orderlist_table_info">
-                                        <thead>
-                                        <tr role="row">
-                                            <th width="16%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">用户名</th>
-                                            <th width="16%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">真实姓名</th>
-                                            <th width="16%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">手机号</th>
-                                            <th width="16%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">投资时间</th>
-                                            <th width="16%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">投资金额</th>
-                                            <th width="16%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">投资来源</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        <tr role="row">
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                        </tr>
-                                        <tr role="row">
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                        </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <!--<div class="row">-->
+            <!--<div class="col-xs-12">-->
+                <!--<div class="box-title">-->
+                    <!--<h5>标的投资记录</h5>-->
+                <!--</div>-->
+                <!--<div class="box box-primary">-->
+                    <!--<div class="box-body">-->
+                        <!--<div class="dataTables_wrapper">-->
+                            <!--<div class="row">-->
+                                <!--<div class="col-xs-12">-->
+                                    <!--<table class="table table-bordered table-hover dataTable" role="grid" aria-describedby="orderlist_table_info">-->
+                                        <!--<thead>-->
+                                        <!--<tr role="row">-->
+                                            <!--<th width="16%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">用户名</th>-->
+                                            <!--<th width="16%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">真实姓名</th>-->
+                                            <!--<th width="16%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">手机号</th>-->
+                                            <!--<th width="16%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">投资时间</th>-->
+                                            <!--<th width="16%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">投资金额</th>-->
+                                            <!--<th width="16%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">投资来源</th>-->
+                                        <!--</tr>-->
+                                        <!--</thead>-->
+                                        <!--<tbody>-->
+                                        <!--<tr role="row">-->
+                                            <!--<td></td>-->
+                                            <!--<td></td>-->
+                                            <!--<td></td>-->
+                                            <!--<td></td>-->
+                                            <!--<td></td>-->
+                                            <!--<td></td>-->
+                                        <!--</tr>-->
+                                        <!--<tr role="row">-->
+                                            <!--<td></td>-->
+                                            <!--<td></td>-->
+                                            <!--<td></td>-->
+                                            <!--<td></td>-->
+                                            <!--<td></td>-->
+                                            <!--<td></td>-->
+                                        <!--</tr>-->
+                                        <!--</tbody>-->
+                                    <!--</table>-->
+                                <!--</div>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
         <!--按钮-->
         <div class="row">
             <div class="col-xs-12">
@@ -424,6 +420,18 @@
             </div>
         </div>
     </section>
+</div>
+<!--预览材料图片-->
+<div class="modal col-xs-12" id="viewMaterialModal">
+    <form class="form-horizontal">
+        <div class="box-body">
+            <div class="form-group">
+                <div class="col-sm-12">
+                    <img name="path" :src="formData.path">
+                </div>
+            </div>
+        </div>
+    </form>
 </div>
 <!-- /.content-wrapper -->
 #parse("common/footer.html")

@@ -4,6 +4,7 @@ import com.jebao.erp.service.inf.investment.IInvestInfoServiceInf;
 import com.jebao.erp.service.inf.loaner.ILoanerServiceInf;
 import com.jebao.erp.service.inf.loanmanage.ITbBidPlanServiceInf;
 import com.jebao.erp.service.inf.loanmanage.ITbBidRiskDataServiceInf;
+import com.jebao.erp.service.inf.user.IUserDetailsServiceInf;
 import com.jebao.erp.web.controller._BaseController;
 import com.jebao.erp.web.requestModel.bidplan.AddPlanForm;
 import com.jebao.erp.web.requestModel.bidplan.BidPlanForm;
@@ -23,6 +24,11 @@ import com.jebao.jebaodb.entity.loaner.TbRiskCtlPrjTemp;
 import com.jebao.jebaodb.entity.loanmanage.TbBidPlan;
 import com.jebao.jebaodb.entity.loanmanage.TbBidRiskData;
 import com.jebao.jebaodb.entity.loanmanage.search.BidPlanSM;
+import com.jebao.jebaodb.entity.user.TbUserDetails;
+import com.jebao.thirdPay.fuiou.impl.TransferBuServiceImpl;
+import com.jebao.thirdPay.fuiou.model.base.BasePlain;
+import com.jebao.thirdPay.fuiou.model.transferBu.TransferBuRequest;
+import com.jebao.thirdPay.fuiou.model.transferBu.TransferBuResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -50,6 +56,10 @@ public class BidPlanControllerApi extends _BaseController {
     private ITbBidRiskDataServiceInf riskDataService;
     @Autowired
     private IInvestInfoServiceInf investInfoService;
+    @Autowired
+    private TransferBuServiceImpl transferBuService;
+    @Autowired
+    private IUserDetailsServiceInf userDetailsService;
 
     @RequestMapping("removeBidPlan")
     @ResponseBody
@@ -92,7 +102,7 @@ public class BidPlanControllerApi extends _BaseController {
 
         TbLoaner loaner = loanerService.findLoanerById(form.getBpLoanerId());
         bidPlan.setBpSurplusMoney(bidPlan.getBpBidMoney());
-        bidPlan.setBpStatus(0);                     //默认未审核
+        bidPlan.setBpStatus(TbBidPlan.STATUS_UNAUDITED);                     //默认未审核
         Date date = new Date();
         bidPlan.setBpCreateTime(date);
         bidPlan.setBpUpdateTime(date);
@@ -152,7 +162,7 @@ public class BidPlanControllerApi extends _BaseController {
     @ResponseBody
     public JsonResult updatePlan(UpdatePlanForm form){
         TbBidPlan bidPlan = UpdatePlanForm.toEntity(form);
-        bidPlan.setBpStatus(0);                             //改为待审核状态
+        bidPlan.setBpStatus(TbBidPlan.STATUS_UNAUDITED);                             //改为待审核状态
         int count = bidPlanService.updateByBidIdSelective(bidPlan);
         if(count>0){
             return new JsonResultOk("信息修改成功");
@@ -239,7 +249,7 @@ public class BidPlanControllerApi extends _BaseController {
         tbBidPlan.setBpStatus(status);
         tbBidPlan.setBpId(bpId);
         tbBidPlan.setBpRemark(remark);
-        if(status==1){
+        if(status==TbBidPlan.STATUS_AUDITE_FAIL){
             tbBidPlan.setBpCreateTime(new Date());
         }
         int result = bidPlanService.updateByBidIdSelective(tbBidPlan);
@@ -262,30 +272,74 @@ public class BidPlanControllerApi extends _BaseController {
         return new JsonResultList<>(viewModelList);
     }
 
-//    @RequestMapping("doLoan")
-//    @ResponseBody
-//    public JsonResult doLoan(RepaymentForm form){
-//
-//        boolean flag = true;
-//        TbInvestInfo tbInvestInfo = new TbInvestInfo();
-//        tbInvestInfo.setIiBpId(form.getBpId());
-//
-//        PageWhere pageWhere = new PageWhere(0, 10000);
-//        List<TbInvestInfo> tbInvestInfos = investInfoService.selectByBpId(tbInvestInfo, pageWhere);
-//
-//        //调用富友接口
-//        tbInvestInfos.forEach(o -> );
-//
-//
-//
-//        if(flag){
-//            //修改投资列表状态
-//
-//
-//        }
-//
-//
-//
-//
-//    }
+    /**
+     * 放款
+     * @param form
+     * @return
+     */
+    @RequestMapping("doLoan")
+    @ResponseBody
+    public JsonResult doLoan(RepaymentForm form){
+
+        TbBidPlan tbBidPlan = bidPlanService.selectByBpId(form.getBpId());
+        if(tbBidPlan.getBpStatus() != TbBidPlan.STATUS_AUDITE_SUCCESS){
+            return new JsonResultError("不能操作还款,标的状态为:"+tbBidPlan.getBpStatus());
+        }
+
+        TbUserDetails tbUserDetails = userDetailsService.selectByLoginId(tbBidPlan.getBpLoginId());
+
+        boolean flag = true;
+        TbInvestInfo tbInvestInfo = new TbInvestInfo();
+        tbInvestInfo.setIiBpId(form.getBpId());
+
+        PageWhere pageWhere = new PageWhere(0, 10000);
+        List<TbInvestInfo> tbInvestInfos = investInfoService.selectByBpId(tbInvestInfo, pageWhere);
+
+        String httpUrl = ""+"/transferBu.action";
+
+        //调用富友接口
+        if(tbInvestInfos!=null && tbInvestInfos.size()>0){
+            for (TbInvestInfo investInfo : tbInvestInfos){
+                TransferBuRequest reqData = new TransferBuRequest();
+
+                reqData.setMchnt_cd("");
+                reqData.setMchnt_txn_ssn("");
+                reqData.setOut_cust_no(investInfo.getIiThirdAccount());
+                reqData.setIn_cust_no(tbUserDetails.getUdThirdAccount());
+                reqData.setAmt(investInfo.getIiMoney().multiply(new BigDecimal(100)).toString());
+                reqData.setContract_no(investInfo.getIiContractNo());
+                reqData.setRem("放款");
+                reqData.setSignature(reqData.requestSignPlain());
+                try {
+                    TransferBuResponse thirdResp = transferBuService.post(httpUrl, reqData);
+                    BasePlain plain = thirdResp.getPlain();
+                    if("0000".equals(plain.getResp_code())){
+                        //修改投资列表状态
+                        investInfo.setIiFreezeStatus(TbInvestInfo.STATUS_REPAYING);
+                        investInfoService.save(investInfo);
+                    }else{
+                        //记录异常状态
+                        flag = false;
+                    }
+                } catch (Exception e) {
+                    flag = false;
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        if(flag){
+            //修改标的信息
+            tbBidPlan.setBpLoanMoney(form.getBpLoanMoney());
+            tbBidPlan.setBpLoanTime(new Date());
+            tbBidPlan.setBpInterestSt(form.getBpInterestSt());
+            tbBidPlan.setBpRepayTime(form.getBpRepayTime());
+            tbBidPlan.setBpStatus(TbBidPlan.STATUS_REPAYING);
+            bidPlanService.updateByBidIdSelective(tbBidPlan);
+            return new JsonResultOk("放款成功");
+        }else {
+            return new JsonResultError("放款失败");
+        }
+
+    }
 }

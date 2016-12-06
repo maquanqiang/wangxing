@@ -4,6 +4,15 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 public class TbBidPlan {
+
+    public final static int STATUS_UNAUDITED = 0;       //未审核
+    public final static int STATUS_AUDITE_FAIL = 1;     //审核失败
+    public final static int STATUS_AUDITE_SUCCESS = 2;  //审核通过 招标中
+    public final static int STATUS_BID_FULL = 3;        //满标
+    public final static int STATUS_BID_LOSE = 4;        //过期 未满标
+    public final static int STATUS_REPAYING = 7;        //还款中
+    public final static int STATUS_COMPLETE = 10;       //完成
+
     private Long bpId;
 
     private String bpName;

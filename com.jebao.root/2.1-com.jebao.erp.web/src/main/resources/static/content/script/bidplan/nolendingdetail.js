@@ -120,6 +120,21 @@ var vm = new Vue({
                     })
                 }
             });
+        },
+        doLoanBtn:function(){
+            vm.myInitValidateForm($('#defaultForm'));
+            var bootstrapValidator = $("#defaultForm").data('bootstrapValidator').validate();
+            if (!bootstrapValidator.isValid()) {
+                return false;
+            }
+            var form = $("#defaultForm").serializeObject();
+            $.post("/api/bidPlan/doLoan",form,function(response){
+                if(response.success_is_ok){
+                    layer.alert(response.msg, 5);
+                    window.location.href = "/postLoan/index";
+                }
+
+            })
         }
     }
 });
