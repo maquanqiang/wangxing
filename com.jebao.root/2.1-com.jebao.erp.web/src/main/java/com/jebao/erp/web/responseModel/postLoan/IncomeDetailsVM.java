@@ -27,6 +27,7 @@ public class IncomeDetailsVM extends ViewModel {
         this.setIndStatus(entity.getIndStatus());
         this.setIndPeriods(entity.getIndPeriods());
         this.setIndFactMoeny(entity.getIndFactMoeny());
+        this.setIndTrueName(entity.getIndTrueName());
     }
 
 
@@ -55,6 +56,8 @@ public class IncomeDetailsVM extends ViewModel {
     private BigDecimal indFactMoeny;
 
     private Integer indStatus;
+
+    private String indTrueName;
 
 
     public Long getIndBpId() {
@@ -159,5 +162,13 @@ public class IncomeDetailsVM extends ViewModel {
 
     public void setBpTrueName(String bpTrueName) {
         this.bpTrueName = bpTrueName;
+    }
+
+    public String getIndTrueName() {
+        return indTrueName;
+    }
+
+    public void setIndTrueName(String indTrueName) {
+        this.indTrueName = indTrueName;
     }
 }

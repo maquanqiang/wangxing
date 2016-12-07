@@ -356,7 +356,7 @@
         <if test="record.bpTrueName != null" >
             AND bp_true_name = #{record.bpTrueName,jdbcType=VARCHAR}
         </if>
-            ind_is_del = 1
+        AND ind_is_del = 1
     </sql>
     <resultMap id="myResultMap" type="com.jebao.jebaodb.entity.investment.TbIncomeDetail" extends="BaseResultMap">
         <result column="bp_true_name" property="bpTrueName" jdbcType="VARCHAR" />
@@ -393,6 +393,7 @@
 
     <select id="selectGroupByConditionForPage" resultMap="myResultMap">
         SELECT
+            ind_bp_id,
             ind_bp_number,
             ind_bp_name,
             ind_true_name,

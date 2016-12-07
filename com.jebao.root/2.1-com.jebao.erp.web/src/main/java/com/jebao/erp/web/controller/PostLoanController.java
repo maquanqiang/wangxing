@@ -2,8 +2,11 @@ package com.jebao.erp.web.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
+
+import javax.websocket.server.PathParam;
 
 /**
  * Created by Lee on 2016/12/5.
@@ -17,10 +20,12 @@ public class PostLoanController {
         return "postLoan/index";
     }
 
-    @RequestMapping("incomeDetail")
-    public String incomeDetail(Long bpId, Integer period,Model model){
+    @RequestMapping("incomeDetail/{bpId}/{period}/{fundType}")
+    public String incomeDetail(@PathVariable("bpId")Long bpId, @PathVariable("period")Integer period,
+                               @PathVariable("fundType") Integer fundType, Model model){
         model.addAttribute("bpId", bpId);
         model.addAttribute("period", period);
+        model.addAttribute("fundType", fundType);
         return "postLoan/incomeDetail";
     }
 }

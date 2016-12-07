@@ -7,4 +7,6 @@ import com.jebao.jebaodb.entity.user.TbLoginInfo;
  */
 public interface ILoginInfoServiceInf {
     TbLoginInfo selectByLoginName(String loginName);
+
+    TbLoginInfo selectByLiId(Long liId);
 }

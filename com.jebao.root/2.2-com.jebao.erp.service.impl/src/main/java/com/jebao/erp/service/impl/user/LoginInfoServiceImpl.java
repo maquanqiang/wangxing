@@ -19,4 +19,9 @@ public class LoginInfoServiceImpl implements ILoginInfoServiceInf {
     public TbLoginInfo selectByLoginName(String loginName){
         return tbLoginInfoDao.selectByLoginName(loginName);
     }
+
+    @Override
+    public TbLoginInfo selectByLiId(Long liId) {
+        return tbLoginInfoDao.selectByPrimaryKey(liId);
+    }
 }

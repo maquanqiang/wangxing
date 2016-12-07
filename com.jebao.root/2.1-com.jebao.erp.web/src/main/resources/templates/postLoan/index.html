@@ -105,7 +105,7 @@
                                             <td>{{data.indFactDateTime}}</td>
                                             <td>{{repayStatus[data.indStatus]}}</td>
                                             <td>
-                                                <a href="incomeDetail.html" class="btn btn-default btn-xs" role="button">查看详情</a>
+                                                <a href="javascript:;" class="btn btn-default btn-xs" @click="openView(data.indBpId, data.indPeriods, data.indFundType)">查看详情</a>
                                             </td>
                                         </tr>
                                         </tbody>

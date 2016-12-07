@@ -2,15 +2,6 @@
 
 $(function () {
     $(".select2").select2();
-    /*时间选择*/
-    //$('.chooseDate').datepicker({
-    //    format: 'yyyy-mm-dd hh:mm:ss',
-    //    weekStart: 1,
-    //    autoclose: true,
-    //    todayBtn: 'linked',
-    //    language: 'cn'
-    //});
-
 });
 
 //Vue实例

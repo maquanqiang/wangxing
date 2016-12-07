@@ -20,6 +20,11 @@
                 <div class="box box-primary">
                     <div class="box-body">
                         <div id="orderlist_table_wrapper" class="dataTables_wrapper">
+                            <form id="defaultForm" method="post">
+                                <input type="hidden" id="bpId" name="bpId" value="${bpId}"/>
+                                <input type="hidden" id="period" name="period" value="${period}"/>
+                                <input type="hidden" id="fundType" name="fundType" value="${fundType}">
+                            </form>
                             <div class="row">
                                 <div class="col-xs-12">
                                     <table id="orderlist_table" class="table table-bordered table-hover dataTable" role="grid" aria-describedby="orderlist_table_info">
@@ -28,12 +33,10 @@
                                             <th width="4%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">序号</th>
                                             <th width="5%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">期数</th>
                                             <th width="7%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">投资人用户名</th>
-                                            <th width="7%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">姓名</th>
-                                            <th width="7%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">手机号</th>
-                                            <th width="7%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">本金</th>
-                                            <th width="7%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">利息</th>
-                                            <th width="7%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">合计</th>
+                                            <th width="7%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">投资人姓名</th>
+                                            <th width="7%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">资金类型</th>
                                             <th width="7%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">计划还款日</th>
+                                            <th width="7%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">应还金额</th>
                                             <th width="7%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">逾期天数</th>
                                             <th width="7%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">逾期罚息</th>
                                             <th width="7%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">实际到账金额</th>
@@ -42,21 +45,19 @@
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        <tr role="row" class="odd">
-                                            <td>1</td>
-                                            <td>第1期</td>
-                                            <td>李四昵称</td>
-                                            <td>李四</td>
-                                            <td>13882888881</td>
-                                            <td>0</td>
-                                            <td>100.00</td>
-                                            <td>100.00</td>
-                                            <td>2016/11/22</td>
-                                            <td>2</td>
-                                            <td>10</td>
-                                            <td>110.00</td>
-                                            <td>2016/11/24</td>
-                                            <td>正常还款</td>
+                                        <tr role="row" class="odd" v-for="(data, index) in incomeDetailList">
+                                            <td>{{ index+1 }}</td>
+                                            <td>第{{data.indPeriods}}期</td>
+                                            <td>{{data.bpTrueName}}</td>
+                                            <td>{{data.indTrueName}}</td>
+                                            <td>{{fundType[data.indFundType]}}</td>
+                                            <td>{{data.indDateTime}}</td>
+                                            <td>{{data.indMoney}}</td>
+                                            <td>{{data.indOverdueDays}}</td>
+                                            <td>{{data.indOverdueMoney}}</td>
+                                            <td>{{data.indFactMoeny}}</td>
+                                            <td>{{data.indFactDateTime}}</td>
+                                            <td>{{repayStatus[data.indStatus]}}</td>
                                         </tr>
                                         </tbody>
                                     </table>
@@ -70,7 +71,7 @@
         <div class="row">
             <div class="col-xs-12">
                 <div class="box-body">
-                    <a href="javascript:;" class="btn btn-primary btn-lg" role="button" target="_blank">关闭</a>
+                    <a href="javascript:;" class="btn btn-primary btn-lg" role="button" @click="closeBtn">关闭</a>
                 </div>
             </div>
         </div>
@@ -78,6 +79,6 @@
 </div>
 <!-- /.content-wrapper -->
 #parse("common/footer.html")
-<script src=$UrlHelperTool.href("/content/script/postLoan/index.js")></script>
+<script src=$UrlHelperTool.href("/content/script/postLoan/incomeDetail.js")></script>
 </body>
 </html>

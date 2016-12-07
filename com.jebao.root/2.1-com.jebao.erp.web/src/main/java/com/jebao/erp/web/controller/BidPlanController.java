@@ -1,9 +1,5 @@
 package com.jebao.erp.web.controller;
 
-import com.jebao.erp.service.inf.loaner.ILoanerServiceInf;
-import com.jebao.erp.service.inf.loanmanage.ITbBidPlanServiceInf;
-import com.jebao.erp.service.inf.loanmanage.ITbBidRiskDataServiceInf;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -15,13 +11,6 @@ import org.springframework.web.bind.annotation.*;
 @Controller
 @RequestMapping("/bidplan/")
 public class BidPlanController {
-
-    @Autowired
-    private ITbBidPlanServiceInf bidPlanService;
-    @Autowired
-    private ILoanerServiceInf loanerService;
-    @Autowired
-    private ITbBidRiskDataServiceInf riskDataService;
 
 
     @RequestMapping("index")

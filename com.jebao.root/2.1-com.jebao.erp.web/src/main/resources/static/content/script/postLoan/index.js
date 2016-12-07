@@ -79,40 +79,11 @@ var vm = new Vue({
                 }
                 $("#searchBtn").removeClass("disabled");//解除禁用
             })
+        },
+        openView : function(bpId, period, fundType){
+            window.location.href = "/postLoan/incomeDetail/"+bpId+"/"+period + "/"+fundType;
         }
     }
 });
 
-//laydate({
-//    elem:'#bpInterestSt',
-//    istime: true,
-//    format: 'YYYY-MM-DD',
-//    istoday : true,
-//    choose : function(datas){
-//        var d = vm.plan.bpPeriodsDisplay;
-//        var cycle = vm.plan.bpCycleType;
-//        var date = repayDate(datas, d, cycle);
-//        $("#bpRepayTime").val(date);
-//    }
-//});
-//
-//
-//function repayDate(loanDate, d, cycle){
-//    if(cycle!="" && loanDate != "" && d != ""){
-//        loanDate = loanDate.replace(/-/g,"/");
-//        var date = new Date(loanDate);
-//        if(cycle==1){   //天
-//            date.setDate(date.getDate() + d*1);
-//        }else if(cycle==2){ //月
-//            date.setMonth(date.getMonth() + d*1);
-//        }else if(cycle == 3){   //季
-//            date.setMonth(date.getMonth() + (d*3));
-//        }else if(cycle ==4 ){   //年
-//            date.setFullYear(date.getFullYear() + d*1);
-//        }
-//        return date.toFormatString("yyyy-MM-dd");
-//    }else{
-//        return null;
-//    }
-//}
 
