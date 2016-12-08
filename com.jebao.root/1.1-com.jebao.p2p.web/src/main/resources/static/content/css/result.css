@@ -1,0 +1,39 @@
+/*结果页*/
+.result-main{
+    width: 1200px;
+    height: 217px;
+    background-color: #fff;
+    margin: 0 auto 40px;
+}
+.result-content{
+    width: 448px;
+    margin: 0 auto;
+    padding-top: 40px;
+}
+.result-detail{
+    margin-left: 10px;
+}
+.result-detail h4{
+    font-size: 24px;
+    color: #666;
+    margin-top: 8px;
+}
+.result-detail p{
+    font-size: 16px;
+    color: #999999;
+    margin-top: 8px;
+}
+.result-detail span ,.result-detail a{
+    color: #e94615;
+}
+.go-btn{
+    width: 80px;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    background-color: #36b1df;
+    color: #fff;
+    margin: 28px auto 0;
+    display: block;
+    border-radius: 5px;
+}

@@ -1,0 +1,238 @@
+/*注册页面*/
+.register-main ,.forget-main{
+    width: 1200px;
+    margin: 0 auto;
+    background-color: #fff;
+}
+.step{
+    height: 62px;
+    border-bottom: 2px solid #999;
+}
+.step ul{
+    width: 754px;
+    border-bottom: 2px solid #E94615;
+    margin: 0 auto;
+    height: 62px;
+}
+.step li{
+    font-size: 16px;
+    color: #666;
+    float: left;
+    width: 251px;
+    text-align: center;
+    line-height: 62px;
+}
+.step i{
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    position: relative;
+    top: 3px;
+    margin-right: 6px;
+}
+.step  .step-one{
+    background: url("../images/register-one.png") no-repeat center;
+}
+.step  .step-two{
+    background: url("../images/register-two.png") no-repeat center;
+}
+.step  .step-complete{
+    background: url("../images/register-complete.png") no-repeat center;
+}
+/*注册主要内容*/
+.register-content ,.forget-content{
+    padding:63px 0 117px 0 ;
+    width: 778px;
+    margin: 0 auto;
+    box-sizing: border-box;
+}
+.register-content h4{
+    font-size: 22px;
+    color: #666;
+    text-align: center;
+    margin-bottom: 8px;
+}
+.register-content .fast-login{
+    font-size: 14px;
+    color: #666;
+    text-align: right;
+    position: relative;
+    top: -20px;
+    right: -105px;
+}
+.register-content p a{
+    font-size: 14px;
+    color: #36B1DF;
+}
+/*文本框*/
+.userName, .userPassword ,.userTel,.userInvite{
+    width: 360px;
+    height: 40px;
+    border: 1px solid #d0d0d0;
+    border-radius: 3px;
+    background-color: #fff;
+    box-sizing: border-box;
+    margin:0 auto 28px;
+}
+.imgCode ,.telCode{
+    width: 360px;
+    height: 40px;
+    background-color: #fff;
+    box-sizing: border-box;
+    margin:0 auto 30px;
+}
+.register-content em ,.forget-content em{
+    position: relative;
+    top: 8px;
+    height: 20px;
+    float: left;
+    border-right: 1px solid #e5e5e5;
+    padding-right: 13px;
+    margin-left: 13px;
+}
+.userName em {
+    background: url(../images/login-user.png) no-repeat;
+    width: 17px;
+}
+.userPassword em {
+    background: url(../images/login-password.png) no-repeat;
+    width: 16px;
+}
+.imgCode em{
+    background: url("../images/code.png") no-repeat;
+    width: 17px;
+}
+.telCode em{
+    background: url("../images/phone-code.png") no-repeat;
+    width: 17px;
+}
+.userInvite em{
+    background: url("../images/add-people.png") no-repeat;
+    width: 17px;
+}
+.register-content input[type=text] ,.register-content input[type=password],.forget-content input[type=text] ,.forget-content input[type=password]{
+    border: none;
+    float: left;
+    line-height: 38px;
+    padding-left: 13px;
+    box-sizing: border-box;
+    width: 79%;
+}
+.imgCode>div ,.telCode>div{
+    width: 210px;
+    border: 1px solid #d0d0d0;
+    border-radius: 3px;
+}
+.imgCode img{
+    border: 1px solid #d0d0d0;
+    width: 141px;
+    height: 38px;
+    border-radius: 3px;
+}
+.telCode input[type=button]{
+    width: 140px;
+    height: 40px;
+    background-color: #FFAD30;
+    color: #fff;
+    font-size: 16px;
+    text-align: center;
+    line-height: 40px;
+    cursor: pointer;
+    border-radius: 4px;
+    border: 1px solid #FFAD30;
+}
+.register-content input[type=checkbox]{
+    width: 15px;
+    height: 15px;
+    border: 1px solid #999;
+    position: relative;
+    top:3px;
+    margin-bottom: 10px;
+    margin-right: 10px;
+}
+.remember{
+    width: 360px;
+    margin: 0 auto;
+    padding-left: 10px;
+    box-sizing: border-box;
+}
+.remember span{
+    color: #666;
+}
+.remember a{
+    color: #e94615;
+}
+.register-btn , .next-btn{
+    width: 360px;
+    height: 40px;
+    background-color:#36B1DF ;
+    display: block;
+    font-size: 20px;
+    color: #fff;
+    line-height: 40px;
+    text-align: center;
+    border-radius: 4px;
+    margin: 0 auto;
+}
+/*阴影*/
+.shadow-bg{
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    background-color: #000;
+    top: 0;
+    left:0;
+    opacity: .4;
+    display: none;
+}
+/*服务协议*/
+.agreement-wrap{
+    position: fixed;
+    width: 900px;
+    border-radius: 8px;
+    border: 1px solid #D0D0D0;
+    background-color: #fff;
+    top: 50%;
+    left: 50%;
+    margin-top: -400px;
+    margin-left: -450px;
+    display: none;
+}
+.agreement-title{
+    height: 58px;
+    background-color: #f4f2f2;
+    border-bottom: 1px solid #D0D0D0;
+    position: relative;
+}
+.agreement-title h2{
+    font-size: 20px;
+    color:#E94615 ;
+    text-align: center;
+    line-height: 58px;
+}
+.agreement-title img{
+    position: absolute;
+    top: 17px;
+    right: 17px;
+    cursor: pointer;
+}
+.agreement-content{
+    color: #333;
+    padding: 30px;
+    height: 742px;
+    overflow-y: auto;
+    box-sizing: border-box;
+}
+.agreement-content p{
+    line-height: 26px;
+    text-indent: 2em;
+    font-size: 16px;
+}
+.agreement-content h4{
+    padding: 23px 0;
+    font-size: 18px;
+    font-weight: bold;
+}
+.agreement-content .text1{
+    text-indent: 4em;
+}
