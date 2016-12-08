@@ -1,8 +1,4 @@
 /**
- * Created by Lee on 2016/11/17.
- */
-
-/**
  * Created by Jack on 2016/11/18.
  */
 $(function () {
@@ -61,8 +57,7 @@ var vm = new Vue({
             vm.principalTotal = 0;
             vm.interestTotal = 0;
             vm.total = 0;
-            var formValue = $("#defaultForm").serializeObject();
-            $.get("/api/bidPlan/getLoanFundIntents",formValue,function(response){
+            $.post("/api/bidPlan/getLoanFundIntents",vm.plan,function(response){
                 if (response.success_is_ok){
                     vm.intentList = response.data;
                     for(var i=0; i<vm.intentList.length; i++){
@@ -74,13 +69,13 @@ var vm = new Vue({
             });
         },
         cancelBtn : function(){
-            window.location.href = document.referrer;
+            window.location.href = "/bidplan/reviewedPlanList";
         },
         submitBtn:function() {
             var formValue = $("#defaultForm").serializeObject();
             $.post("/api/bidPlan/updatePlan",formValue,function(response){
                 if (response.success_is_ok){
-                    window.location.href = document.referrer;
+                    window.location.href = "/bidplan/reviewedPlanList";
                 }else{
                     errorHandlerFun("#error_place_id");
                 }
@@ -89,10 +84,92 @@ var vm = new Vue({
     }
 });
 //
-$("#bpExpectLoanDateId").change(function(){
-    vm.plan.bpExpectLoanDate=$(this).val();
+//$("#bpExpectLoanDateId").change(function(){
+//    vm.plan.bpExpectLoanDate=$(this).val();
+//});
+////
+//$("#bpExpectRepayDateId").change(function(){
+//    vm.plan.bpExpectRepayDate=$(this).val();
+//});
+
+
+function endTime(startTime, d){
+    startTime = startTime.replace(/-/g,"/");
+    var date = new Date(startTime);
+    date = date.valueOf();
+    date = date + d * 60 * 60 * 1000;
+    var nd = new Date(date);
+    var time1 = nd.toFormatString("yyyy-MM-dd HH:mm:ss");
+    return time1;
+}
+
+function repayDate(loanDate, d, cycle){
+    if(cycle!="" && loanDate != "" && d != ""){
+        loanDate = loanDate.replace(/-/g,"/");
+        var date = new Date(loanDate);
+        if(cycle==1){   //天
+            date.setDate(date.getDate() + d*1);
+        }else if(cycle==2){ //月
+            date.setMonth(date.getMonth() + d*1);
+        }else if(cycle == 3){   //季
+            date.setMonth(date.getMonth() + (d*3));
+        }else if(cycle ==4 ){   //年
+            date.setFullYear(date.getFullYear() + d*1);
+        }
+        return date.toFormatString("yyyy-MM-dd");
+    }else{
+        return null;
+    }
+}
+
+/*开始时间选择*/
+laydate({
+    elem:'#bpStartTime',
+    istime: true,
+    istoday : false,
+    format: 'YYYY-MM-DD hh:mm:ss',
+    choose : function(datas) {
+        var bpOpenTime = $("#bpOpenTime").val();
+        if(bpOpenTime!=null && bpOpenTime != ""){
+            var time = endTime(datas,bpOpenTime);
+            $("#bpEndTime").val(time)
+        }
+    }
 });
-//
-$("#bpExpectRepayDateId").change(function(){
-    vm.plan.bpExpectRepayDate=$(this).val();
+
+laydate({
+    elem:'#bpExpectLoanDate',
+    istime: false,
+    format: 'YYYY-MM-DD',
+    istoday : false,
+    choose : function(datas){
+        var d = $("#bpPeriodsDisplay").val();
+        var cycle = $("#bpCycleType").val();
+        var date = repayDate(datas, d, cycle);
+        $("#bpExpectRepayDate").val(date);
+    }
+});
+
+
+$("#bpOpenTime").change(function(){
+    var bpStartTime = $("#bpStartTime").val();
+    if(bpStartTime!=null && bpStartTime != ""){
+        var time = endTime(bpStartTime,$(this).val());
+        $("#bpEndTime").val(time);
+    }
+});
+
+
+$("#bpPeriodsDisplay").change(function(){
+    var datas = $("#bpExpectLoanDate").val();
+    var cycle = $("#bpCycleType").val();
+    var date = repayDate(datas, $(this).val(), cycle);
+    $("#bpExpectRepayDate").val(date);
+});
+
+$("#bpCycleType").change(function(){
+    var datas = $("#bpExpectLoanDate").val();
+    var d = $("#bpPeriodsDisplay").val();
+    var date = repayDate(datas, d, $(this).val());
+    $("#bpExpectRepayDate").val(date);
 });

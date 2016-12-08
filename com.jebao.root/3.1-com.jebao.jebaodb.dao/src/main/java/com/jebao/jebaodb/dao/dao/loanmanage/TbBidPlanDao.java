@@ -12,6 +12,8 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 /**
  * Created by Administrator on 2016/10/20.
@@ -110,6 +112,15 @@ public class TbBidPlanDao {
         return tbBidPlanMapper.selectP2PListCount(record);
     };
 
+    /**
+     * 投标改变剩余金额
+     * @param map
+     * @return
+     */
+    public int investBid(Map<String, Object> map){
+
+        return tbBidPlanMapper.investBid(map);
+    }
     @Transactional
     public int insertForTransactional(TbBidPlan record) {
         return tbBidPlanMapper.insert(record);

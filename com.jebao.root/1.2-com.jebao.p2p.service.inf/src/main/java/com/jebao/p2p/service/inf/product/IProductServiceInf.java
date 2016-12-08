@@ -4,6 +4,7 @@ import com.jebao.jebaodb.entity.product.ProductSM;
 import com.jebao.jebaodb.entity.extEntity.PageWhere;
 import com.jebao.jebaodb.entity.loanmanage.TbBidPlan;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -14,4 +15,8 @@ public interface IProductServiceInf {
     List<TbBidPlan> selectP2PList(ProductSM record, PageWhere pageWhere);
 
     int selectP2PListCount(ProductSM record);
+
+    TbBidPlan selectByBpId(Long bpId);
+
+    int investBid(Long bpId, String investMoney);
 }

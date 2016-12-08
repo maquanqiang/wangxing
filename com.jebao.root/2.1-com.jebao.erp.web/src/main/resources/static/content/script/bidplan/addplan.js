@@ -277,7 +277,7 @@ function repayDate(loanDate, d, cycle){
 laydate({
     elem:'#bpStartTime',
     istime: true,
-    istoday : true,
+    istoday : false,
     format: 'YYYY-MM-DD hh:mm:ss',
     choose : function(datas) {
         var bpOpenTime = $("#bpOpenTime").val();
@@ -287,19 +287,13 @@ laydate({
         }
     }
 });
-/*结束时间选择*/
-//laydate({
-//    elem:'#bpEndTime',
-//    istime: true,
-//    istoday : true,
-//    format: 'YYYY-MM-DD hh:mm:ss'
-//});
+
 
 laydate({
     elem:'#bpExpectLoanDate',
-    istime: true,
+    istime: false,
     format: 'YYYY-MM-DD',
-    istoday : true,
+    istoday : false,
     choose : function(datas){
         var d = $("#bpPeriodsDisplay").val();
         var cycle = $("#bpCycleType").val();

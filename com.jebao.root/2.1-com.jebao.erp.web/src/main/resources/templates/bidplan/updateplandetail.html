@@ -52,7 +52,6 @@
                                     <div class="input-group-addon">产品类型</div>
                                     <select v-model="plan.bpType" name="bpType" class="form-control"
                                             style="width: 160px;">
-                                        <option value="0">请选择</option>
                                         <option value="1">普通理财</option>
                                         <option value="2">新手专享</option>
                                     </select>
@@ -62,21 +61,21 @@
                                 <div class="input-group margin">
                                     <div class="input-group-addon">募集时间</div>
                                     <input type="text" v-model="plan.bpStartTime" placeholder=""
-                                           class="form-control chooseDate" name="bpStartTime">
+                                           class="form-control" name="bpStartTime" id="bpStartTime">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="input-group margin">
                                     <div class="input-group-addon">募集期限</div>
                                     <input type="text" placeholder="" class="form-control" v-model="plan.bpOpenTime"
-                                           name="bpOpenTime">
+                                           name="bpOpenTime" id="bpOpenTime">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="input-group margin">
                                     <div class="input-group-addon">募集结束</div>
                                     <input type="text" placeholder="" class="form-control chooseDate"
-                                           v-model="plan.bpEndTime" name="bpEndTime">
+                                           v-model="plan.bpEndTime" name="bpEndTime" id="bpEndTime">
                                 </div>
                             </div>
                             <div class="form-group ">
@@ -118,15 +117,14 @@
                                 <div class="input-group">
                                     <div class="input-group-addon">借款期限</div>
                                     <input type="text" placeholder="" class="form-control"
-                                           v-model="plan.bpPeriodsDisplay" name="bpPeriodsDisplay">
+                                           v-model="plan.bpPeriodsDisplay" name="bpPeriodsDisplay" id="bpPeriodsDisplay">
                                 </div>
                             </div>
                             <div class="form-group margin">
                                 <div class="input-group">
                                     <div class="input-group-addon">周期选项</div>
                                     <select name="bpCycleType" v-model="plan.bpCycleType" class="form-control"
-                                            style="width: 160px;">
-                                        <option value="0">请选择</option>
+                                            style="width: 160px;" id="bpCycleType">
                                         <option value="1">日</option>
                                         <option value="2">月</option>
                                         <option value="3">季</option>
@@ -137,17 +135,17 @@
                             <div class="form-group margin">
                                 <div class="input-group">
                                     <div class="input-group-addon">预期放款日期</div>
-                                    <input id="bpExpectLoanDateId" type="text" placeholder=""
-                                           class="form-control chooseDate"
-                                           v-model="plan.bpExpectLoanDate" name="bpExpectLoanDate">
+                                    <input type="text" placeholder=""
+                                           class="form-control"
+                                           v-model="plan.bpExpectLoanDate" name="bpExpectLoanDate" id="bpExpectLoanDate">
                                 </div>
                             </div>
                             <div class="form-group margin">
                                 <div class="input-group">
                                     <div class="input-group-addon">预期还款日期</div>
-                                    <input id="bpExpectRepayDateId" type="text" placeholder=""
-                                           class="form-control chooseDate"
-                                           v-model="plan.bpExpectRepayDate" name="bpExpectRepayDate">
+                                    <input type="text" placeholder=""
+                                           class="form-control"
+                                           v-model="plan.bpExpectRepayDate" name="bpExpectRepayDate" id="bpExpectRepayDate">
                                 </div>
                             </div>
                             <div class="form-group margin">
@@ -155,7 +153,6 @@
                                     <div class="input-group-addon">还款方式</div>
                                     <select v-model="plan.bpInterestPayType" class="form-control"
                                             style="width: 160px;" name="bpInterestPayType">
-                                        <option value="0">请选择</option>
                                         <option value="1">一次性还本付息</option>
                                         <option value="2">先息后本，按期付息</option>
                                     </select>
@@ -227,9 +224,9 @@
                                             <tr role="row" class="even">
                                                 <td>总计</td>
                                                 <td></td>
-                                                <td>10000</td>
-                                                <td>1200</td>
-                                                <td>101200</td>
+                                                <td>{{principalTotal}}</td>
+                                                <td>{{interestTotal}}</td>
+                                                <td>{{total}}</td>
                                             </tr>
                                             </tbody>
                                         </table>

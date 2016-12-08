@@ -8,7 +8,9 @@ import com.jebao.p2p.service.inf.product.IProductServiceInf;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Lee on 2016/12/7.
@@ -27,5 +29,26 @@ public class ProductServiceImpl implements IProductServiceInf {
     @Override
     public int selectP2PListCount(ProductSM record) {
         return tbBidPlanDao.selectP2PListCount(record);
+    }
+
+    @Override
+    public TbBidPlan selectByBpId(Long bpId) {
+        return tbBidPlanDao.selectByPrimaryKey(bpId);
+    }
+
+    /**
+     * 投标
+     * @param bpId
+     * @param investMoney
+     * @return
+     */
+    @Override
+    public int investBid(Long bpId, String investMoney) {
+        //更新标的信息表
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("bpId", bpId);
+        map.put("investMoney", investMoney);
+        int count = tbBidPlanDao.investBid(map);
+        return count;
     }
 }

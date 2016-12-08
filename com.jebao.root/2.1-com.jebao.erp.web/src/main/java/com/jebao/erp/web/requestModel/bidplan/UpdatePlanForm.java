@@ -42,6 +42,7 @@ public class UpdatePlanForm{
         bidPlan.setBpMortgageInfo(planForm.getBpMortgageInfo());
         bidPlan.setBpRiskOpinion(planForm.getBpRiskOpinion());
         bidPlan.setBpRepayedPeriods(planForm.getBpRepayedPeriods());
+        bidPlan.setBpDesc(planForm.getBpDesc());
         bidPlan.setBpType(planForm.getBpType());
         return bidPlan;
     }
@@ -62,9 +63,9 @@ public class UpdatePlanForm{
     private BigDecimal bpBidMoney;
 
     private BigDecimal bpRate;
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date bpStartTime;
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date bpEndTime;
 
     private BigDecimal bpStartMoney;

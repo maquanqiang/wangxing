@@ -8,6 +8,7 @@ import com.jebao.jebaodb.entity.loanmanage.search.BidPlanSM;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 public interface TbBidPlanMapper {
     int insert(TbBidPlan record);
@@ -35,4 +36,6 @@ public interface TbBidPlanMapper {
     List<TbBidPlan> selectP2PList(@Param("record") ProductSM record, @Param("pageWhere") PageWhere pageWhere);
 
     int selectP2PListCount(@Param("record") ProductSM record);
+
+    int investBid(Map<String, Object> map);
 }

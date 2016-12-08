@@ -24,6 +24,7 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
         registry.addInterceptor(new AuthorizeInterceptor())
                 .addPathPatterns("/api/**")
                 .excludePathPatterns("/api/tempTest/*")
+                .excludePathPatterns("/api/product/*")
                 .excludePathPatterns("/api/account/doLogin");
     }
     /**

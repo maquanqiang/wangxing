@@ -7,11 +7,13 @@ import com.jebao.thirdPay.fuiou.util.PrintUtil;
 import com.jebao.thirdPay.fuiou.util.RegexUtil;
 import com.jebao.thirdPay.fuiou.util.SecurityUtils;
 import com.jebao.thirdPay.fuiou.util.XmlUtil;
+import org.springframework.stereotype.Service;
 
 /**
  * 富友--预授权接口
  * Created by Administrator on 2016/9/27.
  */
+@Service
 public class PreAuthServiceImpl {
     public PreAuthResponse post(String httpUrl, PreAuthRequest reqData) throws Exception {
         String signatureStr = SecurityUtils.sign(reqData.requestSignPlain());
