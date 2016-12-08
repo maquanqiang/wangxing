@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>注册 -金额宝</title>
+    #parse("common/head.html")
+    <!--表单验证-->
+    <link rel="stylesheet" href="${filePath}/css/lib/bootstrapValidator.css">
+    <link rel="stylesheet" href="${filePath}/css/register.css">
+    <style>
+        .verification{cursor: pointer}
+        .get_code_btn.disabled, .get_code_btn[disabled] {
+            pointer-events: none;
+            cursor: not-allowed;
+            filter: alpha(opacity=65);
+            -webkit-box-shadow: none;
+            box-shadow: none;
+            opacity: .65;
+        }
+        .agreement-wrap{z-index:9999}
+    </style>
+</head>
+
+<body>
+<!-- 顶部登录信息 -->
+#parse("common/header.html")
+<!-- 导航条 -->
+#parse("common/navigation.html")
+<!--侧边栏--start-->
+#parse("common/sidebar.html")
+
+<!--注册内容-->
+<div class="register-main">
+    <!--步骤-->
+    <div class="step">
+        <ul class="clearfix">
+            <li>
+                <i class="step-one"></i>填写注册信息
+            </li>
+            <li>
+                <i class="step-two"></i>信息验证
+            </li>
+            <li>
+                <i class="step-complete"></i>注册成功
+            </li>
+        </ul>
+    </div>
+    <!--主要内容-->
+    <div class="register-content">
+        <h4>欢迎注册</h4>
+        <p class="fast-login">已有账号，<a href="登录.html">立即登录</a></p>
+        <form action="#"  method="post" id="registerForm">
+            <div class="userName form-group clearfix">
+                <em></em><input type="text" value="" placeholder="请输入手机号码" name="tel">
+            </div>
+            <div class="userPassword form-group clearfix">
+                <em></em><input type="password" value="" placeholder="请设置6-16密码（由字母、数字组成）" name="password">
+            </div>
+            <div class="userPassword form-group clearfix">
+                <em></em><input type="text" value="" placeholder="请再次设置密码" name="passwordAgain">
+            </div>
+            <div class="imgCode form-group clearfix">
+                <div class="fl">
+                    <em></em><input type="password" value="" placeholder="请输入图形验证码" name="imgCode">
+                </div>
+                <img src="/captcha/getCode" class="verification fr" @click="refreshCaptcha">
+            </div>
+            <div class="telCode form-group clearfix">
+                <div class="fl">
+                    <em></em><input type="text" value="" placeholder="请输入手机验证码" name="telCode">
+                </div>
+                <input type="button" value="获取验证码" class="get_code_btn color fr">
+            </div>
+
+            <div class="userInvite form-group clearfix">
+                <em></em><input type="password" value="" placeholder="请输入邀请码" name="userInvite">
+            </div>
+            <div class="remember">
+                <input type="checkbox"><span>我已阅读并同意<a href="#">《金额宝服务协议》</a></span>
+            </div>
+            <a href="#" class="register-btn">注册</a>
+        </form>
+    </div>
+</div>
+
+#parse("account/protocol.html")
+
+#parse("common/footer.html")
+<script src="/content/js/lib/bootstrapValidator.js"></script>
+<script src="/content/script/account/register.js"></script>
+</body>
+</html>

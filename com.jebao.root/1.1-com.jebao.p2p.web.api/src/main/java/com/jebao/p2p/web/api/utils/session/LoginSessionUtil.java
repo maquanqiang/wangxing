@@ -5,10 +5,7 @@ import com.jebao.common.utils.fastjson.FastJsonUtil;
 import com.jebao.p2p.web.api.utils.constants.Constants;
 import com.jebao.p2p.web.api.utils.cookie.CookieUtil;
 import org.apache.commons.lang.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.Environment;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.UUID;
@@ -124,8 +121,8 @@ public class LoginSessionUtil {
 
     private static String getLoginSessionKey(CurrentUser currentUser)
     {
-        int id=currentUser.getId();
-        return  Integer.toString(id);
+        long id=currentUser.getId();
+        return  Long.toString(id);
     }
     private static String getLoginSessionFullName(String loginSessionKey)
     {

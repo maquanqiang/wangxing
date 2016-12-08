@@ -2,11 +2,208 @@
 <html>
 <head>#parse("common/head.html")
 </head>
-
 <body>
+<!--顶部nav---start-->
 #parse("common/header.html")
-<div class="main">
-    <h1>user/index</h1>
+<!--侧边栏--start-->
+#parse("common/main-sidebar.html")
+<!--我的账户内容-->
+<div class="account-main clearfix">
+    <!--我的账户--左侧导航-->
+    #parse("user/sidebar.html")
+    <!--我的账户--右侧主要内容-->
+    <div class="account-content fr">
+        <!--账户总览-->
+        <div class="my-account">
+            <div class="my-account-title">
+                <h2>账户总览</h2>
+            </div>
+            <div class="my-account-cont clearfix">
+                <ul class="fl">
+                    <li>
+                        <p>累计收益：<span class="num">￥20000.00</span></p>
+                    </li>
+                    <li>
+                        <p>总资产：<span>￥50000.00</span></p>
+                    </li>
+                    <li>
+                        <p>可用金额：<span>￥20000.00</span></p>
+                    </li>
+                    <li>
+                        <p>冻结金额：<span>￥20000.00</span></p>
+                    </li>
+                    <li>
+                        <p>待收本金：<span>￥20000.00</span></p>
+                    </li>
+                    <li>
+                        <p>待收收益：<span>￥20000.00</span></p>
+                    </li>
+                </ul>
+                <div class="my-account-btn fl">
+                    <a href="充值提现.html" class="rechange">充值</a>
+                    <a href="充值提现.html" class="expressive">提现</a>
+                </div>
+            </div>
+        </div>
+        <!--开通资金账户-->
+        <ul class="user-function clearfix">
+            <li>
+                <a href="#">
+                    <img src="images/account-open.png">
+                    <p>开通资金账户</p>
+                </a>
+            </li>
+            <li>
+                <a href="充值提现.html">
+                    <img src="images/account-recharge.png">
+                    <p>充值</p>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="images/account-invest.png">
+                    <p>我要投资</p>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="images/account-expressive.png">
+                    <p>提现</p>
+                </a>
+            </li>
+        </ul>
+        <!--投资中的项目-->
+        <div class="project">
+            <div class="project-menu clearfix">
+                <h4 class="active">投资中的项目</h4>
+                <h4>还款中的项目</h4>
+                <div class="project-more fr">
+                    <a href="投资记录.html">更多<i></i></a>
+                </div>
+            </div>
+            <div class="project-list">
+                <div class="project-item active">
+                    <table class="investment">
+                        <thead>
+                        <tr>
+                            <th>名称</th>
+                            <th>投资时间</th>
+                            <th>投资金额</th>
+                            <th>投资期限</th>
+                            <th>投资进度</th>
+                            <th>年化利率</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>
+                                <a href="#">安心宝001期</a>
+                            </td>
+                            <td>2016/11/11 9:00:00</td>
+                            <td>1000.00</td>
+                            <td>1个月</td>
+                            <td>80%</td>
+                            <td>8%</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <a href="#">安心宝001期</a>
+                            </td>
+                            <td>2016/11/11 9:00:00</td>
+                            <td>1000.00</td>
+                            <td>1个月</td>
+                            <td>80%</td>
+                            <td>8%</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="project-item">
+                    <table class="repayment">
+                        <thead>
+                        <tr>
+                            <th>名称</th>
+                            <th>投资时间</th>
+                            <th>投资金额</th>
+                            <th>投资期限</th>
+                            <th>年化利率</th>
+                            <th>下个还款日</th>
+                            <th>还款日应还金额</th>
+                            <th>查看</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>
+                                <a href="#">安心宝001期</a>
+                            </td>
+                            <td>2016/11/11 9:00:00</td>
+                            <td>1000.00</td>
+                            <td>1个月</td>
+                            <td>8%</td>
+                            <td>2016/12/11 9:00:00</td>
+                            <td>100.00</td>
+                            <td>合同</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <a href="#">安心宝001期</a>
+                            </td>
+                            <td>2016/11/11 9:00:00</td>
+                            <td>1000.00</td>
+                            <td>1个月</td>
+                            <td>8%</td>
+                            <td>2016/12/11 9:00:00</td>
+                            <td>100.00</td>
+                            <td>合同</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <!--收支明细-->
+        <div class="income-detail">
+            <div class="project-menu clearfix">
+                <h4>收支明细</h4>
+                <div class="project-more fr">
+                    <a href="收支明细.html">更多<i></i></a>
+                </div>
+            </div>
+            <div class="income-detail-cont">
+                <table class="income-table">
+                    <thead>
+                    <tr>
+                        <th>交易流水号</th>
+                        <th>交易时间</th>
+                        <th>交易类型</th>
+                        <th>收入金额（元）</th>
+                        <th>支出金额（元）</th>
+                        <th>交易状态</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>01091883840</td>
+                        <td>2016/11/11 9:00:00</td>
+                        <td>充值</td>
+                        <td>+5000.00</td>
+                        <td></td>
+                        <td>充值成功</td>
+                    </tr>
+                    <tr>
+                        <td>01091883841</td>
+                        <td>2016/11/11 9:00:00</td>
+                        <td>充值</td>
+                        <td></td>
+                        <td>-2000.00</td>
+                        <td>提现成功</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 </div>
 #parse("common/footer.html")
 </body>

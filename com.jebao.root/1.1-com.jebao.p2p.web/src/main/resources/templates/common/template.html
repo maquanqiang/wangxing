@@ -1,12 +1,27 @@
 <!DOCTYPE html>
 <html>
-<head>#parse("common/head.html")
+<head>
+    <title>标题 -金额宝</title>
+    #parse("common/head.html")
+    <!--css-->
+
 </head>
 
 <body>
+<!-- 顶部登录信息 -->
 #parse("common/header.html")
-<div class="main"></div>
-#parse("common/footer.html")
-</body>
+<!-- 导航条 -->
+#parse("common/navigation.html")
+<!--侧边栏--start-->
+#parse("common/sidebar.html")
 
+<!--内容 begin-->
+
+<!--内容 end-->
+
+
+#parse("common/footer.html")
+<script src="/content/js/lib/bootstrapValidator.js"></script>
+<script src="/content/script/account/register.js"></script>
+</body>
 </html>

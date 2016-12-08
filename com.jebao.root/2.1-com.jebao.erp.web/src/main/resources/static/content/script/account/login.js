@@ -11,8 +11,7 @@ $(document).ready(function() {
 
             if(response.success_is_ok)
             {
-                var targetUrl="/home/index"
-                redirectUrl(targetUrl)
+                window.location.href="/home/index";
                 return;
             }else{
                 $("#error_place_id").html(response.msg);
