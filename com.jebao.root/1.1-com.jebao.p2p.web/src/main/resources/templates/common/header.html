@@ -1,21 +1,18 @@
-<!--#if($form.isLogin)
-当前用户：$!form.userName
-#else
-登录
-#end-->
+
+<!--顶部nav---start-->
 <div class="site-header">
     <div class="header-top clearfix">
         <ul class="header_contact fl">
             <li><em></em>010-65006966&nbsp;&nbsp;（工作日）：9:00-18:00</li>
             <li>
                 <span><i></i>微信</span>
-
                 <div class="weixin-content">
                     <div class="triangle-inner"></div>
-                    <img src="/content/images/header-code.jpg">
+                    <img src="${filePath}/images/header-code.jpg">
                 </div>
             </li>
         </ul>
+
         #if($form.isLogin)
         <ul class="header_login fr">
             <li class="fore">
@@ -46,35 +43,7 @@
             </li>
         </ul>
         #end
-    </div>
-</div>
-<!--顶部logo---start-->
-<div class="header-menu">
-    <div class="header-main clearfix">
-        <h1 class="logo fl">
-            <a href="#">
-                <img src="/content/images/logo.png">
-            </a>
-        </h1>
 
-        <div class="slogan fl">
-            <a href="#">
-                <img src="/content/images/slogan.png">
-            </a>
-        </div>
-        <ul class="header_nav fr">
-            <li>
-                <a href="index.html">首页</a>
-            </li>
-            <li>
-                <a href="项目列表.html">项目列表</a>
-            </li>
-            <li>
-                <a href="安全保障.html">安全保障</a>
-            </li>
-            <li>
-                <a href="我的账户首页.html" class="red">我的账户</a>
-            </li>
-        </ul>
+
     </div>
 </div>

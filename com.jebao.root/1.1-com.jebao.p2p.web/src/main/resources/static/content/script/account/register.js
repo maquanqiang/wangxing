@@ -16,8 +16,11 @@ var vm = new Vue({
 
     },
     methods:{
-        refreshCaptcha:function(){
-            
+        refreshCaptcha:function(event){
+            console.log(arguments.length)
+            for (var i=0;i<arguments.length;i++){
+                console.log(arguments[i])
+            }
         }
     }
 });
