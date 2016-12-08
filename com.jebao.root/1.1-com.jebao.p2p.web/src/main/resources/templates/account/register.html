@@ -6,6 +6,18 @@
     <!--表单验证-->
     <link rel="stylesheet" href="${filePath}/css/lib/bootstrapValidator.css">
     <link rel="stylesheet" href="${filePath}/css/register.css">
+    <style>
+        .verification{cursor: pointer}
+        .get_code_btn.disabled, .get_code_btn[disabled] {
+            pointer-events: none;
+            cursor: not-allowed;
+            filter: alpha(opacity=65);
+            -webkit-box-shadow: none;
+            box-shadow: none;
+            opacity: .65;
+        }
+        .agreement-wrap{z-index:9999}
+    </style>
 </head>
 
 <body>
@@ -70,6 +82,7 @@
     </div>
 </div>
 
+#parse("account/protocol.html")
 
 #parse("common/footer.html")
 <script src="/content/js/lib/bootstrapValidator.js"></script>
