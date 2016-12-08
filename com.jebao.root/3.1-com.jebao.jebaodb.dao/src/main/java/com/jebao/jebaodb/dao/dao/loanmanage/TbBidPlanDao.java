@@ -1,6 +1,7 @@
 package com.jebao.jebaodb.dao.dao.loanmanage;
 
 import com.jebao.jebaodb.dao.mapper.loanmanage.TbBidPlanMapper;
+import com.jebao.jebaodb.entity.product.ProductSM;
 import com.jebao.jebaodb.entity.extEntity.PageWhere;
 import com.jebao.jebaodb.entity.loaner.LoanTotal;
 import com.jebao.jebaodb.entity.loanmanage.TbBidPlan;
@@ -89,6 +90,25 @@ public class TbBidPlanDao {
     public LoanTotal statisticsByLoanerId(Long loanerId){
         return tbBidPlanMapper.statisticsByLoanerId(loanerId);
     }
+
+    /**
+     * p2p条件查询列表
+     * @param record
+     * @param pageWhere
+     * @return
+     */
+    public List<TbBidPlan> selectP2PList(@Param("record") ProductSM record, @Param("pageWhere") PageWhere pageWhere){
+        return tbBidPlanMapper.selectP2PList(record, pageWhere);
+    };
+
+    /**
+     * p2p条件查询统计
+     * @param record
+     * @return
+     */
+    public int selectP2PListCount(@Param("record") ProductSM record){
+        return tbBidPlanMapper.selectP2PListCount(record);
+    };
 
     @Transactional
     public int insertForTransactional(TbBidPlan record) {
