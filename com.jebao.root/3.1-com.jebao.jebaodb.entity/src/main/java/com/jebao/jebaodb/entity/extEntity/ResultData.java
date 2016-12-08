@@ -12,6 +12,10 @@ public class ResultData <T> extends ResultInfo{
         super(true,msg);
         this.setData(data);
     }
+    public ResultData(boolean flag,T data,String msg){
+        super(flag,msg);
+        this.setData(data);
+    }
     private T data;
 
     public T getData() {

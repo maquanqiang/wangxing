@@ -7,18 +7,20 @@ import org.hibernate.validator.constraints.NotBlank;
  */
 public class LoginForm {
 
-    @NotBlank(message="name参数的值不能为空")
-    private String name;
-    @NotBlank(message="password参数的值不能为空")
+    @NotBlank(message="用户名不能为空")
+    private String jebUsername;
+    @NotBlank(message="密码不能为空")
     private String password;
+    private boolean remember;
+    private String verifyCode;
     private String redirectUrl;
 
-    public String getName() {
-        return name;
+    public String getJebUsername() {
+        return jebUsername;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setJebUsername(String jebUsername) {
+        this.jebUsername = jebUsername;
     }
 
     public String getPassword() {
@@ -29,11 +31,27 @@ public class LoginForm {
         this.password = password;
     }
 
+    public String getVerifyCode() {
+        return verifyCode;
+    }
+
+    public void setVerifyCode(String verifyCode) {
+        this.verifyCode = verifyCode;
+    }
+
     public String getRedirectUrl() {
         return redirectUrl;
     }
 
     public void setRedirectUrl(String redirectUrl) {
         this.redirectUrl = redirectUrl;
+    }
+
+    public boolean getRemember() {
+        return remember;
+    }
+
+    public void setRemember(boolean remember) {
+        this.remember = remember;
     }
 }
