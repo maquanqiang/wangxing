@@ -156,11 +156,8 @@
     padding-left: 10px;
     box-sizing: border-box;
 }
-.remember span{
+.remember span,.remember a{
     color: #666;
-}
-.remember a{
-    color: #e94615;
 }
 .register-btn , .next-btn{
     width: 360px;
@@ -173,66 +170,4 @@
     text-align: center;
     border-radius: 4px;
     margin: 0 auto;
-}
-/*阴影*/
-.shadow-bg{
-    width: 100%;
-    height: 100%;
-    position: fixed;
-    background-color: #000;
-    top: 0;
-    left:0;
-    opacity: .4;
-    display: none;
-}
-/*服务协议*/
-.agreement-wrap{
-    position: fixed;
-    width: 900px;
-    border-radius: 8px;
-    border: 1px solid #D0D0D0;
-    background-color: #fff;
-    top: 50%;
-    left: 50%;
-    margin-top: -400px;
-    margin-left: -450px;
-    display: none;
-}
-.agreement-title{
-    height: 58px;
-    background-color: #f4f2f2;
-    border-bottom: 1px solid #D0D0D0;
-    position: relative;
-}
-.agreement-title h2{
-    font-size: 20px;
-    color:#E94615 ;
-    text-align: center;
-    line-height: 58px;
-}
-.agreement-title img{
-    position: absolute;
-    top: 17px;
-    right: 17px;
-    cursor: pointer;
-}
-.agreement-content{
-    color: #333;
-    padding: 30px;
-    height: 742px;
-    overflow-y: auto;
-    box-sizing: border-box;
-}
-.agreement-content p{
-    line-height: 26px;
-    text-indent: 2em;
-    font-size: 16px;
-}
-.agreement-content h4{
-    padding: 23px 0;
-    font-size: 18px;
-    font-weight: bold;
-}
-.agreement-content .text1{
-    text-indent: 4em;
 }
