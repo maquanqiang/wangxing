@@ -367,7 +367,7 @@
         <include refid="Base_Column_List" />
         from tb_income_detail
         <if test="pageWhere.orderBy!=null">
-            ${pageWhere.orderBy}
+            ORDER BY ${pageWhere.orderBy}
         </if>
         LIMIT #{pageWhere.begin},#{pageWhere.pageSize}
     </select>
@@ -379,7 +379,7 @@
             <include refid="selectByCondition_Where_Clause" />
         </where>
         <if test="pageWhere.orderBy!=null">
-            ${pageWhere.orderBy}
+            ORDER BY ${pageWhere.orderBy}
         </if>
         LIMIT #{pageWhere.begin},#{pageWhere.pageSize}
     </select>
@@ -415,7 +415,7 @@
         GROUP BY
             ind_bp_number, ind_fund_type DESC, ind_periods
         <if test="pageWhere.orderBy!=null">
-            ${pageWhere.orderBy}
+            ORDER BY ${pageWhere.orderBy}
         </if>
         LIMIT #{pageWhere.begin},#{pageWhere.pageSize}
     </select>

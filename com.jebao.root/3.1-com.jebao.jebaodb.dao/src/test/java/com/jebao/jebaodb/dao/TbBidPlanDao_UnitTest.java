@@ -7,6 +7,7 @@ import com.jebao.jebaodb.entity.extEntity.PageWhere;
 import com.jebao.jebaodb.entity.loaner.TbRiskCtlPrjTemp;
 import com.jebao.jebaodb.entity.loanmanage.TbBidPlan;
 import com.jebao.jebaodb.entity.loanmanage.TbBidRiskData;
+import com.jebao.jebaodb.entity.product.ProductSM;
 import org.apache.ibatis.annotations.Param;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,22 @@ public class TbBidPlanDao_UnitTest extends _BaseUnitTest {
     private TbBidPlanDao tbBidPlanDao;
     @Autowired
     private TbBidRiskDataDao riskDataDao;
+
+
+    @Test
+    public void selectList()
+    {
+        ProductSM productSM = new ProductSM();
+        productSM.setBpInterestPayType(2);
+        productSM.setBpCycleType(2);
+        productSM.setBpPeriods(4);
+        productSM.setBpStatus(7);
+        productSM.setSearchMoneySt(new BigDecimal(20000));
+        PageWhere pageWhere = new PageWhere(0, 1000);
+        pageWhere.setOrderBy("bp_update_time desc");
+        List<TbBidPlan> tbBidPlans = tbBidPlanDao.selectP2PList(productSM, pageWhere);
+        System.out.println();
+    }
 
     @Test
     public void insertExample()

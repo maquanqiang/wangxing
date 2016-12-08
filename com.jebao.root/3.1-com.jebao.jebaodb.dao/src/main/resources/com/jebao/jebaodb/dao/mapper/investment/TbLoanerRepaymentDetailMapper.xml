@@ -300,7 +300,7 @@
         <include refid="Base_Column_List" />
         from tb_loaner_repayment_detail
         <if test="pageWhere.orderBy!=null">
-            ${pageWhere.orderBy}
+            ORDER BY ${pageWhere.orderBy}
         </if>
         LIMIT #{pageWhere.begin},#{pageWhere.pageSize}
     </select>
@@ -312,7 +312,7 @@
             <include refid="selectByCondition_Where_Clause" />
         </where>
         <if test="pageWhere.orderBy!=null">
-            ${pageWhere.orderBy}
+            ORDER BY ${pageWhere.orderBy}
         </if>
         LIMIT #{pageWhere.begin},#{pageWhere.pageSize}
     </select>

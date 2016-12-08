@@ -748,6 +748,12 @@
         AND bp_is_del = 1
     </sql>
     <sql id="selectBySelfCondition_Where_Clause">
+        <if test="record.bpInterestPayType != null" >
+            AND bp_interest_pay_type = #{record.bpInterestPayType,jdbcType=INTEGER}
+        </if>
+        <if test="record.bpCycleType != null" >
+            AND bp_cycle_type = #{record.bpCycleType,jdbcType=INTEGER}
+        </if>
         <if test="record.bpName != null and record.bpName != ''" >
             AND bp_name = #{record.bpName,jdbcType=VARCHAR}
         </if>
@@ -785,7 +791,6 @@
               AND ${record.searchDateType}  <=  #{record.searchDateEnd,jdbcType=VARCHAR}
             ]]>
         </if>
-
         <!--<if test="record.bpIsDel != null" >-->
         <!--AND bp_is_del = #{record.bpIsDel,jdbcType=INTEGER}-->
         <!--</if>-->
@@ -795,6 +800,40 @@
         AND bp_is_del = 1
     </sql>
 
+    <sql id="selectP2PListByCondition_Where_Clause">
+        <if test="record.bpInterestPayType != null" >
+            AND bp_interest_pay_type = #{record.bpInterestPayType,jdbcType=INTEGER}
+        </if>
+        <if test="record.bpCycleType != null" >
+            AND bp_cycle_type = #{record.bpCycleType,jdbcType=INTEGER}
+        </if>
+        <if test="record.bpPeriodsDisplay != null" >
+            AND bp_periods_display = #{record.bpPeriodsDisplay,jdbcType=INTEGER}
+        </if>
+        <if test="record.bpPeriods != null" >
+            AND bp_periods = #{record.bpPeriods,jdbcType=INTEGER}
+        </if>
+        <if test="record.bpStatus != null" >
+            AND bp_status = #{record.bpStatus,jdbcType=INTEGER}
+        </if>
+        <if test="record.searchMoneySt != null" >
+            <![CDATA[
+              AND bp_bid_money  >=  #{record.searchMoneySt,jdbcType=DECIMAL}
+            ]]>
+        </if>
+        <if test="record.searchMoneyEnd != null" >
+            <![CDATA[
+              AND bp_bid_money  <=  #{record.searchMoneySt,jdbcType=DECIMAL}
+            ]]>
+        </if>
+        <!--<if test="record.bpIsDel != null" >-->
+        <!--AND bp_is_del = #{record.bpIsDel,jdbcType=INTEGER}-->
+        <!--</if>-->
+        <if test="record.bpType != null" >
+            AND bp_type = #{record.bpType,jdbcType=INTEGER}
+        </if>
+        AND bp_is_del = 1
+    </sql>
 
     <select id="selectForPage" resultMap="BaseResultMap">
         select
@@ -804,7 +843,7 @@
             bp_is_del = 1
         </where>
         <if test="pageWhere.orderBy!=null">
-            ${pageWhere.orderBy}
+            ORDER BY ${pageWhere.orderBy}
         </if>
         LIMIT #{pageWhere.begin},#{pageWhere.pageSize}
     </select>
@@ -817,7 +856,7 @@
             <include refid="selectByCondition_Where_Clause" />
         </where>
         <if test="pageWhere.orderBy!=null">
-          ${pageWhere.orderBy}
+            ORDER BY ${pageWhere.orderBy}
         </if>
         LIMIT #{pageWhere.begin},#{pageWhere.pageSize}
     </select>
@@ -837,7 +876,7 @@
             <include refid="selectBySelfCondition_Where_Clause" />
         </where>
         <if test="pageWhere.orderBy!=null">
-            ${pageWhere.orderBy}
+            ORDER BY ${pageWhere.orderBy}
         </if>
         LIMIT #{pageWhere.begin},#{pageWhere.pageSize}
     </select>
@@ -847,6 +886,42 @@
         <where>
             <include refid="selectBySelfCondition_Where_Clause" />
         </where>
+    </select>
+
+    <select id="selectP2PList" resultMap="BaseResultMap">
+        SELECT
+            bp_id,
+            bp_name,
+            bp_number,
+            bp_periods_display,
+            bp_cycle_type,
+            bp_cycle_size,
+            bp_surplus_money,
+            bp_bid_money,
+            bp_rate,
+            bp_start_time,
+            bp_end_time,
+            bp_full_time,
+            bp_status,
+            bp_type
+        FROM
+            tb_bid_plan
+        <where>
+            <include refid="selectP2PListByCondition_Where_Clause" />
+        </where>
+        AND bp_status > 1
+        <if test="pageWhere.orderBy!=null">
+            ORDER BY ${pageWhere.orderBy}
+        </if>
+        LIMIT #{pageWhere.begin},#{pageWhere.pageSize}
+    </select>
+    <select id="selectP2PListCount" resultType="java.lang.Integer">
+        select count(*)
+        from tb_bid_plan
+        <where>
+            <include refid="selectP2PListByCondition_Where_Clause" />
+        </where>
+        AND bp_status > 1
     </select>
 
 </mapper>
