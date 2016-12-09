@@ -15,9 +15,13 @@ public class TbUserDetails {
 
     private String udEmail;
 
+    private String udPhone;
+
     private String udInvitationCode;
 
     private Integer udCustomerManagerId;
+
+    private Long udLoanerId;
 
     private Integer udPlatform;
 
@@ -95,12 +99,36 @@ public class TbUserDetails {
         this.udEmail = udEmail == null ? null : udEmail.trim();
     }
 
+    public String getUdPhone() {
+        return udPhone;
+    }
+
+    public void setUdPhone(String udPhone) {
+        this.udPhone = udPhone == null ? null : udPhone.trim();
+    }
+
     public String getUdInvitationCode() {
         return udInvitationCode;
     }
 
     public void setUdInvitationCode(String udInvitationCode) {
         this.udInvitationCode = udInvitationCode == null ? null : udInvitationCode.trim();
+    }
+
+    public Integer getUdCustomerManagerId() {
+        return udCustomerManagerId;
+    }
+
+    public void setUdCustomerManagerId(Integer udCustomerManagerId) {
+        this.udCustomerManagerId = udCustomerManagerId;
+    }
+
+    public Long getUdLoanerId() {
+        return udLoanerId;
+    }
+
+    public void setUdLoanerId(Long udLoanerId) {
+        this.udLoanerId = udLoanerId;
     }
 
     public Integer getUdPlatform() {
@@ -213,13 +241,5 @@ public class TbUserDetails {
 
     public void setUdIsDel(Integer udIsDel) {
         this.udIsDel = udIsDel;
-    }
-
-    public Integer getUdCustomerManagerId() {
-        return udCustomerManagerId;
-    }
-
-    public void setUdCustomerManagerId(Integer udCustomerManagerId) {
-        this.udCustomerManagerId = udCustomerManagerId;
     }
 }

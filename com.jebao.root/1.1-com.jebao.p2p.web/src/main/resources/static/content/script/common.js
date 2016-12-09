@@ -4,7 +4,7 @@
 (function () {
     //页面公共对象
     var common = {
-        apiOrigin:"http://localhost:9089",
+        apiOrigin: "http://localhost:9089",
         //获取url参数
         getUrlParam: function (name) {
             var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
@@ -21,7 +21,9 @@
         },
         //将json日期格式化显示 数字转日期
         formatJsonDate: function (str, format) {
-            if (str == null || str.length == 0) { return ''; }
+            if (str == null || str.length == 0) {
+                return '';
+            }
             str = str.replace(/T/g, " ").replace(/-/g, "/").substr(0, 19);
             var d = new Date(str);
             format = format || 'yyyy-MM-dd';
@@ -46,7 +48,7 @@ Date.prototype.toFormatString = function (format) {
     var strSen = this.getSeconds().toString();
     strSen = (strSen.length == 1) ? ("0" + strSen) : strSen;
     if (format) {
-        if (format.indexOf("yyyy")>-1) {
+        if (format.indexOf("yyyy") > -1) {
             format = format.replace("yyyy", this.getFullYear());
         } else {
             format = format.replace("yy", this.getYear() - 100);
@@ -63,14 +65,35 @@ Date.prototype.toFormatString = function (format) {
 };
 //jQuery扩展
 (function ($) {
+    var rsubmitterTypes = /^(?:submit|button|image|reset|file)$/i,
+        rsubmittable = /^(?:input|select|textarea|keygen)/i,
+        manipulation_rcheckableType = /^(?:checkbox|radio)$/i;
     $.extend($.fn, {
         //序列化表单元素为一个对象
         serializeObject: function () {
-            var obj = {};
-            $(this).find("input[name]:not([type='button']),textarea[name],select[name]").map(function (index,item) {
-                obj[item.name] = $(item).val();
-            });
-            return obj;
+            var newObj = {};
+            this.map(function () {
+                    var elements = jQuery.prop(this, "elements");
+                    return elements ? jQuery.makeArray(elements) : this;
+                })
+                .filter(function () {
+                    var type = this.type;
+                    return this.name &&
+                        rsubmittable.test(this.nodeName) && !rsubmitterTypes.test(type) &&
+                        ( this.checked || !manipulation_rcheckableType.test(type) );
+                })
+                .map(function (i, elem) {
+                    var val = jQuery(this).val();
+
+                    return val == null ?
+                        null :
+                        jQuery.isArray(val) ?
+                            jQuery.map(val, function (val) {
+                                return newObj[elem.name] = $.trim(val);;
+                            }) :
+                            newObj[elem.name] = $.trim(val);
+                });
+            return newObj;
         },
         //设置禁用时长delay //$(this).setDisabled(3000);
         setDisabled: function (timeout) {
@@ -80,9 +103,9 @@ Date.prototype.toFormatString = function (format) {
             }, timeout);
         }
     });
-    $(document).ajaxSend(function(event, jqxhr, settings) {
-        if ( settings.url.indexOf("/api") === 0 ) {
-            settings.url = common.apiOrigin + settings.url ;
+    $(document).ajaxSend(function (event, jqxhr, settings) {
+        if (settings.url.indexOf("/api") === 0) {
+            settings.url = common.apiOrigin + settings.url;
         }
     });
 }(jQuery));

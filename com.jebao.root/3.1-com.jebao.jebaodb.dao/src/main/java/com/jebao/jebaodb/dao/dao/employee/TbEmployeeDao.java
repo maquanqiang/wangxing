@@ -37,6 +37,19 @@ public class TbEmployeeDao {
     }
 
     /**
+     * 根据手机号查询员工信息
+     * @param mobile 手机号码
+     * @return 员工详细信息
+     */
+    public EmployeeInfo selectEmployeeByMobile(String mobile){
+        EmployeeSM searchModel = new EmployeeSM();
+        searchModel.setMobile(mobile);
+        searchModel.setPageSize(1);
+        List<EmployeeInfo> list = mapper.selectEmployeeDetailsInfo(searchModel);
+        return list!=null && list.size()>0?list.get(0):null;
+    }
+
+    /**
      * 逻辑删除员工
      * @param id emp_id
      * @return 执行结果 true or false

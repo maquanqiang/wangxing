@@ -7,7 +7,7 @@ import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
 public interface TbLoginInfoMapper {
-    int insert(TbLoginInfo record);
+    long insert(TbLoginInfo record);
 
     int insertSelective(TbLoginInfo record);
 
