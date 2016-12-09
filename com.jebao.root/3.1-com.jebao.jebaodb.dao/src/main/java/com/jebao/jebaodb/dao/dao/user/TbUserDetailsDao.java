@@ -17,7 +17,7 @@ public class TbUserDetailsDao {
     @Autowired
     private TbUserDetailsMapper tbUserDetailsMapper;
 
-    public int insert(TbUserDetails record) {
+    public long insert(TbUserDetails record) {
         return tbUserDetailsMapper.insert(record);
     }
     public int insertSelective(TbUserDetails record) {
@@ -48,7 +48,7 @@ public class TbUserDetailsDao {
         return tbUserDetailsMapper.selectByLoginId(udLoginId);
     }
     @Transactional
-    public int insertForTransactional(TbUserDetails record) {
+    public long insertForTransactional(TbUserDetails record) {
         return tbUserDetailsMapper.insert(record);
     }
 }

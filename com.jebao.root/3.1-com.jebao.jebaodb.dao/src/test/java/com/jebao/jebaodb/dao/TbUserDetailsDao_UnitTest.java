@@ -27,7 +27,7 @@ public class TbUserDetailsDao_UnitTest extends _BaseUnitTest {
         record.setUdNickName("三刀");
         record.setUdTrueName("王伟");
         record.setUdThirdAccount("15901048116");
-        int result= tbUserDetailsDao.insert(record);
+        long result= tbUserDetailsDao.insert(record);
         assertThat(result).isEqualTo(1);
         System.out.println(record.getUdId());
     }
@@ -95,7 +95,7 @@ public class TbUserDetailsDao_UnitTest extends _BaseUnitTest {
         record.setUdNickName("六刀");
         record.setUdTrueName("王六");
         record.setUdThirdAccount("15901048114");
-        int result= tbUserDetailsDao.insertForTransactional(record);
+        long result= tbUserDetailsDao.insertForTransactional(record);
         assertThat(result).isEqualTo(1);
         System.out.println(record.getUdId());
     }
