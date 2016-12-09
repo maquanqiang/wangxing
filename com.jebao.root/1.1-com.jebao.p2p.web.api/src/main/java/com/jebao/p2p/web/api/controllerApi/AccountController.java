@@ -1,7 +1,6 @@
 package com.jebao.p2p.web.api.controllerApi;
 
 import com.jebao.jebaodb.entity.extEntity.ResultData;
-import com.jebao.jebaodb.entity.extEntity.ResultInfo;
 import com.jebao.p2p.service.inf.user.IAccountServiceInf;
 import com.jebao.p2p.web.api.requestModel.account.LoginForm;
 import com.jebao.p2p.web.api.requestModel.account.RegisterModel;
@@ -62,7 +61,7 @@ public class AccountController extends _BaseController {
     }
     @RequestMapping("doRegister")
     public JsonResult doRegister(RegisterModel model){
-
+        return null;
     }
 
 }
