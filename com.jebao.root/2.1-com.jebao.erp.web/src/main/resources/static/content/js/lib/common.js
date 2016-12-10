@@ -8,6 +8,10 @@ $(window).load(function(){
 //根据url地址来判断左侧菜单选中
 function activeMenu() {
     var hrefVal=window.location.pathname;
+    if($('#hidden_active_menu').length > 0)
+    {
+        hrefVal=$('#hidden_active_menu').val();
+    }
     var menuObj=$('#ulList').find("a[href$='"+hrefVal+"']");
     if(typeof menuObj=="undefined"){
         return;
