@@ -36,4 +36,14 @@ public class ShardedRedisUtil_UnitTest {
         ObjClass getObj=redisUtil.get(key,ObjClass.class);
         assertThat(result).isEqualTo("OK");
     }
+    @Test
+    public void setexExample()
+    {
+        ShardedRedisUtil redisUtil = ShardedRedisUtil.getInstance();
+        String result= redisUtil.setex("ShardedRedisUtilUnitTest", 60,"2016101901");
+        ObjClass obj=new ObjClass();
+        obj.setName("2016-objClass");
+        String resultObj= redisUtil.setex("ShardedRedisUtilUnitTest_objClass", 60,obj);
+        assertThat(result).isEqualTo("OK");
+    }
 }
