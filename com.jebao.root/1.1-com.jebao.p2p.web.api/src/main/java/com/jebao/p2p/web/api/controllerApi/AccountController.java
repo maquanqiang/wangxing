@@ -44,7 +44,7 @@ public class AccountController extends _BaseController {
         String ipAddress = new HttpUtil().getIpAddress(request);
         //todo 实际的业务逻辑
         ResultData<Long> resultInfo = accountService.login(loginForm.getJebUsername(),loginForm.getPassword(),ipAddress);
-        if (resultInfo.isSuccess_is_ok()){
+        if (resultInfo.getSuccess_is_ok()){
             CurrentUser currentUser = new CurrentUser();
             currentUser.setId(resultInfo.getData());
             currentUser.setName(loginForm.getJebUsername());
@@ -66,6 +66,9 @@ public class AccountController extends _BaseController {
         if (resultValidation.isHasErrors()) {
             return new JsonResultError(resultValidation.toString());
         }
+        if (!model.getPassword().equalsIgnoreCase(model.getPasswordAgain())){
+            return new JsonResultError("俩次密码不一致");
+        }
         //图形验证码校验
         String verifyCode= CaptchaUtil.getCaptchaToken(request, response);
         if (!StringUtils.isBlank(verifyCode)){
@@ -77,8 +80,15 @@ public class AccountController extends _BaseController {
         if (!new MessageUtil().isValidCode(model.getMobile(),model.getMessageCode())){
             return new JsonResultError("短信验证码错误");
         }
-
-        return null;
+        HttpUtil httpUtil = new HttpUtil();
+        String ip = httpUtil.getIpAddress(request);
+        //注册
+        ResultData<Long> result = accountService.register(model.getMobile(),model.getPassword(),model.getInvitationCode(),ip,httpUtil.getPlatform(request));
+        if (result.getSuccess_is_ok()){
+            return new JsonResultOk(result.getMsg());
+        }else {
+            return new JsonResultError(result.getMsg());
+        }
     }
 
 }

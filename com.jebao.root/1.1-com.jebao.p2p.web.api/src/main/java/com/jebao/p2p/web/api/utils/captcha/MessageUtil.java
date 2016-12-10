@@ -13,16 +13,23 @@ import java.util.Random;
 public class MessageUtil {
     private final String VERIFY_CODES = "0123456789";
     private final int EXPIRE_TIME_SECONDS=60 * 10;//10分钟有效期
-
+    private final int MOBILE_MAX_SEND_NUMBER = 10;//单个手机号
+    private final int   IP_MAX_SEND_NUMBER=20;
     /**
      * 发送短信验证码
      * @param mobile 目标手机号码
      * @return 短信验证码
      */
-    public String sendMessageVerifyCode(String mobile){
+    public String sendMessageVerifyCode(String mobile,String ip){
+        //校验发送次数
+        //mobile redis存储格式: key:{mobile},value:{verifyCode}|{number}
+        String redisValue = getRedis(mobile);//获取已发送的次数
+        int sendNumber = redisValue == null ? 0 : Integer.parseInt(redisValue.split("|")[1]); //该手机号已发送的短信次数
+
+
         String verifyCode = generateVerifyCode(4);
         SmsSendUtil.sendVerifyCode(mobile,verifyCode);
-        setMessageVerifyCodeInRedis(mobile,verifyCode);
+        setRedis(mobile,verifyCode);
         return verifyCode;
     }
     /**
@@ -30,7 +37,7 @@ public class MessageUtil {
      * @param mobile 目标手机号码
      * @return 短信验证码
      */
-    public String getMessageVerifyCodeInRedis(String mobile){
+    public String getRedis(String mobile){
         String key = getRedisKey(mobile);
         ShardedRedisUtil redisUtil = ShardedRedisUtil.getInstance();
         return redisUtil.get(key);
@@ -43,7 +50,7 @@ public class MessageUtil {
      * @return 是否正确
      */
     public boolean isValidCode(String mobile,String code){
-        String messageVerifyCode = getMessageVerifyCodeInRedis(mobile);
+        String messageVerifyCode = getRedis(mobile);
         return !StringUtils.isBlank(messageVerifyCode) && messageVerifyCode.equalsIgnoreCase(code);
     }
 
@@ -63,7 +70,7 @@ public class MessageUtil {
         return verifyCode.toString();
     }
 
-    private void setMessageVerifyCodeInRedis(String mobile,String code)
+    private void setRedis(String mobile,String code)
     {
         String key=getRedisKey(mobile);
         String value=code;
@@ -75,9 +82,9 @@ public class MessageUtil {
         }
     }
 
-    private String getRedisKey(String mobile)
+    private String getRedisKey(String simpleKey)
     {
-        return Constants.CAPTCHA_TOKEN_CACHE_NAME+mobile;
+        return Constants.CAPTCHA_TOKEN_CACHE_NAME+simpleKey;
     }
 
 }

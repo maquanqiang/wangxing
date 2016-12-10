@@ -44,7 +44,7 @@ public class AccountControllerApi extends _BaseController {
 
         //todo 登录逻辑实现
         ResultInfo resultInfo =accountService.Login(model);
-        if (resultInfo.isSuccess_is_ok()){
+        if (resultInfo.getSuccess_is_ok()){
             ResultData<Integer> successResult = (ResultData<Integer>) resultInfo;
             CurrentUser currentUser = new CurrentUser();
             currentUser.setId(successResult.getData());

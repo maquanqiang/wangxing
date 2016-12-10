@@ -5,12 +5,14 @@ import com.jebao.common.utils.regex.RegexUtil;
 import com.jebao.jebaodb.dao.dao.employee.TbEmployeeDao;
 import com.jebao.jebaodb.dao.dao.user.TbLoginInfoDao;
 import com.jebao.jebaodb.dao.dao.user.TbUserDetailsDao;
+import com.jebao.jebaodb.dao.dao.user.TbUserLogDao;
 import com.jebao.jebaodb.entity.employee.EmployeeInfo;
 import com.jebao.jebaodb.entity.employee.TbEmployee;
 import com.jebao.jebaodb.entity.extEntity.EnumModel;
 import com.jebao.jebaodb.entity.extEntity.ResultData;
 import com.jebao.jebaodb.entity.user.TbLoginInfo;
 import com.jebao.jebaodb.entity.user.TbUserDetails;
+import com.jebao.jebaodb.entity.user.TbUserLog;
 import com.jebao.p2p.service.inf.user.IAccountServiceInf;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +30,8 @@ public class AccountServiceImpl implements IAccountServiceInf {
     private TbLoginInfoDao loginInfoDao;
     @Autowired
     private TbUserDetailsDao userDetailsDao;
+    @Autowired
+    private TbUserLogDao userLogDao;
     @Autowired
     private TbEmployeeDao employeeDao;
     @Override
@@ -48,17 +52,17 @@ public class AccountServiceImpl implements IAccountServiceInf {
     }
     @Override
     @Transactional
-    public ResultData<Long> register(String username, String password, String invitationCode, EnumModel.Platform platform){
+    public ResultData<Long> register(String username, String password, String invitationCode,String ip,  EnumModel.Platform platform){
         TbLoginInfo loginModel = new TbLoginInfo();
         loginModel.setLiLoginName(username);
         loginModel.setLiPassword(new EncryptUtil().encryptToMD5(password));
         loginModel.setLiCreateTime(new Date());
         loginModel.setLiIsDel(1);//是否有效,1有效 2无效
-        long insertId = loginInfoDao.insert(loginModel);
-        if (insertId>0){
+        long userId = loginInfoDao.insert(loginModel);
+        if (userId>0){
             //region 创建用户详情信息
             TbUserDetails detailsModel = new TbUserDetails();
-            detailsModel.setUdLoginId(insertId);//用户id，登录表id
+            detailsModel.setUdLoginId(userId);//用户id，登录表id
             detailsModel.setUdPhone(username);//手机号码
             detailsModel.setUdPlatform(platform.getValue());//注册平台
             detailsModel.setUdCreateTime(new Date());//创建时间
@@ -85,12 +89,26 @@ public class AccountServiceImpl implements IAccountServiceInf {
 //                //无效的邀请码，设置金额宝本部门的邀请码
 //                detailsModel.setUdInvitationCode(username);
 //            }
+
             //endregion
 
             userDetailsDao.insert(detailsModel);
            //endregion
 
-            return new ResultData(true,insertId,"注册成功");
+            //region 记录日志
+            TbUserLog logModel = new TbUserLog();
+            logModel.setUlUserId(userId);//用户id
+            String logContent = "用户注册，注册手机号："+username;
+            if (!StringUtils.isBlank(detailsModel.getUdInvitationCode())){
+                logContent += "，邀请码："+detailsModel.getUdInvitationCode();
+            }
+            logModel.setUlContent(logContent);
+            logModel.setUlCreateUserId(userId);
+            logModel.setUlCreateUserTime(new Date());
+            userLogDao.insert(logModel);
+            //endregion
+
+            return new ResultData(true,userId,"注册成功");
         }
         return new ResultData(false,0l,"注册失败，请稍后再试");
     }

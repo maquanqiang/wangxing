@@ -145,7 +145,7 @@ public class EmployeeControllerApi extends _BaseController {
         int successNum = 0;
         for (int i=0;i<modelList.size();i++){
             ResultInfo saveResult = employeeService.saveEmployeeInfo(modelList.get(i));
-            if (saveResult.isSuccess_is_ok()){
+            if (saveResult.getSuccess_is_ok()){
                 successNum++;
             }else{
                 return new ResultInfo(false,"已导入"+successNum+"条。"+modelList.get(i).getName()+" 出现错误："+saveResult.getMsg());

@@ -103,7 +103,7 @@ var vm = new Vue({
                             }
                         }
                     },
-                    telCode: {
+                    messageCode: {
                         validators: {
                             notEmpty: {
                                 message: '短信验证码不能为空'

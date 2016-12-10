@@ -21,7 +21,8 @@ public interface IAccountServiceInf {
      * @param username 用户名(手机号码)
      * @param password 登录密码
      * @param invitationCode 邀请码
+     * @param ip ip地址
      * @return 注册结果，用户id
      */
-    ResultData<Long> register(String username, String password, String invitationCode, EnumModel.Platform platform);
+    ResultData<Long> register(String username, String password, String invitationCode,String ip, EnumModel.Platform platform);
 }
