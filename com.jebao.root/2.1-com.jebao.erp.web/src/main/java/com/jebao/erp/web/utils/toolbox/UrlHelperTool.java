@@ -19,7 +19,7 @@ public class UrlHelperTool {
         if(hrefVal!=null)return hrefVal;
         hrefVal=urlMap.get(hrefKey.toLowerCase());
         if(hrefVal!=null)return hrefVal;
-        String file="/static/"+hrefKey;//static是静态文件的根目录
+        String file="/static"+hrefKey;//static是静态文件的根目录
         //
         InputStream is=getInputStream(file);
         if(is==null)

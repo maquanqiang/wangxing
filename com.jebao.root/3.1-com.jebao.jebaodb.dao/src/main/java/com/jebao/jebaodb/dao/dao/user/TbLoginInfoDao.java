@@ -17,7 +17,7 @@ public class TbLoginInfoDao {
     @Autowired
     private TbLoginInfoMapper tbLoginInfoMapper;
 
-    public int insert(TbLoginInfo record) {
+    public long insert(TbLoginInfo record) {
         return tbLoginInfoMapper.insert(record);
     }
     public int insertSelective(TbLoginInfo record) {
@@ -48,7 +48,7 @@ public class TbLoginInfoDao {
         return tbLoginInfoMapper.selectByLoginName(liLoginName);
     }
     @Transactional
-    public int insertForTransactional(TbLoginInfo record) {
+    public long insertForTransactional(TbLoginInfo record) {
         return tbLoginInfoMapper.insert(record);
     }
 }

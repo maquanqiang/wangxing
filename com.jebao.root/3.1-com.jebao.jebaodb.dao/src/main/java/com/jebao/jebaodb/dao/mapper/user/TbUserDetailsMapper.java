@@ -7,7 +7,7 @@ import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
 public interface TbUserDetailsMapper {
-    int insert(TbUserDetails record);
+    long insert(TbUserDetails record);
 
     int insertSelective(TbUserDetails record);
 
