@@ -18,8 +18,61 @@ public class UserController extends _BaseController {
      * @return
      */
     @RequestMapping("index")
-    public String index(@ModelAttribute("form") UserForm form) {
+    public String index() {
         return "user/index";
     }
 
+    /**
+     * 收支明细
+     * @return
+     */
+    @RequestMapping("funds")
+    public String funds() {
+        return "user/funds";
+    }
+
+    /**
+     * 投资记录
+     * @return
+     */
+    @RequestMapping("investrecord")
+    public String invest(){
+        return "user/investrecord";
+    }
+
+    /**
+     * 邀请好友
+     * @return
+     */
+    @RequestMapping("invite")
+    public String invite(){
+        return "user/invite";
+    }
+
+    /**
+     * 账户设置
+     * @return
+     */
+    @RequestMapping("setting")
+    public String setting(){
+        return "user/setting";
+    }
+
+    /**
+     * 我的银行卡
+     * @return
+     */
+    @RequestMapping("bankcard")
+    public String mybankcard(){
+        return "user/bankcard";
+    }
+
+    /**
+     * 充值提现
+     * @return
+     */
+    @RequestMapping("chargewithdraw")
+    public String chargewithdraw(){
+        return "user/chargewithdraw";
+    }
 }

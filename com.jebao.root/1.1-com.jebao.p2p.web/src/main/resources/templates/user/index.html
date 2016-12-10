@@ -1,12 +1,18 @@
 <!DOCTYPE html>
 <html>
-<head>#parse("common/head.html")
+<head>
+    <title>账户总览-我的账户</title>
+    #parse("common/head.html")
+    <link rel="stylesheet" href="${filePath}/css/sidebar.css">
+    <link rel="stylesheet" href="${filePath}/css/myAccount.css">
 </head>
 <body>
 <!--顶部nav---start-->
 #parse("common/header.html")
+<!--导航条-->
+#parse("common/navigation.html")
 <!--侧边栏--start-->
-#parse("common/main-sidebar.html")
+#parse("common/sidebar.html")
 <!--我的账户内容-->
 <div class="account-main clearfix">
     <!--我的账户--左侧导航-->
@@ -49,25 +55,25 @@
         <ul class="user-function clearfix">
             <li>
                 <a href="#">
-                    <img src="images/account-open.png">
+                    <img src="${filePath}/images/account-open.png">
                     <p>开通资金账户</p>
                 </a>
             </li>
             <li>
                 <a href="充值提现.html">
-                    <img src="images/account-recharge.png">
+                    <img src="${filePath}/images/account-recharge.png">
                     <p>充值</p>
                 </a>
             </li>
             <li>
                 <a href="#">
-                    <img src="images/account-invest.png">
+                    <img src="${filePath}/images/account-invest.png">
                     <p>我要投资</p>
                 </a>
             </li>
             <li>
                 <a href="#">
-                    <img src="images/account-expressive.png">
+                    <img src="${filePath}/images/account-expressive.png">
                     <p>提现</p>
                 </a>
             </li>
@@ -206,6 +212,7 @@
     </div>
 </div>
 #parse("common/footer.html")
+<script src="/content/script/user/sidebar.js"></script>
 </body>
 
 </html>

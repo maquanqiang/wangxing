@@ -312,4 +312,56 @@
         where ii_bp_id = bp_id and
         <include refid="selectByCondition_Where_Clause" />
     </select>
+    <!--==================================================投资记录==================================================-->
+    <resultMap id="InvestIngResultMap" type="com.jebao.jebaodb.entity.user.InvestIng">
+        <result column="bp_name" property="bpName" jdbcType="VARCHAR"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="money" property="money" jdbcType="DECIMAL"/>
+        <result column="periods" property="periods" jdbcType="INTEGER"/>
+        <result column="bp_rate" property="bpRate" jdbcType="DECIMAL"/>
+        <result column="progress" property="progress" jdbcType="DECIMAL"/>
+    </resultMap>
+    <select id="selectInvestIngByLoginId" resultMap="InvestIngResultMap" parameterType="java.lang.Long">
+        SELECT ii.ii_bp_name AS bp_name,ii.ii_create_time AS create_time,ii.ii_money AS money,bp.bp_periods*bp.bp_cycle_size AS periods,
+        (1-(bp.bp_surplus_money / bp.bp_bid_money))*100 AS progress,bp_rate
+        FROM tb_invest_info ii
+        INNER JOIN tb_bid_plan bp ON ii.ii_bp_id=bp.bp_id
+        WHERE ii.ii_login_id=#{iiLoginId,jdbcType=BIGINT}
+        AND ii.ii_freeze_status = 1 AND ii.ii_is_del = 1 AND bp.bp_is_del = 1
+        ORDER BY ii.ii_id DESC
+        <if test="pageWhere != null">
+            LIMIT #{pageWhere.begin},#{pageWhere.pageSize}
+        </if>
+    </select>
+    <resultMap id="InvestPaymentedResultMap" type="com.jebao.jebaodb.entity.user.InvestPaymented">
+        <result column="bp_name" property="bpName" jdbcType="VARCHAR"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="money" property="money" jdbcType="DECIMAL"/>
+        <result column="periods" property="periods" jdbcType="INTEGER"/>
+        <result column="bp_rate" property="bpRate" jdbcType="DECIMAL"/>
+        <result column="fact_moeny" property="factMoeny" jdbcType="DECIMAL"/>
+        <result column="make_moeny" property="makeMoney" jdbcType="DECIMAL"/>
+        <result column="settle_date" property="settleDate" jdbcType="TIMESTAMP"/>
+        <result column="contract_url" property="contractUrl" jdbcType="VARCHAR"/>
+    </resultMap>
+    <select id="selectInvestPaymentedByLoginId" resultMap="InvestPaymentedResultMap" parameterType="java.lang.Long">
+        SELECT ii.ii_bp_name AS bp_name,ii.ii_create_time AS create_time,ii.ii_money AS money,
+        bp.bp_periods*bp.bp_cycle_size AS periods,bp.bp_rate,ii.ii_contract_url AS contract_url,
+        (SELECT SUM(ind_fact_moeny)
+        FROM tb_income_detail
+        WHERE ind_is_del = 1 AND ind_status = 2 AND ind_fund_type = 1 AND ind_ii_id = ii.ii_id) as fact_moeny,
+        (SELECT SUM(ind_fact_moeny)
+        FROM tb_income_detail
+        WHERE ind_is_del = 1 AND ind_status = 2 AND ind_fund_type = 2 AND ind_ii_id = ii.ii_id) as make_moeny,
+        (SELECT MAX(ind_fact_date_time) FROM tb_income_detail where ind_is_del = 1 AND ind_status = 2 AND ind_ii_id = ii.ii_id) as settle_date
+        FROM tb_invest_info ii
+        INNER JOIN tb_bid_plan bp ON ii.ii_bp_id = bp.bp_id
+        WHERE ii.ii_login_id=#{iiLoginId,jdbcType=BIGINT}
+        AND ii.ii_freeze_status = 3
+        AND ii.ii_is_del = 1 AND bp.bp_is_del = 1
+        ORDER BY ii.ii_id DESC
+        <if test="pageWhere != null">
+            LIMIT #{pageWhere.begin},#{pageWhere.pageSize}
+        </if>
+    </select>
 </mapper>

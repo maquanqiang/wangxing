@@ -1,12 +1,17 @@
 package com.jebao.p2p.web.api.requestModel.user;
 
 /**
- * Created by Administrator on 2016/12/3.
+ * Created by Administrator on 2016/12/8.
  */
-public class FundsDetailsSM {
-
+public class InvestSM {
+    //用户ID
     private Long loginId;
+
+    //投资状态
+    private int freezeStatus;
+
     private int pageIndex;
+
     private int pageSize;
 
     public Long getLoginId() {
@@ -15,6 +20,14 @@ public class FundsDetailsSM {
 
     public void setLoginId(Long loginId) {
         this.loginId = loginId;
+    }
+
+    public int getFreezeStatus() {
+        return freezeStatus;
+    }
+
+    public void setFreezeStatus(int freezeStatus) {
+        this.freezeStatus = freezeStatus;
     }
 
     public int getPageIndex() {

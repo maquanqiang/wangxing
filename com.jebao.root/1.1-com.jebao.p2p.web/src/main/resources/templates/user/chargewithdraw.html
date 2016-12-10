@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>充值提现-我的账户</title>
+    #parse("common/head.html")
+    <!--css-->
+    <link rel="stylesheet" href="${filePath}/css/sidebar.css">
+    <link rel="stylesheet" href="${filePath}/css/myAccount.css">
+</head>
+<body>
+<!-- 顶部登录信息 -->
+#parse("common/header.html")
+<!-- 导航条 -->
+#parse("common/navigation.html")
+<!--侧边栏--start-->
+#parse("common/sidebar.html")
+<!--内容 begin-->
+<!--我的账户内容-->
+<div class="account-main clearfix">
+    <!--我的账户--左侧导航-->
+    #parse("user/sidebar.html")
+    <!--我的账户--右侧主要内容-->
+    <div class="account-content fr">
+        <!--账户总览-->
+        <div class="my-account">
+            <h2>充值提现</h2>
+        </div>
+        <!--充值提现-->
+        <div class="account-rex">
+            <div class="account-rex-tit clearfix">
+                <h4 class="active">我要充值</h4>
+                <h4>我要提现</h4>
+            </div>
+            <div class="account-rex-list">
+                <div class="account-rex-item  active">
+                    <div class="recharge-type">
+                        <div class="rechange-type-title clearfix">
+                            <h5 class="active">快捷充值</h5>
+                            <h5>快速充值</h5>
+                            <!--<h5>网银充值</h5>-->
+                        </div>
+                        <div class="rechange-list">
+                            <div class="rechange-item active">
+                                <form>
+                                    <div class="account-bankImg clearfix">
+                                        <img src="${filePath}/images/account-bank.png" class="fl">
+                                        <div class="account-bankDetail fl">
+                                            <h5>中国建设银行</h5>
+                                            <p class="card-type">储蓄卡</p>
+                                            <p class="card-num">6227**********8888</p>
+                                        </div>
+                                    </div>
+                                    <div class="account-banktext clearfix">
+                                        <h5>可用金额：</h5>
+                                        <span>2000.00</span>
+                                    </div>
+                                    <div class="account-banktext clearfix">
+                                        <h5>充值金额：</h5>
+                                        <input type="text" value="" placeholder="请输入充值金额">
+                                        <span>元</span>
+                                    </div>
+                                    <a href="#" class="account-btn">充值</a>
+                                </form>
+                            </div>
+                            <div class="rechange-item">
+                                <form>
+                                    <div class="account-banktext clearfix">
+                                        <h5>可用金额：</h5>
+                                        <span>2000.00</span>
+                                    </div>
+                                    <div class="account-banktext clearfix">
+                                        <h5>充值金额：</h5>
+                                        <input type="text" value="" placeholder="请输入充值金额">
+                                        <span>元</span>
+                                    </div>
+                                    <a href="#" class="account-btn">充值</a>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="account-rex-item">
+                    <form>
+                        <div class="account-bankImg clearfix">
+                            <img src="${filePath}/images/account-bank.png" class="fl">
+                            <div class="account-bankDetail fl">
+                                <h5>中国建设银行</h5>
+                                <p class="card-type">储蓄卡</p>
+                                <p class="card-num">6227**********8888</p>
+                            </div>
+                        </div>
+                        <div class="account-banktext clearfix">
+                            <h5>可用金额：</h5>
+                            <span>2000.00</span>
+                        </div>
+                        <div class="account-banktext clearfix">
+                            <h5>充值金额：</h5>
+                            <input type="text" value="" placeholder="请输入充值金额">
+                            <span>元</span>
+                        </div>
+                        <div class="account-banktext clearfix">
+                            <h5>到账时间：</h5>
+                            <p>预计<span>2016-12-12 </span><em>( 实际到账时间以银行入账为准 )</em></p>
+                        </div>
+                        <div class="account-banktext clearfix">
+                            <h5>手续费：</h5>
+                            <span>3元</span>
+                        </div>
+                        <a href="#" class="account-btn">提现</a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--内容 end-->
+#parse("common/footer.html")
+<script src="/content/script/user/sidebar.js"></script>
+</body>
+</html>
