@@ -5,6 +5,7 @@ import com.jebao.common.utils.sms.SmsSendUtil;
 import com.jebao.p2p.web.api.utils.constants.Constants;
 import org.apache.commons.lang.StringUtils;
 
+import java.time.LocalDateTime;
 import java.util.Random;
 
 /**
@@ -42,6 +43,17 @@ public class MessageUtil {
         ShardedRedisUtil redisUtil = ShardedRedisUtil.getInstance();
         return redisUtil.get(key);
     }
+    private void setRedis(String mobile,String code)
+    {
+        String key=getRedisKey(mobile);
+        String value=code;
+        ShardedRedisUtil redisUtil = ShardedRedisUtil.getInstance();
+        String result=redisUtil.set(key, value,"XX","EX",EXPIRE_TIME_SECONDS);
+        if(result==null)
+        {
+            redisUtil.set(key, value,"NX","EX",EXPIRE_TIME_SECONDS);
+        }
+    }
 
     /**
      * 校验短信验证码
@@ -70,21 +82,50 @@ public class MessageUtil {
         return verifyCode.toString();
     }
 
-    private void setRedis(String mobile,String code)
-    {
-        String key=getRedisKey(mobile);
-        String value=code;
-        ShardedRedisUtil redisUtil = ShardedRedisUtil.getInstance();
-        String result=redisUtil.set(key, value,"XX","EX",EXPIRE_TIME_SECONDS);
-        if(result==null)
-        {
-            redisUtil.set(key, value,"NX","EX",EXPIRE_TIME_SECONDS);
-        }
-    }
+
 
     private String getRedisKey(String simpleKey)
     {
         return Constants.CAPTCHA_TOKEN_CACHE_NAME+simpleKey;
+    }
+
+    public class MessageRedisValue{
+        /**
+         * 验证码
+         */
+        private String verifyCode;
+        /**
+         * 该手机号已发送次数
+         */
+        private int sendNumber;
+        /**
+         * 上一次短信验证码发送时间
+         */
+        private LocalDateTime lastSendTime;
+
+        public String getVerifyCode() {
+            return verifyCode;
+        }
+
+        public void setVerifyCode(String verifyCode) {
+            this.verifyCode = verifyCode;
+        }
+
+        public int getSendNumber() {
+            return sendNumber;
+        }
+
+        public void setSendNumber(int sendNumber) {
+            this.sendNumber = sendNumber;
+        }
+
+        public LocalDateTime getLastSendTime() {
+            return lastSendTime;
+        }
+
+        public void setLastSendTime(LocalDateTime lastSendTime) {
+            this.lastSendTime = lastSendTime;
+        }
     }
 
 }

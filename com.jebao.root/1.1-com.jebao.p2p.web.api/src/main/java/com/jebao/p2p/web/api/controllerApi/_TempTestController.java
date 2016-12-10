@@ -5,6 +5,11 @@ import com.jebao.common.utils.fastjson.FastJsonUtil;
 import com.jebao.jebaodb.entity.TbTempTest;
 import com.jebao.p2p.service.inf.ITempTestServiceInf;
 import com.jebao.p2p.web.api.requestModel.tempTest.TempTestForm;
+import com.jebao.p2p.web.api.responseModel.base.JsonResult;
+import com.jebao.p2p.web.api.responseModel.base.JsonResultError;
+import com.jebao.p2p.web.api.responseModel.base.JsonResultList;
+import com.jebao.p2p.web.api.responseModel.base.JsonResultOk;
+import com.jebao.p2p.web.api.responseModel.tempTest.TempTestData;
 import com.jebao.p2p.web.api.utils.constants.ProjectSetting;
 import com.jebao.p2p.web.api.utils.session.CurrentUser;
 import com.jebao.p2p.web.api.utils.session.LoginSessionUtil;
@@ -12,8 +17,6 @@ import com.jebao.p2p.web.api.utils.session.LoginToken;
 import com.jebao.p2p.web.api.utils.session.LoginTokenUtil;
 import com.jebao.p2p.web.api.utils.validation.ValidationResult;
 import com.jebao.p2p.web.api.utils.validation.ValidationUtil;
-import com.jebao.p2p.web.api.responseModel.base.*;
-import com.jebao.p2p.web.api.responseModel.tempTest.TempTestData;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,7 +25,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
