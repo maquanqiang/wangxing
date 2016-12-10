@@ -35,16 +35,11 @@ import java.util.List;
  */
 @Controller
 @RequestMapping("api/product")
-@PropertySource("classpath:thirdPay.properties")
 public class ProductControllerApi {
 
 
     @Autowired
     private IProductServiceInf productService;
-    @Value("${thirdPay.fuiou.platNumber}")
-    private String platNumber;
-
-
 
     @RequestMapping("list")
     @ResponseBody
@@ -61,7 +56,6 @@ public class ProductControllerApi {
     @RequestMapping("productDetail")
     @ResponseBody
     public JsonResult productDetail(Long bpId){
-        System.out.println(platNumber);
         TbBidPlan tbBidPlan = productService.selectByBpId(bpId);
         return new JsonResultData<>(new ProductDetailVM(tbBidPlan));
     }

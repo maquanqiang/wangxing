@@ -1,5 +1,6 @@
 package com.jebao.thirdPay.fuiou.impl;
 
+import com.jebao.thirdPay.fuiou.constants.FuiouConfig;
 import com.jebao.thirdPay.fuiou.http.WebUtils;
 import com.jebao.thirdPay.fuiou.model.artifReg.ArtifRegRequest;
 import com.jebao.thirdPay.fuiou.model.artifReg.ArtifRegResponse;
@@ -13,6 +14,11 @@ import com.jebao.thirdPay.fuiou.util.XmlUtil;
  * Created by Administrator on 2016/9/27.
  */
 public class ArtifRegServiceImpl {
+
+    public ArtifRegResponse post(ArtifRegRequest reqData) throws Exception {
+        String httpUrl= FuiouConfig.url+"artifReg.action";
+        return post(httpUrl,reqData);
+    }
     public ArtifRegResponse post(String httpUrl, ArtifRegRequest reqData) throws Exception {
         String signatureStr = SecurityUtils.sign(reqData.requestSignPlain());
         reqData.setSignature(signatureStr);

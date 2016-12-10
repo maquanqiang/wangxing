@@ -4,6 +4,12 @@ package com.jebao.thirdPay.fuiou.model.preAuth;
  * Created by Administrator on 2016/9/27.
  */
 public class PreAuthRequest {
+
+
+    public PreAuthRequest(){
+
+    }
+
     private String mchnt_cd; //商户代码
     private String mchnt_txn_ssn; //流水号
     private String out_cust_no; //出账账户
