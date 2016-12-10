@@ -12,7 +12,9 @@ public class RegisterModel {
     private String password;
     @NotBlank(message="两次密码不一致")
     private String passwordAgain;
+    @NotBlank(message="图形验证码不能为空")
     private String imgCode;
+    @NotBlank(message="短信验证码不能为空")
     private String messageCode;
     private String invitationCode;
 
