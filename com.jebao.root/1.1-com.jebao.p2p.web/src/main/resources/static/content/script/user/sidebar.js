@@ -6,6 +6,5 @@ $(function() {
     $('.sidebar-menu a').click(function () {
         $('.sidebar-menu a').removeClass('on');
         $(this).addClass('on');
-        return false;
     });
 })
