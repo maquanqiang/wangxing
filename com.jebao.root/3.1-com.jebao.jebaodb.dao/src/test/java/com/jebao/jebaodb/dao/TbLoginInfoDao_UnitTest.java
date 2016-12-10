@@ -27,7 +27,7 @@ public class TbLoginInfoDao_UnitTest extends _BaseUnitTest {
         record.setLiLastLoginTime(new Date());
         record.setLiLoginName("18600575242");
         record.setLiPassword("575242");
-        int result= tbLoginInfoDao.insert(record);
+        long result= tbLoginInfoDao.insert(record);
         assertThat(result).isEqualTo(1);
         System.out.println(record.getLiId());
     }
@@ -99,7 +99,7 @@ public class TbLoginInfoDao_UnitTest extends _BaseUnitTest {
         record.setLiLastLoginTime(new Date());
         record.setLiLoginName("15901048114");
         record.setLiPassword("111111");
-        int result= tbLoginInfoDao.insertForTransactional(record);
+        long result= tbLoginInfoDao.insertForTransactional(record);
         assertThat(result).isEqualTo(1);
         System.out.println(record.getLiId());
     }

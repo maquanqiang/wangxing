@@ -17,6 +17,7 @@
             opacity: .65;
         }
         .agreement-wrap{z-index:9999}
+        .disabled{background-color: #eee;}
     </style>
 </head>
 
@@ -47,37 +48,43 @@
     <!--主要内容-->
     <div class="register-content">
         <h4>欢迎注册</h4>
-        <p class="fast-login">已有账号，<a href="登录.html">立即登录</a></p>
-        <form action="#"  method="post" id="registerForm">
+        <p class="fast-login">已有账号，<a href="/account/login">立即登录</a></p>
+        <form action="/api/account/register"  method="post" id="registerForm" autocomplete="off">
             <div class="userName form-group clearfix">
-                <em></em><input type="text" value="" placeholder="请输入手机号码" name="tel">
+                <em></em><input type="text" value="" placeholder="请输入手机号码" name="mobile" v-model="form.mobile">
             </div>
             <div class="userPassword form-group clearfix">
-                <em></em><input type="password" value="" placeholder="请设置6-16密码（由字母、数字组成）" name="password">
+                <em></em><input type="password" value="" placeholder="请设置6-16密码（由字母、数字组成）" name="password" v-model="form.password">
             </div>
             <div class="userPassword form-group clearfix">
-                <em></em><input type="text" value="" placeholder="请再次设置密码" name="passwordAgain">
+                <em></em><input type="password" value="" placeholder="请输入确认密码" name="passwordAgain" v-model="form.passwordAgain">
             </div>
             <div class="imgCode form-group clearfix">
                 <div class="fl">
-                    <em></em><input type="password" value="" placeholder="请输入图形验证码" name="imgCode">
+                    <em></em><input type="text" value="" placeholder="请输入图形验证码" name="imgCode" v-model="form.imgCode">
                 </div>
                 <img src="/captcha/getCode" class="verification fr" @click="refreshCaptcha">
             </div>
             <div class="telCode form-group clearfix">
                 <div class="fl">
-                    <em></em><input type="text" value="" placeholder="请输入手机验证码" name="telCode">
+                    <em></em><input type="text" value="" placeholder="请输入短信验证码" name="messageCode" v-model="form.messageCode">
                 </div>
-                <input type="button" value="获取验证码" class="get_code_btn color fr">
+                <input type="button" value="获取验证码" class="get_code_btn color fr" @click="sendMessage">
             </div>
 
-            <div class="userInvite form-group clearfix">
-                <em></em><input type="password" value="" placeholder="请输入邀请码" name="userInvite">
+            <div class="userInvite form-group clearfix" :class="{disabled:codeDisabled}">
+                <em></em>
+                <input type="text" class="form-control" placeholder="请输入邀请码" name="invitationCode" v-model="form.invitationCode" :readonly="codeDisabled">
             </div>
             <div class="remember">
-                <input type="checkbox"><span>我已阅读并同意<a href="#">《金额宝服务协议》</a></span>
+                <input type="checkbox" name="agree" v-model="form.agree"><span>我已阅读并同意<a href="#">《金额宝服务协议》</a></span>
             </div>
-            <a href="#" class="register-btn">注册</a>
+            <div class="form-group clearfix has-error hidden error-place">
+                <p class="help-block"><i class="icon"></i>
+                    <span>提交返回错误</span>
+                </p>
+            </div>
+            <a href="javascript:;" class="register-btn" @click="register">注册</a>
         </form>
     </div>
 </div>

@@ -8,8 +8,10 @@
     <result column="ud_true_name" property="udTrueName" jdbcType="VARCHAR" />
     <result column="ud_id_number" property="udIdNumber" jdbcType="VARCHAR" />
     <result column="ud_email" property="udEmail" jdbcType="VARCHAR" />
+    <result column="ud_phone" property="udPhone" jdbcType="VARCHAR" />
     <result column="ud_invitation_code" property="udInvitationCode" jdbcType="VARCHAR" />
     <result column="ud_customer_manager_id" property="udCustomerManagerId" jdbcType="INTEGER" />
+    <result column="ud_loaner_id" property="udLoanerId" jdbcType="BIGINT" />
     <result column="ud_platform" property="udPlatform" jdbcType="INTEGER" />
     <result column="ud_third_account" property="udThirdAccount" jdbcType="VARCHAR" />
     <result column="ud_third_login_password" property="udThirdLoginPassword" jdbcType="VARCHAR" />
@@ -26,11 +28,11 @@
     <result column="ud_is_del" property="udIsDel" jdbcType="INTEGER" />
   </resultMap>
   <sql id="Base_Column_List" >
-    ud_id, ud_login_id, ud_nick_name, ud_true_name, ud_id_number, ud_email, ud_invitation_code,
-    ud_customer_manager_id, ud_platform, ud_third_account, ud_third_login_password, ud_third_pay_password,
-    ud_bank_provinces_code, ud_bank_provinces_name, ud_bank_city_code, ud_bank_city_name,
-    ud_bank_parent_bank_code, ud_bank_parent_bank_name, ud_bank_card_no, ud_create_time,
-    ud_update_time, ud_is_del
+    ud_id, ud_login_id, ud_nick_name, ud_true_name, ud_id_number, ud_email, ud_phone,
+    ud_invitation_code, ud_customer_manager_id, ud_loaner_id, ud_platform, ud_third_account,
+    ud_third_login_password, ud_third_pay_password, ud_bank_provinces_code, ud_bank_provinces_name,
+    ud_bank_city_code, ud_bank_city_name, ud_bank_parent_bank_code, ud_bank_parent_bank_name,
+    ud_bank_card_no, ud_create_time, ud_update_time, ud_is_del
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select
@@ -43,16 +45,18 @@
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into tb_user_details (ud_login_id, ud_nick_name, ud_true_name,
-    ud_id_number, ud_email, ud_invitation_code,
-    ud_customer_manager_id, ud_platform, ud_third_account,
+    ud_id_number, ud_email, ud_phone,
+    ud_invitation_code, ud_customer_manager_id,
+    ud_loaner_id, ud_platform, ud_third_account,
     ud_third_login_password, ud_third_pay_password,
     ud_bank_provinces_code, ud_bank_provinces_name,
     ud_bank_city_code, ud_bank_city_name, ud_bank_parent_bank_code,
     ud_bank_parent_bank_name, ud_bank_card_no, ud_create_time,
     ud_update_time, ud_is_del)
     values (#{udLoginId,jdbcType=BIGINT}, #{udNickName,jdbcType=VARCHAR}, #{udTrueName,jdbcType=VARCHAR},
-    #{udIdNumber,jdbcType=VARCHAR}, #{udEmail,jdbcType=VARCHAR}, #{udInvitationCode,jdbcType=VARCHAR},
-    #{udCustomerManagerId,jdbcType=INTEGER}, #{udPlatform,jdbcType=INTEGER}, #{udThirdAccount,jdbcType=VARCHAR},
+    #{udIdNumber,jdbcType=VARCHAR}, #{udEmail,jdbcType=VARCHAR}, #{udPhone,jdbcType=VARCHAR},
+    #{udInvitationCode,jdbcType=VARCHAR}, #{udCustomerManagerId,jdbcType=INTEGER},
+    #{udLoanerId,jdbcType=BIGINT}, #{udPlatform,jdbcType=INTEGER}, #{udThirdAccount,jdbcType=VARCHAR},
     #{udThirdLoginPassword,jdbcType=VARCHAR}, #{udThirdPayPassword,jdbcType=VARCHAR},
     #{udBankProvincesCode,jdbcType=VARCHAR}, #{udBankProvincesName,jdbcType=VARCHAR},
     #{udBankCityCode,jdbcType=VARCHAR}, #{udBankCityName,jdbcType=VARCHAR}, #{udBankParentBankCode,jdbcType=VARCHAR},
@@ -80,11 +84,17 @@
       <if test="udEmail != null" >
         ud_email,
       </if>
+      <if test="udPhone != null" >
+        ud_phone,
+      </if>
       <if test="udInvitationCode != null" >
         ud_invitation_code,
       </if>
       <if test="udCustomerManagerId != null" >
         ud_customer_manager_id,
+      </if>
+      <if test="udLoanerId != null" >
+        ud_loaner_id,
       </if>
       <if test="udPlatform != null" >
         ud_platform,
@@ -145,11 +155,17 @@
       <if test="udEmail != null" >
         #{udEmail,jdbcType=VARCHAR},
       </if>
+      <if test="udPhone != null" >
+        #{udPhone,jdbcType=VARCHAR},
+      </if>
       <if test="udInvitationCode != null" >
         #{udInvitationCode,jdbcType=VARCHAR},
       </if>
       <if test="udCustomerManagerId != null" >
         #{udCustomerManagerId,jdbcType=INTEGER},
+      </if>
+      <if test="udLoanerId != null" >
+        #{udLoanerId,jdbcType=BIGINT},
       </if>
       <if test="udPlatform != null" >
         #{udPlatform,jdbcType=INTEGER},
@@ -213,11 +229,17 @@
       <if test="udEmail != null" >
         ud_email = #{udEmail,jdbcType=VARCHAR},
       </if>
+      <if test="udPhone != null" >
+        ud_phone = #{udPhone,jdbcType=VARCHAR},
+      </if>
       <if test="udInvitationCode != null" >
         ud_invitation_code = #{udInvitationCode,jdbcType=VARCHAR},
       </if>
       <if test="udCustomerManagerId != null" >
         ud_customer_manager_id = #{udCustomerManagerId,jdbcType=INTEGER},
+      </if>
+      <if test="udLoanerId != null" >
+        ud_loaner_id = #{udLoanerId,jdbcType=BIGINT},
       </if>
       <if test="udPlatform != null" >
         ud_platform = #{udPlatform,jdbcType=INTEGER},
@@ -271,8 +293,10 @@
     ud_true_name = #{udTrueName,jdbcType=VARCHAR},
     ud_id_number = #{udIdNumber,jdbcType=VARCHAR},
     ud_email = #{udEmail,jdbcType=VARCHAR},
+    ud_phone = #{udPhone,jdbcType=VARCHAR},
     ud_invitation_code = #{udInvitationCode,jdbcType=VARCHAR},
     ud_customer_manager_id = #{udCustomerManagerId,jdbcType=INTEGER},
+    ud_loaner_id = #{udLoanerId,jdbcType=BIGINT},
     ud_platform = #{udPlatform,jdbcType=INTEGER},
     ud_third_account = #{udThirdAccount,jdbcType=VARCHAR},
     ud_third_login_password = #{udThirdLoginPassword,jdbcType=VARCHAR},
@@ -289,6 +313,7 @@
     ud_is_del = #{udIsDel,jdbcType=INTEGER}
     where ud_id = #{udId,jdbcType=BIGINT}
   </update>
+
     <!--==================================================华丽分割线==================================================-->
     <update id="deleteByPrimaryKey" parameterType="java.lang.Long">
         update tb_user_details
