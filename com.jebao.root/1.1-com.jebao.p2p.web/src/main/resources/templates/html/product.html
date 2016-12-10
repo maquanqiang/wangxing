@@ -1,178 +1,86 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
     <title>金额宝 - 主页金额宝 </title>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width" />
-    <meta name="keywords" content="专业的p2p投融资平台" />
-    <meta name="description" content="专业的p2p投融资平台" />
-    <meta name="author" content="金额宝" />
-    <meta name="Copyright" content="金额宝网版权所有" />
-    <link rel="stylesheet" href="css/lib/base.css">
-    <link rel="stylesheet" href="css/lib/swiper.css">
-    <link rel="stylesheet" href="css/index.css">
-    <link rel="stylesheet" href="css/project-list.css">
+    #parse("common/head.html")
+    <link rel="stylesheet" href="${filePath}/css/lib/swiper.css">
+    <link rel="stylesheet" href="${filePath}/css/index.css">
+    <link rel="stylesheet" href="${filePath}/css/project-list.css">
+
 </head>
+
 <body>
-<!--顶部nav---start-->
-<div class="site-header">
-    <div class="header-top clearfix">
-        <ul class="header_contact fl">
-            <li><em></em>010-65006966&nbsp;&nbsp;（工作日）：9:00-18:00</li>
-            <li>
-                <span><i></i>微信</span>
-                <div class="weixin-content">
-                    <div class="triangle-inner"></div>
-                    <img src="images/header-code.jpg">
-                </div>
-            </li>
-        </ul>
-        <ul class="header_login fr">
-            <li class="fore">
-                <a href="#">
-                    <em class="header-user"></em>登录
-                </a>
-            </li>
-            <li class="spacer"></li>
-            <li class="fore">
-                <a href="#">
-                    <em class="header-pen"></em>免费注册
-                </a>
-            </li>
-        </ul>
-        <!--<ul class="header_login fr">-->
-        <!--<li class="fore">-->
-        <!--<a href="#">-->
-        <!--<p>你好~</p>-->
-        <!--<p class="userTel">136*****893</p>-->
-        <!--</a>-->
-        <!--</li>-->
-        <!--<li class="spacer"></li>-->
-        <!--<li class="fore">-->
-        <!--<a href="#">-->
-        <!--<em class="header-exit"></em>退出-->
-        <!--</a>-->
-        <!--</li>-->
-        <!--</ul>-->
-    </div>
-</div>
-<!--顶部logo---start-->
-<div class="header-menu">
-    <div class="header-main clearfix">
-        <h1 class="logo fl">
-            <a href="#">
-                <img src="images/logo.png">
-            </a>
-        </h1>
-        <div class="slogan fl">
-            <a href="#">
-                <img src="images/slogan.png">
-            </a>
-        </div>
-        <ul class="header_nav fr">
-            <li>
-                <a href="index.html">首页</a>
-            </li>
-            <li>
-                <a href="项目列表.html" class="red">项目列表</a>
-            </li>
-            <li>
-                <a href="安全保障.html">安全保障</a>
-            </li>
-            <li>
-                <a href="我的账户首页.html">我的账户</a>
-            </li>
-        </ul>
-    </div>
-</div>
+<!-- 顶部登录信息 -->
+#parse("common/header.html")
+<!-- 导航条 -->
+#parse("common/navigation.html")
 <!--侧边栏--start-->
-<div class="aside">
-    <ul>
-        <li class="asidePic">
-            <div class="asideText">客服 热线</div>
-            <div class="asideImg"><img src="images/aside-tel.png" alt=""></div>
-            <div class="callbox">010-65006966</div>
-        </li>
-        <li class="asidePic">
-            <div class="asideText">手机 APP</div>
-            <div class="asideImg"><img src="images/aside-appdownload.png" alt=""></div>
-            <div class="er_code"><img src="images/aside-appPic.png" alt=""></div>
-        </li>
-        <li class="asidePic">
-            <div class="asideText">关注 微信</div>
-            <div class="asideImg"><img src="images/aside-weixin.png" alt=""></div>
-            <div class="er_code"><img src="images/aside-wxPic.png" alt=""></div>
-        </li>
-        <li class="asidePic" id="gotoTop" style="display: none">
-            <div class="asideText">返回 顶部</div>
-            <div class="asideImg"><img src="images/aside-gototop.png" alt=""></div>
-        </li>
-    </ul>
-</div>
+#parse("common/sidebar.html")
+
+<!--内容 begin-->
 <!--投标选择-->
 <div class="project-filter">
     <dl class="clearfix">
         <dd>还款方式：</dd>
-        <dt class="active all">全部</dt>
-        <dt>一次性还本付息</dt>
-        <dt>先息后本，按期付息</dt>
+        <dt class="active all" fType="bpInterestPayType" fValue="">全部</dt>
+        <dt fType="bpInterestPayType" fValue="1">一次性还本付息</dt>
+        <dt fType="bpInterestPayType" fValue="2">先息后本，按期付息</dt>
     </dl>
     <dl class="clearfix">
         <dd>期限：</dd>
-        <dt class="active all">全部</dt>
-        <dt>3个月</dt>
-        <dt>6个月</dt>
-        <dt>12个月</dt>
+        <dt class="active all" fType="bpPeriodStr" fValue="">全部</dt>
+        <dt fType="bpPeriodStr" fValue="3-2">3个月</dt>
+        <dt fType="bpPeriodStr" fValue="6-2">6个月</dt>
+        <dt fType="bpPeriodStr" fValue="12-2">12个月</dt>
     </dl>
     <dl class="clearfix">
         <dd>金额：</dd>
-        <dt class="active all">全部</dt>
-        <dt>1000-1万元</dt>
-        <dt>2万元-10万元</dt>
-        <dt>11万元-100万元</dt>
-        <dt>101万元-300万元</dt>
-        <dt>301万元以上</dt>
+        <dt class="active all" fType="searchMoneyStr" fValue="">全部</dt>
+        <dt fType="searchMoneyStr" fValue="1000-10000">1000-1万元</dt>
+        <dt fType="searchMoneyStr" fValue="10001-100000">1万元-10万元</dt>
+        <dt fType="searchMoneyStr" fValue="100001-100000">10万元-100万元</dt>
+        <dt fType="searchMoneyStr" fValue="1000001-3000000">100万元-300万元</dt>
+        <dt fType="searchMoneyStr" fValue="3000001-100000000">301万元以上</dt>
     </dl>
     <dl class="clearfix">
         <dd>状态：</dd>
-        <dt class="active all">全部</dt>
-        <dt>待开标</dt>
-        <dt>投资中</dt>
-        <dt>还款中</dt>
-        <dt>已还款</dt>
+        <dt class="active all" fType="bpStatus" fValue="">全部</dt>
+        <dt fType="bpStatus" fValue="2">投资中</dt>
+        <dt fType="bpStatus" fValue="7">还款中</dt>
+        <dt fType="bpStatus" fValue="10">已还款</dt>
     </dl>
 </div>
 <!--投标内容-->
 <div class="index-main">
+    <form action="/api/product/list" method="post" id="loginForm"></form>
     <div class="index-main-title clearfix">
         <h4>推荐项目</h4>
         <p>精选项目，资深金融人士层层甄选，最靠谱的投资项目呈现给您</p>
     </div>
     <div class="project-list">
-        <div class="project-content">
+        <div class="project-content"  v-for="data in products">
             <div class="project-name">
-                <p>安心宝<span>001期20161108</span></p>
+                <p>{{data.bpName}}<span>{{data.bpNumber}}</span></p>
             </div>
             <div class="project-item clearfix">
                 <div class="project-info text-left">
-                    <div>9.50%</div>
+                    <div>{{data.bpRate}}%</div>
                     <p>年化收益率</p>
                 </div>
                 <div class="project-info">
-                    <div>3个月</div>
+                    <div>{{data.bpPeriodsDisplay}}{{cycleType[data.bpCycleType]}}</div>
                     <p>项目期限</p>
                 </div>
                 <div class="project-info">
-                    <div>1000万</div>
+                    <div>{{data.bpBidMoney}}</div>
                     <p>项目总额</p>
                 </div>
                 <div class="project-progress fl">
                     <div class="project-progress-box">
                        <span class="progress-line">
-                            <span style="width: 12%" class="progress-bar progress-bar-info"></span>
+                            <span style="width: %" class="progress-bar progress-bar-info"></span>
                        </span>
-                        <span class="num">10%</span>
+                        <span class="num">{{((data.bpBidMoney-data.bpSurplusMoney)/data.bpBidMoney)*100}}%</span>
                     </div>
                     <p>投资进度</p>
                 </div>
@@ -180,220 +88,19 @@
                     <a href="项目详情.html">立即投资</a>
                 </div>
             </div>
-            <img src="images/new-project.png" class="new-project">
-        </div>
-        <div class="project-content">
-            <div class="project-name">
-                <p>安心宝<span>001期20161108</span></p>
-            </div>
-            <div class="project-item clearfix">
-                <div class="project-info text-left">
-                    <div>9.50%</div>
-                    <p>年化收益率</p>
-                </div>
-                <div class="project-info">
-                    <div>3个月</div>
-                    <p>项目期限</p>
-                </div>
-                <div class="project-info">
-                    <div>1000万</div>
-                    <p>项目总额</p>
-                </div>
-                <div class="project-progress fl">
-                    <div class="project-progress-box">
-                       <span class="progress-line">
-                            <span style="width: 12%" class="progress-bar progress-bar-info"></span>
-                       </span>
-                        <span class="num">10%</span>
-                    </div>
-                    <p>投资进度</p>
-                </div>
-                <div class="project-btn fr">
-                    <a href="#">立即投资</a>
-                </div>
-            </div>
-        </div>
-        <div class="project-content">
-            <div class="project-name">
-                <p>安心宝<span>001期20161108</span></p>
-            </div>
-            <div class="project-item clearfix">
-                <div class="project-info text-left">
-                    <div>9.50%</div>
-                    <p>年化收益率</p>
-                </div>
-                <div class="project-info">
-                    <div>3个月</div>
-                    <p>项目期限</p>
-                </div>
-                <div class="project-info">
-                    <div>1000万</div>
-                    <p>项目总额</p>
-                </div>
-                <div class="project-progress fl">
-                    <div class="project-progress-box">
-                       <span class="progress-line">
-                            <span style="width: 12%" class="progress-bar progress-bar-info"></span>
-                       </span>
-                        <span class="num">10%</span>
-                    </div>
-                    <p>投资进度</p>
-                </div>
-                <div class="project-btn fr">
-                    <a href="#">立即投资</a>
-                </div>
-            </div>
-        </div>
-        <div class="project-content clearfix">
-            <div class="project-name">
-                <p>安心宝<span>001期20161108</span></p>
-            </div>
-            <div class="project-item clearfix">
-                <div class="project-info text-left">
-                    <div>9.50%</div>
-                    <p>年化收益率</p>
-                </div>
-                <div class="project-info">
-                    <div>3个月</div>
-                    <p>项目期限</p>
-                </div>
-                <div class="project-info">
-                    <div>1000万</div>
-                    <p>项目总额</p>
-                </div>
-                <div class="project-progress fl">
-                    <div class="project-progress-box">
-                       <span class="progress-line">
-                            <span style="width: 12%" class="progress-bar progress-bar-info"></span>
-                       </span>
-                        <span class="num">10%</span>
-                    </div>
-                    <p>投资进度</p>
-                </div>
-                <div class="project-btn fr">
-                    <a href="#">立即投资</a>
-                </div>
-            </div>
-        </div>
-        <div class="project-content">
-            <div class="project-name">
-                <p>安心宝<span>001期20161108</span></p>
-            </div>
-            <div class="project-item clearfix">
-                <div class="project-info text-left">
-                    <div>9.50%</div>
-                    <p>年化收益率</p>
-                </div>
-                <div class="project-info">
-                    <div>3个月</div>
-                    <p>项目期限</p>
-                </div>
-                <div class="project-info">
-                    <div>1000万</div>
-                    <p>项目总额</p>
-                </div>
-                <div class="project-progress fl">
-                    <div class="project-progress-box">
-                       <span class="progress-line">
-                            <span style="width: 12%" class="progress-bar progress-bar-info"></span>
-                       </span>
-                        <span class="num">10%</span>
-                    </div>
-                    <p>投资进度</p>
-                </div>
-                <div class="project-btn fr">
-                    <a href="#">立即投资</a>
-                </div>
-            </div>
-        </div>
-        <div class="project-content">
-            <div class="project-name">
-                <p>安心宝<span>001期20161108</span></p>
-            </div>
-            <div class="project-item clearfix">
-                <div class="project-info text-left">
-                    <div>9.50%</div>
-                    <p>年化收益率</p>
-                </div>
-                <div class="project-info">
-                    <div>3个月</div>
-                    <p>项目期限</p>
-                </div>
-                <div class="project-info">
-                    <div>1000万</div>
-                    <p>项目总额</p>
-                </div>
-                <div class="project-progress fl">
-                    <div class="project-progress-box">
-                       <span class="progress-line">
-                            <span style="width: 12%" class="progress-bar progress-bar-info"></span>
-                       </span>
-                        <span class="num">10%</span>
-                    </div>
-                    <p>投资进度</p>
-                </div>
-                <div class="project-btn fr">
-                    <a href="#">立即投资</a>
-                </div>
-            </div>
+            <img src="${filePath}/images/new-project.png" class="new-project" v-show="data.bpType==2">
         </div>
     </div>
 </div>
-<!--底部---start-->
-<div class="site-footer">
-    <footer>
-        <div class="aboutUs clearfix">
-            <div class="aboutUs-info fl">
-                <p class="footer-tip"><i></i>友情提示【预期年化收益率不代表未来实际收益，出借有风险，选择需谨慎】</p>
-                <ul class="copyright-links">
-                    <li>
-                        <a href="#">公司简介</a>
-                    </li>
-                    <li>
-                        <a href="#">团队介绍</a>
-                    </li>
-                    <li>
-                        <a href="#">公司动态</a>
-                    </li>
-                    <li>
-                        <a href="#">联系我们</a>
-                    </li>
-                </ul>
-                <p class="serverTime">服务时间（工作日）：9:00-18:00</p>
-                <p class="serverTel"><i></i>全国统一服务热线：<span>010-65006966 </span></p>
-            </div>
-            <div class="footer-weixin fr">
-                <img src="images/footer-weixin.jpg">
-                <p><i></i>扫一扫&nbsp;&nbsp;关注宝宝</p>
-            </div>
-        </div>
-        <div class="jeb-copyright-auth">
-            <ul class="clearfix">
-                <li>
-                    <a href="#">
-                        <img src="images/footer-ipc.jpg">
-                    </a>
-                </li>
-                <li>
-                    <a href="#">
-                        <img src="images/footer-police.jpg">
-                    </a>
-                </li>
-            </ul>
-            <p>版权所有：金额宝互联网信息科技（北京）有限公司</p>
-            <p>&copy;2014-2015 jebao.net. Inc. All Rights Reserved.&nbsp;&nbsp;备案序号：京ICP备16054638号-1</p>
-        </div>
-    </footer>
+<div class="row">
+    <div class="col-sm-12 pagination">
+        <div id="pageNum"></div>
+    </div>
 </div>
-<script src="js/lib/jquery-1.10.2.min.js"></script>
-<script src="js/common.js"></script>
-<script>
-    $(function () {
-        $('.project-filter dl dt').click(function () {
-            $(this).parent().find('dt').removeClass('active');
-            $(this).addClass('active');
-        });
-    });
-</script>
+<!--内容 end-->
+
+
+#parse("common/footer.html")
+<script src="../content/script/html/product.js"></script>
 </body>
 </html>

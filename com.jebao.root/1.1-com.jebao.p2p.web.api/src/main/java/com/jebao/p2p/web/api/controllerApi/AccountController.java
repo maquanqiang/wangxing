@@ -8,6 +8,7 @@ import com.jebao.p2p.web.api.responseModel.base.JsonResult;
 import com.jebao.p2p.web.api.responseModel.base.JsonResultError;
 import com.jebao.p2p.web.api.responseModel.base.JsonResultOk;
 import com.jebao.p2p.web.api.utils.captcha.CaptchaUtil;
+import com.jebao.p2p.web.api.utils.captcha.MessageUtil;
 import com.jebao.p2p.web.api.utils.http.HttpUtil;
 import com.jebao.p2p.web.api.utils.session.CurrentUser;
 import com.jebao.p2p.web.api.utils.session.LoginSessionUtil;
@@ -61,6 +62,22 @@ public class AccountController extends _BaseController {
     }
     @RequestMapping("doRegister")
     public JsonResult doRegister(RegisterModel model){
+        ValidationResult resultValidation = ValidationUtil.validateEntity(model);
+        if (resultValidation.isHasErrors()) {
+            return new JsonResultError(resultValidation.toString());
+        }
+        //图形验证码校验
+        String verifyCode= CaptchaUtil.getCaptchaToken(request, response);
+        if (!StringUtils.isBlank(verifyCode)){
+            if (!verifyCode.equalsIgnoreCase(model.getImgCode())){
+                return new JsonResultError("图形验证码错误");
+            }
+        }
+        //短信验证码校验
+        if (!new MessageUtil().isValidCode(model.getMobile(),model.getMessageCode())){
+            return new JsonResultError("短信验证码错误");
+        }
+
         return null;
     }
 
