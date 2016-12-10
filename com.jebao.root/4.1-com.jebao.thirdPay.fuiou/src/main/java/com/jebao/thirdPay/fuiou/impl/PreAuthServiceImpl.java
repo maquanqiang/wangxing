@@ -9,6 +9,7 @@ import com.jebao.thirdPay.fuiou.util.SecurityUtils;
 import com.jebao.thirdPay.fuiou.util.XmlUtil;
 import org.springframework.stereotype.Service;
 
+
 /**
  * 富友--预授权接口
  * Created by Administrator on 2016/9/27.

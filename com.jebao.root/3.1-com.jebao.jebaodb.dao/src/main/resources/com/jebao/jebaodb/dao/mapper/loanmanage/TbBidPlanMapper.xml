@@ -823,7 +823,7 @@
         </if>
         <if test="record.searchMoneyEnd != null" >
             <![CDATA[
-              AND bp_bid_money  <=  #{record.searchMoneySt,jdbcType=DECIMAL}
+              AND bp_bid_money  <=  #{record.searchMoneyEnd,jdbcType=DECIMAL}
             ]]>
         </if>
         <!--<if test="record.bpIsDel != null" >-->

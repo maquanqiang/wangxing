@@ -41,8 +41,6 @@ public class ProductControllerApi {
 
     @Autowired
     private IProductServiceInf productService;
-    @Autowired
-    private PreAuthServiceImpl preAuthService;
     @Value("${thirdPay.fuiou.platNumber}")
     private String platNumber;
 
@@ -63,20 +61,9 @@ public class ProductControllerApi {
     @RequestMapping("productDetail")
     @ResponseBody
     public JsonResult productDetail(Long bpId){
-
-        String productPrefix = "PRODUCT_";
-        //先查询缓存中的数据
-        ShardedRedisUtil redisUtil = ShardedRedisUtil.getInstance();
-        String productJson = redisUtil.get(productPrefix + bpId);
-        if(StringUtils.isNotBlank(productJson)){
-            ProductDetailVM productDetailVM = JSON.parseObject(productJson, ProductDetailVM.class);
-            return new JsonResultData<>(productDetailVM);
-        }else{
-            TbBidPlan tbBidPlan = productService.selectByBpId(bpId);
-            String planJson = JSON.toJSONString(tbBidPlan);
-            redisUtil.setex(productPrefix+tbBidPlan.getBpId(),3*24*60*60*1000, planJson);
-            return new JsonResultData<>(new ProductDetailVM(tbBidPlan));
-        }
+        System.out.println(platNumber);
+        TbBidPlan tbBidPlan = productService.selectByBpId(bpId);
+        return new JsonResultData<>(new ProductDetailVM(tbBidPlan));
     }
 
 
