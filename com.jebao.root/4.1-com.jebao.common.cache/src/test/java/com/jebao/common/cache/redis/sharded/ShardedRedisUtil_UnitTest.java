@@ -24,4 +24,16 @@ public class ShardedRedisUtil_UnitTest {
         String result= redisUtil.get("ShardedRedisUtilUnitTest");
         assertThat(result).isEqualTo("2016101901");
     }
+    @Test
+    public void setExampleForObject()
+    {
+        ShardedRedisUtil redisUtil = ShardedRedisUtil.getInstance();
+        ObjClass obj=new ObjClass();
+        obj.setName("2016-objClass");
+        String key="ShardedRedisUtilUnitTest";
+        String result= redisUtil.set(key,obj);
+        redisUtil.expire(key,60);
+        ObjClass getObj=redisUtil.get(key,ObjClass.class);
+        assertThat(result).isEqualTo("OK");
+    }
 }
