@@ -47,6 +47,20 @@ var vm = new Vue({
             if ($target.hasClass("disabled")) {
                 return false;
             }
+            var $validator = $target.closest("form").data('bootstrapValidator');
+            var validateFieldsObject = $validator.options.fields;//validateFields
+            var isValid = true;
+            for(var key in validateFieldsObject){
+                if (key != "messageCode"){
+                    if (!$validator.isValidField(key)){
+                        $validator.validateField(key);
+                        isValid = false;
+                    }
+                }
+            }
+            if (!isValid){
+                return false;
+            }
             $target.addClass("disabled");
             var initVal = $target.val();
             var leftSeconds = 90;
@@ -59,11 +73,19 @@ var vm = new Vue({
                     $target.val(leftSeconds + ' s后可重发');
                 }
             }, 1000);
+            $.post("/api/account/sendMessage",{mobile:model.form.mobile,imgCode:model.form.imgCode},function(response){
+                if (response.success_is_ok) {
+
+                } else {
+                    $(".error-place").removeClass("hidden").find("span").html(response.msg);
+                }
+            },"json");
         },
         initValidateForm: function () {
             $('#registerForm').bootstrapValidator({
                 fields: {
                     mobile: {
+                        threshold: 11,
                         validators: {
                             notEmpty: {
                                 message: '手机号不能为空'
@@ -71,6 +93,12 @@ var vm = new Vue({
                             regexp: {
                                 regexp: /^1(3|4|5|7|8)\d{9}$/,
                                 message: '手机号错误'
+                            },
+                            remote: {
+                                type: 'post',
+                                url: '/api/account/validateMobile',
+                                message: '该手机号码已注册',
+                                delay: 1000
                             }
                         }
                     },
@@ -103,7 +131,7 @@ var vm = new Vue({
                             }
                         }
                     },
-                    messageCode: {
+                    messageCode:{
                         validators: {
                             notEmpty: {
                                 message: '短信验证码不能为空'

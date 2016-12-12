@@ -1,8 +1,8 @@
-$(document).ready(function() {
+$(document).ready(function () {
     //表单登录验证封装
-    function initValidateForm(){
+    function initValidateForm() {
         $('#loginForm').bootstrapValidator({
-            live:"submitted",
+            live: "submitted",
             fields: {
                 jebUsername: {
                     validators: {
@@ -28,7 +28,7 @@ $(document).ready(function() {
                     }
                 }
             }
-        }).on('success.form.bv', function(e) {
+        }).on('success.form.bv', function (e) {
             // Prevent form submission
             e.preventDefault();
             var $errorPlace = $("#login_message").addClass("hidden");
@@ -36,19 +36,21 @@ $(document).ready(function() {
             var $form = $(e.target);
 
             // Use Ajax to submit form data
-            $.post($form.attr('action'), $form.serialize(), function(response) {
-                if(response.success_is_ok)
-                {
-                    window.location.href="/";
+            $.post($form.attr('action'), $form.serialize(), function (response) {
+                if (response.success_is_ok) {
+                    var code = response.msg;
+                    var redirectUrl = common.getUrlParam("redirectUrl") || "/";
+                    window.location.href = "/account/token?code="+code+"&redirectUrl"+redirectUrl;
                     return;
-                }else{
+                } else {
                     $errorPlace.removeClass("hidden").find("span").html(response.msg);
                 }
             });
         });
     }
+
     initValidateForm();
-    $(".login-in-btn").click(function(){
+    $(".login-in-btn").click(function () {
         //$('#loginForm').trigger('success.form.bv');
         $('#loginForm').submit();
     });

@@ -53,6 +53,12 @@ public class AccountServiceImpl implements IAccountServiceInf {
     @Override
     @Transactional
     public ResultData<Long> register(String username, String password, String invitationCode,String ip,  EnumModel.Platform platform){
+
+        TbLoginInfo existsLoginEntity = loginInfoDao.selectByLoginName(username);
+        if (existsLoginEntity != null){
+            return new ResultData(false,null,"该手机号码已注册");
+        }
+
         TbLoginInfo loginModel = new TbLoginInfo();
         loginModel.setLiLoginName(username);
         loginModel.setLiPassword(new EncryptUtil().encryptToMD5(password));
@@ -79,8 +85,8 @@ public class AccountServiceImpl implements IAccountServiceInf {
                 }
                 if(StringUtils.isBlank(detailsModel.getUdInvitationCode())){
                     //不是销售人员的邀请码，查询普通员工
-                    TbLoginInfo loginEntity = loginInfoDao.selectByLoginName(username);
-                    if (loginEntity!=null && (loginEntity.getLiIsDel()!=null && loginEntity.getLiIsDel() == 1) ){
+                    TbLoginInfo existsUserInfo = loginInfoDao.selectByLoginName(invitationCode);
+                    if (existsUserInfo!=null && (existsUserInfo.getLiIsDel()!=null && existsUserInfo.getLiIsDel() == 1) ){
                         detailsModel.setUdInvitationCode(username);
                     }
                 }

@@ -25,4 +25,5 @@ public interface IAccountServiceInf {
      * @return 注册结果，用户id
      */
     ResultData<Long> register(String username, String password, String invitationCode,String ip, EnumModel.Platform platform);
+
 }

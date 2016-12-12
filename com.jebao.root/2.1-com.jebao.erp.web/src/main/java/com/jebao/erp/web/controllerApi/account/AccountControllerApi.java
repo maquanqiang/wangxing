@@ -1,12 +1,12 @@
 package com.jebao.erp.web.controllerApi.account;
 
-import com.jebao.common.utils.validation.ValidationResult;
-import com.jebao.common.utils.validation.ValidationUtil;
 import com.jebao.erp.service.inf.employee.IAccountServiceInf;
 import com.jebao.erp.web.controller._BaseController;
 import com.jebao.erp.web.utils.captcha.CaptchaUtil;
 import com.jebao.erp.web.utils.session.CurrentUser;
 import com.jebao.erp.web.utils.session.LoginSessionUtil;
+import com.jebao.erp.web.utils.validation.ValidationResult;
+import com.jebao.erp.web.utils.validation.ValidationUtil;
 import com.jebao.jebaodb.entity.employee.input.LoginIM;
 import com.jebao.jebaodb.entity.employee.input.PasswordIM;
 import com.jebao.jebaodb.entity.extEntity.ResultData;
@@ -56,6 +56,16 @@ public class AccountControllerApi extends _BaseController {
 
     @RequestMapping(value = "password",method = RequestMethod.POST)
     public ResultInfo password(PasswordIM model){
+        //region 校验
+        ValidationResult resultValidation = ValidationUtil.validateEntity(model);
+        if (resultValidation.isHasErrors()) {
+            return new ResultInfo(false,resultValidation.getErrorMsg().toString());
+        }
+        if (!model.getNewPassword2().equalsIgnoreCase(model.getNewPassword()))
+        {
+            return new ResultInfo(false,"两次密码输入不一致");
+        }
+        //endregion
         model.setUserId(user.getId());
         ResultInfo resultInfo = accountService.ModifyPassword(model);
         return resultInfo;
