@@ -3,8 +3,6 @@ package com.jebao.erp.service.impl.employee;
 import com.jebao.common.utils.date.DateUtil;
 import com.jebao.common.utils.encrypt.EncryptUtil;
 import com.jebao.common.utils.idcard.IdCardUtil;
-import com.jebao.common.utils.validation.ValidationResult;
-import com.jebao.common.utils.validation.ValidationUtil;
 import com.jebao.erp.service.inf.employee.IEmployeeServiceInf;
 import com.jebao.jebaodb.dao.dao.employee.*;
 import com.jebao.jebaodb.entity.employee.*;
@@ -54,12 +52,7 @@ public class EmployeeServiceImpl implements IEmployeeServiceInf {
     @Override
     public ResultInfo saveEmployeeInfo(EmployeeIM model) {
         ResultInfo resultInfo = new ResultInfo(false);
-        //region 校验
-        ValidationResult resultValidation = ValidationUtil.validateEntity(model);
-        if (resultValidation.isHasErrors()) {
-            resultInfo.setMsg(resultValidation.getErrorMsg().toString());
-            return resultInfo;
-        }
+
         if (model.getTeamId()==null || model.getTeamId() == 0) {
             model.setTeamId(model.getDepartmentId());
         }

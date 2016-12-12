@@ -2,7 +2,6 @@ package com.jebao.p2p.web.controller;
 
 import com.jebao.p2p.web.utils.session.LoginSessionUtil;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -18,14 +17,21 @@ public class AccountController extends _BaseController {
      * @return
      */
     @RequestMapping("login")
-    public String login(Model model,@RequestParam(defaultValue = "/") String redirectUrl) {
+    public String login(@RequestParam(defaultValue = "/") String redirectUrl) {
         //检测是否已登录
         boolean isLogin = LoginSessionUtil.isLogin(request, response);
         if (isLogin) {
             return "redirect:"+redirectUrl;
         }
-        model.addAttribute("redirectUrl",redirectUrl);
         return "account/login";
+    }
+    @RequestMapping("token")
+    public String token(String code,@RequestParam(defaultValue = "/") String redirectUrl){
+        boolean flag = LoginSessionUtil.setToken(code,request,response);
+        if (flag){
+            return "redirect:"+redirectUrl; //成功之后跳转
+        }
+        return "redirect:account/login"; //不成功则重新登录
     }
     @RequestMapping("logout")
     public String logout() {

@@ -5,10 +5,7 @@ import com.jebao.common.utils.fastjson.FastJsonUtil;
 import com.jebao.p2p.web.utils.constants.Constants;
 import com.jebao.p2p.web.utils.cookie.CookieUtil;
 import org.apache.commons.lang.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.Environment;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.UUID;
@@ -115,6 +112,34 @@ public class LoginSessionUtil {
         String loginSessionCookieName = getLoginSessionCookieName();
         setUserLoginSessionInCookie(loginSessionCookieName,loginSessionCookieVal,request,response);
         SetLoginSessionInRedis(loginSessionKey,currentUser);
+    }
+    /**
+     * 登录成功后，返回给客户端的 code。客户端使用code来获取token
+     * @param currentUser 登录成功的用户信息
+     * @return auth code
+     */
+    public static String setAuthCode(CurrentUser currentUser){
+        String code = UUID.randomUUID().toString();
+        ShardedRedisUtil redisUtil = ShardedRedisUtil.getInstance();
+        String key = getLoginSessionFullName(code);
+        redisUtil.setex(key,60,currentUser); // 临时的 redis 设置
+        return code;
+    }
+
+    /**
+     * setAuthCode之后调用，设置 redis 和 cookie 登录状态
+     */
+    public static boolean setToken(String code,HttpServletRequest request, HttpServletResponse response){
+        if (!StringUtils.isBlank(code)) {
+            ShardedRedisUtil redisUtil = ShardedRedisUtil.getInstance();
+            String key = getLoginSessionFullName(code);
+            CurrentUser currentUser = redisUtil.get(key, CurrentUser.class);
+            if (currentUser != null) {
+                setLogin(currentUser, request, response);
+                return true;
+            }
+        }
+        return false;
     }
     private static void setUserLoginSessionInCookie(String loginSessionCookieName,String loginSessionCookieVal,HttpServletRequest request, HttpServletResponse response )
     {

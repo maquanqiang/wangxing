@@ -2,9 +2,15 @@ package com.jebao.p2p.web.api.utils.captcha;
 
 import com.jebao.common.cache.redis.sharded.ShardedRedisUtil;
 import com.jebao.common.utils.sms.SmsSendUtil;
+import com.jebao.common.utils.validation.ValidatorUtil;
+import com.jebao.p2p.web.api.responseModel.base.JsonResult;
+import com.jebao.p2p.web.api.responseModel.base.JsonResultError;
+import com.jebao.p2p.web.api.responseModel.base.JsonResultOk;
 import com.jebao.p2p.web.api.utils.constants.Constants;
 import org.apache.commons.lang.StringUtils;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Random;
 
 /**
@@ -12,28 +18,75 @@ import java.util.Random;
  */
 public class MessageUtil {
     private final String VERIFY_CODES = "0123456789";
-    private final int EXPIRE_TIME_SECONDS=60 * 10;//10分钟有效期
-
+    private final int EXPIRE_TIME_SECONDS=60 * 10; //10分钟有效期
+    private final int MOBILE_MAX_SEND_NUMBER = 10; //单个手机号日最大发送次数
+    private final int IP_MAX_SEND_NUMBER=20; //单个ip地址日最大发送次数
+    private final int SEND_INTERVAL_SECONDS = 89; //短信发送间隔限制秒数，预留一秒给网络传输、服务端处理 时间
     /**
      * 发送短信验证码
      * @param mobile 目标手机号码
-     * @return 短信验证码
+     * @return jsonResult
      */
-    public String sendMessageVerifyCode(String mobile){
-        String verifyCode = generateVerifyCode(4);
-        SmsSendUtil.sendVerifyCode(mobile,verifyCode);
-        setMessageVerifyCodeInRedis(mobile,verifyCode);
-        return verifyCode;
+    public JsonResult sendMessageVerifyCode(String mobile, String ip){
+        if (mobile == null || ! new ValidatorUtil().isMobile(mobile)){
+            return new JsonResultError("手机号码输入错误");
+        }
+        //校验发送次数
+        MessageRedisValue mobileRedisValue = getRedis(mobile);//获取该手机号的 redis 内容
+        //Period.between(date1,date2);
+        if (mobileRedisValue != null && mobileRedisValue.getLastSendTime().toLocalDate().isEqual(LocalDate.now())){ //同一天的，检查发送次数
+            if (mobileRedisValue.getSendNumber() >= MOBILE_MAX_SEND_NUMBER){ //超出单个手机号单日最大发送次数
+                return new JsonResultError("手机短信发送过于频繁");
+            }
+            if (LocalDateTime.now().minusSeconds(SEND_INTERVAL_SECONDS).isBefore(mobileRedisValue.getLastSendTime())){ //验证发送间隔
+                return new JsonResultError("操作太快了，请先休息下");
+            }
+        }
+        MessageRedisValue ipRedisValue = getRedis(ip); // ip限制
+        if (ipRedisValue != null && ipRedisValue.getLastSendTime().toLocalDate().isEqual(LocalDate.now())){
+            if (ipRedisValue.getSendNumber() >= IP_MAX_SEND_NUMBER){
+                return new JsonResultError("IP短信发送过于频繁");
+            }
+        }
+
+        String verifyCode = generateVerifyCode(4); //生成短信验证码
+        SmsSendUtil.sendVerifyCode(mobile,verifyCode); //发送短信验证码
+        //设置/更新 redis
+        if (mobileRedisValue == null){
+            mobileRedisValue = new MessageRedisValue();
+        }
+        mobileRedisValue.setVerifyCode(verifyCode);
+        mobileRedisValue.setSendNumber(mobileRedisValue.getSendNumber() + 1);
+        mobileRedisValue.setLastSendTime(LocalDateTime.now());
+
+        setRedis(mobile,mobileRedisValue); // 设置手机号的发送情况 在 redis
+
+        if (ipRedisValue == null){
+            ipRedisValue = new MessageRedisValue();
+        }
+        ipRedisValue.setVerifyCode(verifyCode);
+        ipRedisValue.setSendNumber(ipRedisValue.getSendNumber() + 1);
+        ipRedisValue.setLastSendTime(LocalDateTime.now());
+
+        setRedis(ip,ipRedisValue); // 设置ip的发送情况 在 redis
+
+        return new JsonResultOk("短信已发送");
     }
     /**
      * 获取短信验证码
-     * @param mobile 目标手机号码
+     * @param simpleKey redisKey
      * @return 短信验证码
      */
-    public String getMessageVerifyCodeInRedis(String mobile){
-        String key = getRedisKey(mobile);
+    public MessageRedisValue getRedis(String simpleKey){
+        String key = getRedisKey(simpleKey);
         ShardedRedisUtil redisUtil = ShardedRedisUtil.getInstance();
-        return redisUtil.get(key);
+        return redisUtil.get(key,MessageRedisValue.class);
+    }
+    private void setRedis(String simpleKey,MessageRedisValue value)
+    {
+        String key=getRedisKey(simpleKey);
+        ShardedRedisUtil redisUtil = ShardedRedisUtil.getInstance();
+        redisUtil.setex(key,EXPIRE_TIME_SECONDS,value);
     }
 
     /**
@@ -43,8 +96,8 @@ public class MessageUtil {
      * @return 是否正确
      */
     public boolean isValidCode(String mobile,String code){
-        String messageVerifyCode = getMessageVerifyCodeInRedis(mobile);
-        return !StringUtils.isBlank(messageVerifyCode) && messageVerifyCode.equalsIgnoreCase(code);
+        MessageRedisValue redisValue = getRedis(mobile);
+        return redisValue !=null && !StringUtils.isBlank(redisValue.getVerifyCode()) && redisValue.getVerifyCode().equalsIgnoreCase(code);
     }
 
     public String generateVerifyCode(int length){
@@ -63,21 +116,50 @@ public class MessageUtil {
         return verifyCode.toString();
     }
 
-    private void setMessageVerifyCodeInRedis(String mobile,String code)
+
+
+    private String getRedisKey(String simpleKey)
     {
-        String key=getRedisKey(mobile);
-        String value=code;
-        ShardedRedisUtil redisUtil = ShardedRedisUtil.getInstance();
-        String result=redisUtil.set(key, value,"XX","EX",EXPIRE_TIME_SECONDS);
-        if(result==null)
-        {
-            redisUtil.set(key, value,"NX","EX",EXPIRE_TIME_SECONDS);
-        }
+        return Constants.CAPTCHA_TOKEN_CACHE_NAME+simpleKey;
     }
 
-    private String getRedisKey(String mobile)
-    {
-        return Constants.CAPTCHA_TOKEN_CACHE_NAME+mobile;
+    public class MessageRedisValue{
+        /**
+         * 验证码
+         */
+        private String verifyCode;
+        /**
+         * 该手机号已发送次数
+         */
+        private int sendNumber;
+        /**
+         * 上一次短信验证码发送时间
+         */
+        private LocalDateTime lastSendTime;
+
+        public String getVerifyCode() {
+            return verifyCode;
+        }
+
+        public void setVerifyCode(String verifyCode) {
+            this.verifyCode = verifyCode;
+        }
+
+        public int getSendNumber() {
+            return sendNumber;
+        }
+
+        public void setSendNumber(int sendNumber) {
+            this.sendNumber = sendNumber;
+        }
+
+        public LocalDateTime getLastSendTime() {
+            return lastSendTime;
+        }
+
+        public void setLastSendTime(LocalDateTime lastSendTime) {
+            this.lastSendTime = lastSendTime;
+        }
     }
 
 }

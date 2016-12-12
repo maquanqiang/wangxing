@@ -1,8 +1,6 @@
 package com.jebao.erp.service.impl.employee;
 
 import com.jebao.common.utils.encrypt.EncryptUtil;
-import com.jebao.common.utils.validation.ValidationResult;
-import com.jebao.common.utils.validation.ValidationUtil;
 import com.jebao.erp.service.inf.employee.IAccountServiceInf;
 import com.jebao.jebaodb.dao.dao.employee.TbEmployeeDao;
 import com.jebao.jebaodb.dao.dao.employee.TbEmployeeLoginDao;
@@ -55,17 +53,6 @@ public class AccountServiceImpl implements IAccountServiceInf {
 
     @Override
     public ResultInfo ModifyPassword(PasswordIM model){
-        //region 校验
-        ValidationResult resultValidation = ValidationUtil.validateEntity(model);
-        if (resultValidation.isHasErrors()) {
-            return new ResultInfo(false,resultValidation.getErrorMsg().toString());
-        }
-        if (!model.getNewPassword2().equalsIgnoreCase(model.getNewPassword()))
-        {
-            return new ResultInfo(false,"两次密码输入不一致");
-        }
-        //endregion
-
         TbEmployee employeeEntity = employeeDao.selectByPrimaryKey(model.getUserId());
         if (employeeEntity==null || employeeEntity.getEmpIsDeleted() || employeeEntity.getEmpStatus()==2){
             return new ResultInfo(false,"操作异常，不存在此员工信息");

@@ -1,5 +1,6 @@
 package com.jebao.p2p.web.api.utils.http;
 
+import com.jebao.jebaodb.entity.extEntity.EnumModel;
 import org.apache.commons.lang.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
@@ -12,37 +13,60 @@ import java.net.UnknownHostException;
 public class HttpUtil {
     /**
      * 获取客户端真实ip地址
+     *
      * @param request HttpServletRequest
      * @return 客户端ip地址
      */
     public String getIpAddress(HttpServletRequest request) {
         String ipAddress = request.getHeader("x-forwarded-for");
 
-        if(StringUtils.isBlank(ipAddress) || "unknown".equalsIgnoreCase(ipAddress)) {
+        if (StringUtils.isBlank(ipAddress) || "unknown".equalsIgnoreCase(ipAddress)) {
             ipAddress = request.getHeader("Proxy-Client-IP");
         }
-        if(StringUtils.isBlank(ipAddress) || "unknown".equalsIgnoreCase(ipAddress)) {
+        if (StringUtils.isBlank(ipAddress) || "unknown".equalsIgnoreCase(ipAddress)) {
             ipAddress = request.getHeader("WL-Proxy-Client-IP");
         }
-        if(StringUtils.isBlank(ipAddress) || "unknown".equalsIgnoreCase(ipAddress)) {
+        if (StringUtils.isBlank(ipAddress) || "unknown".equalsIgnoreCase(ipAddress)) {
             ipAddress = request.getRemoteAddr();
-            if(ipAddress.equals("0:0:0:0:0:0:0:1")){
+            if (ipAddress.equals("0:0:0:0:0:0:0:1")) {
                 //根据网卡取本机配置的IP
-                InetAddress inet=null;
+                InetAddress inet = null;
                 try {
                     inet = InetAddress.getLocalHost();
                 } catch (UnknownHostException e) {
                     //e.printStackTrace();
                 }
-                ipAddress= inet.getHostAddress();
+                ipAddress = inet.getHostAddress();
             }
 
         }
 
         //对于通过多个代理的情况，第一个IP为客户端真实IP,多个IP按照','分割
-        if(!StringUtils.isBlank(ipAddress) && ipAddress.indexOf(",")>0){
-            ipAddress = ipAddress.substring(0,ipAddress.indexOf(","));
+        if (!StringUtils.isBlank(ipAddress) && ipAddress.indexOf(",") > 0) {
+            ipAddress = ipAddress.substring(0, ipAddress.indexOf(","));
         }
         return ipAddress;
     }
+
+    /**
+     * 获取请求所属平台
+     * @param request httpRequest
+     * @return 平台类型
+     */
+    public EnumModel.Platform getPlatform(HttpServletRequest request) {
+        String userAgent = request.getHeader("User-Agent");
+        if (!StringUtils.isBlank(userAgent)) {
+            if (userAgent.indexOf("MicroMessenger") > -1) { //微信
+                return EnumModel.Platform.weixin;
+            } else if (userAgent.indexOf("Android") > -1) {
+                return EnumModel.Platform.android;
+            }else if (userAgent.indexOf("iPhone")>-1 || userAgent.indexOf("Mac OS X")>-1){
+                return EnumModel.Platform.ios;
+            }else if (userAgent.indexOf("Windows")>-1){
+                return EnumModel.Platform.pc;
+            }
+        }
+        return EnumModel.Platform.other;
+    }
+
 }

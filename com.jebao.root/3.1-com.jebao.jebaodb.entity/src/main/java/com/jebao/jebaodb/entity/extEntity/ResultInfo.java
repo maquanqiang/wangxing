@@ -14,7 +14,7 @@ public class ResultInfo {
     private boolean success_is_ok;
     private String msg;
 
-    public boolean isSuccess_is_ok() {
+    public boolean getSuccess_is_ok() {
         return success_is_ok;
     }
 
