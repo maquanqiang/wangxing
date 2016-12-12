@@ -234,11 +234,10 @@ public class BidPlanControllerApi extends _BaseController {
                         days += 1;
                     }
                 }
-                System.out.println("实际时间"+days);
+//                System.out.println("实际时间"+days);
                 nextRepayDate = now.getTime();
                 BigDecimal interest = principal.multiply(form.getBpRate()).multiply(new BigDecimal(days))
                         .divide(new BigDecimal(100 * 365), 2,BigDecimal.ROUND_HALF_UP);
-
                 loanIntent.setRepayDate(nextRepayDate);
                 loanIntent.setInterest(interest);
                 if(i==form.getBpPeriodsDisplay()){

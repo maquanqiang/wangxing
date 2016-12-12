@@ -108,8 +108,9 @@ var vm = new Vue({
                 if (response.success_is_ok){
                     vm.intentList = response.data;
                     for(var i=0; i<vm.intentList.length; i++){
-                        vm.total += parseFloat(vm.intentList[i].money);
+                        vm.total += (vm.intentList[i].money)*1;
                     }
+                    vm.total = vm.total.toFixed(2);
                     layer.alert("借款人还款明细生成，正在生成投资人收入明细",5);
                     $.post("/api/investInfo/createIncomeDetails",form,function(response){
                         if (response.success_is_ok){

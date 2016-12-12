@@ -156,9 +156,9 @@
                 <div class="box-title">
                     <h5>借款人还款计划</h5>
                 </div>
-                <div class="form-group ">
-                    <a href="javascript:;" class="btn btn-primary " role="button" @click="createIntentBtn">生成</a>
-                </div>
+                <!--<div class="form-group ">-->
+                    <!--<a href="javascript:;" class="btn btn-primary " role="button" @click="createIntentBtn">生成</a>-->
+                <!--</div>-->
                 <div class="box box-primary">
                     <div class="box-body">
                         <div id="orderlist_table_wrapper" class="dataTables_wrapper">
@@ -174,24 +174,29 @@
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        <tr role="row" class="odd" v-for="intent in intentList">
-                                            <td>{{intent.intentPeriod}}</td>
-                                            <td>{{intent.repayDate}}</td>
-                                            <td>{{fundType[intent.fundType]}}</td>
-                                            <td>{{intent.money}}</td>
+                                        <tr role="row" class="odd" v-for="intent in incomeDetailList">
+                                            <td>{{intent.indPeriods}}</td>
+                                            <td>{{intent.indDateTime}}</td>
+                                            <td>{{fundType[intent.indFundType]}}</td>
+                                            <td>{{intent.indMoney}}</td>
                                         </tr>
-                                        <tr role="row" class="even">
-                                            <td>总计</td>
-                                            <td></td>
-                                            <td></td>
-                                            <td>{{total}}</td>
-                                        </tr>
+                                        <!--<tr role="row" class="even">-->
+                                            <!--<td>总计</td>-->
+                                            <!--<td></td>-->
+                                            <!--<td></td>-->
+                                            <!--<td>{{total}}</td>-->
+                                        <!--</tr>-->
                                         </tbody>
                                     </table>
                                 </div>
                             </div>
                         </div>
                     </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12 pagination">
+                    <div id="pageNum"></div>
                 </div>
             </div>
         </div>
@@ -321,7 +326,7 @@
         <div class="row">
             <div class="col-xs-12">
                 <div class="box-title">
-                    <h5>合同模板</h5>
+                    <h5>投资人列表</h5>
                 </div>
                 <div class="box box-primary">
                     <div class="box-body">

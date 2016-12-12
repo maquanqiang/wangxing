@@ -201,10 +201,13 @@ var vm = new Vue({
                 if (response.success_is_ok){
                     vm.intentList = response.data;
                     for(var i=0; i<vm.intentList.length; i++){
-                        vm.principalTotal = vm.principalTotal + (vm.intentList[i].principal)*1;
-                        vm.interestTotal = vm.interestTotal + (vm.intentList[i].interest)*1;
+                        vm.principalTotal += (vm.intentList[i].principal)*1;
+                        vm.interestTotal += (vm.intentList[i].interest)*1;
                     }
                     vm.total = vm.principalTotal +vm.interestTotal;
+                    vm.principalTotal = vm.principalTotal.toFixed(2);
+                    vm.interestTotal = vm.interestTotal.toFixed(2);
+                    vm.total = vm.total.toFixed(2);
                 }
             });
         },
@@ -226,10 +229,10 @@ var vm = new Vue({
             })
         },
         cancelBtn:function(){
-            vm.toIndex()
+            window.location.href = "/bidplan/index";
         },
         toIndex:function(){
-            window.location.href = "/bidplan/index";
+            window.location.href = "/bidplan/reviewedPlanList";
         }
     }
     //computed: {
