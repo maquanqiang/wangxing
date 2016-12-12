@@ -4,11 +4,13 @@ import com.jebao.thirdPay.fuiou.http.WebFormUtils;
 import com.jebao.thirdPay.fuiou.model.resetPassWord.ResetPassWordRequest;
 import com.jebao.thirdPay.fuiou.util.PrintUtil;
 import com.jebao.thirdPay.fuiou.util.SecurityUtils;
+import org.springframework.stereotype.Service;
 
 /**
  * 富友--用户密码修改重置免登陆接口(网页版)
  * Created by Administrator on 2016/9/27.
  */
+@Service
 public class ResetPassWordServiceImpl {
     public String post(String httpUrl, ResetPassWordRequest reqData) throws Exception {
         PrintUtil.printLn("Sign:" + reqData.requestSignPlain());

@@ -7,12 +7,15 @@ import com.jebao.thirdPay.fuiou.model.artifReg.ArtifRegResponse;
 import com.jebao.thirdPay.fuiou.util.PrintUtil;
 import com.jebao.thirdPay.fuiou.util.RegexUtil;
 import com.jebao.thirdPay.fuiou.util.SecurityUtils;
+import org.springframework.stereotype.Service;
 import com.jebao.thirdPay.fuiou.util.XmlUtil;
+import org.springframework.stereotype.Service;
 
 /**
  * 富友--法人开户注册接口
  * Created by Administrator on 2016/9/27.
  */
+@Service
 public class ArtifRegServiceImpl {
 
     public ArtifRegResponse post(ArtifRegRequest reqData) throws Exception {

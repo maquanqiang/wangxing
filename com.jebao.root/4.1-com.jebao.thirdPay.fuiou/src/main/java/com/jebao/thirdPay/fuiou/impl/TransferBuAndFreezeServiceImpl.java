@@ -6,12 +6,14 @@ import com.jebao.thirdPay.fuiou.model.transferBuAndFreeze.TransferBuAndFreezeRes
 import com.jebao.thirdPay.fuiou.util.PrintUtil;
 import com.jebao.thirdPay.fuiou.util.RegexUtil;
 import com.jebao.thirdPay.fuiou.util.SecurityUtils;
+import org.springframework.stereotype.Service;
 import com.jebao.thirdPay.fuiou.util.XmlUtil;
 
 /**
  * 富友--划拨预冻结接口
  * Created by Administrator on 2016/9/28.
  */
+@Service
 public class TransferBuAndFreezeServiceImpl {
     public TransferBuAndFreezeResponse post(String httpUrl, TransferBuAndFreezeRequest reqData) throws Exception {
         String signatureStr = SecurityUtils.sign(reqData.requestSignPlain());

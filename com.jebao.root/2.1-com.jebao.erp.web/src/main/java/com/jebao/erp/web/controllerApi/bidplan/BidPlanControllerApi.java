@@ -36,10 +36,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by Lee on 2016/11/26.
@@ -97,9 +94,17 @@ public class BidPlanControllerApi extends _BaseController {
     @RequestMapping("doAddPlan")
     @ResponseBody
     public JsonResult doAddPlan(AddPlanForm form) {
+
+        TbBidPlan plan = new TbBidPlan();
+        plan.setBpNumber(form.getBpNumber());
+        //判断标的编号是否重复
+        List<TbBidPlan> tbBidPlans = bidPlanService.selectByConditionForPage(plan, new PageWhere(0, 100));
+        if(tbBidPlans!=null && tbBidPlans.size()>0){
+            return new JsonResultError("标的编号重复");
+        }
+
         //保存标的信息
         TbBidPlan bidPlan = AddPlanForm.toEntity(form);
-
         TbLoaner loaner = loanerService.findLoanerById(form.getBpLoanerId());
         bidPlan.setBpSurplusMoney(bidPlan.getBpBidMoney());
         bidPlan.setBpStatus(TbBidPlan.STATUS_UNAUDITED);                     //默认未审核
@@ -185,13 +190,17 @@ public class BidPlanControllerApi extends _BaseController {
 
         List<LoanIntentVM> loanFundIntents = new ArrayList<>();
         BigDecimal principal = form.getBpBidMoney();
+        Calendar now = Calendar.getInstance();
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(form.getBpExpectLoanDate());
+
         if(form.getBpInterestPayType()==1){     //一次性还本付息
             LoanIntentVM loanIntentVM = new LoanIntentVM();
             Date loanDate = form.getBpExpectLoanDate();
             Date repayDate = form.getBpExpectRepayDate();
             int days = BetweenDays.differentDays(loanDate, repayDate);
             BigDecimal interest = principal.multiply(form.getBpRate()).multiply(new BigDecimal(days))
-                    .divide(new BigDecimal(100 * 365), 2, BigDecimal.ROUND_DOWN);
+                    .divide(new BigDecimal(100 * 365), 2, BigDecimal.ROUND_HALF_UP);
 
             loanIntentVM.setIntentPeriod(1);
             loanIntentVM.setRepayDate(form.getBpExpectRepayDate());
@@ -199,11 +208,12 @@ public class BidPlanControllerApi extends _BaseController {
             loanIntentVM.setInterest(interest);
             loanIntentVM.setTotal(principal.add(interest));
             loanFundIntents.add(loanIntentVM);
+            System.out.println(days);
         }else if(form.getBpInterestPayType()==2){//按期付息
             Date loanDate = form.getBpExpectLoanDate();
             Date nextRepayDate = form.getBpExpectLoanDate();
             Integer bpCycleType = form.getBpCycleType();
-            Calendar now = Calendar.getInstance();
+
 
             for(int i=1; i<=form.getBpPeriodsDisplay(); i++){
                 LoanIntentVM loanIntent = new LoanIntentVM();
@@ -219,16 +229,22 @@ public class BidPlanControllerApi extends _BaseController {
                     now.add(Calendar.YEAR, i);
                 }
                 int days = BetweenDays.differentDays(nextRepayDate, now.getTime());
+                if(i==form.getBpPeriodsDisplay()){
+                    if(now.get(GregorianCalendar.DAY_OF_MONTH)!=calendar.get(GregorianCalendar.DAY_OF_MONTH)){
+                        days += 1;
+                    }
+                }
+                System.out.println("实际时间"+days);
                 nextRepayDate = now.getTime();
                 BigDecimal interest = principal.multiply(form.getBpRate()).multiply(new BigDecimal(days))
                         .divide(new BigDecimal(100 * 365), 2,BigDecimal.ROUND_HALF_UP);
 
                 loanIntent.setRepayDate(nextRepayDate);
                 loanIntent.setInterest(interest);
-
                 if(i==form.getBpPeriodsDisplay()){
                     loanIntent.setPrincipal(form.getBpBidMoney());
                     loanIntent.setTotal(interest.add(form.getBpBidMoney()));
+                    loanIntent.setRepayDate(form.getBpExpectRepayDate());
                 }else {
                     loanIntent.setPrincipal(BigDecimal.ZERO);
                     loanIntent.setTotal(interest);

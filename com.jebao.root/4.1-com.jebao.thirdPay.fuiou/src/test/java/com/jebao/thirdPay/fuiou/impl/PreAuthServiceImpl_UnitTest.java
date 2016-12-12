@@ -12,8 +12,6 @@ public class PreAuthServiceImpl_UnitTest {
     @Test
     public void Test() throws Exception {
         PreAuthRequest reqData = new PreAuthRequest();
-        reqData.setMchnt_cd("0006410F0026868");
-        reqData.setMchnt_txn_ssn("11032302065863805732");
         reqData.setOut_cust_no("13678424821");
         reqData.setIn_cust_no("13678424822");
         reqData.setAmt("10000");
@@ -21,7 +19,7 @@ public class PreAuthServiceImpl_UnitTest {
         //
         String httpUrl = "https://jzh-test.fuiou.com/jzh/preAuth.action";
         PreAuthServiceImpl preAuthService = new PreAuthServiceImpl();
-        PreAuthResponse result = preAuthService.post(httpUrl,reqData);
+        PreAuthResponse result = preAuthService.post(reqData);
         if(result!=null)
         {
             PrintUtil.printLn("[预授权接口]-测试通过");

@@ -201,8 +201,8 @@ var vm = new Vue({
                 if (response.success_is_ok){
                     vm.intentList = response.data;
                     for(var i=0; i<vm.intentList.length; i++){
-                        vm.principalTotal += parseFloat(vm.intentList[i].principal);
-                        vm.interestTotal += parseFloat(vm.intentList[i].interest);
+                        vm.principalTotal = vm.principalTotal + (vm.intentList[i].principal)*1;
+                        vm.interestTotal = vm.interestTotal + (vm.intentList[i].interest)*1;
                     }
                     vm.total = vm.principalTotal +vm.interestTotal;
                 }
@@ -221,7 +221,7 @@ var vm = new Vue({
                     layer.msg(response.msg);
                     vm.toIndex();
                 } else {
-                    layer.alert(response.msg);
+                    layer.alert(response.error);
                 }
             })
         },

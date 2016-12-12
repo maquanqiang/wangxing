@@ -57,6 +57,8 @@ public class ProductDetailVM extends ViewModel {
         this.bpIsDel = entity.getBpIsDel();
         this.bpDesc = entity.getBpDesc();
         this.bpType = entity.getBpType();
+        this.progress=(entity.getBpBidMoney().subtract(entity.getBpSurplusMoney())).multiply(new BigDecimal(100)).
+                divide(entity.getBpBidMoney(), 0, BigDecimal.ROUND_DOWN).toString();
     }
 
 
@@ -147,6 +149,8 @@ public class ProductDetailVM extends ViewModel {
     private String bpDesc;
 
     private Integer bpType;
+
+    private String progress;
 
     public Long getBpId() {
         return bpId;
@@ -498,5 +502,13 @@ public class ProductDetailVM extends ViewModel {
 
     public void setBpType(Integer bpType) {
         this.bpType = bpType;
+    }
+
+    public String getProgress() {
+        return progress;
+    }
+
+    public void setProgress(String progress) {
+        this.progress = progress;
     }
 }

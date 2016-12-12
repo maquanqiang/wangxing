@@ -6,12 +6,14 @@ import com.jebao.thirdPay.fuiou.model.transferBmu.TransferBmuResponse;
 import com.jebao.thirdPay.fuiou.util.PrintUtil;
 import com.jebao.thirdPay.fuiou.util.RegexUtil;
 import com.jebao.thirdPay.fuiou.util.SecurityUtils;
+import org.springframework.stereotype.Service;
 import com.jebao.thirdPay.fuiou.util.XmlUtil;
 
 /**
  * 富友--转账(商户与个人之间)接口
  * Created by Administrator on 2016/9/28.
  */
+@Service
 public class TransferBmuServiceImpl {
     public TransferBmuResponse post(String httpUrl, TransferBmuRequest reqData) throws Exception {
         String signatureStr = SecurityUtils.sign(reqData.requestSignPlain());

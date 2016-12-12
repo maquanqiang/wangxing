@@ -6,12 +6,14 @@ import com.jebao.thirdPay.fuiou.model.transferBu.TransferBuResponse;
 import com.jebao.thirdPay.fuiou.util.PrintUtil;
 import com.jebao.thirdPay.fuiou.util.RegexUtil;
 import com.jebao.thirdPay.fuiou.util.SecurityUtils;
+import org.springframework.stereotype.Service;
 import com.jebao.thirdPay.fuiou.util.XmlUtil;
 
 /**
  * 富友--划拨(个人与个人之间)
  * Created by Administrator on 2016/9/26.
  */
+@Service
 public class TransferBuServiceImpl {
     public TransferBuResponse post(String httpUrl, TransferBuRequest reqData) throws Exception {
         String signatureStr = SecurityUtils.sign(reqData.requestSignPlain());

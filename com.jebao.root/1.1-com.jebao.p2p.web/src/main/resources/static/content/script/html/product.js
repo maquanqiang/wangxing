@@ -1,4 +1,18 @@
 $(function () {
+    //调用分页
+    laypage({
+        cont: $('.page'), //容器。值支持id名、原生dom对象，jquery对象,
+        pages: 100, //总页数
+        skip: true, //是否开启跳页
+        skin: '#e88a6e',
+        groups: 3 //连续显示分页数
+    });
+    $('.project-filter dl dt').click(function () {
+        $(this).parent().find('dt').removeClass('active');
+        $(this).addClass('active');
+    });
+
+
     $('.project-filter dl dt').click(function () {
         model.searchObj.bpInterestPayType = null;
         model.searchObj.bpPeriodStr = null;
@@ -38,7 +52,8 @@ var model = {
     searchObj: {},
     //列表
     products: [],
-    cycleType:["","天","个月","季","年"]
+    cycleType:["","天","个月","季","年"],
+    status:["","","立即投资","满标","募集结束","","","还款中","","","已还款"]
 };
 
 // 创建一个 Vue 实例 (ViewModel),它连接 View 与 Model
@@ -60,12 +75,13 @@ var vm = new Vue({
         search: function (event) {
             $.post($("#loginForm").attr("action"), model.searchObj, function (response) {
                 if (response.success_is_ok) {
-                    console.log(response.data)
                     vm.products = response.data;
                     if (response.count > 0) {
                         var pageCount = Math.ceil(response.count / model.pageSize);
                         //调用分页
                         laypage({
+                            skip: true, //是否开启跳页
+                            skin: '#e88a6e',
                             cont: $('#pageNum'), //容器。值支持id名、原生dom对象，jquery对象,
                             pages: pageCount, //总页数
                             groups: 7, //连续显示分页数

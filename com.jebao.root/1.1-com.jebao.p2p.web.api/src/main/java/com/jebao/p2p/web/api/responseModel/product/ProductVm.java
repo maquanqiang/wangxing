@@ -28,8 +28,8 @@ public class ProductVm extends ViewModel {
         this.bpSurplusMoney=plan.getBpSurplusMoney();
         this.bpType=plan.getBpType();
         this.bpFullTime=plan.getBpFullTime();
-//        this.progress=(plan.getBpBidMoney().subtract(plan.getBpSurplusMoney())).multiply(new BigDecimal(100).divide(plan.getBpBidMoney(),0,BigDecimal.ROUND_DOWN);
-
+        this.progress=(plan.getBpBidMoney().subtract(plan.getBpSurplusMoney())).multiply(new BigDecimal(100)).
+                divide(plan.getBpBidMoney(), 0, BigDecimal.ROUND_DOWN).toString();
     }
 
     private Long bpId;
@@ -49,16 +49,15 @@ public class ProductVm extends ViewModel {
     private Date bpFullTime;
     private Integer bpStatus;
     private Integer bpType;
+    private String progress;
 
-    public Integer getProgress() {
+    public String getProgress() {
         return progress;
     }
 
-    public void setProgress(Integer progress) {
+    public void setProgress(String progress) {
         this.progress = progress;
     }
-
-    private Integer progress;
 
 
     public Long getBpId() {

@@ -6,12 +6,14 @@ import com.jebao.thirdPay.fuiou.model.queryChangeCard.QueryChangeCardResponse;
 import com.jebao.thirdPay.fuiou.util.PrintUtil;
 import com.jebao.thirdPay.fuiou.util.RegexUtil;
 import com.jebao.thirdPay.fuiou.util.SecurityUtils;
+import org.springframework.stereotype.Service;
 import com.jebao.thirdPay.fuiou.util.XmlUtil;
 
 /**
  * 富友--用户更换银行卡查询接口
  * Created by Administrator on 2016/9/27.
  */
+@Service
 public class QueryChangeCardServiceImpl {
     public QueryChangeCardResponse post(String httpUrl, QueryChangeCardRequest reqData) throws Exception {
         String signatureStr = SecurityUtils.sign(reqData.requestSignPlain());

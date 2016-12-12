@@ -2,14 +2,15 @@ package com.jebao.thirdPay.fuiou.impl;
 
 import com.jebao.thirdPay.fuiou.http.WebFormUtils;
 import com.jebao.thirdPay.fuiou.model.authConfig.AuthConfigRequest;
-import com.jebao.thirdPay.fuiou.model.webReg.WebRegRequest;
 import com.jebao.thirdPay.fuiou.util.PrintUtil;
 import com.jebao.thirdPay.fuiou.util.SecurityUtils;
+import org.springframework.stereotype.Service;
 
 /**
  * 富友--PC金账户免登陆授权配置（短信通知+委托交易）（网页版）
  * Created by Administrator on 2016/9/27.
  */
+@Service
 public class AuthConfigServiceImpl {
     public String post(String httpUrl, AuthConfigRequest reqData) throws Exception {
         PrintUtil.printLn("Sign:" + reqData.requestSignPlain());

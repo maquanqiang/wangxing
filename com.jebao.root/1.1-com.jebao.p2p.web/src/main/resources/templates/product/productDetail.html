@@ -19,11 +19,11 @@
 
 <!--内容 begin-->
 <div class="project">
-    <form action="/api/product/productDetail" method="post" id="defaultForm">
-        <input id="bpId" name="bpId" type="hidden" value="${bpId}">
-    </form>
     <!--项目头部-->
     <div class="project-information  clearfix">
+        <form action="/api/product/productDetail" method="post" id="defaultForm">
+            <input id="bpId" name="bpId" type="hidden" value="${bpId}">
+        </form>
         <!--项目头部左侧-->
         <div class="plan-card fl">
             <div class="plan-name">
@@ -46,9 +46,9 @@
             <div class="plan-progress clearfix">
                 <p>投资进度</p>
                 <span class="plan-line">
-                    <span style="width: 12%" class="plan-bar plan-bar-info"></span>
+                    <span :style="'width: '+product.progress+'%'" class="plan-bar plan-bar-info"></span>
                 </span>
-                <span class="num fl">12%</span>
+                <span class="num fl">{{product.progress}}%</span>
             </div>
             <div class="plan-value clearfix">
                 <p>还款方式：<span>{{bpInterestPayTypeArr[product.bpInterestPayType]}}</span></p>
@@ -56,21 +56,21 @@
             </div>
             <div class="plan-value clearfix">
                 <p>开始时间：<span>{{product.bpStartTime}}</span></p>
-                <p>剩余期限：<span>2天23小时59分59秒</span></p>
+                <p>剩余期限：<span>2天23小时59分59秒----</span></p>
             </div>
         </div>
         <!--项目头部右侧-->
         <div class="plan-investment fr">
             <form>
                 <p class="plan-money">可投金额：<span>{{product.bpSurplusMoney}}元</span></p>
-                <p class="plan-money">可用金额：<span>1000.00元</span></p>
+                <p class="plan-money">可用金额：<span>1000.00---元</span></p>
                 <div class="plan-tip">{{product.bpStartMoney}}元起投，{{product.bpRiseMoney}}元递增</div>
                 <div class="spinner">
-                    <input type="text" value="" placeholder="product.bpStartMoney元起投，product.bpRiseMoney元递增">
+                    <input type="text" value="" :placeholder="product.bpStartMoney+'元起投，'+product.bpRiseMoney+'元递增'" class="entry-num">
                     <div class="plan-unit">元</div>
                 </div>
                 <div class="plan-explain clearfix">
-                    <p>投资1万元，预期收益<span>106元</span></p>
+                    <p>投资<i class="money-num">0</i>元，预期收益<span><i class="money-income">0</i>元</span></p>
                     <a href="充值提现.html">充值</a>
                 </div>
                 <a href="#" class="plan-btn">立即投资</a>

@@ -4,11 +4,13 @@ import com.jebao.thirdPay.fuiou.http.WebFormUtils;
 import com.jebao.thirdPay.fuiou.model.webReg.WebRegRequest;
 import com.jebao.thirdPay.fuiou.util.PrintUtil;
 import com.jebao.thirdPay.fuiou.util.SecurityUtils;
+import org.springframework.stereotype.Service;
 
 /**
  * 富友--个人用户自助开户注册（网页版）
  * Created by Administrator on 2016/9/26.
  */
+@Service
 public class WebRegServiceImpl {
     public String post(String httpUrl, WebRegRequest reqData) throws Exception {
         PrintUtil.printLn("Sign:" + reqData.requestSignPlain());
