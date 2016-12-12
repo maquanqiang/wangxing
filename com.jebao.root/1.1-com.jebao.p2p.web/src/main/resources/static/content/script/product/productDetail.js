@@ -21,6 +21,7 @@ $(function () {
         var interest = parseInt(($(this).val())*time*(model.product.bpRate)/100/365);
         $('.money-income').html(interest);
     });
+
 });
 
 
@@ -29,9 +30,16 @@ $(function () {
 //Model
 var model = {
     product: {},
+    loanerInfo : {},
     cycleType:["","天","个月","季","年"],
     bpInterestPayTypeArr : ["","一次性还本付息","先息后本，按期付息"],
-    bpStatusArr : ["待审核",'审核未通过',"招标中","已满标",'已过期','','起息中','还款中','','','已结清']
+    bpStatusArr : ["待审核",'审核未通过',"招标中","已满标",'已过期','','起息中','还款中','','','已结清'],
+    sex:['','男','女'],
+    fundType : ['','本金','利息'],
+    repayStatus : ['未还款','已还款'],
+    riskDataList : [],
+    investInfoList : [],
+    incomeDetailList : []
 };
 
 // 创建一个 Vue 实例 (ViewModel),它连接 View 与 Model
@@ -48,9 +56,32 @@ var vm = new Vue({
     //方法，可用于绑定事件或直接调用
     methods: {
         search: function (event) {
-            $.post(common.apiOrigin+$("#defaultForm").attr("action"), {bpId:$("#bpId").val()}, function (response) {
+            var form = {
+                bpId:$("#bpId").val()
+            }
+            $.post(common.apiOrigin+$("#defaultForm").attr("action"), form, function (response) {
                 if (response.success_is_ok) {
                     vm.product = response.data;
+                    $.post(common.apiOrigin+"/api/product/loanerInfo", {lid:vm.product.bpLoanerId}, function (response) {
+                        if (response.success_is_ok) {
+                            vm.loanerInfo = response.data;
+                        }
+                    });
+                }
+            });
+            $.post(common.apiOrigin+"/api/product/riskListByBpId", form, function (response) {
+                if (response.success_is_ok) {
+                    vm.riskDataList = response.data;
+                }
+            });
+            $.post(common.apiOrigin+"/api/product/investInfoByBpId", form, function (response) {
+                if (response.success_is_ok) {
+                    vm.investInfoList = response.data;
+                }
+            });
+            $.post(common.apiOrigin+"/api/product/incomeDetailByBpId", form, function (response) {
+                if (response.success_is_ok) {
+                    vm.incomeDetailList = response.data;
                 }
             });
         },
@@ -60,3 +91,15 @@ var vm = new Vue({
     }
 });
 
+//切换封装
+function tab(btn,box){
+    btn.click(function (){
+        btn.removeClass('active');
+        box.removeClass('active');
+        $(this).addClass('active');
+        var index=$(this).index();
+        box.eq(index).addClass('active');
+    });
+}
+//项目详情
+tab($('.project-detail-tit h4'),$('.project-detail-info'));

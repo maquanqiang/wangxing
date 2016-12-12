@@ -1,4 +1,4 @@
-package com.jebao.p2p.web.api.responseModel.product;
+package com.jebao.p2p.web.api.requestModel.product;
 
 import java.math.BigDecimal;
 

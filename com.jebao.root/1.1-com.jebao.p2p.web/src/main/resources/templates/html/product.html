@@ -40,7 +40,7 @@
         <dt fType="searchMoneyStr" fValue="10001-100000">1万元-10万元</dt>
         <dt fType="searchMoneyStr" fValue="100001-100000">10万元-100万元</dt>
         <dt fType="searchMoneyStr" fValue="1000001-3000000">100万元-300万元</dt>
-        <dt fType="searchMoneyStr" fValue="3000001-100000000">301万元以上</dt>
+        <dt fType="searchMoneyStr" fValue="3000001-100000000">300万元以上</dt>
     </dl>
     <dl class="clearfix">
         <dd>状态：</dd>
@@ -58,7 +58,7 @@
         <p>精选项目，资深金融人士层层甄选，最靠谱的投资项目呈现给您</p>
     </div>
     <div class="project-list">
-        <div class="project-content"  v-for="data in products">
+        <div class="project-content"  v-for="data in products" @click="openDetail(data.bpId)">
             <div class="project-name">
                 <p>{{data.bpName}}<span>{{data.bpNumber}}</span></p>
             </div>
@@ -85,7 +85,7 @@
                     <p>投资进度</p>
                 </div>
                 <div class="project-btn fr">
-                    <a href="项目详情.html">立即投资</a>
+                    <a href="javascript:;">{{status[data.bpStatus]}}</a>
                 </div>
             </div>
             <img src="${filePath}/images/new-project.png" class="new-project" v-show="data.bpType==2">

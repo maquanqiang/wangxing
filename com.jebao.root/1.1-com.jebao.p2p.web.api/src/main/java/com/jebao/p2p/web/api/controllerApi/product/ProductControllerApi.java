@@ -1,32 +1,24 @@
 package com.jebao.p2p.web.api.controllerApi.product;
 
-import com.alibaba.fastjson.JSON;
-import com.jebao.common.cache.redis.sharded.ShardedRedisUtil;
-import com.jebao.common.utils.fastjson.FastJsonUtil;
 import com.jebao.jebaodb.entity.extEntity.PageWhere;
+import com.jebao.jebaodb.entity.investment.TbIncomeDetail;
+import com.jebao.jebaodb.entity.investment.TbInvestInfo;
+import com.jebao.jebaodb.entity.loaner.TbLoaner;
 import com.jebao.jebaodb.entity.loanmanage.TbBidPlan;
+import com.jebao.jebaodb.entity.loanmanage.TbBidRiskData;
+import com.jebao.jebaodb.entity.postLoan.search.RepaymentDetailSM;
 import com.jebao.jebaodb.entity.product.ProductSM;
 import com.jebao.p2p.service.inf.product.IProductServiceInf;
-import com.jebao.p2p.service.inf.user.IAccountServiceInf;
 import com.jebao.p2p.web.api.requestModel.product.ProductForm;
 import com.jebao.p2p.web.api.responseModel.base.JsonResult;
 import com.jebao.p2p.web.api.responseModel.base.JsonResultData;
 import com.jebao.p2p.web.api.responseModel.base.JsonResultList;
-import com.jebao.p2p.web.api.responseModel.product.InvestInfoForm;
-import com.jebao.p2p.web.api.responseModel.product.ProductDetailVM;
-import com.jebao.p2p.web.api.responseModel.product.ProductVm;
-import com.jebao.thirdPay.fuiou.impl.PreAuthServiceImpl;
-import com.jebao.thirdPay.fuiou.model.preAuth.PreAuthRequest;
-import org.apache.commons.lang.StringUtils;
+import com.jebao.p2p.web.api.responseModel.product.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,8 +39,8 @@ public class ProductControllerApi {
 
         ProductSM productSM = ProductForm.toEntity(form);
         List<TbBidPlan> tbBidPlans = productService.selectP2PList(productSM, pageWhere);
-        List<ProductVm> productVms = new ArrayList<>();
-        tbBidPlans.forEach(o -> productVms.add(new ProductVm(o)));
+        List<ProductVM> productVms = new ArrayList<>();
+        tbBidPlans.forEach(o -> productVms.add(new ProductVM(o)));
         int count = productService.selectP2PListCount(productSM);
         return new JsonResultList<>(productVms, count);
     }
@@ -58,6 +50,55 @@ public class ProductControllerApi {
     public JsonResult productDetail(Long bpId){
         TbBidPlan tbBidPlan = productService.selectByBpId(bpId);
         return new JsonResultData<>(new ProductDetailVM(tbBidPlan));
+    }
+
+    @RequestMapping("loanerInfo")
+    @ResponseBody
+    public JsonResult loanerInfo(Long lid){
+        TbLoaner tbLoaner = productService.selectByPrimaryKey(lid);
+        return new JsonResultData<>(new LoanerInfoVM(tbLoaner));
+    }
+
+
+    @RequestMapping("riskListByBpId")
+    @ResponseBody
+    public JsonResult riskListByBpId(Long bpId){
+        TbBidRiskData tbBidRiskData = new TbBidRiskData();
+        tbBidRiskData.setBrdBpId(bpId);
+        PageWhere pageWhere = new PageWhere(0, 100);
+        pageWhere.setOrderBy("BRD_NAME DESC");
+        List<TbBidRiskData> tbBidRiskDatas = productService.selectRiskByConditionForPage(tbBidRiskData, pageWhere);
+        List<BidRiskDataVM> bidRiskDataVMs = new ArrayList<>();
+        tbBidRiskDatas.forEach(o -> bidRiskDataVMs.add(new BidRiskDataVM(o)));
+        return new JsonResultList<>(bidRiskDataVMs);
+    }
+
+
+    @RequestMapping("investInfoByBpId")
+    @ResponseBody
+    public JsonResult investInfoByBpId(Long bpId, PageWhere pageWhere){
+        TbInvestInfo tbInvestInfo = new TbInvestInfo();
+        tbInvestInfo.setIiBpId(bpId);
+        List<TbInvestInfo> tbInvestInfos = productService.selectInvestInfoBybpId(tbInvestInfo, pageWhere);
+        List<InvestInfoVM> investInfoVMs = new ArrayList<>();
+        tbInvestInfos.forEach(o -> investInfoVMs.add(new InvestInfoVM(o)));
+        int count = productService.selectInvestInfoByConditionCount(tbInvestInfo);
+        return new JsonResultList<>(investInfoVMs, count);
+    }
+
+
+    @RequestMapping("incomeDetailByBpId")
+    @ResponseBody
+    public JsonResult incomeDetailByBpId(Long bpId, PageWhere pageWhere){
+        RepaymentDetailSM repaymentDetailSM = new RepaymentDetailSM();
+        repaymentDetailSM.setIndBpId(bpId);
+
+        List<TbIncomeDetail> incomeDetails = productService.selectGroupByConditionForPage(repaymentDetailSM, pageWhere);
+        List<IncomeDetailsVM> incomeDetailsVMs = new ArrayList<>();
+
+        int count = productService.selectGroupByConditionCount(repaymentDetailSM);
+        incomeDetails.forEach(o -> incomeDetailsVMs.add(new IncomeDetailsVM(o)));
+        return new JsonResultList<>(incomeDetailsVMs, count);
     }
 
 

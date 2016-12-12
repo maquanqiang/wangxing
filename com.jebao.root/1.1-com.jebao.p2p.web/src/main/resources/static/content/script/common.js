@@ -109,4 +109,3 @@ Date.prototype.toFormatString = function (format) {
         }
     });
 }(jQuery));
-

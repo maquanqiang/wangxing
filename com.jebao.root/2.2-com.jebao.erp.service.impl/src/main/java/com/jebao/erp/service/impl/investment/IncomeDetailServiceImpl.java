@@ -66,8 +66,8 @@ public class IncomeDetailServiceImpl implements IIncomeDetailServiceInf {
     }
 
     @Override
-    public int selectGroupByConditionCount(RepaymentDetailSM record, PageWhere pageWhere) {
-        return incomeDetailDao.selectGroupByConditionCount(record, pageWhere);
+    public int selectGroupByConditionCount(RepaymentDetailSM record) {
+        return incomeDetailDao.selectGroupByConditionCount(record);
     }
 
 
