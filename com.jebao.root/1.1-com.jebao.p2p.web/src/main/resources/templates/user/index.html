@@ -13,6 +13,12 @@
 #parse("common/navigation.html")
 <!--侧边栏--start-->
 #parse("common/sidebar.html")
+<!--我的账户导航-->
+<div class="account-nav">
+    <p>
+        <a href="首页.html">首页</a><a href="javascript:;" class="red">账户总览</a>
+    </p>
+</div>
 <!--我的账户内容-->
 <div class="account-main clearfix">
     <!--我的账户--左侧导航-->
@@ -30,19 +36,19 @@
                         <p>累计收益：<span class="num">￥20000.00</span></p>
                     </li>
                     <li>
-                        <p>总资产：<span>￥50000.00</span></p>
+                        <p>总资产：<span>50000.00</span>元</p>
                     </li>
                     <li>
-                        <p>可用金额：<span>￥20000.00</span></p>
+                        <p>可用金额：<span>20000.00</span>元</p>
                     </li>
                     <li>
-                        <p>冻结金额：<span>￥20000.00</span></p>
+                        <p>冻结金额：<span>20000.00</span>元</p>
                     </li>
                     <li>
-                        <p>待收本金：<span>￥20000.00</span></p>
+                        <p>待收本金：<span>20000.00</span>元</p>
                     </li>
                     <li>
-                        <p>待收收益：<span>￥20000.00</span></p>
+                        <p>待收收益：<span>20000.00</span>元</p>
                     </li>
                 </ul>
                 <div class="my-account-btn fl">
@@ -68,13 +74,13 @@
             <li>
                 <a href="#">
                     <img src="${filePath}/images/account-invest.png">
-                    <p>我要投资</p>
+                    <p>提现</p>
                 </a>
             </li>
             <li>
                 <a href="#">
                     <img src="${filePath}/images/account-expressive.png">
-                    <p>提现</p>
+                    <p>我要投资</p>
                 </a>
             </li>
         </ul>
@@ -193,7 +199,7 @@
                         <td>01091883840</td>
                         <td>2016/11/11 9:00:00</td>
                         <td>充值</td>
-                        <td>+5000.00</td>
+                        <td class="red">+5000.00</td>
                         <td></td>
                         <td>充值成功</td>
                     </tr>
@@ -202,7 +208,7 @@
                         <td>2016/11/11 9:00:00</td>
                         <td>充值</td>
                         <td></td>
-                        <td>-2000.00</td>
+                        <td class="green">-2000.00</td>
                         <td>提现成功</td>
                     </tr>
                     </tbody>

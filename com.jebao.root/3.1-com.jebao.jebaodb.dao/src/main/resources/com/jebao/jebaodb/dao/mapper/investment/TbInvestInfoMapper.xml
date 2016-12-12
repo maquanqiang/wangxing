@@ -312,8 +312,9 @@
         where ii_bp_id = bp_id and
         <include refid="selectByCondition_Where_Clause" />
     </select>
+
     <!--==================================================投资记录==================================================-->
-    <resultMap id="InvestIngResultMap" type="com.jebao.jebaodb.entity.user.InvestIng">
+    <resultMap id="InvestIngResultMap" type="com.jebao.jebaodb.entity.investment.InvestIng">
         <result column="bp_name" property="bpName" jdbcType="VARCHAR"/>
         <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
         <result column="money" property="money" jdbcType="DECIMAL"/>
@@ -333,7 +334,14 @@
             LIMIT #{pageWhere.begin},#{pageWhere.pageSize}
         </if>
     </select>
-    <resultMap id="InvestPaymentedResultMap" type="com.jebao.jebaodb.entity.user.InvestPaymented">
+    <select id="selectInvestIngByLoginIdForPageCount" resultType="java.lang.Integer" parameterType="java.lang.Long">
+        SELECT COUNT(1)
+        FROM tb_invest_info ii
+        INNER JOIN tb_bid_plan bp ON ii.ii_bp_id=bp.bp_id
+        WHERE ii.ii_login_id=#{iiLoginId,jdbcType=BIGINT}
+        AND ii.ii_freeze_status = 1 AND ii.ii_is_del = 1 AND bp.bp_is_del = 1
+    </select>
+    <resultMap id="InvestPaymentedResultMap" type="com.jebao.jebaodb.entity.investment.InvestPaymented">
         <result column="bp_name" property="bpName" jdbcType="VARCHAR"/>
         <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
         <result column="money" property="money" jdbcType="DECIMAL"/>
@@ -363,5 +371,18 @@
         <if test="pageWhere != null">
             LIMIT #{pageWhere.begin},#{pageWhere.pageSize}
         </if>
+    </select>
+    <select id="selectInvestPaymentedByLoginIdForPageCount" resultType="java.lang.Integer" parameterType="java.lang.Long">
+        SELECT count(1)
+        FROM tb_invest_info ii
+        INNER JOIN tb_bid_plan bp ON ii.ii_bp_id = bp.bp_id
+        WHERE ii.ii_login_id=#{iiLoginId,jdbcType=BIGINT}
+        AND ii.ii_freeze_status = 3
+        AND ii.ii_is_del = 1 AND bp.bp_is_del = 1
+    </select>
+    <select id="selectFreezeMoneyByLoginId" resultType="java.lang.Double" parameterType="java.lang.Long">
+        SELECT IFNULL(SUM(ii_money),0)
+        FROM tb_invest_info
+        WHERE ii_login_id = #{iiLoginId,jdbcType=BIGINT} AND ii_freeze_status = 1 AND ii_is_del = 1
     </select>
 </mapper>

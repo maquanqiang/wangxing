@@ -1,9 +1,10 @@
-package com.jebao.jebaodb.entity.user;
+package com.jebao.jebaodb.entity.investment;
 
 import java.math.BigDecimal;
 import java.util.Date;
 
 /**
+ * 投资记录-已还款项目实体类
  * Created by Administrator on 2016/12/9.
  */
 public class InvestPaymented extends InvestBase {

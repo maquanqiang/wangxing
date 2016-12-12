@@ -2,8 +2,11 @@ package com.jebao.jebaodb.dao.mapper.investment;
 
 import com.jebao.jebaodb.entity.extEntity.PageWhere;
 import com.jebao.jebaodb.entity.investment.TbInvestInfo;
+import com.jebao.jebaodb.entity.investment.InvestIng;
+import com.jebao.jebaodb.entity.investment.InvestPaymented;
 import org.apache.ibatis.annotations.Param;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public interface TbInvestInfoMapper {
@@ -25,4 +28,15 @@ public interface TbInvestInfoMapper {
 
     List<TbInvestInfo> selectByBpId(@Param("record") TbInvestInfo record, @Param("pageWhere") PageWhere pageWhere);
 
+    /**==================================================投资记录==================================================**/
+
+    List<InvestIng> selectInvestIngByLoginId(Long iiLoginId,@Param("pageWhere") PageWhere pageWhere);
+
+    int selectInvestIngByLoginIdForPageCount(Long iiLoginId);
+
+    List<InvestPaymented> selectInvestPaymentedByLoginId(Long iiLoginId,@Param("pageWhere") PageWhere pageWhere);
+
+    int selectInvestPaymentedByLoginIdForPageCount(Long iiLoginId);
+
+    BigDecimal selectFreezeMoneyByLoginId(Long iiLoginId);
 }

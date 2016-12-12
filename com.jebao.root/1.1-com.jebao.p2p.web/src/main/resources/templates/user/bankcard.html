@@ -14,7 +14,12 @@
 #parse("common/navigation.html")
 <!--侧边栏--start-->
 #parse("common/sidebar.html")
-<!--内容 begin-->
+<!--我的账户导航-->
+<div class="account-nav">
+    <p>
+        <a href="首页.html">首页</a><a href="javascript:;" class="red">我的银行卡</a>
+    </p>
+</div>
 <!--我的账户内容-->
 <div class="account-main clearfix">
     <!--我的账户--左侧导航-->
@@ -33,8 +38,14 @@
                     <h5>中国建设银行</h5>
                     <p class="card-type">储蓄卡</p>
                     <p class="card-num">6227**********8888</p>
-                    <a href="#" class="changeCard">更换银行卡</a>
+                    <a href="#" ></a>
                 </div>
+            </div>
+            <div class="changeCard">
+                <a href="javascript:;">
+                    <img src="${filePath}/images/account-changeCard.png">
+                    <p>更换银行卡</p>
+                </a>
             </div>
         </div>
     </div>

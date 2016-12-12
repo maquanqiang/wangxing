@@ -1,8 +1,9 @@
-package com.jebao.jebaodb.entity.user;
+package com.jebao.jebaodb.entity.investment;
 
 import java.math.BigDecimal;
 
 /**
+ * 投资记录-投资中项目实体类
  * Created by Administrator on 2016/12/9.
  */
 public class InvestIng extends InvestBase {

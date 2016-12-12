@@ -3,10 +3,12 @@ package com.jebao.jebaodb.dao.dao.user;
 import com.jebao.jebaodb.dao.mapper.user.TbAccountsFundsMapper;
 import com.jebao.jebaodb.entity.user.TbAccountsFunds;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 /**
  * Created by Administrator on 2016/12/10.
  */
+@Repository
 public class TbAccountsFundsDao {
     @Autowired
     private TbAccountsFundsMapper tbAccountsFundsMapper;
