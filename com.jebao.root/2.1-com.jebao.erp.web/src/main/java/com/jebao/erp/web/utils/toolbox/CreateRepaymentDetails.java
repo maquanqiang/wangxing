@@ -24,17 +24,18 @@ public class CreateRepaymentDetails {
         if(payType == 1){     //一次性还本付息
             nextRepayDate = repayDate(bpCycleType, interestSt, periods);
             RepaymentDetail interest = new RepaymentDetail();       //利息
-            interest.setRepayDate(nextRepayDate);
+            now.setTime(nextRepayDate);
+            if(now.get(GregorianCalendar.DAY_OF_MONTH)!=calendar.get(GregorianCalendar.DAY_OF_MONTH)){
+                now.add(Calendar.DATE,1);
+            }
+            interest.setRepayDate(now.getTime());
+
             interest.setIntentPeriod(1);
             interest.setFundType(2);
             interest.setInterestSt(interestSt);
 
-            now.setTime(nextRepayDate);
-            if(now.get(GregorianCalendar.DAY_OF_MONTH)==calendar.get(GregorianCalendar.DAY_OF_MONTH)){
-                now.add(Calendar.DATE, -1);
-            }
-            interest.setInterestEt(now.getTime());
-            int days = BetweenDays.differentDays(interestSt, nextRepayDate);
+            int days = BetweenDays.differentDays(interestSt, now.getTime());
+            interest.setInterestEt(nextRepayDate);
             BigDecimal interestMoney = money.multiply(bpRate).multiply(new BigDecimal(days))
                     .divide(new BigDecimal(100 * 365), 2, BigDecimal.ROUND_HALF_UP);
             interest.setMoney(interestMoney);
@@ -49,21 +50,21 @@ public class CreateRepaymentDetails {
                 loanIntent.setInterestSt(nextRepayDate);
                 Date repayDate = repayDate(bpCycleType, interestSt, i);
                 now.setTime(repayDate);
+                if(i==periods){
+                    if(now.get(GregorianCalendar.DAY_OF_MONTH)!=calendar.get(GregorianCalendar.DAY_OF_MONTH)){
+                        now.add(Calendar.DATE, 1);
+                    }
+                }
                 int days = BetweenDays.differentDays(nextRepayDate, now.getTime());
                 nextRepayDate = now.getTime();
-                if(now.get(GregorianCalendar.DAY_OF_MONTH)==calendar.get(GregorianCalendar.DAY_OF_MONTH)){
-                    now.add(Calendar.DATE, -1);
-                    interestEt = now.getTime();
-                }else{
-                    interestEt = now.getTime();
-                }
+                interestEt = nextRepayDate;
                 BigDecimal interest = money.multiply(bpRate).multiply(new BigDecimal(days))
                         .divide(new BigDecimal(100 * 365), 2, BigDecimal.ROUND_HALF_UP);
 
                 loanIntent.setIntentPeriod(i);
                 loanIntent.setInterestEt(interestEt);
                 loanIntent.setFundType(2);
-                loanIntent.setRepayDate(nextRepayDate);
+                loanIntent.setRepayDate(now.getTime());
                 loanIntent.setMoney(interest);
 
                 loanFundIntents.add(loanIntent);
@@ -76,7 +77,7 @@ public class CreateRepaymentDetails {
         pLoanIntent.setFundType(1);
         pLoanIntent.setMoney(money);
         pLoanIntent.setIntentPeriod(periods);
-        pLoanIntent.setRepayDate(nextRepayDate);
+        pLoanIntent.setRepayDate(now.getTime());
 
         loanFundIntents.add(pLoanIntent);
 

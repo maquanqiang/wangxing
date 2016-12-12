@@ -78,9 +78,9 @@
                 <div class="project-progress fl">
                     <div class="project-progress-box">
                        <span class="progress-line">
-                            <span style="width: %" class="progress-bar progress-bar-info"></span>
+                            <span :style="'width: '+data.progress+'%'" class="progress-bar progress-bar-info"></span>
                        </span>
-                        <span class="num">{{((data.bpBidMoney-data.bpSurplusMoney)/data.bpBidMoney)*100}}%</span>
+                        <span class="num">{{data.progress}}%</span>
                     </div>
                     <p>投资进度</p>
                 </div>

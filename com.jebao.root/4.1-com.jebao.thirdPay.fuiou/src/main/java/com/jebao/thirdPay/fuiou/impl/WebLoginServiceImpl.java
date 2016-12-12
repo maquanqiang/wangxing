@@ -4,11 +4,13 @@ import com.jebao.thirdPay.fuiou.http.WebFormUtils;
 import com.jebao.thirdPay.fuiou.model.webLogin.WebLoginRequest;
 import com.jebao.thirdPay.fuiou.util.PrintUtil;
 import com.jebao.thirdPay.fuiou.util.SecurityUtils;
+import org.springframework.stereotype.Service;
 
 /**
  * 富友--商户端个人用户跳转登录页面（网页版）
  * Created by Administrator on 2016/9/27.
  */
+@Service
 public class WebLoginServiceImpl {
     public String post(String httpUrl, WebLoginRequest reqData) throws Exception {
         PrintUtil.printLn("Sign:" + reqData.requestSignPlain());

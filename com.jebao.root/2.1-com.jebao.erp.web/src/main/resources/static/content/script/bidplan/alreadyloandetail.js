@@ -14,15 +14,15 @@ $(function () {
 //Model
 var model = {
     //查询条件
-    search: {},
+    searchObj: {},
     //标的
     plan: {},
-    //台账列表
-    intentList : [],
     //
     riskDataList:[],
     investInfoList : [],
-    total : 0
+    incomeDetailList :[],
+    total : 0,
+    fundType : ['','本金','利息']
 };
 
 // 创建一个 Vue 实例 (ViewModel),它连接 View 与 Model
@@ -31,7 +31,9 @@ var vm = new Vue({
     data: model,
     beforeCreate:function(){
         //初始化本地数据
-        model.search = $("#order_search_form").serializeObject(); //初始化 model.search 对象
+        model.searchObj.indBpId = $("#bpId").val();
+        model.searchObj.pageIndex=0;
+        model.searchObj.pageSize=1000;
     },
     //初始化远程数据
     created:function(){
@@ -54,24 +56,47 @@ var vm = new Vue({
             if (response.success_is_ok) {
                 vm.investInfoList = response.data;
             }
+        });
+        $.get("/api/incomeDetail/repaymentList",model.searchObj,function(response) {
+            if (response.success_is_ok) {
+                vm.incomeDetailList = response.data;
+                if (response.count > 0) {
+                    var pageCount = Math.ceil(response.count / model.pageSize);
+                    //调用分页
+                    laypage({
+                        cont: $('#pageNum'), //容器。值支持id名、原生dom对象，jquery对象,
+                        pages: pageCount, //总页数
+                        curr: model.searchObj.pageSize + 1,
+                        groups: 7, //连续显示分页数
+                        jump: function (obj, first) { //触发分页后的回调
+                            if (!first) { //点击跳页触发函数自身，并传递当前页：obj.curr
+                                console.log(obj.curr);
+                                vm.searchObj.pageIndex = obj.curr - 1;
+                                vm.search();
+                            }
+                        },
+                        skin: '#3c8dbc'
+                    });
+                }
+            }
         })
     },
     //方法，可用于绑定事件或直接调用
     methods: {
         search:function(event){
         },
-        createIntentBtn:function(){
-            $.get("/api/bidPlan/getLoanFundIntents",vm.plan,function(response){
-                if (response.success_is_ok){
-                    vm.intentList = response.data;
-                    for(var i=0; i<vm.intentList.length; i++){
-                        vm.principalTotal +=vm.intentList[i].principal;
-                        vm.interestTotal += vm.intentList[i].interest;
-                    }
-                    vm.total = vm.principalTotal +vm.interestTotal;
-                }
-            });
-        },
+        //createIntentBtn:function(){
+        //    $.get("/api/bidPlan/getLoanFundIntents",vm.plan,function(response){
+        //        if (response.success_is_ok){
+        //            vm.intentList = response.data;
+        //            for(var i=0; i<vm.intentList.length; i++){
+        //                vm.principalTotal +=vm.intentList[i].principal;
+        //                vm.interestTotal += vm.intentList[i].interest;
+        //            }
+        //            vm.total = vm.principalTotal +vm.interestTotal;
+        //        }
+        //    });
+        //},
         closeBtn:function(){
             window.location.href = "/bidplan/alreadyLoanList";
         },

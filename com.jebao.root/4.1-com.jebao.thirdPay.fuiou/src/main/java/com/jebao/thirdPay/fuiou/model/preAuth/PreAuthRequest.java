@@ -1,5 +1,8 @@
 package com.jebao.thirdPay.fuiou.model.preAuth;
 
+import com.jebao.thirdPay.fuiou.constants.FuiouConfig;
+import com.jebao.thirdPay.fuiou.util.Common;
+
 /**
  * Created by Administrator on 2016/9/27.
  */
@@ -7,7 +10,8 @@ public class PreAuthRequest {
 
 
     public PreAuthRequest(){
-
+        this.mchnt_cd = FuiouConfig.platNumber;
+        this.mchnt_txn_ssn = Common.mchntTxnSsn();
     }
 
     private String mchnt_cd; //商户代码

@@ -6,11 +6,13 @@ import com.jebao.thirdPay.fuiou.model.unFreeze.UnFreezeResponse;
 import com.jebao.thirdPay.fuiou.util.PrintUtil;
 import com.jebao.thirdPay.fuiou.util.RegexUtil;
 import com.jebao.thirdPay.fuiou.util.SecurityUtils;
+import org.springframework.stereotype.Service;
 import com.jebao.thirdPay.fuiou.util.XmlUtil;
 
 /**
  * Created by Administrator on 2016/9/28.
  */
+@Service
 public class UnFreezeServiceImpl {
     public UnFreezeResponse post(String httpUrl, UnFreezeRequest reqData) throws Exception {
         String signatureStr = SecurityUtils.sign(reqData.requestSignPlain());

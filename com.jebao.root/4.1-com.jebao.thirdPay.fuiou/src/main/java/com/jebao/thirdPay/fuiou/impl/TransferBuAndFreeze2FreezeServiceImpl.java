@@ -1,17 +1,18 @@
 package com.jebao.thirdPay.fuiou.impl;
 
 import com.jebao.thirdPay.fuiou.http.WebUtils;
-
 import com.jebao.thirdPay.fuiou.model.transferBuAndFreeze2Freeze.TransferBuAndFreeze2FreezeRequest;
 import com.jebao.thirdPay.fuiou.model.transferBuAndFreeze2Freeze.TransferBuAndFreeze2FreezeResponse;
 import com.jebao.thirdPay.fuiou.util.PrintUtil;
 import com.jebao.thirdPay.fuiou.util.RegexUtil;
 import com.jebao.thirdPay.fuiou.util.SecurityUtils;
+import org.springframework.stereotype.Service;
 import com.jebao.thirdPay.fuiou.util.XmlUtil;
 
 /**
  * Created by Administrator on 2016/9/28.
  */
+@Service
 public class TransferBuAndFreeze2FreezeServiceImpl {
     public TransferBuAndFreeze2FreezeResponse post(String httpUrl, TransferBuAndFreeze2FreezeRequest reqData) throws Exception {
         String signatureStr = SecurityUtils.sign(reqData.requestSignPlain());

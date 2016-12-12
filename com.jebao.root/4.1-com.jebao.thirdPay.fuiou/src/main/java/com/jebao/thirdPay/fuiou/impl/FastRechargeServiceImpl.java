@@ -4,11 +4,13 @@ import com.jebao.thirdPay.fuiou.http.WebFormUtils;
 import com.jebao.thirdPay.fuiou.model.fastRecharge.FastRechargeRequest;
 import com.jebao.thirdPay.fuiou.util.PrintUtil;
 import com.jebao.thirdPay.fuiou.util.SecurityUtils;
+import org.springframework.stereotype.Service;
 
 /**
  * 富友--商户P2P网站免登录快速充值接口
  * Created by Administrator on 2016/9/27.
  */
+@Service
 public class FastRechargeServiceImpl {
     public String post(String httpUrl, FastRechargeRequest reqData) throws Exception {
         PrintUtil.printLn("Sign:" + reqData.requestSignPlain());

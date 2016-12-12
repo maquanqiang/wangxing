@@ -6,12 +6,14 @@ import com.jebao.thirdPay.fuiou.model.querycztx.QuerycztxResponse;
 import com.jebao.thirdPay.fuiou.util.PrintUtil;
 import com.jebao.thirdPay.fuiou.util.RegexUtil;
 import com.jebao.thirdPay.fuiou.util.SecurityUtils;
+import org.springframework.stereotype.Service;
 import com.jebao.thirdPay.fuiou.util.XmlUtil;
 
 /**
  * 富友--充值提现接口
  * Created by Administrator on 2016/9/27.
  */
+@Service
 public class QuerycztxServiceImpl {
     public QuerycztxResponse post(String httpUrl, QuerycztxRequest reqData) throws Exception {
         String signatureStr = SecurityUtils.sign(reqData.requestSignPlain());

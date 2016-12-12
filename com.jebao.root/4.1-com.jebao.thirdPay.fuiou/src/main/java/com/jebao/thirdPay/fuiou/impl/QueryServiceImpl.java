@@ -1,19 +1,19 @@
 package com.jebao.thirdPay.fuiou.impl;
 
 import com.jebao.thirdPay.fuiou.http.WebUtils;
-import com.jebao.thirdPay.fuiou.model.balanceAction.BalanceActionRequest;
-import com.jebao.thirdPay.fuiou.model.balanceAction.BalanceActionResponse;
 import com.jebao.thirdPay.fuiou.model.query.QueryRequest;
 import com.jebao.thirdPay.fuiou.model.query.QueryResponse;
 import com.jebao.thirdPay.fuiou.util.PrintUtil;
 import com.jebao.thirdPay.fuiou.util.RegexUtil;
 import com.jebao.thirdPay.fuiou.util.SecurityUtils;
+import org.springframework.stereotype.Service;
 import com.jebao.thirdPay.fuiou.util.XmlUtil;
 
 /**
  * 富友--明细查询
  * Created by Administrator on 2016/9/26.
  */
+@Service
 public class QueryServiceImpl {
     public QueryResponse post(String httpUrl, QueryRequest reqData) throws Exception {
         String signatureStr = SecurityUtils.sign(reqData.requestSignPlain());

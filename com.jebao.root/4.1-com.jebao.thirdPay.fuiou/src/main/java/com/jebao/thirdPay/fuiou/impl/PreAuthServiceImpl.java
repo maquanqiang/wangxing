@@ -1,11 +1,13 @@
 package com.jebao.thirdPay.fuiou.impl;
 
+import com.jebao.thirdPay.fuiou.constants.FuiouConfig;
 import com.jebao.thirdPay.fuiou.http.WebUtils;
 import com.jebao.thirdPay.fuiou.model.preAuth.PreAuthRequest;
 import com.jebao.thirdPay.fuiou.model.preAuth.PreAuthResponse;
 import com.jebao.thirdPay.fuiou.util.PrintUtil;
 import com.jebao.thirdPay.fuiou.util.RegexUtil;
 import com.jebao.thirdPay.fuiou.util.SecurityUtils;
+import org.springframework.stereotype.Service;
 import com.jebao.thirdPay.fuiou.util.XmlUtil;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +18,10 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class PreAuthServiceImpl {
-    public PreAuthResponse post(String httpUrl, PreAuthRequest reqData) throws Exception {
+
+    public PreAuthResponse post(PreAuthRequest reqData) throws Exception {
+        String httpUrl= FuiouConfig.url+"preAuth.action";
+
         String signatureStr = SecurityUtils.sign(reqData.requestSignPlain());
         reqData.setSignature(signatureStr);
         String xmlData = WebUtils.sendHttp(httpUrl, reqData);

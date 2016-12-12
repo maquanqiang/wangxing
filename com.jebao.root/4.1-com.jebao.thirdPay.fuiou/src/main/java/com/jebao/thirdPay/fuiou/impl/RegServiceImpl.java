@@ -6,12 +6,14 @@ import com.jebao.thirdPay.fuiou.model.reg.RegResponse;
 import com.jebao.thirdPay.fuiou.util.PrintUtil;
 import com.jebao.thirdPay.fuiou.util.RegexUtil;
 import com.jebao.thirdPay.fuiou.util.SecurityUtils;
+import org.springframework.stereotype.Service;
 import com.jebao.thirdPay.fuiou.util.XmlUtil;
 
 /**
  * 富友--开户注册
  * Created by Administrator on 2016/9/26.
  */
+@Service
 public class RegServiceImpl {
 
     public RegResponse post(String httpUrl, RegRequest reqData) throws Exception {

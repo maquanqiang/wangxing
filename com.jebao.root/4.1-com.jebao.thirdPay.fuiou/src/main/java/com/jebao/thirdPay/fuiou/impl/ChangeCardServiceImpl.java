@@ -1,15 +1,16 @@
 package com.jebao.thirdPay.fuiou.impl;
 
 import com.jebao.thirdPay.fuiou.http.WebFormUtils;
-
 import com.jebao.thirdPay.fuiou.model.changeCard.ChangeCardRequest;
 import com.jebao.thirdPay.fuiou.util.PrintUtil;
 import com.jebao.thirdPay.fuiou.util.SecurityUtils;
+import org.springframework.stereotype.Service;
 
 /**
  * 富友--商户P2P网站免登录用户更换银行卡接口
  * Created by Administrator on 2016/9/27.
  */
+@Service
 public class ChangeCardServiceImpl {
     public String post(String httpUrl, ChangeCardRequest reqData) throws Exception {
         PrintUtil.printLn("Sign:" + reqData.requestSignPlain());

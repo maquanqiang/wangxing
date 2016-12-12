@@ -1,5 +1,6 @@
 package com.jebao.erp.web.utils.toolbox;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -9,6 +10,8 @@ import java.util.Date;
 public class BetweenDays {
     public static int differentDays(Date date1,Date date2)
     {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        System.out.println(sdf.format(date1)+"----"+sdf.format(date2));
         Calendar cal1 = Calendar.getInstance();
         cal1.setTime(date1);
 

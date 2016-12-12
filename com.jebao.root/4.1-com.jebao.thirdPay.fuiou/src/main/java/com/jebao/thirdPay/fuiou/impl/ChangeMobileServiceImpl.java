@@ -1,15 +1,16 @@
 package com.jebao.thirdPay.fuiou.impl;
 
 import com.jebao.thirdPay.fuiou.http.WebFormUtils;
-
 import com.jebao.thirdPay.fuiou.model.changeMobile.ChangeMobileRequest;
 import com.jebao.thirdPay.fuiou.util.PrintUtil;
 import com.jebao.thirdPay.fuiou.util.SecurityUtils;
+import org.springframework.stereotype.Service;
 
 /**
  * 富友--个人PC端更换手机号
  * Created by Administrator on 2016/9/27.
  */
+@Service
 public class ChangeMobileServiceImpl {
     public String post(String httpUrl, ChangeMobileRequest reqData) throws Exception {
         PrintUtil.printLn("Sign:" + reqData.requestSignPlain());

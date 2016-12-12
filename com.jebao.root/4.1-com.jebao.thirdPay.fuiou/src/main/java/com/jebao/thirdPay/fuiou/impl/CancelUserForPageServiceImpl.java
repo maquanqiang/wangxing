@@ -4,11 +4,13 @@ import com.jebao.thirdPay.fuiou.http.WebFormUtils;
 import com.jebao.thirdPay.fuiou.model.cancelUserForPage.CancelUserForPageRequest;
 import com.jebao.thirdPay.fuiou.util.PrintUtil;
 import com.jebao.thirdPay.fuiou.util.SecurityUtils;
+import org.springframework.stereotype.Service;
 
 /**
  * 富友--用户申请注销免登陆接口(网页版)
  * Created by Administrator on 2016/9/27.
  */
+@Service
 public class CancelUserForPageServiceImpl {
     public String post(String httpUrl, CancelUserForPageRequest reqData) throws Exception {
         PrintUtil.printLn("Sign:" + reqData.requestSignPlain());
