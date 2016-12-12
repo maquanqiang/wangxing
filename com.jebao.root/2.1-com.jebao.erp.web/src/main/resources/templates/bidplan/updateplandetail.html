@@ -66,7 +66,7 @@
                             </div>
                             <div class="form-group">
                                 <div class="input-group margin">
-                                    <div class="input-group-addon">募集期限</div>
+                                    <div class="input-group-addon">募集期限(小时)</div>
                                     <input type="text" placeholder="" class="form-control" v-model="plan.bpOpenTime"
                                            name="bpOpenTime" id="bpOpenTime">
                                 </div>
@@ -74,8 +74,7 @@
                             <div class="form-group">
                                 <div class="input-group margin">
                                     <div class="input-group-addon">募集结束</div>
-                                    <input type="text" placeholder="" class="form-control chooseDate"
-                                           v-model="plan.bpEndTime" name="bpEndTime" id="bpEndTime">
+                                    <input type="text" placeholder="" class="form-control" v-model="plan.bpEndTime" name="bpEndTime" id="bpEndTime" readonly>
                                 </div>
                             </div>
                             <div class="form-group ">
@@ -367,6 +366,7 @@
         </div>
     </section>
 </div>
+<input type="hidden" id="hidden_active_menu" value="/bidplan/reviewedPlanList">
 <!-- /.content-wrapper -->
 #parse("common/footer.html")
 <script src=$UrlHelperTool.href("/content/script/bidplan/updateplandetail.js")></script>

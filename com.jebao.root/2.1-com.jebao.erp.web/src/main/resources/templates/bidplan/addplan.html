@@ -63,7 +63,7 @@
                             </div>
                             <div class="form-group">
                                 <div class="input-group margin">
-                                    <div class="input-group-addon">募集期限</div>
+                                    <div class="input-group-addon">募集期限(小时)</div>
                                     <input type="text" placeholder="" class="form-control" id="bpOpenTime" name="bpOpenTime">
                                 </div>
                             </div>
@@ -350,6 +350,7 @@
         </div>
     </section>
 </div>
+<input type="hidden" id="hidden_active_menu" value="/bidplan/index">
 <!-- /.content-wrapper -->
 #parse("common/footer.html")
 <script src=$UrlHelperTool.href("/content/script/bidplan/addplan.js")></script>

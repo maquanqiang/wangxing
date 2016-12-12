@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import com.jebao.common.cache.utils.fastjson.FastJsonUtil;
 import org.apache.commons.lang.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -236,5 +237,19 @@ public class ShardedRedisUtil {
 
     public void destroy() {
         this.shardedJedisPool.close();
+    }
+    //---------------------------------------------------------------------------------
+    //扩展方法
+    public <T> String set(final String key,T object) {
+        String value = FastJsonUtil.serializeFormDate(object);
+        return set(key, value);
+    }
+    public <T> T get(final String key,Class<T> clz){
+        String value=get(key);
+        return FastJsonUtil.deserialize(value, clz);
+    }
+    public  <T> String setex(final String key, final int seconds, T object){
+        String value = FastJsonUtil.serializeFormDate(object);
+        return setex(key,seconds,value);
     }
 }
