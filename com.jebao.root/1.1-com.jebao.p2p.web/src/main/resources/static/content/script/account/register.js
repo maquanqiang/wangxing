@@ -8,7 +8,11 @@ $(".verification").click(function () {
 
 var model = {
     form: {},
-    codeDisabled:false
+    codeDisabled:false,
+    error:{
+        hasError:false,
+        message:"错误消息显示"
+    }
 };
 var vm = new Vue({
     el: ".register-content",
@@ -77,7 +81,8 @@ var vm = new Vue({
                 if (response.success_is_ok) {
 
                 } else {
-                    $(".error-place").removeClass("hidden").find("span").html(response.msg);
+                    model.error.hasError=true;
+                    model.error.message=response.error;
                 }
             },"json");
         },
@@ -97,8 +102,7 @@ var vm = new Vue({
                             remote: {
                                 type: 'post',
                                 url: '/api/account/validateMobile',
-                                message: '该手机号码已注册',
-                                delay: 1000
+                                message: '该手机号码已注册'
                             }
                         }
                     },
@@ -152,7 +156,8 @@ var vm = new Vue({
                         window.location.href = "/account/login";
                         return;
                     } else {
-                        $errorPlace.removeClass("hidden").find("span").html(response.msg);
+                        model.error.hasError=true;
+                        model.error.message=response.error;
                     }
                 }, "json");
             });

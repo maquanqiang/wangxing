@@ -11,11 +11,15 @@
 <link rel="shortcut icon" href="/favicon.ico"/>
 <link rel="stylesheet" href="${filePath}/css/lib/base.css">
 <style>
-    .hidden{display: none!important;}
+    .none{display: none!important;}
+    .hidden{visibility: hidden!important;}
     .form-control[disabled],
     .form-control[readonly]{
         cursor: not-allowed;
         background-color: #eee;
         opacity: 1;
+    }
+    [v-cloak] {
+        display: none;
     }
 </style>
