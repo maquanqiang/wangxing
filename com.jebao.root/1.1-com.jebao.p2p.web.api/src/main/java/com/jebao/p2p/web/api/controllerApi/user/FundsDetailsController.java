@@ -36,7 +36,7 @@ public class FundsDetailsController extends _BaseController {
     @ResponseBody
     public JsonResult list() {
         CurrentUser currentUser = CurrentUserContextHolder.get();
-        if(currentUser != null){
+        if(currentUser == null){
             return new JsonResultList<>(null);
         }
 
@@ -60,7 +60,7 @@ public class FundsDetailsController extends _BaseController {
         }
 
         CurrentUser currentUser = CurrentUserContextHolder.get();
-        if(currentUser != null){
+        if(currentUser == null){
             return new JsonResultList<>(null);
         }
 
