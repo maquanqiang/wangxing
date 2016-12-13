@@ -39,8 +39,8 @@ public class ProductControllerApi {
 
         ProductSM productSM = ProductForm.toEntity(form);
         List<TbBidPlan> tbBidPlans = productService.selectP2PList(productSM, pageWhere);
-        List<ProductVM> productVms = new ArrayList<>();
-        tbBidPlans.forEach(o -> productVms.add(new ProductVM(o)));
+        List<ProductVm> productVms = new ArrayList<>();
+        tbBidPlans.forEach(o -> productVms.add(new ProductVm(o)));
         int count = productService.selectP2PListCount(productSM);
         return new JsonResultList<>(productVms, count);
     }
