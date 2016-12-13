@@ -28,6 +28,8 @@ public interface TbInvestInfoMapper {
 
     List<TbInvestInfo> selectByBpId(@Param("record") TbInvestInfo record, @Param("pageWhere") PageWhere pageWhere);
 
+    BigDecimal investTotal(Long iiBpId);
+
     /**==================================================投资记录==================================================**/
 
     List<InvestIng> selectInvestIngByLoginId(@Param("loginId") Long loginId,@Param("pageWhere") PageWhere pageWhere);

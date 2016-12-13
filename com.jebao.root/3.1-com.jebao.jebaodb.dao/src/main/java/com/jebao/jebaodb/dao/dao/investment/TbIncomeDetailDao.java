@@ -23,61 +23,57 @@ public class TbIncomeDetailDao {
     public int insert(TbIncomeDetail record) {
         return mapper.insert(record);
     }
-
     public int insertSelective(TbIncomeDetail record) {
         return mapper.insertSelective(record);
     }
-
-    public TbIncomeDetail selectByPrimaryKey(Long bpId) {
+    public TbIncomeDetail selectByPrimaryKey(Long bpId)
+    {
         return mapper.selectByPrimaryKey(bpId);
     }
-
-    public int updateByPrimaryKeySelective(TbIncomeDetail record) {
+    public int updateByPrimaryKeySelective(TbIncomeDetail record)
+    {
         return mapper.updateByPrimaryKeySelective(record);
     }
-
-    public int updateByPrimaryKey(TbIncomeDetail record) {
+    public int updateByPrimaryKey(TbIncomeDetail record)
+    {
         return mapper.updateByPrimaryKey(record);
     }
-
-    public List<TbIncomeDetail> selectForPage(PageWhere pageWhere) {
+    public List<TbIncomeDetail> selectForPage(PageWhere pageWhere)
+    {
         return mapper.selectForPage(pageWhere);
     }
 
     /**
      * 系统条件分页排序查询
-     *
      * @param record
      * @param pageWhere
      * @return
      */
-    public List<TbIncomeDetail> selectByConditionForPage(@Param("record") TbIncomeDetail record, @Param("pageWhere") PageWhere pageWhere) {
+    public List<TbIncomeDetail> selectByConditionForPage(@Param("record")TbIncomeDetail record, @Param("pageWhere")PageWhere pageWhere){
         return mapper.selectByConditionForPage(record, pageWhere);
     }
 
     /**
      * 系统条件查询统计
-     *
      * @param record
      * @return
      */
-    public int selectByConditionCount(@Param("record") TbIncomeDetail record) {
+    public int selectByConditionCount(@Param("record")TbIncomeDetail record){
         return mapper.selectByConditionCount(record);
     }
 
     /**
      * 分组查询还款情况表
-     *
      * @param record
      * @param pageWhere
      * @return
      */
-    public List<TbIncomeDetail> selectGroupByConditionForPage(@Param("record") RepaymentDetailSM record, @Param("pageWhere") PageWhere pageWhere) {
+    public List<TbIncomeDetail> selectGroupByConditionForPage(@Param("record")RepaymentDetailSM record, @Param("pageWhere")PageWhere pageWhere){
         return mapper.selectGroupByConditionForPage(record, pageWhere);
     }
 
-    public int selectGroupByConditionCount(@Param("record") RepaymentDetailSM record, @Param("pageWhere") PageWhere pageWhere) {
-        return mapper.selectGroupByConditionCount(record, pageWhere);
+    public int selectGroupByConditionCount(@Param("record")RepaymentDetailSM record){
+        return mapper.selectGroupByConditionCount(record);
     }
 
 

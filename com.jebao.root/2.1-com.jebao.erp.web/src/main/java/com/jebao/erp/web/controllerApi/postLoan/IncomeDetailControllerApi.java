@@ -45,7 +45,7 @@ public class IncomeDetailControllerApi {
         PageWhere pageWhere = new PageWhere(pageIndex, pageSize);
         List<TbIncomeDetail> incomeDetails = incomeDetailService.selectGroupByConditionForPage(form, pageWhere);
         incomeDetails.forEach(o -> incomeDetailsVM.add(new IncomeDetailsVM(o)));
-        int count = incomeDetailService.selectGroupByConditionCount(form, pageWhere);
+        int count = incomeDetailService.selectGroupByConditionCount(form);
 
         return new JsonResultList<>(incomeDetailsVM, count);
     }

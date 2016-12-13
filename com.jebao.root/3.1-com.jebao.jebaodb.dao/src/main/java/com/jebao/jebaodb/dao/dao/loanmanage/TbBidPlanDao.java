@@ -121,6 +121,24 @@ public class TbBidPlanDao {
 
         return tbBidPlanMapper.investBid(map);
     }
+
+    /**
+     * 修改满标状态
+     * @param bpId
+     * @return
+     */
+    public int fullBid(Long bpId){
+        return tbBidPlanMapper.fullBid(bpId);
+    }
+
+    /**
+     * 增加剩余金额
+     * @param map
+     * @return
+     */
+    public int addSurplus(Map<String, Object> map){
+        return tbBidPlanMapper.addSurplus(map);
+    }
     @Transactional
     public int insertForTransactional(TbBidPlan record) {
         return tbBidPlanMapper.insert(record);

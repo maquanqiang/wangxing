@@ -42,6 +42,8 @@ $(function () {
 
         vm.search()
     });
+
+
 });
 
 
@@ -98,8 +100,8 @@ var vm = new Vue({
                 }
             });
         },
-        investBtn: function (id) {
-            window.location.href = "/bidplan/addplan/" + id
+        openDetail: function (id) {
+            window.location.href = "/product/detail/" + id;
         }
     }
 });

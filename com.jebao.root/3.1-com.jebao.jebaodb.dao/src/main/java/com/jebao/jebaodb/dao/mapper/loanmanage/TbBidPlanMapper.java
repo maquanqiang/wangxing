@@ -38,4 +38,8 @@ public interface TbBidPlanMapper {
     int selectP2PListCount(@Param("record") ProductSM record);
 
     int investBid(Map<String, Object> map);
+
+    int fullBid(Long bpId);
+
+    int addSurplus(Map<String, Object> map);
 }

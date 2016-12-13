@@ -71,6 +71,9 @@ public class TbInvestInfoDao {
         return mapper.selectByBpId(record, pageWhere);
     }
 
+    public BigDecimal investTotal(Long bpId){
+        return mapper.investTotal(bpId);
+    }
 
     @Transactional
     public int insertForTransactional(TbInvestInfo record) {
