@@ -8,6 +8,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 /**
+ * 收支明细
  * Created by Administrator on 2016/12/3.
  */
 public class FundsDetailsVM extends ViewModel {
@@ -16,21 +17,26 @@ public class FundsDetailsVM extends ViewModel {
         this.serialTime = entity.getFdSerialTime();
         this.serialTypeName = entity.getFdSerialTypeName();
         this.serialAmount = entity.getFdSerialAmount();
-        this.commissionCharge = entity.getFdCommissionCharge();
         this.serialStatus = entity.getFdSerialStatus();
+        this.balanceStatus  = entity.getFdBalanceStatus();
     }
-
+    //交易流水号
     private String serialNumber;
 
+    //交易时间
     @JsonFormat(timezone = "GMT+8", pattern = "yyyy/MM/dd HH:mm:ss")
     private Date serialTime;
 
+    //交易类型
     private String serialTypeName;
 
+    //交易金额
     private BigDecimal serialAmount;
 
-    private BigDecimal commissionCharge;
+    //收支状态 1 收入 2支出
+    private int balanceStatus;
 
+    //交易状态
     private int serialStatus;
 
     public String getSerialNumber() {
@@ -65,19 +71,19 @@ public class FundsDetailsVM extends ViewModel {
         this.serialAmount = serialAmount;
     }
 
-    public BigDecimal getCommissionCharge() {
-        return commissionCharge;
-    }
-
-    public void setCommissionCharge(BigDecimal commissionCharge) {
-        this.commissionCharge = commissionCharge;
-    }
-
     public int getSerialStatus() {
         return serialStatus;
     }
 
     public void setSerialStatus(int serialStatus) {
         this.serialStatus = serialStatus;
+    }
+
+    public int getBalanceStatus() {
+        return balanceStatus;
+    }
+
+    public void setBalanceStatus(int balanceStatus) {
+        this.balanceStatus = balanceStatus;
     }
 }

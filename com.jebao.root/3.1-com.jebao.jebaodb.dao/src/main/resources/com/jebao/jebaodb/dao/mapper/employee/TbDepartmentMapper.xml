@@ -86,7 +86,7 @@
     order by dep_parent_id LIMIT #{begin},#{pageSize}
   </select>
   <select id="selectListCount" resultType="integer" parameterType="com.jebao.jebaodb.entity.employee.search.DepartmentSM">
-    SELECT COUNT(1) FROM tb_department
+    SELECT COUNT(*) FROM tb_department
     <where>
       <include refid="dynamicWehre"/>
     </where>

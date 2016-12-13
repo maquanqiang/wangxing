@@ -3,7 +3,7 @@ package com.jebao.jebaodb.dao.mapper.user;
 import com.jebao.jebaodb.entity.user.TbUserLog;
 
 public interface TbUserLogMapper {
-    int insert(TbUserLog record);
+    long insert(TbUserLog record);
 
     int insertSelective(TbUserLog record);
 

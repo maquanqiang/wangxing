@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -75,8 +76,33 @@ public class TbIncomeDetailDao {
         return mapper.selectGroupByConditionCount(record);
     }
 
+
     @Transactional
     public int insertForTransactional(TbIncomeDetail record) {
         return mapper.insert(record);
+    }
+
+    /*==================================================账户总览统计==================================================*/
+
+    /**
+     * 统计待收本金、利息
+     * @param loginId 用户ID
+     * @param fundType 资金类型 1:本金 2 : 利息
+     * @return
+     */
+    public BigDecimal selectDueInMoneyByLoginId(Long loginId,int fundType){
+        TbIncomeDetail record = new TbIncomeDetail();
+        record.setIndLoginId(loginId);
+        record.setIndFundType(fundType);
+        return mapper.selectDueInMoneyByLoginId(record);
+    }
+
+    /**
+     * 统计累计收益（利息）
+     * @param indLoginId
+     * @return
+     */
+    public BigDecimal selectIncomeMoneyByLoginId(long indLoginId){
+        return mapper.selectIncomeMoneyByLoginId(indLoginId);
     }
 }

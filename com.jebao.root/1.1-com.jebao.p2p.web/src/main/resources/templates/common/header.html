@@ -1,4 +1,4 @@
-
+#set($_loginUser_header_=$LoginUserTool.getUser())
 <!--顶部nav---start-->
 <div class="site-header">
     <div class="header-top clearfix">
@@ -13,12 +13,12 @@
             </li>
         </ul>
 
-        #if($form.isLogin)
+        #if($_loginUser_header_.isLogin)
         <ul class="header_login fr">
             <li class="fore">
                 <a href="#">
                     <p>你好~</p>
-                    <p class="userTel">$!form.userName</p>
+                    <p class="userTel">$!_loginUser_header_.userName</p>
                 </a>
             </li>
             <li class="spacer"></li>
@@ -43,7 +43,5 @@
             </li>
         </ul>
         #end
-
-
     </div>
 </div>

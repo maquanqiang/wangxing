@@ -22,6 +22,12 @@ public class TbFundsDetails {
 
     private BigDecimal fdCommissionCharge;
 
+    private Long fdBpId;
+
+    private String fdBpName;
+
+    private Integer fdBalanceStatus;
+
     private Integer fdSerialStatus;
 
     public Long getFdId() {
@@ -94,6 +100,30 @@ public class TbFundsDetails {
 
     public void setFdCommissionCharge(BigDecimal fdCommissionCharge) {
         this.fdCommissionCharge = fdCommissionCharge;
+    }
+
+    public Long getFdBpId() {
+        return fdBpId;
+    }
+
+    public void setFdBpId(Long fdBpId) {
+        this.fdBpId = fdBpId;
+    }
+
+    public String getFdBpName() {
+        return fdBpName;
+    }
+
+    public void setFdBpName(String fdBpName) {
+        this.fdBpName = fdBpName == null ? null : fdBpName.trim();
+    }
+
+    public Integer getFdBalanceStatus() {
+        return fdBalanceStatus;
+    }
+
+    public void setFdBalanceStatus(Integer fdBalanceStatus) {
+        this.fdBalanceStatus = fdBalanceStatus;
     }
 
     public Integer getFdSerialStatus() {

@@ -1,12 +1,12 @@
 package com.jebao.erp.web.controllerApi.employee;
 
-import com.jebao.common.utils.validation.ValidationResult;
-import com.jebao.common.utils.validation.ValidationUtil;
 import com.jebao.erp.service.inf.employee.IDepartmentServiceInf;
 import com.jebao.erp.web.requestModel.employee.DepartmentIM;
 import com.jebao.erp.web.responseModel.base.JsonResult;
 import com.jebao.erp.web.responseModel.base.JsonResultList;
 import com.jebao.erp.web.responseModel.employee.DepartmentVM;
+import com.jebao.erp.web.utils.validation.ValidationResult;
+import com.jebao.erp.web.utils.validation.ValidationUtil;
 import com.jebao.jebaodb.entity.employee.TbDepartment;
 import com.jebao.jebaodb.entity.employee.search.DepartmentSM;
 import com.jebao.jebaodb.entity.extEntity.ResultInfo;

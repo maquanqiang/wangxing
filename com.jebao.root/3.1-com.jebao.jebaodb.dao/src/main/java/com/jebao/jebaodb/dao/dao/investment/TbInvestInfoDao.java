@@ -3,11 +3,14 @@ package com.jebao.jebaodb.dao.dao.investment;
 import com.jebao.jebaodb.dao.mapper.investment.TbInvestInfoMapper;
 import com.jebao.jebaodb.entity.extEntity.PageWhere;
 import com.jebao.jebaodb.entity.investment.TbInvestInfo;
+import com.jebao.jebaodb.entity.investment.InvestIng;
+import com.jebao.jebaodb.entity.investment.InvestPaymented;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -65,8 +68,58 @@ public class TbInvestInfoDao {
         return mapper.selectByBpId(record, pageWhere);
     }
 
+
     @Transactional
     public int insertForTransactional(TbInvestInfo record) {
         return mapper.insert(record);
+    }
+
+    /**==================================================投资记录==================================================**/
+
+    /**
+     * 投资中项目
+     * @param iiLoginId
+     * @param pageWhere
+     * @return
+     */
+    public List<InvestIng> selectInvestIngByLoginId(Long iiLoginId,@Param("pageWhere") PageWhere pageWhere){
+        return mapper.selectInvestIngByLoginId(iiLoginId,pageWhere);
+    }
+
+    /**
+     * 投资中项目总数
+     * @param iiLoginId
+     * @return
+     */
+    public int selectInvestIngByLoginIdForPageCount(Long iiLoginId){
+        return mapper.selectInvestIngByLoginIdForPageCount(iiLoginId);
+    }
+
+    /**
+     * 已还款的项目
+     * @param iiLoginId
+     * @param pageWhere
+     * @return
+     */
+    public List<InvestPaymented> selectInvestPaymentedByLoginId(Long iiLoginId,@Param("pageWhere") PageWhere pageWhere){
+        return mapper.selectInvestPaymentedByLoginId(iiLoginId, pageWhere);
+    }
+
+    /**
+     * 已还款的项目总数
+     * @param iiLoginId
+     * @return
+     */
+    public int selectInvestPaymentedByLoginIdForPageCount(Long iiLoginId){
+        return mapper.selectInvestPaymentedByLoginIdForPageCount(iiLoginId);
+    }
+
+    /**
+     * 统计账户冻结金额
+     * @param iiLoginId
+     * @return
+     */
+    public BigDecimal selectFreezeMoneyByLoginId(Long iiLoginId){
+        return mapper.selectFreezeMoneyByLoginId(iiLoginId);
     }
 }

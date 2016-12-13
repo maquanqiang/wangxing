@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>我的银行卡-我的账户</title>
+    #parse("common/head.html")
+    <!--css-->
+    <link rel="stylesheet" href="${filePath}/css/sidebar.css">
+    <link rel="stylesheet" href="${filePath}/css/myAccount.css">
+</head>
+<body>
+<!-- 顶部登录信息 -->
+#parse("common/header.html")
+<!-- 导航条 -->
+#parse("common/navigation.html")
+<!--侧边栏--start-->
+#parse("common/sidebar.html")
+<!--我的账户导航-->
+<div class="account-nav">
+    <p>
+        <a href="首页.html">首页</a><a href="javascript:;" class="red">我的银行卡</a>
+    </p>
+</div>
+<!--我的账户内容-->
+<div class="account-main clearfix">
+    <!--我的账户--左侧导航-->
+    #parse("user/sidebar.html")
+    <!--我的账户--右侧主要内容-->
+    <div class="account-content fr">
+        <!--我的银行卡-->
+        <div class="my-account">
+            <h2>我的银行卡</h2>
+        </div>
+        <!--添加银行卡-->
+        <div class="project">
+            <div class="account-bankImg ml0 clearfix">
+                <img src="${filePath}/images/account-bank.png" class="fl">
+                <div class="account-bankDetail fl">
+                    <h5>中国建设银行</h5>
+                    <p class="card-type">储蓄卡</p>
+                    <p class="card-num">6227**********8888</p>
+                    <a href="#" ></a>
+                </div>
+            </div>
+            <div class="changeCard">
+                <a href="javascript:;">
+                    <img src="${filePath}/images/account-changeCard.png">
+                    <p>更换银行卡</p>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+<!--内容 end-->
+#parse("common/footer.html")
+<script src="/content/script/user/sidebar.js"></script>
+</body>
+</html>

@@ -215,7 +215,7 @@
         order by emp_id DESC LIMIT #{begin},#{pageSize}
     </select>
     <select id="selectEmployeeDetailsInfoCount" resultType="integer" parameterType="com.jebao.jebaodb.entity.employee.search.EmployeeSM">
-        SELECT COUNT(emp.emp_id)
+        SELECT COUNT(*)
         FROM <include refid="selectEmployeeDetailsInfoSql"/>
     </select>
 

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>账户设置-我的账户</title>
+    #parse("common/head.html")
+    <!--css-->
+    <link rel="stylesheet" href="${filePath}/css/sidebar.css">
+    <link rel="stylesheet" href="${filePath}/css/myAccount.css">
+</head>
+
+<body>
+<!-- 顶部登录信息 -->
+#parse("common/header.html")
+<!-- 导航条 -->
+#parse("common/navigation.html")
+<!--侧边栏--start-->
+#parse("common/sidebar.html")
+<!--我的账户导航-->
+<div class="account-nav">
+    <p>
+        <a href="首页.html">首页</a><a href="javascript:;" class="red">账户设置</a>
+    </p>
+</div>
+<!--我的账户内容-->
+<div class="account-main clearfix">
+    <!--我的账户--左侧导航-->
+    #parse("user/sidebar.html")
+    <!--我的账户--右侧主要内容-->
+    <div class="account-content fr">
+        <!--账户设置-->
+        <div class="my-account">
+            <div class="my-account-title">
+                <h2>账户设置</h2>
+            </div>
+            <div class="account-install-list">
+                <form>
+                    <div class="account-install-item clearfix">
+                        <img src="${filePath}/images/account-right.png">
+                        <h5>手机认证</h5>
+                        <p>您绑定的手机： 1360****4554 如需更换手机号请与金额宝客服联系，更换手机号对账户影响较大，请谨慎操作！详情请咨询010–65006966</p>
+                    </div>
+                    <div class="account-install-item clearfix">
+                        <img src="${filePath}/images/account-error.png">
+                        <h5>资金托管账户</h5>
+                        <p class="pt5">由第三方（富友）提供资金托管服务，保障资金独立与安全</p>
+                        <a href="#" class="account-open open-btn">开通</a>
+                    </div>
+                    <div class="account-install-item">
+                        <div class="install-item-tit clearfix">
+                            <img src="${filePath}/images/account-right.png">
+                            <h5>修改登录密码</h5>
+                            <a href="#" class="account-show install-btn">修改</a>
+                        </div>
+                        <div class="modifyCont clearfix">
+                            <div class="clearfix">
+                                <p>原密码：</p>
+                                <input type="password" value="">
+                            </div>
+                            <div class="clearfix">
+                                <p>新密码：</p>
+                                <input type="password" value="">
+                            </div>
+                            <div class="clearfix">
+                                <p>确认新密码：</p>
+                                <input type="password" value="">
+                            </div>
+                            <div class="clearfix">
+                                <p>手机验证码：</p>
+                                <input type="text" value="">
+                                <input type="button" value="获取验证码" class="get_code_btn">
+                            </div>
+                            <a href="#" class="ok-btn modifyBtn">确定</a>
+                        </div>
+                    </div>
+                    <div class="account-install-item">
+                        <div class="install-item-tit clearfix">
+                            <img src="${filePath}/images/account-error.png">
+                            <h5>推荐人邀请码</h5>
+                            <a href="#" class="account-show install-btn">修改</a>
+                        </div>
+                        <div class="modifyCont invitation clearfix">
+                            <div class="clearfix">
+                                <p>邀请码：</p>
+                                <input type="text" value="" placeholder="请输入邀请码">
+                            </div>
+                            <a href="#" class="ok-btn invitBtn">确定</a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!--内容 end-->
+#parse("common/footer.html")
+<script src="/content/script/user/sidebar.js"></script>
+<!--layer-->
+<script src="/content/js/plugins/layer/layer.js"></script>
+<script>
+    $(function () {
+        //修改密码弹出框
+        $('.modifyBtn').on('click',function(){
+            layer.alert('修改密码成功！',{
+                area: ['300px', '168px']
+            })
+        });
+        //邀请密码弹出框
+        $('.invitBtn').on('click',function () {
+            layer.alert('邀请码添加成功',{
+                area: ['300px', '168px']
+            })
+        });
+    });
+</script>
+</body>
+</html>

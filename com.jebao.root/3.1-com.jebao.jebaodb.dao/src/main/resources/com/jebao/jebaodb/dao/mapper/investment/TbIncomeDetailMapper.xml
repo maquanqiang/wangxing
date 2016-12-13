@@ -426,4 +426,21 @@
             <include refid="selectByCondition_Where_Clause" />
         </where>
     </select>
+    <!--==================================================账户总览统计==================================================-->
+    <select id="selectDueInMoneyByLoginId" resultType="java.lang.Double">
+        SELECT IFNULL(SUM(ind_money),0)
+        FROM tb_income_detail
+        WHERE ind_login_id =#{record.indLoginId,jdbcType=BIGINT}
+        AND ind_fund_type = #{record.indFundType,jdbcType=INTEGER}
+        AND ind_status = 1
+        AND ind_is_del = 1
+    </select>
+    <select id="selectIncomeMoneyByLoginId" resultType="java.lang.Double" parameterType="java.lang.Long">
+        SELECT IFNULL(SUM(ind_fact_moeny),0)
+        FROM tb_income_detail
+        WHERE ind_login_id = #{iiLoginId,jdbcType=BIGINT}
+        AND ind_fund_type = 2
+        AND ind_status = 2
+        AND ind_is_del = 1
+    </select>
 </mapper>

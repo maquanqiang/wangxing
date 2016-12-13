@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>收支明细-我的账户</title>
+    #parse("common/head.html")
+    <!--css-->
+    <link rel="stylesheet" href="${filePath}/css/sidebar.css">
+    <link rel="stylesheet" href="${filePath}/css/myAccount.css">
+</head>
+<body>
+<!-- 顶部登录信息 -->
+#parse("common/header.html")
+<!-- 导航条 -->
+#parse("common/navigation.html")
+<!--侧边栏--start-->
+#parse("common/sidebar.html")
+<!--我的账户导航-->
+<div class="account-nav">
+    <p>
+        <a href="首页.html">首页</a><a href="javascript:;" class="red">收支明细</a>
+    </p>
+</div>
+<!--我的账户内容-->
+<div class="account-main clearfix">
+    <!--我的账户--左侧导航-->
+    #parse("user/sidebar.html")
+    <!--我的账户--右侧主要内容-->
+    <div class="account-content fr">
+        <!--账户总览-->
+        <div class="my-account">
+            <h2>收支明细</h2>
+        </div>
+        <!--收支明细-->
+        <div class="project">
+            <div class="project-menu clearfix">
+                <h4>收支明细</h4>
+            </div>
+            <div class="project-list">
+                <div class="income-detail-cont ">
+                    <table class="income-table">
+                        <thead>
+                        <tr>
+                            <th>交易流水号</th>
+                            <th>交易时间</th>
+                            <th>交易类型</th>
+                            <th>收入金额（元）</th>
+                            <th>支出金额（元）</th>
+                            <th>交易状态</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>01091883841</td>
+                            <td>2016/11/11 9:00:00</td>
+                            <td>充值</td>
+                            <td class="red">+5000.00</td>
+                            <td></td>
+                            <td>充值成功</td>
+                        </tr>
+                        <tr>
+                            <td>01091883840</td>
+                            <td>2016/11/11 9:00:00</td>
+                            <td>提现</td>
+                            <td></td>
+                            <td class="green">-5000.00</td>
+                            <td>提现成功</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <!--无投资项目-->
+                    <div class="noProject">
+                        <p>
+                            暂无信息
+                        </p>
+                    </div>
+                    <div class="page"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--内容 end-->
+#parse("common/footer.html")
+<script src="/content/script/user/sidebar.js"></script>
+<script src="/content/script/user/funds.js"></script>
+</body>
+</html>

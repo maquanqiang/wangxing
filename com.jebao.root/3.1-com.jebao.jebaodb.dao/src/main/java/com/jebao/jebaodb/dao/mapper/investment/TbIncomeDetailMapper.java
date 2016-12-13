@@ -6,6 +6,7 @@ import com.jebao.jebaodb.entity.investment.TbIncomeDetail;
 import com.jebao.jebaodb.entity.postLoan.search.RepaymentDetailSM;
 import org.apache.ibatis.annotations.Param;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public interface TbIncomeDetailMapper {
@@ -28,4 +29,9 @@ public interface TbIncomeDetailMapper {
     List<TbIncomeDetail> selectGroupByConditionForPage(@Param("record") RepaymentDetailSM record, @Param("pageWhere") PageWhere pageWhere);
 
     int selectGroupByConditionCount(@Param("record") RepaymentDetailSM record);
+
+    /*==================================================账户总览统计==================================================*/
+    BigDecimal selectDueInMoneyByLoginId(@Param("record") TbIncomeDetail record);
+
+    BigDecimal selectIncomeMoneyByLoginId(long indLoginId);
 }

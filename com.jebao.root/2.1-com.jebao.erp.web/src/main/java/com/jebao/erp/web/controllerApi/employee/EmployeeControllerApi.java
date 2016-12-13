@@ -11,6 +11,8 @@ import com.jebao.erp.web.responseModel.employee.EmployeeVM;
 import com.jebao.erp.web.utils.excel.ExcelUtil;
 import com.jebao.erp.web.utils.session.CurrentUser;
 import com.jebao.erp.web.utils.session.LoginSessionUtil;
+import com.jebao.erp.web.utils.validation.ValidationResult;
+import com.jebao.erp.web.utils.validation.ValidationUtil;
 import com.jebao.jebaodb.entity.employee.EmployeeInfo;
 import com.jebao.jebaodb.entity.employee.TbDepartment;
 import com.jebao.jebaodb.entity.employee.TbRank;
@@ -62,6 +64,11 @@ public class EmployeeControllerApi extends _BaseController {
     }
     @RequestMapping(value = "post",method = RequestMethod.POST)
     public ResultInfo post(EmployeeIM model){
+        //region 校验
+        ValidationResult resultValidation = ValidationUtil.validateEntity(model);
+        if (resultValidation.isHasErrors()) {
+            return new ResultInfo(false,resultValidation.getErrorMsg().toString());
+        }
         if (model!=null){
             CurrentUser user = LoginSessionUtil.User(request,response);
             model.setUserId(user.getId());
@@ -139,13 +146,18 @@ public class EmployeeControllerApi extends _BaseController {
             }
             model.setDepartmentId(departmentList.get(0).getDepId());
             model.setTeamId(departmentList.get(0).getDepId());
+            //region 校验
+            ValidationResult resultValidation = ValidationUtil.validateEntity(model);
+            if (resultValidation.isHasErrors()) {
+                return new ResultInfo(false,"员工:"+model.getName()+" 数据错误:"+resultValidation.getErrorMsg().toString());
+            }
             modelList.add(model);
         }
         int existsNum =mapList.size()-modelList.size();
         int successNum = 0;
         for (int i=0;i<modelList.size();i++){
             ResultInfo saveResult = employeeService.saveEmployeeInfo(modelList.get(i));
-            if (saveResult.isSuccess_is_ok()){
+            if (saveResult.getSuccess_is_ok()){
                 successNum++;
             }else{
                 return new ResultInfo(false,"已导入"+successNum+"条。"+modelList.get(i).getName()+" 出现错误："+saveResult.getMsg());
