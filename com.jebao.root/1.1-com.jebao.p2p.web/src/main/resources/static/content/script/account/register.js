@@ -26,6 +26,10 @@ var vm = new Vue({
             model.form.invitationCode = invitationCode;
             model.codeDisabled = true;
         }
+        //测试信息
+        model.form.mobile="18600575242";
+        model.form.password="a123456";
+        model.form.passwordAgain= model.form.password;
     },
     mounted: function () {
         //前端写的代码

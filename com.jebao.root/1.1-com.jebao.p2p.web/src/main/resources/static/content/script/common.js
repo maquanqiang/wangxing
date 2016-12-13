@@ -109,7 +109,7 @@ Date.prototype.toFormatString = function (format) {
             settings.xhrFields= {
                 withCredentials: true
             };
-            settings.crossDomain=true
+            settings.crossDomain=true;
         }
     });
 }(jQuery));
