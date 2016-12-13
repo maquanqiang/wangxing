@@ -33,9 +33,10 @@
         <!--投资中的项目-->
         <div class="project">
             <div class="project-menu clearfix">
-                <h4 class="active">投资中的项目</h4>
-                <h4>还款中的项目</h4>
-                <h4>已还款的项目</h4>
+              <!--  <form id="search_form"><input type="hidden" name="freezeStatus" value="1"/></form>-->
+                <h4 class="active" @click="search(1)">投资中的项目</h4>
+                <h4 @click="search(2)">还款中的项目</h4>
+                <h4 @click="search(3)">已还款的项目</h4>
             </div>
             <div class="project-list">
                 <div class="project-item active">
@@ -50,96 +51,31 @@
                             <th>年化利率</th>
                         </tr>
                         </thead>
-                        <!--<tbody>-->
-                        <!--<tr>-->
-                        <!--<td>-->
-                        <!--<a href="#">安心宝001期</a>-->
-                        <!--</td>-->
-                        <!--<td>2016/11/11 9:00:00</td>-->
-                        <!--<td>1000.00</td>-->
-                        <!--<td>1个月</td>-->
-                        <!--<td>80%</td>-->
-                        <!--<td>8%</td>-->
-                        <!--</tr>-->
-                        <!--<tr>-->
-                        <!--<td>-->
-                        <!--<a href="#">安心宝001期</a>-->
-                        <!--</td>-->
-                        <!--<td>2016/11/11 9:00:00</td>-->
-                        <!--<td>1000.00</td>-->
-                        <!--<td>1个月</td>-->
-                        <!--<td>80%</td>-->
-                        <!--<td>8%</td>-->
-                        <!--</tr>-->
-                        <!--<tr>-->
-                        <!--<td>-->
-                        <!--<a href="#">安心宝001期</a>-->
-                        <!--</td>-->
-                        <!--<td>2016/11/11 9:00:00</td>-->
-                        <!--<td>1000.00</td>-->
-                        <!--<td>1个月</td>-->
-                        <!--<td>80%</td>-->
-                        <!--<td>8%</td>-->
-                        <!--</tr>-->
-                        <!--<tr>-->
-                        <!--<td>-->
-                        <!--<a href="#">安心宝001期</a>-->
-                        <!--</td>-->
-                        <!--<td>2016/11/11 9:00:00</td>-->
-                        <!--<td>1000.00</td>-->
-                        <!--<td>1个月</td>-->
-                        <!--<td>80%</td>-->
-                        <!--<td>8%</td>-->
-                        <!--</tr>-->
-                        <!--<tr>-->
-                        <!--<td>-->
-                        <!--<a href="#">安心宝001期</a>-->
-                        <!--</td>-->
-                        <!--<td>2016/11/11 9:00:00</td>-->
-                        <!--<td>1000.00</td>-->
-                        <!--<td>1个月</td>-->
-                        <!--<td>80%</td>-->
-                        <!--<td>8%</td>-->
-                        <!--</tr>-->
-                        <!--<tr>-->
-                        <!--<td>-->
-                        <!--<a href="#">安心宝001期</a>-->
-                        <!--</td>-->
-                        <!--<td>2016/11/11 9:00:00</td>-->
-                        <!--<td>1000.00</td>-->
-                        <!--<td>1个月</td>-->
-                        <!--<td>80%</td>-->
-                        <!--<td>8%</td>-->
-                        <!--</tr>-->
-                        <!--<tr>-->
-                        <!--<td>-->
-                        <!--<a href="#">安心宝001期</a>-->
-                        <!--</td>-->
-                        <!--<td>2016/11/11 9:00:00</td>-->
-                        <!--<td>1000.00</td>-->
-                        <!--<td>1个月</td>-->
-                        <!--<td>80%</td>-->
-                        <!--<td>8%</td>-->
-                        <!--</tr>-->
-                        <!--<tr>-->
-                        <!--<td>-->
-                        <!--<a href="#">安心宝001期</a>-->
-                        <!--</td>-->
-                        <!--<td>2016/11/11 9:00:00</td>-->
-                        <!--<td>1000.00</td>-->
-                        <!--<td>1个月</td>-->
-                        <!--<td>80%</td>-->
-                        <!--<td>8%</td>-->
-                        <!--</tr>-->
-                        <!--</tbody>-->
+                        <tbody v-if="isHasDateii">
+                        <template v-for="item in investings">
+                            <tr>
+                                <td><a href="#">{{ item.bpName }}</a></td>
+                                <td>{{ item.createTime }}</td>
+                                <td>{{ item.money }}</td>
+                                <td>{{ item.periods }}</td>
+                                <td>{{ item.progress }}%</td>
+                                <td>{{ item.bpRate }}%</td>
+                            </tr>
+                        </template>
+                        </tbody>
                     </table>
                     <!--无投资项目-->
-                    <div class="noProject">
+                    <div v-if="!isHasDateii" class="noProject">
                         <p>
                             暂无投资中项目<a href="项目列表.html">去投资</a>
                         </p>
                     </div>
-                    <div class="page"></div>
+                    <div class="page">
+                        <div class="col-sm-12 pagination">
+                            <div id="pageNum1"></div>
+                        </div>
+                    </div>
+                   <!-- <div class="page"></div>-->
                 </div>
                 <div class="project-item">
                     <table class="repayment">
@@ -155,112 +91,32 @@
                             <th>查看</th>
                         </tr>
                         </thead>
-                        <!--<tbody>-->
-                        <!--<tr>-->
-                        <!--<td>-->
-                        <!--<a href="#">安心宝001期</a>-->
-                        <!--</td>-->
-                        <!--<td>2016/11/11 9:00:00</td>-->
-                        <!--<td>1000.00</td>-->
-                        <!--<td>1个月</td>-->
-                        <!--<td>8%</td>-->
-                        <!--<td>2016/12/11 9:00:00</td>-->
-                        <!--<td>100.00</td>-->
-                        <!--<td>合同</td>-->
-                        <!--</tr>-->
-                        <!--<tr>-->
-                        <!--<td>-->
-                        <!--<a href="#">安心宝001期</a>-->
-                        <!--</td>-->
-                        <!--<td>2016/11/11 9:00:00</td>-->
-                        <!--<td>1000.00</td>-->
-                        <!--<td>1个月</td>-->
-                        <!--<td>8%</td>-->
-                        <!--<td>2016/12/11 9:00:00</td>-->
-                        <!--<td>100.00</td>-->
-                        <!--<td>合同</td>-->
-                        <!--</tr>-->
-                        <!--<tr>-->
-                        <!--<td>-->
-                        <!--<a href="#">安心宝001期</a>-->
-                        <!--</td>-->
-                        <!--<td>2016/11/11 9:00:00</td>-->
-                        <!--<td>1000.00</td>-->
-                        <!--<td>1个月</td>-->
-                        <!--<td>8%</td>-->
-                        <!--<td>2016/12/11 9:00:00</td>-->
-                        <!--<td>100.00</td>-->
-                        <!--<td>合同</td>-->
-                        <!--</tr>-->
-                        <!--<tr>-->
-                        <!--<td>-->
-                        <!--<a href="#">安心宝001期</a>-->
-                        <!--</td>-->
-                        <!--<td>2016/11/11 9:00:00</td>-->
-                        <!--<td>1000.00</td>-->
-                        <!--<td>1个月</td>-->
-                        <!--<td>8%</td>-->
-                        <!--<td>2016/12/11 9:00:00</td>-->
-                        <!--<td>100.00</td>-->
-                        <!--<td>合同</td>-->
-                        <!--</tr>-->
-                        <!--<tr>-->
-                        <!--<td>-->
-                        <!--<a href="#">安心宝001期</a>-->
-                        <!--</td>-->
-                        <!--<td>2016/11/11 9:00:00</td>-->
-                        <!--<td>1000.00</td>-->
-                        <!--<td>1个月</td>-->
-                        <!--<td>8%</td>-->
-                        <!--<td>2016/12/11 9:00:00</td>-->
-                        <!--<td>100.00</td>-->
-                        <!--<td>合同</td>-->
-                        <!--</tr>-->
-                        <!--<tr>-->
-                        <!--<td>-->
-                        <!--<a href="#">安心宝001期</a>-->
-                        <!--</td>-->
-                        <!--<td>2016/11/11 9:00:00</td>-->
-                        <!--<td>1000.00</td>-->
-                        <!--<td>1个月</td>-->
-                        <!--<td>8%</td>-->
-                        <!--<td>2016/12/11 9:00:00</td>-->
-                        <!--<td>100.00</td>-->
-                        <!--<td>合同</td>-->
-                        <!--</tr>-->
-                        <!--<tr>-->
-                        <!--<td>-->
-                        <!--<a href="#">安心宝001期</a>-->
-                        <!--</td>-->
-                        <!--<td>2016/11/11 9:00:00</td>-->
-                        <!--<td>1000.00</td>-->
-                        <!--<td>1个月</td>-->
-                        <!--<td>8%</td>-->
-                        <!--<td>2016/12/11 9:00:00</td>-->
-                        <!--<td>100.00</td>-->
-                        <!--<td>合同</td>-->
-                        <!--</tr>-->
-                        <!--<tr>-->
-                        <!--<td>-->
-                        <!--<a href="#">安心宝001期</a>-->
-                        <!--</td>-->
-                        <!--<td>2016/11/11 9:00:00</td>-->
-                        <!--<td>1000.00</td>-->
-                        <!--<td>1个月</td>-->
-                        <!--<td>8%</td>-->
-                        <!--<td>2016/12/11 9:00:00</td>-->
-                        <!--<td>100.00</td>-->
-                        <!--<td>合同</td>-->
-                        <!--</tr>-->
-                        <!--</tbody>-->
+                        <tbody v-if="isHasDatepi">
+                        <template v-for="item in paymentings">
+                            <tr>
+                                <td><a href="#">{{ item.bpName }}</a></td>
+                                <td>{{ item.createTime }}</td>
+                                <td>{{ item.money }}</td>
+                                <td>{{ item.periods }}</td>
+                                <td>{{ item.bpRate }}%</td>
+                                <td>{{ item.nextDueDate }}</td>
+                                <td>{{ item.dueMoney }}</td>
+                                <td><a :href="item.contractUrl">合同</a></td>
+                            </tr>
+                        </template>
+                        </tbody>
                     </table>
                     <!--无数据-->
-                    <div class="noProject">
+                    <div v-if="!isHasDatepi" class="noProject">
                         <p>
                             暂无还款中项目
                         </p>
                     </div>
-                    <div class="page"></div>
+                    <div class="page">
+                        <div class="col-sm-12 pagination">
+                            <div id="pageNum2"></div>
+                        </div>
+                    </div>
                 </div>
                 <div class="project-item">
                     <table class="gaven">
@@ -277,120 +133,33 @@
                             <th>查看</th>
                         </tr>
                         </thead>
-                        <tbody>
-                        <tr>
-                            <td>
-                                <a href="#">安心宝001期</a>
-                            </td>
-                            <td>2016/11/11 9:00:00</td>
-                            <td>1000.00</td>
-                            <td>3个月</td>
-                            <td>8%</td>
-                            <td>10100.00</td>
-                            <td>100.00</td>
-                            <td>2016/12/11 9:00:00</td>
-                            <td>合同</td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <a href="#">安心宝001期</a>
-                            </td>
-                            <td>2016/11/11 9:00:00</td>
-                            <td>1000.00</td>
-                            <td>3个月</td>
-                            <td>8%</td>
-                            <td>10100.00</td>
-                            <td>100.00</td>
-                            <td>2016/12/11 9:00:00</td>
-                            <td>合同</td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <a href="#">安心宝001期</a>
-                            </td>
-                            <td>2016/11/11 9:00:00</td>
-                            <td>1000.00</td>
-                            <td>3个月</td>
-                            <td>8%</td>
-                            <td>10100.00</td>
-                            <td>100.00</td>
-                            <td>2016/12/11 9:00:00</td>
-                            <td>合同</td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <a href="#">安心宝001期</a>
-                            </td>
-                            <td>2016/11/11 9:00:00</td>
-                            <td>1000.00</td>
-                            <td>3个月</td>
-                            <td>8%</td>
-                            <td>10100.00</td>
-                            <td>100.00</td>
-                            <td>2016/12/11 9:00:00</td>
-                            <td>合同</td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <a href="#">安心宝001期</a>
-                            </td>
-                            <td>2016/11/11 9:00:00</td>
-                            <td>1000.00</td>
-                            <td>3个月</td>
-                            <td>8%</td>
-                            <td>10100.00</td>
-                            <td>100.00</td>
-                            <td>2016/12/11 9:00:00</td>
-                            <td>合同</td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <a href="#">安心宝001期</a>
-                            </td>
-                            <td>2016/11/11 9:00:00</td>
-                            <td>1000.00</td>
-                            <td>3个月</td>
-                            <td>8%</td>
-                            <td>10100.00</td>
-                            <td>100.00</td>
-                            <td>2016/12/11 9:00:00</td>
-                            <td>合同</td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <a href="#">安心宝001期</a>
-                            </td>
-                            <td>2016/11/11 9:00:00</td>
-                            <td>1000.00</td>
-                            <td>3个月</td>
-                            <td>8%</td>
-                            <td>10100.00</td>
-                            <td>100.00</td>
-                            <td>2016/12/11 9:00:00</td>
-                            <td>合同</td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <a href="#">安心宝001期</a>
-                            </td>
-                            <td>2016/11/11 9:00:00</td>
-                            <td>1000.00</td>
-                            <td>3个月</td>
-                            <td>8%</td>
-                            <td>10100.00</td>
-                            <td>100.00</td>
-                            <td>2016/12/11 9:00:00</td>
-                            <td>合同</td>
-                        </tr>
+                        <tbody v-if="isHasDatepd">
+                        <template v-for="item in paymenteds">
+                            <tr>
+                                <td><a href="#">{{ item.bpName }}</a></td>
+                                <td>{{ item.createTime }}</td>
+                                <td>{{ item.money }}</td>
+                                <td>{{ item.periods }}</td>
+                                <td>{{ item.bpRate }}%</td>
+                                <td>{{ item.factMoeny }}</td>
+                                <td>{{ item.makeMoney }}</td>
+                                <td>{{ item.settleDate }}</td>
+                                <td><a :href="item.contractUrl">合同</a></td>
+                            </tr>
+                        </template>
                         </tbody>
                     </table>
                     <!--无数据-->
-                    <!--<div class="noProject">-->
-                    <!--<p>-->
-                    <!--暂无已还款项目-->
-                    <!--</p>-->
-                    <!--</div>-->
-                    <div class="page"></div>
+                    <div v-if="!isHasDatepd" class="noProject">
+                        <p>
+                            暂无还款中项目
+                        </p>
+                    </div>
+                    <div class="page">
+                        <div class="col-sm-12 pagination">
+                            <div id="pageNum3"></div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -399,5 +168,6 @@
 <!--内容 end-->
 #parse("common/footer.html")
 <script src="/content/script/user/sidebar.js"></script>
+<script src="/content/script/user/investrecord.js"></script>
 </body>
 </html>

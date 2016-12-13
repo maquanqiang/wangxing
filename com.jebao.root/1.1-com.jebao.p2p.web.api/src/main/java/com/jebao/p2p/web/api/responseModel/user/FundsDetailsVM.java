@@ -13,12 +13,6 @@ import java.util.Date;
  */
 public class FundsDetailsVM extends ViewModel {
     public FundsDetailsVM(TbFundsDetails entity){
-/*        this.serialNumber = entity.getFdSerialNumber();
-        this.serialTime = entity.getFdSerialTime();
-        this.serialTypeName = entity.getFdSerialTypeName();
-       // this.serialAmount = entity.getFdSerialAmount();
-        this.serialStatus = entity.getFdSerialStatus();
-      //  this.balanceStatus  = entity.getFdBalanceStatus();*/
         this.serialNumber = entity.getFdSerialNumber();
         this.serialTime = entity.getFdSerialTime();
         this.serialTypeName = entity.getFdSerialTypeName();
@@ -27,7 +21,7 @@ public class FundsDetailsVM extends ViewModel {
             this.expAmount = "";
         }else{
             this.incAmount = "";
-            this.expAmount = entity.getFdSerialAmount().toString();
+            this.expAmount = "-" + entity.getFdSerialAmount().toString();
         }
         this.serialStatus = entity.getFdSerialTypeName() + (entity.getFdSerialStatus() == 1 ? "成功" : "失败");
     }
