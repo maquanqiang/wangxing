@@ -32,13 +32,13 @@ public interface TbInvestInfoMapper {
 
     /**==================================================投资记录==================================================**/
 
-    List<InvestIng> selectInvestIngByLoginId(Long iiLoginId,@Param("pageWhere") PageWhere pageWhere);
+    List<InvestIng> selectInvestIngByLoginId(@Param("loginId") Long loginId,@Param("pageWhere") PageWhere pageWhere);
 
     int selectInvestIngByLoginIdForPageCount(Long iiLoginId);
 
-    List<InvestPaymented> selectInvestPaymentedByLoginId(Long iiLoginId,@Param("pageWhere") PageWhere pageWhere);
+    List<InvestPaymented> selectInvestPaymentedByLoginId(@Param("loginId") Long loginId,@Param("pageWhere") PageWhere pageWhere);
 
     int selectInvestPaymentedByLoginIdForPageCount(Long iiLoginId);
 
-    BigDecimal selectFreezeMoneyByLoginId(Long iiLoginId);
+    double selectFreezeMoneyByLoginId(Long iiLoginId);
 }

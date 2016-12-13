@@ -18,7 +18,7 @@ public class TbUserDetailsDao {
     @Autowired
     private TbUserDetailsMapper tbUserDetailsMapper;
 
-    public long insert(TbUserDetails record) {
+    public int insert(TbUserDetails record) {
         return tbUserDetailsMapper.insert(record);
     }
 

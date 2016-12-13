@@ -48,32 +48,30 @@
                             <th>交易状态</th>
                         </tr>
                         </thead>
-                        <tbody>
-                        <tr>
-                            <td>01091883841</td>
-                            <td>2016/11/11 9:00:00</td>
-                            <td>充值</td>
-                            <td class="red">+5000.00</td>
-                            <td></td>
-                            <td>充值成功</td>
-                        </tr>
-                        <tr>
-                            <td>01091883840</td>
-                            <td>2016/11/11 9:00:00</td>
-                            <td>提现</td>
-                            <td></td>
-                            <td class="green">-5000.00</td>
-                            <td>提现成功</td>
-                        </tr>
+                        <tbody v-if="isHasDate">
+                        <template v-for="item in fundsDetails">
+                            <tr>
+                                <td>{{ item.serialNumber }}</td>
+                                <td>{{ item.serialTime }}</td>
+                                <td>{{ item.serialTypeName }}</td>
+                                <td class="red">{{ item.incAmount }}</td>
+                                <td class="green">{{ item.expAmount }}</td>
+                                <td>{{ item.serialStatus }}</td>
+                            </tr>
+                        </template>
                         </tbody>
                     </table>
                     <!--无投资项目-->
-                    <div class="noProject">
+                    <div  v-if="!isHasDate" class="noProject">
                         <p>
                             暂无信息
                         </p>
                     </div>
-                    <div class="page"></div>
+                    <div class="page">
+                        <div class="col-sm-12 pagination">
+                            <div id="pageNum"></div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

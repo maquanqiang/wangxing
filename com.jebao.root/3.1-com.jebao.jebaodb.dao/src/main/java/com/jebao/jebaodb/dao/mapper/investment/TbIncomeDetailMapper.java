@@ -31,7 +31,7 @@ public interface TbIncomeDetailMapper {
     int selectGroupByConditionCount(@Param("record") RepaymentDetailSM record);
 
     /*==================================================账户总览统计==================================================*/
-    BigDecimal selectDueInMoneyByLoginId(@Param("record") TbIncomeDetail record);
+    double selectDueInMoneyByLoginId(@Param("record") TbIncomeDetail record);
 
-    BigDecimal selectIncomeMoneyByLoginId(long indLoginId);
+    double selectIncomeMoneyByLoginId(long indLoginId);
 }

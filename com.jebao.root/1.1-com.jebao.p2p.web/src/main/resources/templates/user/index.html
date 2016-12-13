@@ -33,27 +33,27 @@
             <div class="my-account-cont clearfix">
                 <ul class="fl">
                     <li>
-                        <p>累计收益：<span class="num">￥20000.00</span></p>
+                        <p>累计收益：<span class="num">￥{{ fundSum.incomeAmount }}</span></p>
                     </li>
                     <li>
-                        <p>总资产：<span>50000.00</span>元</p>
+                        <p>总资产：<span>{{ fundSum.totalAssets }}</span>元</p>
                     </li>
                     <li>
-                        <p>可用金额：<span>20000.00</span>元</p>
+                        <p>可用金额：<span>{{ fundSum.balance }}</span>元</p>
                     </li>
                     <li>
-                        <p>冻结金额：<span>20000.00</span>元</p>
+                        <p>冻结金额：<span>{{ fundSum.freezeAmount }}</span>元</p>
                     </li>
                     <li>
-                        <p>待收本金：<span>20000.00</span>元</p>
+                        <p>待收本金：<span>{{ fundSum.dueInPrincipal }}</span>元</p>
                     </li>
                     <li>
-                        <p>待收收益：<span>20000.00</span>元</p>
+                        <p>待收收益：<span>{{ fundSum.dueInIncome }}</span>元</p>
                     </li>
                 </ul>
                 <div class="my-account-btn fl">
-                    <a href="充值提现.html" class="rechange">充值</a>
-                    <a href="充值提现.html" class="expressive">提现</a>
+                    <a href="/user/chargewithdraw" class="rechange">充值</a>
+                    <a href="/user/chargewithdraw" class="expressive">提现</a>
                 </div>
             </div>
         </div>
@@ -66,13 +66,13 @@
                 </a>
             </li>
             <li>
-                <a href="充值提现.html">
+                <a href="/user/chargewithdraw">
                     <img src="${filePath}/images/account-recharge.png">
                     <p>充值</p>
                 </a>
             </li>
             <li>
-                <a href="#">
+                <a href="/user/chargewithdraw">
                     <img src="${filePath}/images/account-invest.png">
                     <p>提现</p>
                 </a>
@@ -90,7 +90,7 @@
                 <h4 class="active">投资中的项目</h4>
                 <h4>还款中的项目</h4>
                 <div class="project-more fr">
-                    <a href="投资记录.html">更多<i></i></a>
+                    <a href="/user/investrecord">更多<i></i></a>
                 </div>
             </div>
             <div class="project-list">
@@ -107,26 +107,16 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr>
-                            <td>
-                                <a href="#">安心宝001期</a>
-                            </td>
-                            <td>2016/11/11 9:00:00</td>
-                            <td>1000.00</td>
-                            <td>1个月</td>
-                            <td>80%</td>
-                            <td>8%</td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <a href="#">安心宝001期</a>
-                            </td>
-                            <td>2016/11/11 9:00:00</td>
-                            <td>1000.00</td>
-                            <td>1个月</td>
-                            <td>80%</td>
-                            <td>8%</td>
-                        </tr>
+                        <template v-for="item in investIngs">
+                            <tr>
+                                <td><a href="#">{{ item.bpName }}</a></td>
+                                <td>{{ item.createTime }}</td>
+                                <td>{{ item.money }}</td>
+                                <td>{{ item.periods }}</td>
+                                <td>{{ item.progress }}%</td>
+                                <td>{{ item.bpRate }}%</td>
+                            </tr>
+                        </template>
                         </tbody>
                     </table>
                 </div>
@@ -145,30 +135,20 @@
                         </tr>
                         </thead>
                         <tbody>
+                        <template v-for="item in paymentIngs">
                         <tr>
                             <td>
-                                <a href="#">安心宝001期</a>
+                                <a href="#">{{ item.bpName }}</a>
                             </td>
-                            <td>2016/11/11 9:00:00</td>
-                            <td>1000.00</td>
-                            <td>1个月</td>
-                            <td>8%</td>
-                            <td>2016/12/11 9:00:00</td>
-                            <td>100.00</td>
-                            <td>合同</td>
+                            <td>{{ item.createTime }}</td>
+                            <td>{{ item.money }}</td>
+                            <td>{{ item.periods }}</td>
+                            <td>{{ item.bpRate }}%</td>
+                            <td>{{ item.nextDueDate }}</td>
+                            <td>{{ item.dueMoney }}</td>
+                            <td><a :href="item.contractUrl">合同</a></td>
                         </tr>
-                        <tr>
-                            <td>
-                                <a href="#">安心宝001期</a>
-                            </td>
-                            <td>2016/11/11 9:00:00</td>
-                            <td>1000.00</td>
-                            <td>1个月</td>
-                            <td>8%</td>
-                            <td>2016/12/11 9:00:00</td>
-                            <td>100.00</td>
-                            <td>合同</td>
-                        </tr>
+                        </template>
                         </tbody>
                     </table>
                 </div>
@@ -179,7 +159,7 @@
             <div class="project-menu clearfix">
                 <h4>收支明细</h4>
                 <div class="project-more fr">
-                    <a href="收支明细.html">更多<i></i></a>
+                    <a href="/user/funds">更多<i></i></a>
                 </div>
             </div>
             <div class="income-detail-cont">
@@ -195,22 +175,16 @@
                     </tr>
                     </thead>
                     <tbody>
+                    <template v-for="item in fundsDetails">
                     <tr>
-                        <td>01091883840</td>
-                        <td>2016/11/11 9:00:00</td>
-                        <td>充值</td>
-                        <td class="red">+5000.00</td>
-                        <td></td>
-                        <td>充值成功</td>
+                        <td>{{ item.serialNumber }}</td>
+                        <td>{{ item.serialTime }}</td>
+                        <td>{{ item.serialTypeName }}</td>
+                        <td class="red">{{ item.incAmount }}</td>
+                        <td>{{ item.expAmount }}</td>
+                        <td>{{ item.serialStatus }}</td>
                     </tr>
-                    <tr>
-                        <td>01091883841</td>
-                        <td>2016/11/11 9:00:00</td>
-                        <td>充值</td>
-                        <td></td>
-                        <td class="green">-2000.00</td>
-                        <td>提现成功</td>
-                    </tr>
+                    </template>
                     </tbody>
                 </table>
             </div>
@@ -219,6 +193,7 @@
 </div>
 #parse("common/footer.html")
 <script src="/content/script/user/sidebar.js"></script>
+<script src="/content/script/user/index.js"></script>
 </body>
 
 </html>

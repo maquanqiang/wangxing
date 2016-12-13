@@ -7,16 +7,16 @@ var model = {
     //查询条件
     searchObj: {},
     //收支明细列表
-    fundsDetails:[]
+    fundsDetails:[],
+    isHasDate:false
 };
 
 // 创建一个 Vue 实例 (ViewModel),它连接 View 与 Model
 var vm = new Vue({
-    el: ".project",
+    el: ".account-main",
     data: model,
     beforeCreate:function(){
         //初始化本地数据
-        model.searchObj=$("#search_form").serializeObject();
         model.searchObj.pageIndex=0;
         model.searchObj.pageSize=10;
     },
@@ -26,13 +26,16 @@ var vm = new Vue({
     },
     //方法，可用于绑定事件或直接调用
     methods: {
-        search:function(event) {
-            if (typeof event !== "undefined") { //点击查询按钮的话，是查询第一页数据
-                model.searchObj.pageIndex = 0;
-            }
+        search:function() {
             $.get("/api/funds/details",model.searchObj,function(response){
                 if (response.success_is_ok){
                     vm.fundsDetails=response.data;
+                    if(response.data == null || response.count == 0){
+                        vm.isHasDate = false;
+                    }else{
+                        vm.isHasDate = true;
+                    }
+                    console.log(response.data);
                     var pageCount = Math.ceil(response.count / model.searchObj.pageSize);
                     if (pageCount > 0){
                         //调用分页

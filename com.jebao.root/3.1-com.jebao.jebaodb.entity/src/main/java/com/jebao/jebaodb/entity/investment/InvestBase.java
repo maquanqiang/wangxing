@@ -7,6 +7,9 @@ import java.util.Date;
  * Created by Administrator on 2016/12/9.
  */
 public class InvestBase {
+    //标的ID
+    private Long bpId;
+
     //标的名称
     private String bpName;
 
@@ -60,5 +63,13 @@ public class InvestBase {
 
     public void setBpRate(BigDecimal bpRate) {
         this.bpRate = bpRate;
+    }
+
+    public Long getBpId() {
+        return bpId;
+    }
+
+    public void setBpId(Long bpId) {
+        this.bpId = bpId;
     }
 }

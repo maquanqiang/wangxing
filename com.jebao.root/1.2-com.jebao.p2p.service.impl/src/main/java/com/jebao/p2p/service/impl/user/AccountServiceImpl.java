@@ -64,8 +64,9 @@ public class AccountServiceImpl implements IAccountServiceInf {
         loginModel.setLiPassword(new EncryptUtil().encryptToMD5(password));
         loginModel.setLiCreateTime(new Date());
         loginModel.setLiIsDel(1);//是否有效,1有效 2无效
-        long userId = loginInfoDao.insert(loginModel);
-        if (userId>0){
+        int insertCount = loginInfoDao.insert(loginModel);
+        if (insertCount>0){
+            long userId = loginModel.getLiId();
             //region 创建用户详情信息
             TbUserDetails detailsModel = new TbUserDetails();
             detailsModel.setUdLoginId(userId);//用户id，登录表id

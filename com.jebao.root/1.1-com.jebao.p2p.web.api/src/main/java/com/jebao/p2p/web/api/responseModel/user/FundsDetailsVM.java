@@ -16,9 +16,14 @@ public class FundsDetailsVM extends ViewModel {
         this.serialNumber = entity.getFdSerialNumber();
         this.serialTime = entity.getFdSerialTime();
         this.serialTypeName = entity.getFdSerialTypeName();
-        this.serialAmount = entity.getFdSerialAmount();
-        this.serialStatus = entity.getFdSerialStatus();
-        this.balanceStatus  = entity.getFdBalanceStatus();
+        if(entity.getFdBalanceStatus() == 1){
+            this.incAmount = "+" + entity.getFdSerialAmount().toString();
+            this.expAmount = "";
+        }else{
+            this.incAmount = "";
+            this.expAmount = "-" + entity.getFdSerialAmount().toString();
+        }
+        this.serialStatus = entity.getFdSerialTypeName() + (entity.getFdSerialStatus() == 1 ? "成功" : "失败");
     }
     //交易流水号
     private String serialNumber;
@@ -30,14 +35,14 @@ public class FundsDetailsVM extends ViewModel {
     //交易类型
     private String serialTypeName;
 
-    //交易金额
-    private BigDecimal serialAmount;
+    //收入金额
+    private String incAmount;
 
-    //收支状态 1 收入 2支出
-    private int balanceStatus;
+    //支出金额
+    private String expAmount;
 
     //交易状态
-    private int serialStatus;
+    private String serialStatus;
 
     public String getSerialNumber() {
         return serialNumber;
@@ -63,27 +68,27 @@ public class FundsDetailsVM extends ViewModel {
         this.serialTypeName = serialTypeName;
     }
 
-    public BigDecimal getSerialAmount() {
-        return serialAmount;
+    public String getIncAmount() {
+        return incAmount;
     }
 
-    public void setSerialAmount(BigDecimal serialAmount) {
-        this.serialAmount = serialAmount;
+    public void setIncAmount(String incAmount) {
+        this.incAmount = incAmount;
     }
 
-    public int getSerialStatus() {
+    public String getExpAmount() {
+        return expAmount;
+    }
+
+    public void setExpAmount(String expAmount) {
+        this.expAmount = expAmount;
+    }
+
+    public String getSerialStatus() {
         return serialStatus;
     }
 
-    public void setSerialStatus(int serialStatus) {
+    public void setSerialStatus(String serialStatus) {
         this.serialStatus = serialStatus;
-    }
-
-    public int getBalanceStatus() {
-        return balanceStatus;
-    }
-
-    public void setBalanceStatus(int balanceStatus) {
-        this.balanceStatus = balanceStatus;
     }
 }

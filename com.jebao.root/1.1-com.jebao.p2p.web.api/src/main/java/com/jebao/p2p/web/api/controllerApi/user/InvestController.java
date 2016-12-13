@@ -38,15 +38,17 @@ public class InvestController extends _BaseController {
 
     /**
      * 账户总览-资金统计
+     *
      * @return
      */
     @RequestMapping(value = "statistics", method = RequestMethod.GET)
     @ResponseBody
-    public JsonResult statistics(){
+    public JsonResult statistics() {
         CurrentUser currentUser = CurrentUserContextHolder.get();
-        if(currentUser != null){
+        if (currentUser == null) {
             return new JsonResultData<>(null);
         }
+
         InvestStatistics investStatistics = investService.getInvestStatisticsByLoginId(currentUser.getId());
         InvestStatisticsVM viewModel = new InvestStatisticsVM(investStatistics);
         return new JsonResultData<>(viewModel);
@@ -54,49 +56,51 @@ public class InvestController extends _BaseController {
 
     /**
      * 账户总览-投资中,还款中的项目
+     *
      * @return
      */
     @RequestMapping(value = "list", method = RequestMethod.GET)
     @ResponseBody
-    public JsonResult list(int freezeStatus){
+    public JsonResult list(int freezeStatus) {
         CurrentUser currentUser = CurrentUserContextHolder.get();
-        if(currentUser != null){
+        if (currentUser == null) {
             return new JsonResultList<>(null);
         }
 
-        PageWhere page = new PageWhere(0,2);
-        if(freezeStatus == 1){//投资中
-            List<InvestIng> investIngList = investService.selectInvestIngByLoginId(currentUser.getId(),page);
+        PageWhere page = new PageWhere(0, 2);
+        if (freezeStatus == 1) {//投资中
+            List<InvestIng> investIngList = investService.selectInvestIngByLoginId(currentUser.getId(), page);
             List<InvestIngVM> viewModelList = new ArrayList<>();
             investIngList.forEach(o -> viewModelList.add(new InvestIngVM(o)));
-            return new JsonResultList<>(viewModelList, 2);
-        }else{//还款中
+            return new JsonResultList<>(viewModelList);
+        } else {//还款中
             List<InvestPaymentIng> ipiList = investService.selectInvestPaymentIngByLoginId(currentUser.getId(), page);
 
             List<InvestPaymentIngVM> vmList = new ArrayList<>();
             ipiList.forEach(o -> vmList.add(new InvestPaymentIngVM(o)));
-            return new JsonResultList<>(vmList, 2);
+            return new JsonResultList<>(vmList);
         }
     }
 
     /**
      * 投资记录
+     *
      * @return
      */
     @RequestMapping(value = "record", method = RequestMethod.GET)
     @ResponseBody
-    public JsonResult record(InvestSM model){
+    public JsonResult record(InvestSM model) {
         if (model == null) {
             return new JsonResultList<>(null);
         }
         CurrentUser currentUser = CurrentUserContextHolder.get();
-        if(currentUser != null){
+        if (currentUser == null) {
             return new JsonResultList<>(null);
         }
 
         PageWhere page = new PageWhere(model.getPageIndex(), model.getPageSize());
-        if(model.getFreezeStatus() == 1) {//投资中
-            List<InvestIng> investIngList = investService.selectInvestIngByLoginId(currentUser.getId(),page);
+        if (model.getFreezeStatus() == 1) {//投资中
+            List<InvestIng> investIngList = investService.selectInvestIngByLoginId(currentUser.getId(), page);
 
             List<InvestIngVM> viewModelList = new ArrayList<>();
             investIngList.forEach(o -> viewModelList.add(new InvestIngVM(o)));
@@ -105,7 +109,7 @@ public class InvestController extends _BaseController {
                 count = investService.selectInvestIngByLoginIdForPageCount(currentUser.getId());
             }
             return new JsonResultList<>(viewModelList, count);
-        }else if(model.getFreezeStatus() == 2){//还款中
+        } else if (model.getFreezeStatus() == 2) {//还款中
             List<InvestPaymentIng> ipiList = investService.selectInvestPaymentIngByLoginId(currentUser.getId(), page);
 
             List<InvestPaymentIngVM> vmlList = new ArrayList<>();
@@ -115,7 +119,7 @@ public class InvestController extends _BaseController {
                 count = investService.selectInvestPaymentIngByLoginIdForPageCount(currentUser.getId());
             }
             return new JsonResultList<>(vmlList, count);
-        }else{//已还款
+        } else {//已还款
             List<InvestPaymented> ipdList = investService.selectInvestPaymentedByLoginId(currentUser.getId(), page);
 
             List<InvestPaymentedVM> vmlList = new ArrayList<>();
