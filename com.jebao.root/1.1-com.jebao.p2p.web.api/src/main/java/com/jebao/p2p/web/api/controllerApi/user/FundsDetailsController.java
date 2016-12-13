@@ -44,7 +44,7 @@ public class FundsDetailsController extends _BaseController {
         List<TbFundsDetails> fdList = fundsDetailsService.selectFundsDetailsByLoginIdForPage(currentUser.getId(), page);
         List<FundsDetailsVM> viewModelList = new ArrayList<>();
         fdList.forEach(o -> viewModelList.add(new FundsDetailsVM(o)));
-        return new JsonResultList<>(viewModelList, 2);
+        return new JsonResultList<>(viewModelList);
     }
 
     /**

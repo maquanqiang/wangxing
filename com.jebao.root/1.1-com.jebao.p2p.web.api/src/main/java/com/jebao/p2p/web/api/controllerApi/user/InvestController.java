@@ -43,11 +43,12 @@ public class InvestController extends _BaseController {
     @RequestMapping(value = "statistics", method = RequestMethod.GET)
     @ResponseBody
     public JsonResult statistics(){
-        CurrentUser currentUser = CurrentUserContextHolder.get();
+/*        CurrentUser currentUser = CurrentUserContextHolder.get();
         if(currentUser != null){
             return new JsonResultData<>(null);
-        }
-        InvestStatistics investStatistics = investService.getInvestStatisticsByLoginId(currentUser.getId());
+        }*/
+
+        InvestStatistics investStatistics = investService.getInvestStatisticsByLoginId(1l);
         InvestStatisticsVM viewModel = new InvestStatisticsVM(investStatistics);
         return new JsonResultData<>(viewModel);
     }
@@ -59,23 +60,23 @@ public class InvestController extends _BaseController {
     @RequestMapping(value = "list", method = RequestMethod.GET)
     @ResponseBody
     public JsonResult list(int freezeStatus){
-        CurrentUser currentUser = CurrentUserContextHolder.get();
+/*        CurrentUser currentUser = CurrentUserContextHolder.get();
         if(currentUser != null){
             return new JsonResultList<>(null);
-        }
+        }*/
 
         PageWhere page = new PageWhere(0,2);
         if(freezeStatus == 1){//投资中
-            List<InvestIng> investIngList = investService.selectInvestIngByLoginId(currentUser.getId(),page);
+            List<InvestIng> investIngList = investService.selectInvestIngByLoginId(1l,page);
             List<InvestIngVM> viewModelList = new ArrayList<>();
             investIngList.forEach(o -> viewModelList.add(new InvestIngVM(o)));
-            return new JsonResultList<>(viewModelList, 2);
+            return new JsonResultList<>(viewModelList);
         }else{//还款中
-            List<InvestPaymentIng> ipiList = investService.selectInvestPaymentIngByLoginId(currentUser.getId(), page);
+            List<InvestPaymentIng> ipiList = investService.selectInvestPaymentIngByLoginId(1l, page);
 
             List<InvestPaymentIngVM> vmList = new ArrayList<>();
             ipiList.forEach(o -> vmList.add(new InvestPaymentIngVM(o)));
-            return new JsonResultList<>(vmList, 2);
+            return new JsonResultList<>(vmList);
         }
     }
 

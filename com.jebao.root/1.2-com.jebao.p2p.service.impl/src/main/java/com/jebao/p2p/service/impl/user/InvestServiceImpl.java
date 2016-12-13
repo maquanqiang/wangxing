@@ -38,14 +38,12 @@ public class InvestServiceImpl implements IInvestServiceInf {
         BigDecimal dueInPrincipal = tbIncomeDetailDao.selectDueInMoneyByLoginId(loginId, 1);
         BigDecimal dueInIncome = tbIncomeDetailDao.selectDueInMoneyByLoginId(loginId, 2);
         BigDecimal totalAssets = new BigDecimal(0);
-        totalAssets.add(balance).add(freeze).add(dueInPrincipal).add(dueInIncome);
-
+        model.setTotalAssets(totalAssets.add(balance).add(freeze).add(dueInPrincipal).add(dueInIncome));
         model.setBalance(balance);
         model.setDueInIncome(dueInIncome);
         model.setDueInPrincipal(dueInPrincipal);
         model.setFreezeAmount(freeze);
         model.setIncomeAmount(income);
-        model.setTotalAssets(totalAssets);
         return model;
     }
 
