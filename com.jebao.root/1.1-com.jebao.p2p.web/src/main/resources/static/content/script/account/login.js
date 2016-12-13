@@ -40,7 +40,8 @@ $(document).ready(function () {
                 if (response.success_is_ok) {
                     var code = response.msg;
                     var redirectUrl = common.getUrlParam("redirectUrl") || "/";
-                    window.location.href = "/account/token?code="+code+"&redirectUrl"+redirectUrl;
+                    //window.location.href = "/account/token?code="+code+"&redirectUrl"+redirectUrl;
+                    window.location.href=redirectUrl;
                     return;
                 } else {
                     $errorPlace.removeClass("hidden").find("span").html(response.msg);
