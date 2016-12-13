@@ -313,6 +313,16 @@
         <include refid="selectByCondition_Where_Clause" />
     </select>
 
+    <select id="investTotal" parameterType="java.lang.Long" resultType="java.math.BigDecimal">
+          SELECT
+              sum(ii_money)
+            FROM
+            tb_invest_info
+            WHERE ii_bp_id = #{iiBpId,jdbcType=BIGINT}
+              AND ii_is_del = 1
+
+    </select>
+
     <!--==================================================投资记录==================================================-->
     <resultMap id="InvestIngResultMap" type="com.jebao.jebaodb.entity.investment.InvestIng">
         <result column="bp_name" property="bpName" jdbcType="VARCHAR"/>

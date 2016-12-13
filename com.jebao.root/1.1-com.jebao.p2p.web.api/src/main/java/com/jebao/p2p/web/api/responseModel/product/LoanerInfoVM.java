@@ -16,8 +16,10 @@ public class LoanerInfoVM extends ViewModel {
         this.lLoginId = entity.getlLoginId();
         this.lNickName = entity.getlNickName();
         this.lPhone = entity.getlPhone();
-        this.lTrueName = entity.getlTrueName().replace(entity.getlTrueName().substring(1, entity.getlTrueName().length()), "**");
-        this.lIdNumber = entity.getlIdNumber().replace(entity.getlIdNumber().substring(6, entity.getlIdNumber().length()), "********");
+        String trueName = entity.getlTrueName().substring(0,1);
+        String lIdNumber = entity.getlIdNumber().substring(0,6);
+        this.lTrueName = trueName +"**";
+        this.lIdNumber = lIdNumber + "********";
         this.lEmail = entity.getlEmail();
         this.lSex = entity.getlSex();
         this.lAge = entity.getlAge();
