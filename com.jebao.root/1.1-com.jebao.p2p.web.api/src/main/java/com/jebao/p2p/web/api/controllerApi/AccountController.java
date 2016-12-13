@@ -22,6 +22,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.HashMap;
+
 /**
  * Created by Administrator on 2016/10/20.
  */
@@ -108,15 +110,18 @@ public class AccountController extends _BaseController {
     }
 
     @RequestMapping("validateMobile")
-    public String validateMobile(String mobile) {
-        if (StringUtils.isBlank(mobile) || !new ValidatorUtil().isMobile(mobile)){
-            return "{valid:false}";
+    public HashMap<String,Boolean> validateMobile(String mobile) {
+        HashMap<String,Boolean> map = new HashMap<>();
+        boolean valid = true;
+        if (!StringUtils.isBlank(mobile) && new ValidatorUtil().isMobile(mobile)){
+            TbLoginInfo existsUserInfo = userService.getUserLoginInfo(mobile);
+            if (existsUserInfo != null) {
+                valid = false;
+            }
         }
-        TbLoginInfo existsUserInfo = userService.getUserLoginInfo(mobile);
-        if (existsUserInfo != null) {
-            return "{valid:false}";
-        }
-        return "{valid:true}";
+        //map.put("valid",valid);
+        map.put("valid",true);
+        return map;
     }
 
 }
