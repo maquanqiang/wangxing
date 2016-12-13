@@ -17,7 +17,7 @@ public class TbLoginInfoDao {
     @Autowired
     private TbLoginInfoMapper tbLoginInfoMapper;
 
-    public long insert(TbLoginInfo record) {
+    public int insert(TbLoginInfo record) {
         return tbLoginInfoMapper.insert(record);
     }
     public int insertSelective(TbLoginInfo record) {

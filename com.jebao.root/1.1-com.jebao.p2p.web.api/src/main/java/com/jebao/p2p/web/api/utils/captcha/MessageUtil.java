@@ -49,7 +49,7 @@ public class MessageUtil {
             }
         }
 
-        String verifyCode = generateVerifyCode(4); //生成短信验证码
+        String verifyCode = generateVerifyCode(6); //生成短信验证码
         SmsSendUtil.sendVerifyCode(mobile,verifyCode); //发送短信验证码
         //设置/更新 redis
         if (mobileRedisValue == null){
@@ -90,14 +90,23 @@ public class MessageUtil {
     }
 
     /**
+     * 获取短信验证码
+     * @param mobile 目标手机号
+     * @return 短信验证码
+     */
+    public String getVerifyCode(String mobile){
+        MessageRedisValue redisValue = getRedis(mobile);
+        return redisValue == null ? "":redisValue.getVerifyCode();
+    }
+    /**
      * 校验短信验证码
      * @param mobile 目标手机号码
      * @param code 用户输入验证码
      * @return 是否正确
      */
     public boolean isValidCode(String mobile,String code){
-        MessageRedisValue redisValue = getRedis(mobile);
-        return redisValue !=null && !StringUtils.isBlank(redisValue.getVerifyCode()) && redisValue.getVerifyCode().equalsIgnoreCase(code);
+        String redisVerifyCode = getVerifyCode(mobile);
+        return !StringUtils.isBlank(redisVerifyCode) && redisVerifyCode.equalsIgnoreCase(code);
     }
 
     public String generateVerifyCode(int length){
@@ -121,45 +130,6 @@ public class MessageUtil {
     private String getRedisKey(String simpleKey)
     {
         return Constants.CAPTCHA_TOKEN_CACHE_NAME+simpleKey;
-    }
-
-    public class MessageRedisValue{
-        /**
-         * 验证码
-         */
-        private String verifyCode;
-        /**
-         * 该手机号已发送次数
-         */
-        private int sendNumber;
-        /**
-         * 上一次短信验证码发送时间
-         */
-        private LocalDateTime lastSendTime;
-
-        public String getVerifyCode() {
-            return verifyCode;
-        }
-
-        public void setVerifyCode(String verifyCode) {
-            this.verifyCode = verifyCode;
-        }
-
-        public int getSendNumber() {
-            return sendNumber;
-        }
-
-        public void setSendNumber(int sendNumber) {
-            this.sendNumber = sendNumber;
-        }
-
-        public LocalDateTime getLastSendTime() {
-            return lastSendTime;
-        }
-
-        public void setLastSendTime(LocalDateTime lastSendTime) {
-            this.lastSendTime = lastSendTime;
-        }
     }
 
 }

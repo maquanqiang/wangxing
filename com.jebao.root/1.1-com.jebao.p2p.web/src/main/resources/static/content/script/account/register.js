@@ -8,10 +8,10 @@ $(".verification").click(function () {
 
 var model = {
     form: {},
-    codeDisabled:false,
-    error:{
-        hasError:false,
-        message:"错误消息显示"
+    codeDisabled: false,
+    error: {
+        hasError: false,
+        message: "错误消息显示"
     }
 };
 var vm = new Vue({
@@ -22,14 +22,14 @@ var vm = new Vue({
         model.form = $("#registerForm").serializeObject();
         model.form.agree = false;
         var invitationCode = common.getUrlParam("code");
-        if (invitationCode){
+        if (invitationCode) {
             model.form.invitationCode = invitationCode;
             model.codeDisabled = true;
         }
         //测试信息
-        model.form.mobile="18600575242";
-        model.form.password="a123456";
-        model.form.passwordAgain= model.form.password;
+        model.form.mobile = "18600575242";
+        model.form.password = "a123456";
+        model.form.passwordAgain = model.form.password;
     },
     mounted: function () {
         //前端写的代码
@@ -56,39 +56,49 @@ var vm = new Vue({
                 return false;
             }
             var $validator = $target.closest("form").data('bootstrapValidator');
-            var validateFieldsObject = $validator.options.fields;//validateFields
-            var isValid = true;
-            for(var key in validateFieldsObject){
-                if (key != "messageCode"){
-                    if (!$validator.isValidField(key)){
-                        $validator.validateField(key);
-                        isValid = false;
-                    }
-                }
+            var disableFileds = ["messageCode", "agree"];
+            $.each(disableFileds, function (i, o) {
+                $validator.enableFieldValidators(o, false);//暂时禁用短信验证码字段的验证
+            });
+
+            var isValid = false;
+            if (!(isValid = $validator.isValid())) {
+                $validator.validate();
             }
-            if (!isValid){
+            $.each(disableFileds, function (i, o) {
+                $validator.enableFieldValidators(o, true);//暂时禁用短信验证码字段的验证
+            });
+            if (!isValid) {
                 return false;
             }
             $target.addClass("disabled");
             var initVal = $target.val();
-            var leftSeconds = 90;
-            var sendTimerInterval = setInterval(function () {
-                leftSeconds--;
-                if (leftSeconds === 0) {
-                    clearInterval(sendTimerInterval);
-                    $target.removeClass("disabled").val(initVal);
-                } else {
-                    $target.val(leftSeconds + ' s后可重发');
-                }
-            }, 1000);
-            $.post("/api/account/sendMessage",{mobile:model.form.mobile,imgCode:model.form.imgCode},function(response){
+            $target.val("短信发送中...");
+            $.post("/api/account/sendMessage", {
+                mobile: model.form.mobile,
+                imgCode: model.form.imgCode
+            }, function (response) {
                 if (response.success_is_ok) {
-
+                    var leftSeconds = 90;
+                    var sendTimerInterval = setInterval(function () {
+                        leftSeconds--;
+                        if (leftSeconds === 0) {
+                            clearInterval(sendTimerInterval);
+                            $target.removeClass("disabled").val(initVal);
+                        } else {
+                            $target.val(leftSeconds + ' s后可重发');
+                        }
+                    }, 1000);
                 } else {
-                    model.error.hasError=true;
-                    model.error.message=response.error;
+                    $target.removeClass("disabled").val(initVal);
+                    if (response.code == 1001) {
+                        $validator.updateStatus("imgCode", "INVALID", "notEmpty");
+                    } else {
+                        model.error.hasError = true;
+                        model.error.message = response.error;
+                    }
                 }
-            },"json");
+            }, "json");
         },
         initValidateForm: function () {
             $('#registerForm').bootstrapValidator({
@@ -135,14 +145,21 @@ var vm = new Vue({
                     imgCode: {
                         validators: {
                             notEmpty: {
-                                message: '图形验证码不能为空'
+                                message: '图形验证码错误'
                             }
                         }
                     },
-                    messageCode:{
+                    messageCode: {
                         validators: {
                             notEmpty: {
-                                message: '短信验证码不能为空'
+                                message: '短信验证码错误'
+                            }
+                        }
+                    },
+                    agree: {
+                        validators: {
+                            notEmpty: {
+                                message: '您必须同意服务协议'
                             }
                         }
                     }
@@ -160,8 +177,14 @@ var vm = new Vue({
                         window.location.href = "/account/login";
                         return;
                     } else {
-                        model.error.hasError=true;
-                        model.error.message=response.error;
+                        if (response.code == 1001) {
+                            $form.data('bootstrapValidator').updateStatus("imgCode", "INVALID", "notEmpty");
+                        } else if (response.code == 1002) {
+                            $form.data('bootstrapValidator').updateStatus("messageCode", "INVALID", "notEmpty");
+                        } else {
+                            model.error.hasError = true;
+                            model.error.message = response.error;
+                        }
                     }
                 }, "json");
             });

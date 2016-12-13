@@ -17,7 +17,7 @@ public class SmsUtil {
    // public static String testVerifyCode = "";//是否为测试环境验证码 111111
     private static String sn = "SDK-BBX-010-23608";//商户帐号
     private static String pwd = "9dA-88b8";//商户密码
-    public static String smsVerifyCodeTemp = "您的验证码${code}，请在页面中输入以完成验证。如有问题请致电${phone}客服热线或联系在线客服。【${subject}】";
+    public static String smsVerifyCodeTemp = "您的验证码：${code}，请在页面中输入以完成验证。如有问题请致电${phone}客服热线或联系在线客服。【${subject}】";
     public static String smsBidTemp = "您已成功投标项目:${projName}${code}元，有问题请致电${phone4}【${subject}】";
     public static String subject = "金额宝";
     public static String serviceTel = "4008-707-701";//客服电话
