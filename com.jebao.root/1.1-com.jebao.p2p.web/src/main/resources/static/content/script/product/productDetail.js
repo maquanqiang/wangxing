@@ -21,7 +21,6 @@ $(function () {
         var interest = parseInt(($(this).val())*time*(model.product.bpRate)/100/365);
         $('.money-income').html(interest);
     });
-
 });
 
 
@@ -59,9 +58,11 @@ var vm = new Vue({
             var form = {
                 bpId:$("#bpId").val()
             }
+            //product
             $.post(common.apiOrigin+$("#defaultForm").attr("action"), form, function (response) {
                 if (response.success_is_ok) {
                     vm.product = response.data;
+                    //loanerInfo
                     $.post(common.apiOrigin+"/api/product/loanerInfo", {lid:vm.product.bpLoanerId}, function (response) {
                         if (response.success_is_ok) {
                             vm.loanerInfo = response.data;
@@ -69,24 +70,54 @@ var vm = new Vue({
                     });
                 }
             });
+            //riskDataList
             $.post(common.apiOrigin+"/api/product/riskListByBpId", form, function (response) {
                 if (response.success_is_ok) {
                     vm.riskDataList = response.data;
                 }
             });
+            //investInfoList
             $.post(common.apiOrigin+"/api/product/investInfoByBpId", form, function (response) {
                 if (response.success_is_ok) {
                     vm.investInfoList = response.data;
                 }
             });
+            //incomeDetailList
             $.post(common.apiOrigin+"/api/product/incomeDetailByBpId", form, function (response) {
                 if (response.success_is_ok) {
                     vm.incomeDetailList = response.data;
                 }
             });
         },
-        investBtn: function (id) {
-            window.location.href = "/bidplan/addplan/" + id
+        investBtn: function () {
+            var investMoney = $("#investMoney").val().trim() * 1;
+            if(investMoney > 0){
+                if((investMoney-vm.product.bpStartMoney)>=0){
+                    if((investMoney-vm.product.bpStartMoney) % vm.product.bpRiseMoney !=0){
+                        layer.msg("投资金额不符合递增规则");
+                        $("#investMoney").focus();
+                        return;
+                    }
+                }else{
+                    layer.msg("投资金额小于起投金额"+vm.product.bpStartMoney+"元")
+                    $("#investMoney").focus();
+                    return;
+                }
+            }else{
+                layer.msg("投资金额输入有误");
+                $("#investMoney").focus();
+                return;
+            }
+
+
+            var form = {bpId:$("#bpId").val(), investMoney:$("#investMoney").val().trim()}
+            $.post(common.apiOrigin+"/api/product/investBid", form, function (response) {
+                if (response.success_is_ok) {
+                    layer.alert(response.msg);
+                }else{
+                    layer.alert(response.error);
+                }
+            });
         }
     }
 });

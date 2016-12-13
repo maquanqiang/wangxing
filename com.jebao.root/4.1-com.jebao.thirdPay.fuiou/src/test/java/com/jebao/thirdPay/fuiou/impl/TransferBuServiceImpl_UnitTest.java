@@ -12,8 +12,6 @@ public class TransferBuServiceImpl_UnitTest {
     @Test
     public void Test() throws Exception {
         TransferBuRequest reqData=new TransferBuRequest();
-        reqData.setMchnt_cd("0002900F0041077");
-        reqData.setMchnt_txn_ssn("96f14200a794dbcc91cad69b50ef05");
         reqData.setOut_cust_no("13678424821");
         reqData.setIn_cust_no("13678424822");
         reqData.setAmt("10000");
@@ -22,7 +20,7 @@ public class TransferBuServiceImpl_UnitTest {
         //
         String httpUrl = "https://jzh-test.fuiou.com/jzh/transferBu.action";
         TransferBuServiceImpl transferBuService = new TransferBuServiceImpl();
-        TransferBuResponse result = transferBuService.post(httpUrl,reqData);
+        TransferBuResponse result = transferBuService.post(reqData);
         if(result!=null)
         {
             PrintUtil.printLn("[划拨(个人与个人之间)]-测试通过");

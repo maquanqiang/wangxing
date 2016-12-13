@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="${filePath}/js/plugins/lightbox2/css/lightbox.css">
 
 </head>
-
+#set($_loginUser_header_=$LoginUserTool.getUser())
 <body>
 <!-- 顶部登录信息 -->
 #parse("common/header.html")
@@ -65,21 +65,31 @@
         <div class="plan-investment fr">
             <form>
                 <p class="plan-money">可投金额：<span>{{product.bpSurplusMoney}}元</span></p>
-
-                <p class="plan-money">可用金额：<span>1000.00---元</span></p>
-
+                #if($_loginUser_header_.isLogin)
+                <p class="plan-money">可用金额：<span>10000---元</span></p>
+                #else
+                <p class="plan-money">可用金额：<span>---元</span><span><a href="/account/login">登录</a>查看</span></p>
+                #end
                 <div class="plan-tip">{{product.bpStartMoney}}元起投，{{product.bpRiseMoney}}元递增</div>
                 <div class="spinner">
-                    <input type="text" value="" :placeholder="product.bpStartMoney+'元起投，'+product.bpRiseMoney+'元递增'"
+                    <input type="text" id="investMoney" name="investMoney" :placeholder="product.bpStartMoney+'元起投，'+product.bpRiseMoney+'元递增'"
                            class="entry-num">
 
                     <div class="plan-unit">元</div>
                 </div>
                 <div class="plan-explain clearfix">
                     <p>投资<i class="money-num">0</i>元，预期收益<span><i class="money-income">0</i>元</span></p>
-                    <a href="充值提现.html">充值</a>
+                    #if($_loginUser_header_.isLogin)
+                    <a href="javascript:;" @click="">充值</a>
+                    #else
+                    <a href="/account/login">充值</a>
+                    #end
                 </div>
-                <a href="#" class="plan-btn">立即投资</a>
+                #if($_loginUser_header_.isLogin)
+                <a href="javascript:;" class="plan-btn" @click="investBtn">立即投资</a>
+                #else
+                <a href="/account/login" class="plan-btn">立即投资</a>
+                #end
             </form>
         </div>
     </div>
@@ -90,10 +100,7 @@
         </div>
         <div class="file-img">
             <!--遮罩图片-->
-            <div class="img-shadow">
-            <img src="${filePath}/images/project-bg.jpg" class="img-shadow">
-            <p>您还没有登录<a href="登录.html">立即登录</a>后可查看认证图片</p>
-            </div>
+            #if($_loginUser_header_.isLogin)
             <div class="swiper-container">
                 <div class="swiper-wrapper">
                     <div class="swiper-slide" v-for="data in riskDataList">
@@ -102,6 +109,12 @@
                     </div>
                 </div>
             </div>
+            #else
+            <div class="img-shadow">
+                <img src="${filePath}/images/project-bg.jpg" class="img-shadow">
+                <p>您还没有登录<a href="/account/login">立即登录</a>后可查看认证图片</p>
+            </div>
+            #end
             <!-- 如果需要导航按钮 -->
             <a href="javascript:;" class="prev btn swiper-button-prev" style="background-size: 70%;"></a>
             <a href="javascript:;" class="next btn swiper-button-next" style="background-size: 70%;"></a>
@@ -230,9 +243,8 @@
 <!--内容 end-->
 #parse("common/footer.html")
 <!--layerPage-->
-<script src="${filePath}/js/plugins/laypage/laypage.js"></script>
-<script src="${filePath}/js/lib/swiper.min.js"></script>
 <script src="${filePath}/js/plugins/lightbox2/js/lightbox-plus-jquery.min.js"></script>
+<script src="${filePath}/js/lib/swiper.min.js"></script>
 <script src="/content/script/product/productDetail.js"></script>
 </body>
 </html>

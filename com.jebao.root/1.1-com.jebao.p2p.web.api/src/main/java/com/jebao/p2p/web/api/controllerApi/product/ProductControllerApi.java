@@ -13,6 +13,8 @@ import com.jebao.p2p.web.api.requestModel.product.InvestInfoForm;
 import com.jebao.p2p.web.api.requestModel.product.ProductForm;
 import com.jebao.p2p.web.api.responseModel.base.*;
 import com.jebao.p2p.web.api.responseModel.product.*;
+import com.jebao.p2p.web.api.utils.session.CurrentUser;
+import com.jebao.p2p.web.api.utils.session.CurrentUserContextHolder;
 import com.jebao.p2p.web.api.utils.validation.ValidationResult;
 import com.jebao.p2p.web.api.utils.validation.ValidationUtil;
 import com.jebao.thirdPay.fuiou.impl.PreAuthServiceImpl;
@@ -124,13 +126,18 @@ public class ProductControllerApi {
     @RequestMapping("investBid")
     @ResponseBody
     public JsonResult investBid(InvestInfoForm form){
-
+        CurrentUser currentUser = CurrentUserContextHolder.get();
+        if(currentUser == null){            //未登录 重定向登录页
+            return new JsonResultError("尚未登录");
+        }
         //校验
         ValidationResult resultValidation = ValidationUtil.validateEntity(form);
         if (resultValidation.isHasErrors()) {
             return new JsonResultError(resultValidation.getErrorMsg().toString());
         }
-        String message = productService.investBid(form.getBpId(), form.getLoginId(), form.getInvestMoney());
+
+
+        String message = productService.investBid(form.getBpId(), currentUser.getId(), form.getInvestMoney());
         return new JsonResultOk(message);
     }
 }
