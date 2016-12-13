@@ -56,8 +56,10 @@ public class AccountController extends _BaseController {
             CurrentUser currentUser = new CurrentUser();
             currentUser.setId(resultInfo.getData());
             currentUser.setName(loginForm.getJebUsername());
-            String code = LoginSessionUtil.setAuthCode(currentUser);
-            return new JsonResultOk(code);
+            //String code = LoginSessionUtil.setAuthCode(currentUser);
+            //return new JsonResultOk(code);
+            LoginSessionUtil.setLogin(currentUser, request, response);
+            return new JsonResultOk("登录成功");
         }
         return new JsonResultError("登录失败，请稍后再试");
     }
@@ -80,16 +82,18 @@ public class AccountController extends _BaseController {
         //图形验证码校验
         String verifyCode = CaptchaUtil.getCaptchaToken(request, response);
         if (StringUtils.isBlank(verifyCode) || !verifyCode.equalsIgnoreCase(model.getImgCode())) {
-            return new JsonResultError("图形验证码错误");
+            return new JsonResultError("图形验证码错误",1001);
         }
         //短信验证码校验
-        if (!new MessageUtil().isValidCode(model.getMobile(), model.getMessageCode())) {
-            return new JsonResultError("短信验证码错误");
+        String mobile = model.getMobile();
+        MessageUtil messageUtil = new MessageUtil();
+        if (!messageUtil.isValidCode(mobile, model.getMessageCode())) {
+            return new JsonResultError("短信验证码错误",1002);
         }
         HttpUtil httpUtil = new HttpUtil();
         String ip = httpUtil.getIpAddress(request);
         //注册
-        ResultData<Long> result = accountService.register(model.getMobile(), model.getPassword(), model.getInvitationCode(), ip, httpUtil.getPlatform(request));
+        ResultData<Long> result = accountService.register(mobile, model.getPassword(), model.getInvitationCode(), ip, httpUtil.getPlatform(request));
         if (result.getSuccess_is_ok()) {
             return new JsonResultOk(result.getMsg());
         } else {
@@ -102,7 +106,7 @@ public class AccountController extends _BaseController {
         //图形验证码校验
         String verifyCode = CaptchaUtil.getCaptchaToken(request, response);
         if (StringUtils.isBlank(verifyCode) || !verifyCode.equalsIgnoreCase(imgCode)) {
-            return new JsonResultError("图形验证码错误");
+            return new JsonResultError("图形验证码错误",1001);
         }
         String ip = new HttpUtil().getIpAddress(request);
         JsonResult jsonResult = new MessageUtil().sendMessageVerifyCode(mobile, ip);
@@ -119,8 +123,8 @@ public class AccountController extends _BaseController {
                 valid = false;
             }
         }
-        //map.put("valid",valid);
-        map.put("valid",true);
+        map.put("valid",valid);
+        //map.put("valid",true);
         return map;
     }
 
