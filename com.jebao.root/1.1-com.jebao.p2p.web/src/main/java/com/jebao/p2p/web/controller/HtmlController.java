@@ -31,6 +31,7 @@ public class HtmlController {
 
     /**
      * 优惠活动
+     * 公司动态
      *
      * @return
      */
@@ -97,5 +98,14 @@ public class HtmlController {
     @RequestMapping("helpArticle")
     public String helpArticle() {
         return "html/helpArticle";
+    }
+
+    /**
+     * 团队介绍
+     * @return
+     */
+    @RequestMapping("game")
+    public String game() {
+        return "html/game";
     }
 }

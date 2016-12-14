@@ -1,14 +1,140 @@
 <!DOCTYPE html>
 <html>
 <head>#parse("common/head.html")
+    <link rel="stylesheet" href="${filePath}/css/index.css">
+    <link rel="stylesheet" href="${filePath}/css/lib/swiper.css">
 </head>
 
 <body>
 #parse("common/header.html")
-<div class="main">
-    <h1>home/index</h1>
+<!--轮播图---start-->
+<div class="bannerIndex">
+    <div class="swiper-container">
+        <div class="swiper-wrapper">
+            <div class="swiper-slide">
+                <a href="#" style="width:100%;height:400px;display:block;background: url(${filePath}/images/index-banner1.jpg) no-repeat center"></a>
+            </div>
+            <div class="swiper-slide">
+                <a href="#" style="width:100%;height:400px;display:block;background: url(${filePath}/images/index-banner2.jpg) no-repeat center"></a>
+            </div>
+            <div class="swiper-slide">
+                <a href="#" style="width:100%;height:400px;display:block;background: url(${filePath}/images/index-banner3.jpg) no-repeat center"></a>
+            </div>
+        </div>
+        <!-- 如果需要分页器 -->
+        <div class="swiper-pagination"></div>
+        <!-- 如果需要导航按钮 -->
+        <div class="swiper-button-prev"></div>
+        <div class="swiper-button-next"></div>
+    </div>
+</div>
+<!--官方公告---start-->
+<div class="new-announcement">
+    <div class="broadcast clearfix">
+        <div class="new-broadcast fl">
+            <img src="${filePath}/images/index-broadcast.png">
+            <a href="关于我们-公司动态-详情.html"><p>农行网银充值、交通银行快捷充值恢复通知</p></a>
+        </div>
+        <div class="new-more fr">
+            <a href="/html/activity">更多<i></i></a>
+        </div>
+    </div>
+</div>
+<!--安全保障--start-->
+<div class="linkThree">
+    <ul class="clearfix">
+        <li>
+            <a href="#">
+                <div class="box">
+                    <img src="${filePath}/images/index-security.png" class="front">
+                    <img src="${filePath}/images/index-security-hov.png" class="back">
+                </div>
+                <h3>安全保障 </h3>
+                <p>AAA级信用第三方资金托管</p>
+            </a>
+        </li>
+        <li>
+            <a href="#">
+                <div class="box">
+                    <img src="${filePath}/images/index-income.png" class="front">
+                    <img src="${filePath}/images/index-income-hov.png" class="back">
+                </div>
+                <h3>收益优</h3>
+                <p>预期年化收益最高可达13% 比同期银行理财产品高3倍</p>
+            </a>
+        </li>
+        <li>
+            <a href="#">
+                <div class="box">
+                    <img src="${filePath}/images/index-money.png" class="front">
+                    <img src="${filePath}/images/index-money-hov.png" class="back">
+                </div>
+                <h3>灵活便捷</h3>
+                <p>精选优质项目期限灵活</p>
+            </a>
+        </li>
+        <li>
+            <a href="#">
+                <div class="box">
+                    <img src="${filePath}/images/index-jrb.png" class="front">
+                    <img src="${filePath}/images/index-jrb-hov.png" class="back">
+                </div>
+                <h3>金融宝</h3>
+                <p>雄厚品牌实力严格风控体系</p>
+            </a>
+        </li>
+    </ul>
+</div>
+<!--广告banner-->
+<div class="advertisement">
+    <a href="#"></a>
+</div>
+<!--投标内容-->
+<div class="index-main">
+    <div class="index-main-title clearfix">
+        <h4>推荐项目</h4>
+        <p>精选项目，资深金融人士层层甄选，最靠谱的投资项目呈现给您</p>
+        <div class="index-more fr">
+            <a href="/html/product">更多<i></i></a>
+        </div>
+    </div>
+    <div class="project-list">
+        <div class="project-content"  v-for="data in products" @click="openDetail(data.bpId)">
+            <div class="project-name">
+                <p>{{data.bpName}}<span>{{data.bpNumber}}</span></p>
+            </div>
+            <div class="project-item clearfix">
+                <div class="project-info text-left">
+                    <div>{{data.bpRate}}%</div>
+                    <p>年化收益率</p>
+                </div>
+                <div class="project-info">
+                    <div>{{data.bpPeriodsDisplay}}{{cycleType[data.bpCycleType]}}</div>
+                    <p>项目期限</p>
+                </div>
+                <div class="project-info">
+                    <div>{{data.bpBidMoney}}</div>
+                    <p>项目总额</p>
+                </div>
+                <div class="project-progress fl">
+                    <div class="project-progress-box">
+                       <span class="progress-line">
+                            <span :style="'width: '+data.progress+'%'" class="progress-bar progress-bar-info"></span>
+                       </span>
+                        <span class="num">{{data.progress}}%</span>
+                    </div>
+                    <p>投资进度</p>
+                </div>
+                <div class="project-btn fr">
+                    <a href="javascript:;">{{status[data.bpStatus]}}</a>
+                </div>
+            </div>
+            <img src="${filePath}/images/new-project.png" class="new-project" v-show="data.bpType==2">
+        </div>
+        <a href="/html/product" class="project-more"></a>
+    </div>
 </div>
 #parse("common/footer.html")
 </body>
-
+<script src="../content/script/home/index.js"></script>
 </html>
