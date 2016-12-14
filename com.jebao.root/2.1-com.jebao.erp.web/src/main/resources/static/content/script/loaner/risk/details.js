@@ -18,9 +18,31 @@ var vm = new Vue({
             if (response.success_is_ok){
                 var data=response.data;
                 if(data!=null) {
+                    //设置kindEditorContent编辑器
+                    KindEditor.html("#kindEditorContent", data.desc);
                     vm.details = data;
                 }
             }
         });
+    },
+    methods:{
+        openViewForm:function(imgPath){
+            var tempObj= $('#viewMaterialModal').clone();
+            tempObj.find('form').prop('id','ViewFormId');
+            var tempHtml=tempObj.html();
+            layer.open({
+                title:'预览材料',
+                content:tempHtml,
+                btn: ['确定'],
+                area:['600px','600px'],
+                btn1: function(){
+                    layer.closeAll();
+                }
+            });
+            var tempVm = new Vue({
+                el: "#ViewFormId",
+                data:{imgPath:imgPath}
+            });
+        }
     }
 });
