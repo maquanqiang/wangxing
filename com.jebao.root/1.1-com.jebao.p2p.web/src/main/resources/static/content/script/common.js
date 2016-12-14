@@ -89,7 +89,8 @@ Date.prototype.toFormatString = function (format) {
                         null :
                         jQuery.isArray(val) ?
                             jQuery.map(val, function (val) {
-                                return newObj[elem.name] = $.trim(val);;
+                                return newObj[elem.name] = $.trim(val);
+                                ;
                             }) :
                             newObj[elem.name] = $.trim(val);
                 });
@@ -106,10 +107,15 @@ Date.prototype.toFormatString = function (format) {
     $(document).ajaxSend(function (event, jqxhr, settings) {
         if (settings.url.indexOf("/api") === 0) {
             settings.url = common.apiOrigin + settings.url;
-            settings.xhrFields= {
+            settings.xhrFields = {
                 withCredentials: true
             };
-            settings.crossDomain=true;
+            settings.crossDomain = true;
+        }
+    });
+    $(document).ajaxError(function (event, xhr, settings) {
+        if (xhr.status == 403) {
+            window.location.href = "/account/login";
         }
     });
 }(jQuery));

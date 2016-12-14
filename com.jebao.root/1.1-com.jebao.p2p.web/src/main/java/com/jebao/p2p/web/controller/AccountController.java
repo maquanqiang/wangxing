@@ -13,8 +13,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class AccountController extends _BaseController {
     /**
      * 登录
-     *
-     * @return
      */
     @RequestMapping("login")
     public String login(@RequestParam(defaultValue = "/") String redirectUrl) {
@@ -25,6 +23,9 @@ public class AccountController extends _BaseController {
         }
         return "account/login";
     }
+    /**
+     * 暂时没用
+     */
     @RequestMapping("token")
     public String token(String code,@RequestParam(defaultValue = "/") String redirectUrl){
         boolean flag = LoginSessionUtil.setToken(code,request,response);
@@ -41,6 +42,10 @@ public class AccountController extends _BaseController {
     @RequestMapping("register")
     public String register(){
         return "account/register";
+    }
+    @RequestMapping("registerSuccess")
+    public String registerSuccess(){
+        return "account/registerSuccess";
     }
 
 }
