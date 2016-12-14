@@ -57,7 +57,15 @@ public class TbIncomeDetail {
     private BigDecimal rate;                //利率
     private BigDecimal incomeTotal;         //应收总额
     private Date collectTime;               //募集时间
+    private String contractUrl;             //合同url
 
+    public String getContractUrl() {
+        return contractUrl;
+    }
+
+    public void setContractUrl(String contractUrl) {
+        this.contractUrl = contractUrl;
+    }
 
     public Date getInvestTime() {
         return investTime;
