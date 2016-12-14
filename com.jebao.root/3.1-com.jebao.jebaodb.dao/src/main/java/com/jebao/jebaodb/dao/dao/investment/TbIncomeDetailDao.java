@@ -2,6 +2,7 @@ package com.jebao.jebaodb.dao.dao.investment;
 
 import com.jebao.jebaodb.dao.mapper.investment.TbIncomeDetailMapper;
 import com.jebao.jebaodb.entity.extEntity.PageWhere;
+import com.jebao.jebaodb.entity.investment.FundDetailSM;
 import com.jebao.jebaodb.entity.investment.TbIncomeDetail;
 import com.jebao.jebaodb.entity.postLoan.search.RepaymentDetailSM;
 import org.apache.ibatis.annotations.Param;
@@ -71,6 +72,16 @@ public class TbIncomeDetailDao {
     public List<TbIncomeDetail> selectGroupByConditionForPage(@Param("record")RepaymentDetailSM record, @Param("pageWhere")PageWhere pageWhere){
         return mapper.selectGroupByConditionForPage(record, pageWhere);
     }
+
+    /**
+     * 查询还款信息列表
+     * @param record
+     * @return
+     */
+    public List<TbIncomeDetail> selectFundList(@Param("record")FundDetailSM record){
+        return mapper.selectFundList(record);
+    }
+
 
     public int selectGroupByConditionCount(@Param("record")RepaymentDetailSM record){
         return mapper.selectGroupByConditionCount(record);

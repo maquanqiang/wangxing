@@ -44,7 +44,7 @@ $(document).ready(function () {
                     window.location.href=redirectUrl;
                     return;
                 } else {
-                    $errorPlace.removeClass("hidden").find("span").html(response.msg);
+                    $errorPlace.removeClass("none").find("span").html(response.msg);
                 }
             });
         });
