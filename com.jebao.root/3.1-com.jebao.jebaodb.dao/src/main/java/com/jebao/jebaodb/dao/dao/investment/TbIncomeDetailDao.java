@@ -73,6 +73,11 @@ public class TbIncomeDetailDao {
         return mapper.selectGroupByConditionForPage(record, pageWhere);
     }
 
+    /**
+     * 查询还款信息列表
+     * @param record
+     * @return
+     */
     public List<TbIncomeDetail> selectFundList(@Param("record")FundDetailSM record){
         return mapper.selectFundList(record);
     }
