@@ -1,9 +1,12 @@
 package com.jebao.jebaodb.dao;
 
 import com.jebao.jebaodb.dao.base._BaseUnitTest;
+import com.jebao.jebaodb.dao.dao.investment.TbIncomeDetailDao;
 import com.jebao.jebaodb.dao.dao.loanmanage.TbBidPlanDao;
 import com.jebao.jebaodb.dao.dao.loanmanage.TbBidRiskDataDao;
 import com.jebao.jebaodb.entity.extEntity.PageWhere;
+import com.jebao.jebaodb.entity.investment.FundDetailSM;
+import com.jebao.jebaodb.entity.investment.TbIncomeDetail;
 import com.jebao.jebaodb.entity.loaner.TbRiskCtlPrjTemp;
 import com.jebao.jebaodb.entity.loanmanage.TbBidPlan;
 import com.jebao.jebaodb.entity.loanmanage.TbBidRiskData;
@@ -27,8 +30,8 @@ public class TbBidPlanDao_UnitTest extends _BaseUnitTest {
     private TbBidPlanDao tbBidPlanDao;
     @Autowired
     private TbBidRiskDataDao riskDataDao;
-
-
+    @Autowired
+    private TbIncomeDetailDao incomeDetailDao;
     @Test
     public void selectList()
     {
@@ -43,6 +46,16 @@ public class TbBidPlanDao_UnitTest extends _BaseUnitTest {
         List<TbBidPlan> tbBidPlans = tbBidPlanDao.selectP2PList(productSM, pageWhere);
         System.out.println();
     }
+
+    @Test
+    public void select(){
+        FundDetailSM fundDetailSM = new FundDetailSM();
+        fundDetailSM.setInvestLoginId(1l);
+        fundDetailSM.setDetailStatus(1);
+        List<TbIncomeDetail> incomeDetails = incomeDetailDao.selectFundList(fundDetailSM);
+        System.out.println();
+    }
+
 
     @Test
     public void insertExample()
