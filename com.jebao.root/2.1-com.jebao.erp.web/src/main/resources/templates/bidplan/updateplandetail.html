@@ -20,7 +20,7 @@
     </section>
     <!-- Main content -->
     <section class="content">
-        <form action="/bidplan/updatePlan" class="form-inline" id="defaultForm" method="post" novalidate="novalidate">
+        <form action="/bidplan/updatePlan"  id="defaultForm" method="post" novalidate="novalidate">
             <!--基本信息-->
             <div class="row">
                 <div class="col-xs-12">
@@ -32,24 +32,24 @@
                         <input id="bpId" type="hidden" name="bpId" value="${bpId}"/>
                         <input v-model="plan.bpPeriods" name="bpPeriods" type="hidden"/>
 
-                        <div class="box-body">
+                        <div class="box-body form-inline">
                             <div class="form-group">
                                 <div class="input-group margin">
-                                    <div class="input-group-addon">项目编号</div>
+                                    <div class="input-group-addon">项目编号&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
                                     <input type="text" class="form-control" placeholder="" name="bpNumber"
                                            v-model="plan.bpNumber">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="input-group margin">
-                                    <div class="input-group-addon">标的名称</div>
+                                    <div class="input-group-addon">标的名称&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
                                     <input type="text" class="form-control" placeholder="" name="bpName"
                                            v-model="plan.bpName">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="input-group margin">
-                                    <div class="input-group-addon">产品类型</div>
+                                    <div class="input-group-addon">产品类型&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
                                     <select v-model="plan.bpType" name="bpType" class="form-control"
                                             style="width: 160px;">
                                         <option value="1">普通理财</option>
@@ -57,71 +57,74 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <div class="input-group margin">
-                                    <div class="input-group-addon">募集时间</div>
-                                    <input type="text" v-model="plan.bpStartTime" placeholder=""
-                                           class="form-control" name="bpStartTime" id="bpStartTime">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="input-group margin">
-                                    <div class="input-group-addon">募集期限(小时)</div>
-                                    <input type="text" placeholder="" class="form-control" v-model="plan.bpOpenTime"
-                                           name="bpOpenTime" id="bpOpenTime">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="input-group margin">
-                                    <div class="input-group-addon">募集结束</div>
-                                    <input type="text" placeholder="" class="form-control" v-model="plan.bpEndTime" name="bpEndTime" id="bpEndTime" readonly>
-                                </div>
-                            </div>
+                            <br>
                             <div class="form-group ">
                                 <div class="input-group margin">
-                                    <div class="input-group-addon">起投金额</div>
-                                    <input type="text" placeholder="" class="form-control" v-model="plan.bpStartMoney"
-                                           name="bpStartMoney">
-                                </div>
-                            </div>
-                            <div class="form-group ">
-                                <div class="input-group margin">
-                                    <div class="input-group-addon">递增金额</div>
-                                    <input type="text" placeholder="" class="form-control" v-model="plan.bpRiseMoney"
-                                           name="bpRiseMoney">
-                                </div>
-                            </div>
-                            <div class="form-group ">
-                                <div class="input-group margin">
-                                    <div class="input-group-addon">投资上限</div>
-                                    <input type="text" placeholder="" class="form-control" v-model="plan.bpTopMoney"
-                                           name="bpTopMoney">
-                                </div>
-                            </div>
-                            <div class="form-group ">
-                                <div class="input-group margin">
-                                    <div class="input-group-addon">募集金额</div>
+                                    <div class="input-group-addon">募集金额(元)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
                                     <input type="text" placeholder="" class="form-control" v-model="plan.bpBidMoney"
                                            name="bpBidMoney">
                                 </div>
                             </div>
                             <div class="form-group ">
                                 <div class="input-group margin">
-                                    <div class="input-group-addon">借款利率</div>
+                                    <div class="input-group-addon">借款年化利率(%)</div>
                                     <input type="text" placeholder="" class="form-control" v-model="plan.bpRate"
                                            name="bpRate">
                                 </div>
                             </div>
+                            <div class="form-group ">
+                                <div class="input-group margin">
+                                    <div class="input-group-addon">起投金额(元)</div>
+                                    <input type="text" placeholder="" class="form-control" v-model="plan.bpStartMoney"
+                                           name="bpStartMoney">
+                                </div>
+                            </div>
+                            <div class="form-group ">
+                                <div class="input-group margin">
+                                    <div class="input-group-addon">递增金额(元)</div>
+                                    <input type="text" placeholder="" class="form-control" v-model="plan.bpRiseMoney"
+                                           name="bpRiseMoney">
+                                </div>
+                            </div>
+                            <div class="form-group ">
+                                <div class="input-group margin">
+                                    <div class="input-group-addon">投资上限(元)</div>
+                                    <input type="text" placeholder="" class="form-control" v-model="plan.bpTopMoney"
+                                           name="bpTopMoney">
+                                </div>
+                            </div>
+                            <br>
+                            <div class="form-group">
+                                <div class="input-group margin">
+                                    <div class="input-group-addon">募集开始时间&nbsp;&nbsp;&nbsp;</div>
+                                    <input type="text" v-model="plan.bpStartTime" placeholder=""
+                                           class="form-control" name="bpStartTime" id="bpStartTime">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group margin">
+                                    <div class="input-group-addon">募集期限(小时)&nbsp;&nbsp;&nbsp;&nbsp;</div>
+                                    <input type="text" placeholder="" class="form-control" v-model="plan.bpOpenTime"
+                                           name="bpOpenTime" id="bpOpenTime">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group margin">
+                                    <div class="input-group-addon">募集结束时间</div>
+                                    <input type="text" placeholder="" class="form-control" v-model="plan.bpEndTime" name="bpEndTime" id="bpEndTime" readonly>
+                                </div>
+                            </div>
+                            <br>
                             <div class="form-group margin">
                                 <div class="input-group">
-                                    <div class="input-group-addon">借款期限</div>
+                                    <div class="input-group-addon">借款期限(期数)</div>
                                     <input type="text" placeholder="" class="form-control"
                                            v-model="plan.bpPeriodsDisplay" name="bpPeriodsDisplay" id="bpPeriodsDisplay">
                                 </div>
                             </div>
                             <div class="form-group margin">
                                 <div class="input-group">
-                                    <div class="input-group-addon">周期选项</div>
+                                    <div class="input-group-addon">周期选项&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
                                     <select name="bpCycleType" v-model="plan.bpCycleType" class="form-control"
                                             style="width: 160px;" id="bpCycleType">
                                         <option value="1">日</option>
@@ -144,12 +147,13 @@
                                     <div class="input-group-addon">预期还款日期</div>
                                     <input type="text" placeholder=""
                                            class="form-control"
-                                           v-model="plan.bpExpectRepayDate" name="bpExpectRepayDate" id="bpExpectRepayDate">
+                                           v-model="plan.bpExpectRepayDate" name="bpExpectRepayDate" id="bpExpectRepayDate" readonly>
                                 </div>
                             </div>
+                            <br>
                             <div class="form-group margin">
                                 <div class="input-group">
-                                    <div class="input-group-addon">还款方式</div>
+                                    <div class="input-group-addon">还款方式&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
                                     <select v-model="plan.bpInterestPayType" class="form-control"
                                             style="width: 160px;" name="bpInterestPayType">
                                         <option value="1">一次性还本付息</option>
@@ -159,18 +163,18 @@
                             </div>
                             <div class="form-group margin">
                                 <div class="input-group">
-                                    <div class="input-group-addon">平台服务费</div>
-                                    <input type="text" placeholder="" class="form-control"
-                                           v-model="plan.bpServiceChargeRate" name="bpServiceChargeRate">
-                                </div>
-                            </div>
-                            <div class="form-group margin">
-                                <div class="input-group">
                                     <div class="input-group-addon">逾期罚息</div>
                                     <input type="text" placeholder="" class="form-control" v-model="plan.bpLateRate"
                                            name="bpLateRate">
 
                                     <div class="input-group-addon">*借款利率</div>
+                                </div>
+                            </div>
+                            <div class="form-group margin">
+                                <div class="input-group">
+                                    <div class="input-group-addon">平台服务费</div>
+                                    <input type="text" placeholder="" class="form-control"
+                                           v-model="plan.bpServiceChargeRate" name="bpServiceChargeRate">
                                 </div>
                             </div>
                         </div>
@@ -247,43 +251,43 @@
                             <div class="form-group">
                                 <div class="input-group margin">
                                     <div class="input-group-addon"><span class="text-red">*</span>借款描述</div>
-                                    <input type="text" class="form-control" placeholder="" name="bpBorrowDesc"
-                                           v-model="plan.bpBorrowDesc">
+                                    <textarea  class="form-control" placeholder="" name="bpBorrowDesc"
+                                           v-model="plan.bpBorrowDesc" rows="5"></textarea>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="input-group margin">
                                     <div class="input-group-addon"><span class="text-red">*</span>资金用途</div>
-                                    <input type="text" class="form-control" placeholder="" name="bpFundsPurpose"
-                                           v-model="plan.bpFundsPurpose">
+                                    <textarea  class="form-control" placeholder="" name="bpFundsPurpose"
+                                           v-model="plan.bpFundsPurpose" rows="5"></textarea>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="input-group margin">
                                     <div class="input-group-addon"><span class="text-red">*</span>还款来源</div>
-                                    <input type="text" placeholder="" class="form-control" name="bpRepayingSource"
-                                           v-model="plan.bpRepayingSource">
+                                    <textarea  placeholder="" class="form-control" name="bpRepayingSource"
+                                           v-model="plan.bpRepayingSource" rows="5"></textarea>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="input-group margin">
                                     <div class="input-group-addon"><span class="text-red">*</span>抵押信息</div>
-                                    <input type="text" placeholder="" class="form-control" name="bpMortgageInfo"
-                                           v-model="plan.bpMortgageInfo">
+                                    <textarea  placeholder="" class="form-control" name="bpMortgageInfo"
+                                           v-model="plan.bpMortgageInfo" rows="5"></textarea>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="input-group margin">
                                     <div class="input-group-addon"><span class="text-red">*</span>个人征信</div>
-                                    <input type="text" placeholder="" class="form-control" name="bpPersonalCredit"
-                                           v-model="plan.bpPersonalCredit">
+                                    <textarea  placeholder="" class="form-control" name="bpPersonalCredit"
+                                           v-model="plan.bpPersonalCredit" rows="5"></textarea>
                                 </div>
                             </div>
                             <div class="form-group ">
                                 <div class="input-group margin">
                                     <div class="input-group-addon"><span class="text-red">*</span>风控意见</div>
-                                    <input type="text" placeholder="" class="form-control" name="bpRiskOpinion"
-                                           v-model="plan.bpRiskOpinion">
+                                    <textarea  placeholder="" class="form-control" name="bpRiskOpinion"
+                                           v-model="plan.bpRiskOpinion" rows="5"></textarea>
                                 </div>
                             </div>
                         </div>

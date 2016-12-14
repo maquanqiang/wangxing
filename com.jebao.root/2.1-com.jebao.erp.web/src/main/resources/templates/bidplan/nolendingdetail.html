@@ -24,82 +24,85 @@
                         <div class="box-body">
                             <div class="form-group">
                                 <div class="input-group margin">
-                                    <div class="input-group-addon">项目编号</div>
+                                    <div class="input-group-addon">项目编号&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
                                     <input type="text" class="form-control" placeholder="" :value="plan.bpNumber" readonly>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="input-group margin">
-                                    <div class="input-group-addon">标的名称</div>
+                                    <div class="input-group-addon">标的名称&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
                                     <input type="text" class="form-control" placeholder="" :value="plan.bpName" readonly>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="input-group margin">
-                                    <div class="input-group-addon">产品类型</div>
+                                    <div class="input-group-addon">产品类型&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
                                     <select :value="plan.bpType" name="bpType" class="form-control" style="width: 160px;" disabled>
                                         <option value="1">普通理财</option>
                                         <option value="2">新手专享</option>
                                     </select>
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <div class="input-group margin">
-                                    <div class="input-group-addon">募集时间</div>
-                                    <input type="text" class="form-control" placeholder="" :value="plan.bpStartTime" readonly>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="input-group margin">
-                                    <div class="input-group-addon">募集期限</div>
-                                    <input type="text"  placeholder="" class="form-control" :value="plan.bpOpenTime" readonly>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="input-group margin">
-                                    <div class="input-group-addon">募集时间</div>
-                                    <input type="text"  placeholder="" class="form-control" :value="plan.bpEndTime" readonly>
-                                </div>
-                            </div>
+                            <br>
                             <div class="form-group ">
                                 <div class="input-group margin">
-                                    <div class="input-group-addon">起投金额</div>
-                                    <input type="text"  placeholder="" class="form-control" :value="plan.bpStartMoney" readonly>
-                                </div>
-                            </div>
-                            <div class="form-group ">
-                                <div class="input-group margin">
-                                    <div class="input-group-addon">递增金额</div>
-                                    <input type="text"  placeholder="" class="form-control" :value="plan.bpRiseMoney" readonly>
-                                </div>
-                            </div>
-                            <div class="form-group ">
-                                <div class="input-group margin">
-                                    <div class="input-group-addon">投资上限</div>
-                                    <input type="text"  placeholder="" class="form-control" :value="plan.bpTopMoney" readonly>
-                                </div>
-                            </div>
-                            <div class="form-group ">
-                                <div class="input-group margin">
-                                    <div class="input-group-addon">募集金额</div>
+                                    <div class="input-group-addon">募集金额(元)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
                                     <input type="text"  placeholder="" class="form-control" :value="plan.bpBidMoney" readonly>
                                 </div>
                             </div>
                             <div class="form-group ">
                                 <div class="input-group margin">
-                                    <div class="input-group-addon">借款利率</div>
+                                    <div class="input-group-addon">借款年化利率(%)</div>
                                     <input type="text"  placeholder="" class="form-control" :value="plan.bpRate" readonly>
                                 </div>
                             </div>
+                            <div class="form-group ">
+                                <div class="input-group margin">
+                                    <div class="input-group-addon">起投金额(元)</div>
+                                    <input type="text"  placeholder="" class="form-control" :value="plan.bpStartMoney" readonly>
+                                </div>
+                            </div>
+                            <div class="form-group ">
+                                <div class="input-group margin">
+                                    <div class="input-group-addon">递增金额(元)</div>
+                                    <input type="text"  placeholder="" class="form-control" :value="plan.bpRiseMoney" readonly>
+                                </div>
+                            </div>
+                            <div class="form-group ">
+                                <div class="input-group margin">
+                                    <div class="input-group-addon">投资上限(元)</div>
+                                    <input type="text"  placeholder="" class="form-control" :value="plan.bpTopMoney" readonly>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="form-group">
+                                <div class="input-group margin">
+                                    <div class="input-group-addon">募集开始时间&nbsp;&nbsp;&nbsp;</div>
+                                    <input type="text" class="form-control" placeholder="" :value="plan.bpStartTime" readonly>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group margin">
+                                    <div class="input-group-addon">募集期限(小时)&nbsp;&nbsp;&nbsp;&nbsp;</div>
+                                    <input type="text"  placeholder="" class="form-control" :value="plan.bpOpenTime" readonly>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group margin">
+                                    <div class="input-group-addon">募集结束时间</div>
+                                    <input type="text"  placeholder="" class="form-control" :value="plan.bpEndTime" readonly>
+                                </div>
+                            </div>
+                            <br>
                             <div class="form-group margin">
                                 <div class="input-group">
-                                    <div class="input-group-addon">借款期限</div>
+                                    <div class="input-group-addon">借款期限(期数)</div>
                                     <input type="text"  placeholder="" class="form-control" :value="plan.bpPeriodsDisplay" readonly>
                                 </div>
                             </div>
                             <div class="form-group margin">
                                 <div class="input-group">
-                                    <div class="input-group-addon">周期选项</div>
+                                    <div class="input-group-addon">周期选项&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
                                     <select name="bpCycleType" :value="plan.bpCycleType" class="form-control" style="width: 160px;" disabled>
                                         <option value="1">日</option>
                                         <option value="2">月</option>
@@ -120,9 +123,10 @@
                                     <input type="text"  placeholder="" class="form-control" :value="plan.bpExpectRepayDate" readonly>
                                 </div>
                             </div>
+                            <br>
                             <div class="form-group margin">
                                 <div class="input-group">
-                                    <div class="input-group-addon">还款方式</div>
+                                    <div class="input-group-addon">还款方式&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
                                     <select :value="plan.bpInterestPayType" class="form-control"
                                             style="width: 160px;" name="bpInterestPayType" disabled>
                                         <option value="1">一次性还本付息</option>
@@ -132,15 +136,15 @@
                             </div>
                             <div class="form-group margin">
                                 <div class="input-group">
-                                    <div class="input-group-addon">平台服务费</div>
-                                    <input type="text"  placeholder="" class="form-control" :value="plan.bpServiceChargeRate" readonly>
+                                    <div class="input-group-addon">逾期罚息</div>
+                                    <input type="text"  placeholder="" class="form-control" :value="plan.bpLateRate" readonly>
+                                    <div class="input-group-addon">*借款利率</div>
                                 </div>
                             </div>
                             <div class="form-group margin">
                                 <div class="input-group">
-                                    <div class="input-group-addon">逾期罚息</div>
-                                    <input type="text"  placeholder="" class="form-control" :value="plan.bpLateRate" readonly>
-                                    <div class="input-group-addon">*借款利率</div>
+                                    <div class="input-group-addon">平台服务费</div>
+                                    <input type="text"  placeholder="" class="form-control" :value="plan.bpServiceChargeRate" readonly>
                                 </div>
                             </div>
                         </div>

@@ -23,7 +23,7 @@
         <div class="row">
             <div class="col-xs-12">
                 <form id="search_form"><input type="hidden" name="rcptId" value="${rcptId}"/></form>
-                <form class="form-inline" id="order_search_form">
+                <form  id="order_search_form">
                     <div class="box-body">
                         <!--项目信息-->
                         <div class="box-title">
@@ -35,43 +35,44 @@
                                     <input type="hidden" name="id" value="${rcptId}">
                                     <input type="hidden" name="loanerId" value="${loanerId}"/>
                                     <div class="input-group-addon"><span class="text-red">*</span>项目名称</div>
-                                    <input type="text" class="form-control" placeholder="" name="name" v-model="risk.name" style="width: 700px">
+                                    <input type="text" class="form-control" placeholder="" name="name" v-model="risk.name">
                                 </div>
                             </div>
+                            <br>
                             <div class="form-group">
                                 <div class="input-group margin">
                                     <div class="input-group-addon"><span class="text-red">*</span>借款描述</div>
-                                    <input type="text" class="form-control" placeholder="" name="borrowDesc" v-model="risk.borrowDesc" style="width: 700px">
+                                    <textarea class="form-control" placeholder="" name="borrowDesc" v-model="risk.borrowDesc" rows="5"></textarea>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="input-group margin">
                                     <div class="input-group-addon"><span class="text-red">*</span>资金用途</div>
-                                    <input type="text" class="form-control" placeholder="" name="fundsPurpose" v-model="risk.fundsPurpose" style="width: 700px">
+                                    <textarea class="form-control" placeholder="" name="fundsPurpose" v-model="risk.fundsPurpose" rows="5"></textarea>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="input-group margin">
                                     <div class="input-group-addon"><span class="text-red">*</span>还款来源</div>
-                                    <input type="text" class="form-control" placeholder="" name="repayingSource" v-model="risk.repayingSource" style="width: 700px">
+                                    <textarea class="form-control" placeholder="" name="repayingSource" v-model="risk.repayingSource" rows="5"></textarea>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="input-group margin">
                                     <div class="input-group-addon"><span class="text-red">*</span>抵押信息</div>
-                                    <input type="text" class="form-control" placeholder="" name="mortgageInfo" v-model="risk.mortgageInfo" style="width: 700px">
+                                    <textarea class="form-control" placeholder="" name="mortgageInfo" v-model="risk.mortgageInfo" rows="5"></textarea>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="input-group margin">
                                     <div class="input-group-addon"><span class="text-red">*</span>个人征信</div>
-                                    <input type="text" class="form-control" placeholder="" name="personalCredit" v-model="risk.personalCredit" style="width: 700px">
+                                    <textarea class="form-control" placeholder="" name="personalCredit" v-model="risk.personalCredit" rows="5"></textarea>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="input-group margin">
                                     <div class="input-group-addon"><span class="text-red">*</span>风控意见</div>
-                                    <input type="text" class="form-control" placeholder="" name="opinion" v-model="risk.opinion" style="width: 700px">
+                                    <textarea class="form-control" placeholder="" name="opinion" v-model="risk.opinion" rows="5"></textarea>
                                 </div>
                             </div>
                         </div>

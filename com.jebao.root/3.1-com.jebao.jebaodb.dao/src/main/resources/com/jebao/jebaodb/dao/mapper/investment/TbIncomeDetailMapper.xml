@@ -362,6 +362,32 @@
         <result column="bp_true_name" property="bpTrueName" jdbcType="VARCHAR" />
     </resultMap>
 
+    <resultMap id="fundResultMap" type="com.jebao.jebaodb.entity.investment.TbIncomeDetail" extends="BaseResultMap">
+        <result column="ii_create_time" property="investTime" jdbcType="TIMESTAMP" />
+        <result column="ii_money" property="investMoney" jdbcType="DECIMAL" />
+        <result column="bp_periods" property="periods" jdbcType="INTEGER" />
+        <result column="bp_rate" property="rate" jdbcType="DECIMAL" />
+        <result column="bp_start_time" property="collectTime" jdbcType="TIMESTAMP" />
+        <result column="incomeTotal" property="incomeTotal" jdbcType="DECIMAL" />
+        <result column="ii_contract_url" property="contractUrl" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <sql id="selectFundWhere">
+        <if test="record.loanLoginId != null" >
+            AND plan.bp_login_id = #{record.loanLoginId,jdbcType=BIGINT}
+        </if>
+        <if test="record.investLoginId != null" >
+            AND detail.ind_login_id = #{record.investLoginId,jdbcType=BIGINT}
+        </if>
+        <if test="record.detailStatus != null" >
+            AND detail.ind_status = #{record.detailStatus,jdbcType=BIGINT}
+        </if>
+        <if test="record.planStatus != null" >
+            AND plan.bp_status = #{record.planStatus,jdbcType=BIGINT}
+        </if>
+        AND detail.ind_periods = plan.bp_repayed_periods + 1
+    </sql>
+
     <select id="selectForPage" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List" />
@@ -425,6 +451,32 @@
         <where>
             <include refid="selectByCondition_Where_Clause" />
         </where>
+    </select>
+    <select id="selectFundList" parameterType="map" resultMap="fundResultMap">
+        SELECT
+            detail.ind_bp_id,
+            detail.ind_bp_name,
+            info.ii_create_time,
+            info.ii_money,
+            plan.bp_periods,
+            plan.bp_rate,
+            detail.ind_date_time,
+            SUM(detail.ind_money) AS ind_money,
+            SUM(detail.ind_overdue_money) AS ind_overdue_money,
+            SUM(detail.ind_overdue_money+detail.ind_money) AS incomeTotal,
+            detail.ind_periods,
+            plan.bp_start_time,
+            info.ii_contract_url
+        FROM
+            tb_income_detail detail
+        LEFT JOIN tb_invest_info info ON detail.ind_ii_id = info.ii_id
+        LEFT JOIN tb_bid_plan plan ON detail.ind_bp_id = plan.bp_id
+        <where>
+            <include refid="selectFundWhere" />
+        </where>
+        GROUP BY
+            detail.ind_bp_id,
+            detail.ind_periods
     </select>
     <!--==================================================账户总览统计==================================================-->
     <select id="selectDueInMoneyByLoginId" resultType="java.lang.Double">

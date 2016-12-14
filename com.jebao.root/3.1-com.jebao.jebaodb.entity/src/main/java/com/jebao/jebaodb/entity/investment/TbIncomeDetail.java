@@ -51,7 +51,69 @@ public class TbIncomeDetail {
     //------------------------------------------
     private String bpTrueName;              //借款人姓名
 
+    private Date investTime;               //投资时间
+    private BigDecimal investMoney;         //投资金额
+    private Integer periods;                //投资期限
+    private BigDecimal rate;                //利率
+    private BigDecimal incomeTotal;         //应收总额
+    private Date collectTime;               //募集时间
+    private String contractUrl;             //合同url
 
+    public String getContractUrl() {
+        return contractUrl;
+    }
+
+    public void setContractUrl(String contractUrl) {
+        this.contractUrl = contractUrl;
+    }
+
+    public Date getInvestTime() {
+        return investTime;
+    }
+
+    public void setInvestTime(Date investTime) {
+        this.investTime = investTime;
+    }
+
+    public BigDecimal getInvestMoney() {
+        return investMoney;
+    }
+
+    public void setInvestMoney(BigDecimal investMoney) {
+        this.investMoney = investMoney;
+    }
+
+    public Integer getPeriods() {
+        return periods;
+    }
+
+    public void setPeriods(Integer periods) {
+        this.periods = periods;
+    }
+
+    public BigDecimal getRate() {
+        return rate;
+    }
+
+    public void setRate(BigDecimal rate) {
+        this.rate = rate;
+    }
+
+    public BigDecimal getIncomeTotal() {
+        return incomeTotal;
+    }
+
+    public void setIncomeTotal(BigDecimal incomeTotal) {
+        this.incomeTotal = incomeTotal;
+    }
+
+    public Date getCollectTime() {
+        return collectTime;
+    }
+
+    public void setCollectTime(Date collectTime) {
+        this.collectTime = collectTime;
+    }
 
     public Long getIndId() {
         return indId;

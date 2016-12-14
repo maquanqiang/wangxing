@@ -1,5 +1,6 @@
 package com.jebao.thirdPay.fuiou.impl;
 
+import com.jebao.thirdPay.fuiou.constants.FuiouConfig;
 import com.jebao.thirdPay.fuiou.http.WebUtils;
 import com.jebao.thirdPay.fuiou.model.transferBu.TransferBuRequest;
 import com.jebao.thirdPay.fuiou.model.transferBu.TransferBuResponse;
@@ -15,7 +16,9 @@ import com.jebao.thirdPay.fuiou.util.XmlUtil;
  */
 @Service
 public class TransferBuServiceImpl {
-    public TransferBuResponse post(String httpUrl, TransferBuRequest reqData) throws Exception {
+    public TransferBuResponse post(TransferBuRequest reqData) throws Exception {
+        String httpUrl= FuiouConfig.url+"transferBu.action";
+
         String signatureStr = SecurityUtils.sign(reqData.requestSignPlain());
         reqData.setSignature(signatureStr);
         String xmlData = WebUtils.sendHttp(httpUrl, reqData);
