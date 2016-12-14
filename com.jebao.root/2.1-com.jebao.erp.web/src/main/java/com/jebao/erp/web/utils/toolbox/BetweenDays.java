@@ -11,7 +11,7 @@ public class BetweenDays {
     public static int differentDays(Date date1,Date date2)
     {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        System.out.println(sdf.format(date1)+"----"+sdf.format(date2));
+        //System.out.println(sdf.format(date1)+"----"+sdf.format(date2));
         Calendar cal1 = Calendar.getInstance();
         cal1.setTime(date1);
 
@@ -41,7 +41,7 @@ public class BetweenDays {
         }
         else //不同年
         {
-            System.out.println("判断day2 - day1 : " + (day2-day1));
+            //System.out.println("判断day2 - day1 : " + (day2-day1));
             return day2-day1;
         }
     }
