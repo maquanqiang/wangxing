@@ -95,6 +95,11 @@ public class AccountController extends _BaseController {
         //注册
         ResultData<Long> result = accountService.register(mobile, model.getPassword(), model.getInvitationCode(), ip, httpUtil.getPlatform(request));
         if (result.getSuccess_is_ok()) {
+            //登录成功，设置登录状态
+            CurrentUser currentUser = new CurrentUser();
+            currentUser.setId(result.getData());
+            currentUser.setName(mobile);
+            LoginSessionUtil.setLogin(currentUser,request,response);
             return new JsonResultOk(result.getMsg());
         } else {
             return new JsonResultError(result.getMsg());

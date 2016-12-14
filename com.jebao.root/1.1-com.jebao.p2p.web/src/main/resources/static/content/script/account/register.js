@@ -26,10 +26,6 @@ var vm = new Vue({
             model.form.invitationCode = invitationCode;
             model.codeDisabled = true;
         }
-        //测试信息
-        model.form.mobile = "18600575242";
-        model.form.password = "a123456";
-        model.form.passwordAgain = model.form.password;
     },
     mounted: function () {
         //前端写的代码
@@ -174,7 +170,7 @@ var vm = new Vue({
                 // Use Ajax to submit form data
                 $.post($form.attr('action'), $form.serializeObject(), function (response) {
                     if (response.success_is_ok) {
-                        window.location.href = "/account/login";
+                        window.location.href = "/account/registerSuccess";
                         return;
                     } else {
                         if (response.code == 1001) {
