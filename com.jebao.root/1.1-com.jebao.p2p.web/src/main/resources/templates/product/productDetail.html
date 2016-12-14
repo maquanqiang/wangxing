@@ -58,17 +58,18 @@
             <div class="plan-value clearfix">
                 <p>开始时间：<span>{{product.bpStartTime}}</span></p>
 
-                <p>剩余期限：<span>2天23小时59分59秒----</span></p>
+                <p>剩余期限：<span id="span1">0天0时0分0秒</span></p>
             </div>
         </div>
         <!--项目头部右侧-->
         <div class="plan-investment fr">
             <form>
+                <input id="loginId" name="loginId" type="hidden" value="${_loginUser_header_.userId}">
                 <p class="plan-money">可投金额：<span>{{product.bpSurplusMoney}}元</span></p>
                 #if($_loginUser_header_.isLogin)
-                <p class="plan-money">可用金额：<span>10000---元</span></p>
+                <p class="plan-money">可用金额：<span>{{statistics.balance}}元</span></p>
                 #else
-                <p class="plan-money">可用金额：<span>---元</span><span><a href="/account/login">登录</a>查看</span></p>
+                <p class="plan-money">可用金额：<span>----元</span><span><a href="/account/login">登录</a>查看</span></p>
                 #end
                 <div class="plan-tip">{{product.bpStartMoney}}元起投，{{product.bpRiseMoney}}元递增</div>
                 <div class="spinner">
@@ -85,11 +86,21 @@
                     <a href="/account/login">充值</a>
                     #end
                 </div>
-                #if($_loginUser_header_.isLogin)
-                <a href="javascript:;" class="plan-btn" @click="investBtn">立即投资</a>
-                #else
-                <a href="/account/login" class="plan-btn">立即投资</a>
-                #end
+                <div v-if="product.bpStatus != 2">
+                    <a href="javascript:;" class="plan-btn" >{{bpStatusArr[product.bpStatus]}}</a>
+                </div>
+                <div v-else>
+                    <div v-if="flag">
+                        #if($_loginUser_header_.isLogin)
+                        <a href="javascript:;" class="plan-btn" @click="investBtn">立即投资</a>
+                        #else
+                        <a href="/account/login" class="plan-btn">立即投资</a>
+                        #end
+                    </div>
+                    <div v-else>
+                        <a href="javascript:;" class="plan-btn">倒计时中</a>
+                    </div>
+                </div>
             </form>
         </div>
     </div>
