@@ -9,6 +9,7 @@
     <!-- 编辑器引入 END-->
 </head>
 <body class="skin-blue sidebar-mini">
+
 #parse("common/main-header.html")
 <!-- Left side column. contains the logo and sidebar -->
 #parse("common/main-sidebar.html")
@@ -20,7 +21,7 @@
     </section>
     <!-- Main content -->
     <section class="content">
-        <form action="" class="form-inline" id="defaultForm" novalidate="novalidate">
+        <form action="" id="defaultForm" novalidate="novalidate">
             <input name="bpLoanerId" type="hidden" value="${bpLoanerId}"/>
             <input id="bpPeriods" name="bpPeriods" type="hidden"/>
             <input id="bpCycleSize" name="bpCycleSize" type="hidden" value="1"/>
@@ -32,22 +33,22 @@
                         <h5>基本信息</h5>
                     </div>
                     <div class="box box-primary">
-                        <div class="box-body">
+                        <div class="box-body form-inline">
                             <div class="form-group">
                                 <div class="input-group margin">
-                                    <div class="input-group-addon">项目编号</div>
+                                    <div class="input-group-addon">项目编号&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
                                     <input type="text" class="form-control" placeholder="" name="bpNumber">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="input-group margin">
-                                    <div class="input-group-addon">标的名称</div>
+                                    <div class="input-group-addon">标的名称&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
                                     <input type="text" class="form-control" placeholder="" name="bpName">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="input-group margin">
-                                    <div class="input-group-addon">产品类型</div>
+                                    <div class="input-group-addon">产品类型&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
                                     <select name="bpType" class="form-control" style="width: 160px;">
                                         <option value="0">请选择</option>
                                         <option value="1">普通理财</option>
@@ -55,63 +56,66 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="form-group">
+                            <br>
+                            <div class="form-group ">
                                 <div class="input-group margin">
-                                    <div class="input-group-addon">募集时间</div>
-                                    <input type="text" placeholder="" class="form-control chooseDate" id="bpStartTime" name="bpStartTime">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="input-group margin">
-                                    <div class="input-group-addon">募集期限(小时)</div>
-                                    <input type="text" placeholder="" class="form-control" id="bpOpenTime" name="bpOpenTime">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="input-group margin">
-                                    <div class="input-group-addon">募集结束</div>
-                                    <input type="text" placeholder="" class="form-control" id="bpEndTime" name="bpEndTime" readonly>
+                                    <div class="input-group-addon">募集金额(元)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+                                    <input type="text" placeholder="" class="form-control" name="bpBidMoney" >
                                 </div>
                             </div>
                             <div class="form-group ">
                                 <div class="input-group margin">
-                                    <div class="input-group-addon">募集金额</div>
-                                    <input type="text" placeholder="" class="form-control" name="bpBidMoney">
+                                    <div class="input-group-addon">借款年化利率(%)</div>
+                                    <input type="text" placeholder="" class="form-control" name="bpRate">
                                 </div>
                             </div>
                             <div class="form-group ">
                                 <div class="input-group margin">
-                                    <div class="input-group-addon">起投金额</div>
+                                    <div class="input-group-addon">起投金额(元)</div>
                                     <input type="text" placeholder="" class="form-control" name="bpStartMoney">
                                 </div>
                             </div>
                             <div class="form-group ">
                                 <div class="input-group margin">
-                                    <div class="input-group-addon">递增金额</div>
+                                    <div class="input-group-addon">递增金额(元)</div>
                                     <input type="text" placeholder="" class="form-control" name="bpRiseMoney">
                                 </div>
                             </div>
                             <div class="form-group ">
                                 <div class="input-group margin">
-                                    <div class="input-group-addon">投资上限</div>
+                                    <div class="input-group-addon">投资上限(元)</div>
                                     <input type="text" placeholder="" class="form-control" name="bpTopMoney">
                                 </div>
                             </div>
-                            <div class="form-group ">
+                            <br>
+                            <div class="form-group">
                                 <div class="input-group margin">
-                                    <div class="input-group-addon">借款利率</div>
-                                    <input type="text" placeholder="" class="form-control" name="bpRate">
+                                    <div class="input-group-addon">募集开始时间&nbsp;&nbsp;&nbsp;</div>
+                                    <input type="text" placeholder="" class="form-control chooseDate" id="bpStartTime" name="bpStartTime">
                                 </div>
                             </div>
+                            <div class="form-group">
+                                <div class="input-group margin">
+                                    <div class="input-group-addon">募集期限(小时)&nbsp;&nbsp;&nbsp;&nbsp;</div>
+                                    <input type="text" placeholder="" class="form-control" id="bpOpenTime" name="bpOpenTime">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group margin">
+                                    <div class="input-group-addon">募集结束时间</div>
+                                    <input type="text" placeholder="" class="form-control" id="bpEndTime" name="bpEndTime" readonly>
+                                </div>
+                            </div>
+                            <br>
                             <div class="form-group margin">
                                 <div class="input-group">
-                                    <div class="input-group-addon">借款期限</div>
+                                    <div class="input-group-addon">借款期限(期数)</div>
                                     <input type="text" placeholder="" class="form-control" name="bpPeriodsDisplay" id="bpPeriodsDisplay">
                                 </div>
                             </div>
                             <div class="form-group margin">
                                 <div class="input-group">
-                                    <div class="input-group-addon">周期选项</div>
+                                    <div class="input-group-addon">周期选项&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
                                     <select name="bpCycleType" class="form-control" style="width: 160px;" id="bpCycleType">
                                         <option value="0">请选择</option>
                                         <option value="1">日</option>
@@ -133,9 +137,10 @@
                                     <input type="text" placeholder="" class="form-control" id="bpExpectRepayDate" name="bpExpectRepayDate" readonly>
                                 </div>
                             </div>
+                            <br>
                             <div class="form-group margin">
                                 <div class="input-group">
-                                    <div class="input-group-addon">还款方式</div>
+                                    <div class="input-group-addon">还款方式&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
                                     <select name="bpInterestPayType" class="form-control" style="width: 160px;">
                                         <option value="0">请选择</option>
                                         <option value="1">一次性还本付息</option>
@@ -145,17 +150,17 @@
                             </div>
                             <div class="form-group margin">
                                 <div class="input-group">
-                                    <div class="input-group-addon">平台服务费</div>
-                                    <input type="text" placeholder="" class="form-control" name="bpServiceChargeRate">
-                                </div>
-                            </div>
-                            <div class="form-group margin">
-                                <div class="input-group">
                                     <div class="input-group-addon">逾期罚息</div>
-                                    <input type="text" placeholder="" class="form-control" name="bpLateRate">
+                                    <input type="text" placeholder="" class="form-control" name="bpLateRate" value="0">
                                     <div class="input-group-addon">*借款利率</div>
                                 </div>
                             </div>
+                            <div class="form-group margin">
+                            <div class="input-group">
+                                <div class="input-group-addon">平台服务费</div>
+                                <input type="text" placeholder="" class="form-control" name="bpServiceChargeRate" value="0">
+                            </div>
+                        </div>
                         </div>
                     </div>
                 </div>
@@ -235,40 +240,46 @@
                                     </select>
                                 </div>
                             </div>
+                            <br>
                             <div class="form-group">
                                 <div class="input-group margin">
                                     <div class="input-group-addon"><span class="text-red">*</span>借款描述</div>
-                                    <input type="text" class="form-control" placeholder="" name="bpBorrowDesc" :value="projectTemp.bpBorrowDesc">
+                                    <textarea class="form-control" placeholder="" name="bpBorrowDesc" :value="projectTemp.bpBorrowDesc" rows="5"></textarea>
                                 </div>
                             </div>
+                            <br>
                             <div class="form-group">
                                 <div class="input-group margin">
                                     <div class="input-group-addon"><span class="text-red">*</span>资金用途</div>
-                                    <input type="text" class="form-control" placeholder="" name="bpFundsPurpose" :value="projectTemp.bpFundsPurpose">
+                                    <textarea  class="form-control" placeholder="" name="bpFundsPurpose" :value="projectTemp.bpFundsPurpose" rows="5"></textarea>
                                 </div>
                             </div>
+                            <br>
                             <div class="form-group">
                                 <div class="input-group margin">
                                     <div class="input-group-addon"><span class="text-red">*</span>还款来源</div>
-                                    <input type="text" value="" placeholder="" class="form-control" name="bpRepayingSource" :value="projectTemp.bpRepayingSource">
+                                    <textarea value="" placeholder="" class="form-control" name="bpRepayingSource" :value="projectTemp.bpRepayingSource" rows="5"></textarea>
                                 </div>
                             </div>
+                            <br>
                             <div class="form-group">
                                 <div class="input-group margin">
                                     <div class="input-group-addon"><span class="text-red">*</span>抵押信息</div>
-                                    <input type="text"  placeholder="" class="form-control" name="bpMortgageInfo" :value="projectTemp.bpMortgageInfo">
+                                    <textarea  placeholder="" class="form-control" name="bpMortgageInfo" :value="projectTemp.bpMortgageInfo" rows="5"></textarea>
                                 </div>
                             </div>
+                            <br>
                             <div class="form-group">
                                 <div class="input-group margin">
                                     <div class="input-group-addon"><span class="text-red">*</span>个人征信</div>
-                                    <input type="text"  placeholder="" class="form-control" name="bpPersonalCredit" :value="projectTemp.bpPersonalCredit">
+                                    <textarea  placeholder="" class="form-control" name="bpPersonalCredit" :value="projectTemp.bpPersonalCredit" rows="5"></textarea>
                                 </div>
                             </div>
+                            <br>
                             <div class="form-group ">
                                 <div class="input-group margin">
                                     <div class="input-group-addon"><span class="text-red">*</span>风控意见</div>
-                                    <input type="text"  placeholder="" class="form-control" name="bpRiskOpinion" :value="projectTemp.bpRiskOpinion">
+                                    <textarea  placeholder="" class="form-control" name="bpRiskOpinion" :value="projectTemp.bpRiskOpinion" rows="5"></textarea>
                                 </div>
                             </div>
                         </div>

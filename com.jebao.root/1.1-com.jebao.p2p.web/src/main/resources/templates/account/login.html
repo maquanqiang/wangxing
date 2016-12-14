@@ -28,22 +28,26 @@
 <!--登陆内容-->
 <div class="login-main clearfix">
     <div class="login-in">
-        <h2>登录</h2>
+        <div class="login-in-tit clearfix">
+            <h2>登录</h2>
+            <p>没有账号？<a href="/account/register">立即注册</a></p>
+        </div>
         <form action="/api/account/doLogin" method="post" id="loginForm">
             <div class="userName form-group clearfix">
                 <em></em><input type="text" value="" placeholder="请输入手机号码" name="jebUsername">
             </div>
             <div class="userPassword form-group clearfix">
                 <em></em><input type="password" value="" placeholder="请输入登录密码" name="password">
+                <div class="form-group clearfix has-error none" id="login_message">
+                    <p class="help-block"><i class="icon"></i>
+                        <span>登录返回错误</span>
+                    </p>
+                </div>
             </div>
-            <!--<input type="checkbox" name="remember" value="1"><i class="remember">记住用户</i>-->
-            <div class="form-group clearfix has-error hidden" id="login_message">
-                <p class="help-block"><i class="icon"></i>
-                    <span>登录返回错误</span>
-                </p>
-            </div>
+            <input type="checkbox" name="remember" value="1"><i class="remember">记住用户</i>
+
             <a href="javascript:;" class="login-in-btn">登录</a>
-            <p class="login-link"><a href="/account/forgot">忘记密码</a><a href="/account/register">注册</a></p>
+            <p class="login-link"><a href="/account/forgot">忘记密码</a></p>
         </form>
     </div>
 </div>

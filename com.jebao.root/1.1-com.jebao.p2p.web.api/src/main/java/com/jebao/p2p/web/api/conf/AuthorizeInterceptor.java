@@ -21,6 +21,7 @@ public class AuthorizeInterceptor implements HandlerInterceptor {
         //验证用户是否登陆
         boolean isLogin = LoginSessionUtil.isLogin(request, response);
         if (!isLogin) {
+            response.setStatus(403);
             response.setContentType("application/json");
             response.setCharacterEncoding("UTF-8");
             try{
