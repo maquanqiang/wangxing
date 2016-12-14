@@ -36,7 +36,7 @@ public class FundsDetailsController extends _BaseController {
     @ResponseBody
     public JsonResult list() {
         CurrentUser currentUser = CurrentUserContextHolder.get();
-        if(currentUser != null){
+        if(currentUser == null){
             return new JsonResultList<>(null);
         }
 
@@ -44,7 +44,7 @@ public class FundsDetailsController extends _BaseController {
         List<TbFundsDetails> fdList = fundsDetailsService.selectFundsDetailsByLoginIdForPage(currentUser.getId(), page);
         List<FundsDetailsVM> viewModelList = new ArrayList<>();
         fdList.forEach(o -> viewModelList.add(new FundsDetailsVM(o)));
-        return new JsonResultList<>(viewModelList, 2);
+        return new JsonResultList<>(viewModelList);
     }
 
     /**
@@ -60,7 +60,7 @@ public class FundsDetailsController extends _BaseController {
         }
 
         CurrentUser currentUser = CurrentUserContextHolder.get();
-        if(currentUser != null){
+        if(currentUser == null){
             return new JsonResultList<>(null);
         }
 

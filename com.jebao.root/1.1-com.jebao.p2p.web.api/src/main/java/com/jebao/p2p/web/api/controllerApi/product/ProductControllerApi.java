@@ -9,11 +9,15 @@ import com.jebao.jebaodb.entity.loanmanage.TbBidRiskData;
 import com.jebao.jebaodb.entity.postLoan.search.RepaymentDetailSM;
 import com.jebao.jebaodb.entity.product.ProductSM;
 import com.jebao.p2p.service.inf.product.IProductServiceInf;
+import com.jebao.p2p.web.api.requestModel.product.InvestInfoForm;
 import com.jebao.p2p.web.api.requestModel.product.ProductForm;
-import com.jebao.p2p.web.api.responseModel.base.JsonResult;
-import com.jebao.p2p.web.api.responseModel.base.JsonResultData;
-import com.jebao.p2p.web.api.responseModel.base.JsonResultList;
+import com.jebao.p2p.web.api.responseModel.base.*;
 import com.jebao.p2p.web.api.responseModel.product.*;
+import com.jebao.p2p.web.api.utils.session.CurrentUser;
+import com.jebao.p2p.web.api.utils.session.CurrentUserContextHolder;
+import com.jebao.p2p.web.api.utils.validation.ValidationResult;
+import com.jebao.p2p.web.api.utils.validation.ValidationUtil;
+import com.jebao.thirdPay.fuiou.impl.PreAuthServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,6 +36,9 @@ public class ProductControllerApi {
 
     @Autowired
     private IProductServiceInf productService;
+    @Autowired
+    private PreAuthServiceImpl preAuthService;
+
 
     @RequestMapping("list")
     @ResponseBody
@@ -73,7 +80,12 @@ public class ProductControllerApi {
         return new JsonResultList<>(bidRiskDataVMs);
     }
 
-
+    /**
+     *
+     * @param bpId
+     * @param pageWhere
+     * @return
+     */
     @RequestMapping("investInfoByBpId")
     @ResponseBody
     public JsonResult investInfoByBpId(Long bpId, PageWhere pageWhere){
@@ -86,7 +98,12 @@ public class ProductControllerApi {
         return new JsonResultList<>(investInfoVMs, count);
     }
 
-
+    /**
+     * 借款人还款计划
+     * @param bpId
+     * @param pageWhere
+     * @return
+     */
     @RequestMapping("incomeDetailByBpId")
     @ResponseBody
     public JsonResult incomeDetailByBpId(Long bpId, PageWhere pageWhere){
@@ -101,34 +118,26 @@ public class ProductControllerApi {
         return new JsonResultList<>(incomeDetailsVMs, count);
     }
 
+    /**
+     * 投资
+     * @param form
+     * @return
+     */
+    @RequestMapping("investBid")
+    @ResponseBody
+    public JsonResult investBid(InvestInfoForm form){
+        CurrentUser currentUser = CurrentUserContextHolder.get();
+        if(currentUser == null){            //未登录 重定向登录页
+            return new JsonResultError("尚未登录");
+        }
+        //校验
+        ValidationResult resultValidation = ValidationUtil.validateEntity(form);
+        if (resultValidation.isHasErrors()) {
+            return new JsonResultError(resultValidation.getErrorMsg().toString());
+        }
 
-//    @RequestMapping("investBid")
-//    @ResponseBody
-//    public JsonResult investBid(InvestInfoForm form){
-//
-//        String httpUrl = ""+"preAuth.action";
-//        //更新标的信息表
-//        int count = productService.investBid(form.getBpId(), form.getInvestMoney().toString());
-//        if(count > 0){
-//            String amt = form.getInvestMoney().multiply(new BigDecimal(100)).setScale(0,BigDecimal.ROUND_DOWN).toString();
-//
-//
-//
-//            //调用富友
-//            PreAuthRequest preAuthRequest = new PreAuthRequest();
-//            preAuthRequest.setAmt(amt);
-//            preAuthRequest.setIn_cust_no();
-//            preAuthRequest.setOut_cust_no();
-//            preAuthRequest.setMchnt_cd(platNumber);
-//            preAuthRequest.setRem("投标");
-//            preAuthRequest.setMchnt_txn_ssn();
-//            preAuthRequest.setSignature(preAuthRequest.getSignature());
-//            preAuthService.post(httpUrl, preAuthRequest);
-//        }
-//
-//
-//
-//        //记录投资信息
-//
-//    }
+
+        String message = productService.investBid(form.getBpId(), currentUser.getId(), form.getInvestMoney());
+        return new JsonResultOk(message);
+    }
 }

@@ -1,5 +1,6 @@
 package com.jebao.p2p.web.api.responseModel.user;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.jebao.jebaodb.entity.investment.InvestPaymentIng;
 import com.jebao.p2p.web.api.responseModel.ViewModel;
 
@@ -12,6 +13,7 @@ import java.util.Date;
  */
 public class InvestPaymentIngVM extends ViewModel {
     public InvestPaymentIngVM(InvestPaymentIng entity){
+        this.bpId = entity.getBpId();
         this.bpName = entity.getBpName();
         this.createTime = entity.getCreateTime();
         this.money = entity.getMoney();
@@ -22,10 +24,14 @@ public class InvestPaymentIngVM extends ViewModel {
         this.contractUrl = entity.getContractUrl();
     }
 
+    //标的ID
+    private Long bpId;
+
     //标的名称
     private String bpName;
 
     //投资时间
+    @JsonFormat(timezone = "GMT+8", pattern = "yyyy/MM/dd HH:mm:ss")
     private Date createTime;
 
     //投资金额
@@ -38,6 +44,7 @@ public class InvestPaymentIngVM extends ViewModel {
     private BigDecimal bpRate;
 
     //下个还款日
+    @JsonFormat(timezone = "GMT+8", pattern = "yyyy/MM/dd HH:mm:ss")
     private Date nextDueDate;
 
     //还款日应还金额
@@ -45,6 +52,14 @@ public class InvestPaymentIngVM extends ViewModel {
 
     //合同地址
     private String contractUrl;
+
+    public Long getBpId() {
+        return bpId;
+    }
+
+    public void setBpId(Long bpId) {
+        this.bpId = bpId;
+    }
 
     public String getBpName() {
         return bpName;

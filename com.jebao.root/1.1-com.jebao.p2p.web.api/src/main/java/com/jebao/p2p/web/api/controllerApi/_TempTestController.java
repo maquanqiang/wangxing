@@ -35,7 +35,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/api/tempTest/")
-public class _TempTestController {
+public class _TempTestController extends _BaseController{
 
     @Autowired
     ITempTestServiceInf tempTestServiceInf;

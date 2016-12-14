@@ -86,23 +86,25 @@ public class TbIncomeDetailDao {
 
     /**
      * 统计待收本金、利息
-     * @param loginId 用户ID
+     *
+     * @param loginId  用户ID
      * @param fundType 资金类型 1:本金 2 : 利息
      * @return
      */
-    public BigDecimal selectDueInMoneyByLoginId(Long loginId,int fundType){
+    public BigDecimal selectDueInMoneyByLoginId(Long loginId, int fundType) {
         TbIncomeDetail record = new TbIncomeDetail();
         record.setIndLoginId(loginId);
         record.setIndFundType(fundType);
-        return mapper.selectDueInMoneyByLoginId(record);
+        return new BigDecimal(mapper.selectDueInMoneyByLoginId(record)).setScale(2, BigDecimal.ROUND_HALF_UP);
     }
 
     /**
      * 统计累计收益（利息）
+     *
      * @param indLoginId
      * @return
      */
-    public BigDecimal selectIncomeMoneyByLoginId(long indLoginId){
-        return mapper.selectIncomeMoneyByLoginId(indLoginId);
+    public BigDecimal selectIncomeMoneyByLoginId(long indLoginId) {
+        return new BigDecimal(mapper.selectIncomeMoneyByLoginId(indLoginId)).setScale(2, BigDecimal.ROUND_HALF_UP);
     }
 }

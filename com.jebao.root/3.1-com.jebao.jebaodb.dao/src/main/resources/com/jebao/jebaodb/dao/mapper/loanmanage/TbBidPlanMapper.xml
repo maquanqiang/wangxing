@@ -938,4 +938,22 @@
                 AND bp_id = #{bpId}
         ]]>
     </update>
+
+    <update id="addSurplus"  parameterType="map">
+        UPDATE tb_bid_plan
+            SET bp_surplus_money = bp_surplus_money + #{investMoney},
+            bp_update_time = NOW()
+            WHERE
+                AND bp_id = #{bpId}
+    </update>
+
+    <update id="fullBid" parameterType="long">
+        UPDATE tb_bid_plan
+        SET bp_full_time = NOW(),
+         bp_update_time = NOW(),
+         bp_status = 3
+        WHERE
+            bp_surplus_money = 0
+        AND bp_id = #{bpId}
+    </update>
 </mapper>

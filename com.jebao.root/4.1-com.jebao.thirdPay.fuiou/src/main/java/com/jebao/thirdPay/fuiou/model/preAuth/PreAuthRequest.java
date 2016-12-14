@@ -1,42 +1,21 @@
 package com.jebao.thirdPay.fuiou.model.preAuth;
 
 import com.jebao.thirdPay.fuiou.constants.FuiouConfig;
+import com.jebao.thirdPay.fuiou.model.base.BaseRequest;
 import com.jebao.thirdPay.fuiou.util.Common;
 
 /**
  * Created by Administrator on 2016/9/27.
  */
-public class PreAuthRequest {
+public class PreAuthRequest extends BaseRequest {
 
 
-    public PreAuthRequest(){
-        this.mchnt_cd = FuiouConfig.platNumber;
-        this.mchnt_txn_ssn = Common.mchntTxnSsn();
-    }
-
-    private String mchnt_cd; //商户代码
-    private String mchnt_txn_ssn; //流水号
     private String out_cust_no; //出账账户
     private String in_cust_no; //入账账户
     private String amt; //预授权金额
     private String rem; //备注
     private String signature; //签名数据
 
-    public String getMchnt_cd() {
-        return mchnt_cd;
-    }
-
-    public void setMchnt_cd(String mchnt_cd) {
-        this.mchnt_cd = mchnt_cd;
-    }
-
-    public String getMchnt_txn_ssn() {
-        return mchnt_txn_ssn;
-    }
-
-    public void setMchnt_txn_ssn(String mchnt_txn_ssn) {
-        this.mchnt_txn_ssn = mchnt_txn_ssn;
-    }
 
     public String getOut_cust_no() {
         return out_cust_no;
