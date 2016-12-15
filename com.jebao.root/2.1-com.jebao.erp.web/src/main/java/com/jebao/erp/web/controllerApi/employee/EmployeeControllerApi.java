@@ -93,7 +93,7 @@ public class EmployeeControllerApi extends _BaseController {
             String filename = returnJson.getUrl().substring(returnJson.getUrl().lastIndexOf("/")+1);
             String filePath = Paths.get(FilePluginController.ROOT, "projectFile\\file\\p0",filename).toString();
             List<Object[]> rowList = new ExcelUtil().readFile(filePath);
-            return new ResultData<List<Object[]>>(rowList,filename);
+            return new ResultData<List<Object[]>>(true,rowList,filename);
         }else{
             return new ResultInfo(false,returnJson.getMessage());
         }

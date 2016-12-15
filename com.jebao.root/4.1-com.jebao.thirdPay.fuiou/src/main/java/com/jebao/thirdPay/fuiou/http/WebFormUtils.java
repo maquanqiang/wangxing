@@ -52,7 +52,7 @@ public class WebFormUtils {
                 Object value = "";
                 try {
                     value = m.invoke(parameters, null);
-                    NameValuePair nvp = new NameValuePair(param, value.toString());
+                    NameValuePair nvp = new NameValuePair(param, value == null? "":value.toString());
                     list.add(nvp);
                 } catch (Exception e) {
                     // TODO Auto-generated catch block

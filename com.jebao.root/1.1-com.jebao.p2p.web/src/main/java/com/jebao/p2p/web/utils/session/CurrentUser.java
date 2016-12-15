@@ -4,15 +4,15 @@ package com.jebao.p2p.web.utils.session;
  * Created by Administrator on 2016/9/22.
  */
 public class CurrentUser {
-    private int Id;
+    private long Id;
     private String Name;
     private String UUID;
 
-    public int getId() {
+    public long getId() {
         return Id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         Id = id;
     }
     public String getName() {

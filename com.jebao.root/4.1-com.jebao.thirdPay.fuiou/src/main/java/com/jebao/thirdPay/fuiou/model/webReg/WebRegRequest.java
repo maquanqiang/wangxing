@@ -1,12 +1,13 @@
 package com.jebao.thirdPay.fuiou.model.webReg;
 
+import com.jebao.thirdPay.fuiou.constants.FuiouConfig;
+import com.jebao.thirdPay.fuiou.model.base.BaseRequest;
+
 /**
  * Created by Administrator on 2016/9/26.
  */
-public class WebRegRequest {
-    private String ver; //文档版本号
-    private String mchnt_cd; //商户代码
-    private String mchnt_txn_ssn; //流水号
+public class WebRegRequest extends BaseRequest {
+    private String ver = FuiouConfig.documentVersion;
     private String user_id_from; //用户在商户系统的标志
     private String mobile_no; //手机号码
     private String cust_nm; //客户姓名
@@ -27,22 +28,6 @@ public class WebRegRequest {
 
     public void setVer(String ver) {
         this.ver = ver;
-    }
-
-    public String getMchnt_cd() {
-        return mchnt_cd;
-    }
-
-    public void setMchnt_cd(String mchnt_cd) {
-        this.mchnt_cd = mchnt_cd;
-    }
-
-    public String getMchnt_txn_ssn() {
-        return mchnt_txn_ssn;
-    }
-
-    public void setMchnt_txn_ssn(String mchnt_txn_ssn) {
-        this.mchnt_txn_ssn = mchnt_txn_ssn;
     }
 
     public String getUser_id_from() {

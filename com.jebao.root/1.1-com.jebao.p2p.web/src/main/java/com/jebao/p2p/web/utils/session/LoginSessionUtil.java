@@ -149,8 +149,8 @@ public class LoginSessionUtil {
 
     private static String getLoginSessionKey(CurrentUser currentUser)
     {
-        int id=currentUser.getId();
-        return  Integer.toString(id);
+        long id=currentUser.getId();
+        return  Long.toString(id);
     }
     private static String getLoginSessionFullName(String loginSessionKey)
     {
