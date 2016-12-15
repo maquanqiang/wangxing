@@ -60,8 +60,11 @@ public class AccountController extends _BaseController {
             //return new JsonResultOk(code);
             LoginSessionUtil.setLogin(currentUser, request, response);
             return new JsonResultOk("登录成功");
+        }else {
+            String error = resultInfo.getMsg();
+            return new JsonResultError(error);
         }
-        return new JsonResultError("登录失败，请稍后再试");
+
     }
 
     @RequestMapping("doLogout")

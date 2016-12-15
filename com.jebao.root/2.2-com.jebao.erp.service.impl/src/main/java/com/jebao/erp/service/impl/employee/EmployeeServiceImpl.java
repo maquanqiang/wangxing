@@ -179,7 +179,7 @@ public class EmployeeServiceImpl implements IEmployeeServiceInf {
 
         //endregion
 
-        return new ResultData<Integer>(empId, "保存成功");
+        return new ResultData<Integer>(true,empId, "保存成功");
     }
 
     /**

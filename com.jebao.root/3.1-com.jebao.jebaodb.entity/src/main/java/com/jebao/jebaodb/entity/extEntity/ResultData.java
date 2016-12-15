@@ -8,9 +8,8 @@ public class ResultData <T> extends ResultInfo{
         super(true);
         this.setData(data);
     }
-    public ResultData(T data,String msg){
-        super(true,msg);
-        this.setData(data);
+    public ResultData(boolean flag,String msg){
+        super(flag,msg);
     }
     public ResultData(boolean flag,T data,String msg){
         super(flag,msg);
