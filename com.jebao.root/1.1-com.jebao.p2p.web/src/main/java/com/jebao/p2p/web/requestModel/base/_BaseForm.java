@@ -8,7 +8,7 @@ import com.jebao.p2p.web.utils.session.CurrentUserContextHolder;
  */
 public class _BaseForm {
     private boolean isLogin = false;
-    private int userId;
+    private long userId;
     private String userName;
     public  _BaseForm()
     {
@@ -20,7 +20,7 @@ public class _BaseForm {
         }
     }
 
-    public int getUserId() {
+    public long getUserId() {
         return userId;
     }
 

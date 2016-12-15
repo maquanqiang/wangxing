@@ -6,16 +6,16 @@
                 <p class="footer-tip"><i></i>友情提示【预期年化收益率不代表未来实际收益，出借有风险，选择需谨慎】</p>
                 <ul class="copyright-links">
                     <li>
-                        <a href="#">公司简介</a>
+                        <a href="/html/company">公司简介</a>
                     </li>
                     <li>
-                        <a href="#">团队介绍</a>
+                        <a href="/html/game">团队介绍</a>
                     </li>
                     <li>
-                        <a href="#">公司动态</a>
+                        <a href="/html/activity">公司动态</a>
                     </li>
                     <li>
-                        <a href="#">联系我们</a>
+                        <a href="/html/contactUs">联系我们</a>
                     </li>
                 </ul>
                 <p class="serverTime">服务时间（工作日）：9:00-18:00</p>
@@ -44,11 +44,37 @@
         </div>
     </footer>
 </div>
+<!--$(funciton(){-->
+     <!--$(".copyright-links").click(function () {-->
+        <!--$(this).parent().find('dt').removeClass('active');-->
+        <!--$(this).addClass('active');-->
+
+        <!--$('.project-filter dl dt').each(function () {-->
+
+        <!--var clazz = $(this).attr("class");-->
+        <!--if (clazz == "active") {-->
+        <!--//获得被选中的a链接的类型和值-->
+        <!--var fType = $(this).attr("fType");-->
+        <!--var fValue = $(this).attr("fValue");-->
+        <!--if (fType == "bpInterestPayType") {-->
+        <!--model.searchObj.bpInterestPayType = fValue;-->
+        <!--} else if (fType == "bpPeriodStr") {-->
+        <!--model.searchObj.bpPeriodStr = fValue;-->
+        <!--} else if (fType == "searchMoneyStr") {-->
+        <!--model.searchObj.searchMoneyStr = fValue;-->
+        <!--} else if (fType == "bpStatus") {-->
+        <!--model.searchObj.bpStatus = fValue;-->
+        <!--}-->
+        <!--}-->
+    <!--});-->
+<!--})-->
+
 <!--阴影-->
 <div class="shadow-bg"></div>
-
 <script src="/content/js/lib/jquery.js"></script>
 <script src="/content/js/lib/vue.js"></script>
 <script src="/content/script/common.js"></script>
 <script src="/content/laypage/laypage.js"></script>
 <script src="/content/js/common.js"></script>
+<script src="/content/js/account.js"></script>
+<script src="/content/js/lib/swiper.min.js"></script>

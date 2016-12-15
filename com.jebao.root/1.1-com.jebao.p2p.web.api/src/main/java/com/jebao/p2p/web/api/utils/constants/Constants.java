@@ -20,5 +20,6 @@ public class Constants {
     //
     public static int LOGIN_SESSION_TOKEN_EXPIRE_TIME=60;//60秒-绝对时间
     public static final String LOGIN_SESSION_TOKEN_CACHE_NAME=DOMAIN+"login_token_";
-
+    //金额宝web站点地址
+    public static final String JEBAO_WEB_ORIGIN = ProjectSetting.getConfigProperty("project.web.origin");
 }

@@ -30,15 +30,17 @@ $(function () {
 var model = {
     product: {},
     loanerInfo : {},
+    statistics : {},
     cycleType:["","天","个月","季","年"],
     bpInterestPayTypeArr : ["","一次性还本付息","先息后本，按期付息"],
-    bpStatusArr : ["待审核",'审核未通过',"招标中","已满标",'已过期','','起息中','还款中','','','已结清'],
+    bpStatusArr : ["待审核",'审核未通过',"立即投资","已满标",'已过期','','起息中','还款中','','','已结清'],
     sex:['','男','女'],
     fundType : ['','本金','利息'],
     repayStatus : ['未还款','已还款'],
     riskDataList : [],
     investInfoList : [],
-    incomeDetailList : []
+    incomeDetailList : [],
+    flag : false
 };
 
 // 创建一个 Vue 实例 (ViewModel),它连接 View 与 Model
@@ -62,6 +64,19 @@ var vm = new Vue({
             $.post(common.apiOrigin+$("#defaultForm").attr("action"), form, function (response) {
                 if (response.success_is_ok) {
                     vm.product = response.data;
+                    sta_str=(vm.product.bpStartTime).replace(/-/g,"/");
+                    end_str=(vm.product.bpEndTime).replace(/-/g,"/");//得到的时间的格式都是：yyyy-MM-dd hh24:mi:ss。
+                    var end_str=new Date(end_str);//将字符串转化为时间
+                    var st_str = new Date(sta_str);
+                    var now = new Date();
+                    if(end_str >= now){
+                        window.setInterval(function () {
+                            tick(end_str);
+                        },1000);
+                    }
+                    if(st_str <= now){
+                        vm.flag = true;
+                    }
                     //loanerInfo
                     $.post(common.apiOrigin+"/api/product/loanerInfo", {lid:vm.product.bpLoanerId}, function (response) {
                         if (response.success_is_ok) {
@@ -86,6 +101,13 @@ var vm = new Vue({
             $.post(common.apiOrigin+"/api/product/incomeDetailByBpId", form, function (response) {
                 if (response.success_is_ok) {
                     vm.incomeDetailList = response.data;
+                }
+            });
+
+            //statistics
+            $.get(common.apiOrigin+"/api/invest/statistics", function (response) {
+                if (response.success_is_ok) {
+                    vm.statistics = response.data;
                 }
             });
         },
@@ -134,3 +156,19 @@ function tab(btn,box){
 }
 //项目详情
 tab($('.project-detail-tit h4'),$('.project-detail-info'));
+
+
+function tick(endTime) {
+    var  end_str= endTime;
+    var oNow=new Date();
+    var  total=parseInt((end_str.getTime()-oNow.getTime())/1000);
+    var  d=parseInt(total/86400);
+    total%=86400;
+    var  h=parseInt(total/3600);
+    total%=3600;
+    var  m=parseInt(total/60);
+    total%=60;
+    var  s=total;
+    //console.log(d+'天'+h+'时'+m+'分'+s+'秒');
+    $('#span1').html(d+'天'+h+'时'+m+'分'+s+'秒');
+}

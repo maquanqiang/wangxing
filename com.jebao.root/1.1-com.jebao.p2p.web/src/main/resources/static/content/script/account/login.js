@@ -31,20 +31,20 @@ $(document).ready(function () {
         }).on('success.form.bv', function (e) {
             // Prevent form submission
             e.preventDefault();
-            var $errorPlace = $("#login_message").addClass("hidden");
+            var $errorPlace = $("#login_message").addClass("none");
             // Get the form instance
             var $form = $(e.target);
 
             // Use Ajax to submit form data
             $.post($form.attr('action'), $form.serialize(), function (response) {
                 if (response.success_is_ok) {
-                    var code = response.msg;
+                    //var code = response.msg;
                     var redirectUrl = common.getUrlParam("redirectUrl") || "/";
                     //window.location.href = "/account/token?code="+code+"&redirectUrl"+redirectUrl;
                     window.location.href=redirectUrl;
                     return;
                 } else {
-                    $errorPlace.removeClass("none").find("span").html(response.msg);
+                    $errorPlace.removeClass("none").find("span").html(response.error);
                 }
             });
         });

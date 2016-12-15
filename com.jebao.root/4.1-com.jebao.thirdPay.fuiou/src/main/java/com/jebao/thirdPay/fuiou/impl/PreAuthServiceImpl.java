@@ -21,7 +21,7 @@ public class PreAuthServiceImpl {
 
     public PreAuthResponse post(PreAuthRequest reqData) throws Exception {
         String httpUrl= FuiouConfig.url+"preAuth.action";
-
+        System.out.println(reqData.requestSignPlain());
         String signatureStr = SecurityUtils.sign(reqData.requestSignPlain());
         reqData.setSignature(signatureStr);
         String xmlData = WebUtils.sendHttp(httpUrl, reqData);

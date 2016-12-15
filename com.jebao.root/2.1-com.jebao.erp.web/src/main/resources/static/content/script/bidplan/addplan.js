@@ -205,9 +205,9 @@ var vm = new Vue({
                         vm.interestTotal += (vm.intentList[i].interest)*1;
                     }
                     vm.total = vm.principalTotal +vm.interestTotal;
-                    vm.principalTotal = vm.principalTotal.toFixed(2);
-                    vm.interestTotal = vm.interestTotal.toFixed(2);
-                    vm.total = vm.total.toFixed(2);
+                    vm.principalTotal=toDecimal2(vm.principalTotal);
+                    vm.interestTotal=toDecimal2(vm.interestTotal);
+                    vm.total=toDecimal2(vm.total);
                 }
             });
         },

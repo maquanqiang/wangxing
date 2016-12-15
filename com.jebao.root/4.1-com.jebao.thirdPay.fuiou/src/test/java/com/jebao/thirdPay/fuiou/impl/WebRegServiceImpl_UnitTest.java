@@ -11,9 +11,6 @@ public class WebRegServiceImpl_UnitTest {
     @Test
     public void Test() throws Exception {
         WebRegRequest reqData = new WebRegRequest();
-        reqData.setVer("0.44");
-        reqData.setMchnt_cd("0002900F0041077");
-        reqData.setMchnt_txn_ssn("75720160927152211");
         reqData.setUser_id_from("830");
         reqData.setMobile_no("13712012345");
         reqData.setCust_nm("梅梦香");
