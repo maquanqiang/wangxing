@@ -1,19 +1,20 @@
 package com.jebao.thirdPay.fuiou.util;
 
+import org.apache.commons.httpclient.NameValuePair;
+
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.*;
 import java.util.logging.Logger;
-import org.apache.commons.httpclient.NameValuePair;
 @SuppressWarnings("unchecked")
 public class RequestData
 {
 
-    public static String createSignValueForReg(Object parameters)
+    public static String getSortJoinParamsStr(Object parameters)
             throws IllegalArgumentException, IllegalAccessException, InvocationTargetException
     {
         List list = getNameValuePair(parameters);
-        return Goldacnt.sign(getSrcRegValue(list));
+        return getSrcRegValue(list);
     }
 
     private static String getSrcRegValue(List list)
@@ -63,7 +64,7 @@ public class RequestData
                 {
                     Object value = "";
                     value = m.invoke(parameters, null);
-                    NameValuePair nvp = new NameValuePair(param, value.toString());
+                    NameValuePair nvp = new NameValuePair(param, value == null?"":value.toString());
                     list.add(nvp);
                 }
             }
