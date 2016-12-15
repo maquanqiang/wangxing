@@ -300,57 +300,17 @@ public class BidPlanControllerApi extends _BaseController {
         if(tbBidPlan.getBpStatus() != TbBidPlan.STATUS_AUDITE_SUCCESS){
             return new JsonResultError("不能操作还款,标的状态为:"+tbBidPlan.getBpStatus());
         }
+        TbBidPlan record = form.toEntity(form);
 
-        TbUserDetails tbUserDetails = userDetailsService.selectByLoginId(tbBidPlan.getBpLoginId());
-
-        boolean flag = true;
-        TbInvestInfo tbInvestInfo = new TbInvestInfo();
-        tbInvestInfo.setIiBpId(form.getBpId());
-
-        PageWhere pageWhere = new PageWhere(0, 10000);
-        List<TbInvestInfo> tbInvestInfos = investInfoService.selectByBpId(tbInvestInfo, pageWhere);
-
-        //调用富友接口
-        if(tbInvestInfos!=null && tbInvestInfos.size()>0){
-            for (TbInvestInfo investInfo : tbInvestInfos){
-                TransferBuRequest reqData = new TransferBuRequest();
-                String amt = investInfo.getIiMoney().multiply(new BigDecimal(100)).toString();
-
-                reqData.setOut_cust_no(investInfo.getIiThirdAccount());
-                reqData.setIn_cust_no(tbUserDetails.getUdThirdAccount());
-                reqData.setAmt(amt);
-                reqData.setContract_no(investInfo.getIiContractNo());
-                reqData.setRem("放款");
-                reqData.setSignature(reqData.requestSignPlain());
-                try {
-                    TransferBuResponse thirdResp = transferBuService.post(reqData);
-                    BasePlain plain = thirdResp.getPlain();
-                    if("0000".equals(plain.getResp_code())){
-                        //修改投资列表状态
-                        investInfo.setIiFreezeStatus(TbInvestInfo.STATUS_REPAYING);
-                        investInfoService.save(investInfo);
-                    }else{
-                        //记录异常状态
-                        flag = false;
-                    }
-                } catch (Exception e) {
-                    flag = false;
-                    e.printStackTrace();
-                }
-            }
-        }
-
+        boolean flag = bidPlanService.doLoan(record);
         if(flag){
             //修改标的信息
-            tbBidPlan.setBpLoanMoney(form.getBpLoanMoney());
-            tbBidPlan.setBpLoanTime(new Date());
-            tbBidPlan.setBpInterestSt(form.getBpInterestSt());
-            tbBidPlan.setBpRepayTime(form.getBpRepayTime());
-            tbBidPlan.setBpStatus(TbBidPlan.STATUS_REPAYING);
-            bidPlanService.updateByBidIdSelective(tbBidPlan);
+            record.setBpLoanTime(new Date());
+            record.setBpStatus(TbBidPlan.STATUS_REPAYING);
+            bidPlanService.updateByBidIdSelective(record);
             return new JsonResultOk("放款成功");
         }else {
-            return new JsonResultError("放款失败");
+            return new JsonResultError("放款失败-联系管理员");
         }
 
     }

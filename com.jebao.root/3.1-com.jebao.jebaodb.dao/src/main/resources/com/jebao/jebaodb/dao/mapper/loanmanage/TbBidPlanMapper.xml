@@ -957,4 +957,17 @@
             bp_surplus_money = 0
         AND bp_id = #{bpId}
     </update>
+    <update id="timeoutBid" parameterType="date">
+        <![CDATA[
+            UPDATE tb_bid_plan
+            SET bp_status = 4,
+            bp_full_time = #{nowTime},
+            bp_update_time = #{nowTime}
+            WHERE
+            bp_status = 2
+            AND bp_end_time <= #{nowTime}
+        ]]>
+    </update>
+
+
 </mapper>

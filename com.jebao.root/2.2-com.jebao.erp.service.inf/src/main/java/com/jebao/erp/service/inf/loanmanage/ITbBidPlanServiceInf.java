@@ -27,6 +27,8 @@ public interface ITbBidPlanServiceInf {
 
     int selectBySelfConditionCount(BidPlanSM record);
 
+    boolean doLoan(TbBidPlan record);
+
     /**
      * 借款资金统计
      * @param loanerId

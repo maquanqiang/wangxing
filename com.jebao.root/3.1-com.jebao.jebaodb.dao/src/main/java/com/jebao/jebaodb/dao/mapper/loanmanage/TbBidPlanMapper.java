@@ -7,6 +7,7 @@ import com.jebao.jebaodb.entity.loanmanage.TbBidPlan;
 import com.jebao.jebaodb.entity.loanmanage.search.BidPlanSM;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -42,4 +43,6 @@ public interface TbBidPlanMapper {
     int fullBid(Long bpId);
 
     int addSurplus(Map<String, Object> map);
+
+    int timeoutBid(Date nowDate);
 }

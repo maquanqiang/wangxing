@@ -13,7 +13,7 @@ public class WebRegServiceImpl_UnitTest {
         WebRegRequest reqData = new WebRegRequest();
         reqData.setUser_id_from("830");
         reqData.setMobile_no("13712012345");
-        reqData.setCust_nm("梅梦香");
+        reqData.setCust_nm("好");
         reqData.setCertif_tp("0");
         reqData.setCertif_id("431301198109297486");
         reqData.setEmail("");
@@ -21,12 +21,12 @@ public class WebRegServiceImpl_UnitTest {
         reqData.setParent_bank_id("");
         reqData.setBank_nm("");
         reqData.setCapAcntNo("");
-        reqData.setPage_notify_url("http://localhost:8081/p2p/pay/getFuioureturnDatePay.do");
+//        reqData.setPage_notify_url("http://localhost:9089/api/userfund/registerNotify");
         reqData.setBack_notify_url("");
 
         String httpUrl = "https://jzh-test.fuiou.com/jzh/webReg.action";
         WebRegServiceImpl webRegService = new WebRegServiceImpl();
-        String result = webRegService.post(httpUrl, reqData);
+        String result = webRegService.post(reqData);
         PrintUtil.printLn(result);
         if (result != null) {
             PrintUtil.printLn("[个人用户自助开户注册（网页版）]-测试通过");
