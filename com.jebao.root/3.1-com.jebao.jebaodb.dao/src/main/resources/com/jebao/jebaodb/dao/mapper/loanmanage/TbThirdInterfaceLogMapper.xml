@@ -3,17 +3,15 @@
 <mapper namespace="com.jebao.jebaodb.dao.mapper.loanmanage.TbThirdInterfaceLogMapper" >
   <resultMap id="BaseResultMap" type="com.jebao.jebaodb.entity.loanmanage.TbThirdInterfaceLog" >
     <id column="til_id" property="tilId" jdbcType="BIGINT" />
-    <result column="til_third_account" property="tilThirdAccount" jdbcType="VARCHAR" />
     <result column="til_type" property="tilType" jdbcType="INTEGER" />
     <result column="til_serial_number" property="tilSerialNumber" jdbcType="VARCHAR" />
-    <result column="til_preAuth_number" property="tilPreauthNumber" jdbcType="VARCHAR" />
     <result column="til_return_code" property="tilReturnCode" jdbcType="VARCHAR" />
     <result column="til_req_text" property="tilReqText" jdbcType="VARCHAR" />
     <result column="til_resp_text" property="tilRespText" jdbcType="VARCHAR" />
     <result column="til_create_time" property="tilCreateTime" jdbcType="TIMESTAMP" />
   </resultMap>
   <sql id="Base_Column_List" >
-    til_id, til_third_account, til_type, til_serial_number, til_preAuth_number, til_return_code, 
+    til_id, til_type, til_serial_number, til_return_code,
     til_req_text, til_resp_text, til_create_time
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
@@ -26,11 +24,11 @@
     <selectKey resultType="java.lang.Long" keyProperty="tilId" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_third_interface_log (til_third_account, til_type, til_serial_number, 
-      til_preAuth_number, til_return_code, til_req_text, 
+    insert into tb_third_interface_log (til_type, til_serial_number,
+      til_return_code, til_req_text,
       til_resp_text, til_create_time)
-    values (#{tilThirdAccount,jdbcType=VARCHAR}, #{tilType,jdbcType=INTEGER}, #{tilSerialNumber,jdbcType=VARCHAR}, 
-      #{tilPreauthNumber,jdbcType=VARCHAR}, #{tilReturnCode,jdbcType=VARCHAR}, #{tilReqText,jdbcType=VARCHAR}, 
+    values (#{tilType,jdbcType=INTEGER}, #{tilSerialNumber,jdbcType=VARCHAR},
+      #{tilReturnCode,jdbcType=VARCHAR}, #{tilReqText,jdbcType=VARCHAR},
       #{tilRespText,jdbcType=VARCHAR}, #{tilCreateTime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.jebao.jebaodb.entity.loanmanage.TbThirdInterfaceLog" >
@@ -39,17 +37,11 @@
     </selectKey>
     insert into tb_third_interface_log
     <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="tilThirdAccount != null" >
-        til_third_account,
-      </if>
       <if test="tilType != null" >
         til_type,
       </if>
       <if test="tilSerialNumber != null" >
         til_serial_number,
-      </if>
-      <if test="tilPreauthNumber != null" >
-        til_preAuth_number,
       </if>
       <if test="tilReturnCode != null" >
         til_return_code,
@@ -65,17 +57,11 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="tilThirdAccount != null" >
-        #{tilThirdAccount,jdbcType=VARCHAR},
-      </if>
       <if test="tilType != null" >
         #{tilType,jdbcType=INTEGER},
       </if>
       <if test="tilSerialNumber != null" >
         #{tilSerialNumber,jdbcType=VARCHAR},
-      </if>
-      <if test="tilPreauthNumber != null" >
-        #{tilPreauthNumber,jdbcType=VARCHAR},
       </if>
       <if test="tilReturnCode != null" >
         #{tilReturnCode,jdbcType=VARCHAR},
@@ -94,17 +80,11 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.jebao.jebaodb.entity.loanmanage.TbThirdInterfaceLog" >
     update tb_third_interface_log
     <set >
-      <if test="tilThirdAccount != null" >
-        til_third_account = #{tilThirdAccount,jdbcType=VARCHAR},
-      </if>
       <if test="tilType != null" >
         til_type = #{tilType,jdbcType=INTEGER},
       </if>
       <if test="tilSerialNumber != null" >
         til_serial_number = #{tilSerialNumber,jdbcType=VARCHAR},
-      </if>
-      <if test="tilPreauthNumber != null" >
-        til_preAuth_number = #{tilPreauthNumber,jdbcType=VARCHAR},
       </if>
       <if test="tilReturnCode != null" >
         til_return_code = #{tilReturnCode,jdbcType=VARCHAR},
@@ -123,10 +103,9 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.jebao.jebaodb.entity.loanmanage.TbThirdInterfaceLog" >
     update tb_third_interface_log
-    set til_third_account = #{tilThirdAccount,jdbcType=VARCHAR},
+    set
       til_type = #{tilType,jdbcType=INTEGER},
       til_serial_number = #{tilSerialNumber,jdbcType=VARCHAR},
-      til_preAuth_number = #{tilPreauthNumber,jdbcType=VARCHAR},
       til_return_code = #{tilReturnCode,jdbcType=VARCHAR},
       til_req_text = #{tilReqText,jdbcType=VARCHAR},
       til_resp_text = #{tilRespText,jdbcType=VARCHAR},

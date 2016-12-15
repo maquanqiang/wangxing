@@ -4,12 +4,14 @@ import com.jebao.erp.service.inf.loanmanage.ITbBidPlanServiceInf;
 import com.jebao.jebaodb.dao.dao.investment.TbInvestInfoDao;
 import com.jebao.jebaodb.dao.dao.loanmanage.TbBidPlanDao;
 import com.jebao.jebaodb.dao.dao.loanmanage.TbBidRiskDataDao;
+import com.jebao.jebaodb.dao.dao.loanmanage.TbThirdInterfaceLogDao;
 import com.jebao.jebaodb.dao.dao.user.TbUserDetailsDao;
 import com.jebao.jebaodb.entity.extEntity.PageWhere;
 import com.jebao.jebaodb.entity.investment.TbInvestInfo;
 import com.jebao.jebaodb.entity.loaner.LoanTotal;
 import com.jebao.jebaodb.entity.loanmanage.TbBidPlan;
 import com.jebao.jebaodb.entity.loanmanage.TbBidRiskData;
+import com.jebao.jebaodb.entity.loanmanage.TbThirdInterfaceLog;
 import com.jebao.jebaodb.entity.loanmanage.search.BidPlanSM;
 import com.jebao.jebaodb.entity.user.TbUserDetails;
 import com.jebao.thirdPay.fuiou.impl.TransferBuServiceImpl;
@@ -33,7 +35,7 @@ public class TbBidPlanServiceImpl implements ITbBidPlanServiceInf {
     @Autowired
     private TbBidPlanDao bidPlanDao;
     @Autowired
-    private TbBidRiskDataDao bidRiskDataDao;
+    private TbThirdInterfaceLogDao thirdInterfaceLogDao;
     @Autowired
     private TbUserDetailsDao userDetailsDao;
     @Autowired
@@ -106,10 +108,21 @@ public class TbBidPlanServiceImpl implements ITbBidPlanServiceInf {
                 reqData.setAmt(amt);
                 reqData.setContract_no(investInfo.getIiContractNo());
                 reqData.setRem("放款");
+                TbThirdInterfaceLog thirdInterfaceLog = new TbThirdInterfaceLog();
+                thirdInterfaceLog.setTilCreateTime(new Date());
+                thirdInterfaceLog.setTilType(6);
+                thirdInterfaceLog.setTilSerialNumber(reqData.getMchnt_txn_ssn());
+
+                thirdInterfaceLogDao.insert(thirdInterfaceLog);
 
                 try {
                     TransferBuResponse thirdResp = transferBuService.post(reqData);
                     BasePlain plain = thirdResp.getPlain();
+
+                    thirdInterfaceLog.setTilReturnCode(plain.getResp_code());
+                    thirdInterfaceLog.setTilReqText("");
+                    thirdInterfaceLog.setTilRespText("");
+
                     if("0000".equals(plain.getResp_code())){
                         //修改投资列表状态
                         investInfo.setIiFreezeStatus(TbInvestInfo.STATUS_REPAYING);
@@ -122,6 +135,7 @@ public class TbBidPlanServiceImpl implements ITbBidPlanServiceInf {
                     flag = false;
                     e.printStackTrace();
                 }
+                thirdInterfaceLogDao.updateByPrimaryKeySelective(thirdInterfaceLog);
             }
         }
 

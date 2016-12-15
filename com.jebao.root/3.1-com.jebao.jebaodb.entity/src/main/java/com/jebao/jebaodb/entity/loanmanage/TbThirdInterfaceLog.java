@@ -5,13 +5,9 @@ import java.util.Date;
 public class TbThirdInterfaceLog {
     private Long tilId;
 
-    private String tilThirdAccount;
-
-    private Integer tilType;
+    private Integer tilType;        //富友文档接口编号
 
     private String tilSerialNumber;
-
-    private String tilPreauthNumber;
 
     private String tilReturnCode;
 
@@ -29,14 +25,6 @@ public class TbThirdInterfaceLog {
         this.tilId = tilId;
     }
 
-    public String getTilThirdAccount() {
-        return tilThirdAccount;
-    }
-
-    public void setTilThirdAccount(String tilThirdAccount) {
-        this.tilThirdAccount = tilThirdAccount == null ? null : tilThirdAccount.trim();
-    }
-
     public Integer getTilType() {
         return tilType;
     }
@@ -51,14 +39,6 @@ public class TbThirdInterfaceLog {
 
     public void setTilSerialNumber(String tilSerialNumber) {
         this.tilSerialNumber = tilSerialNumber == null ? null : tilSerialNumber.trim();
-    }
-
-    public String getTilPreauthNumber() {
-        return tilPreauthNumber;
-    }
-
-    public void setTilPreauthNumber(String tilPreauthNumber) {
-        this.tilPreauthNumber = tilPreauthNumber == null ? null : tilPreauthNumber.trim();
     }
 
     public String getTilReturnCode() {
