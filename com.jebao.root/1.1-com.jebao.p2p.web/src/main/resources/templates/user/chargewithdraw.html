@@ -46,7 +46,7 @@
                         </div>
                         <div class="rechange-list">
                             <div class="rechange-item active">
-                                <form id="quickPay_form">
+                                <form id="quickPay_form" action="/api/user/quickpay" method="post">
                                     <div class="account-bankImg clearfix">
                                         <img src="${filePath}/images/account-bank.png" class="fl">
                                         <div class="account-bankDetail fl">
@@ -64,7 +64,7 @@
                                         <input type="text" name="money" value="" placeholder="请输入充值金额">
                                         <span>元</span>
                                     </div>
-                                    <a href="#" class="account-btn">充值</a>
+                                    <a href="javascript:;" class="account-btn" @click="quickpay">充值</a>
                                 </form>
                             </div>
                             <div class="rechange-item">

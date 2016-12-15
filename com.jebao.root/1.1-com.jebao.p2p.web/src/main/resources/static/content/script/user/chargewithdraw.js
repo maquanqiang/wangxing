@@ -33,6 +33,9 @@ var vm = new Vue({
                     }
                 }
             });
+        },
+        quickpay: function () {
+            $("#quickPay_form").submit();//必须使用jquery的submit
         }
 /*        //绑定表单验证
         bindFormValidate:function(){

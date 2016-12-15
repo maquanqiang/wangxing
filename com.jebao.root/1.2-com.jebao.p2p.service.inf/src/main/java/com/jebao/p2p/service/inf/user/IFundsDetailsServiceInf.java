@@ -1,6 +1,7 @@
 package com.jebao.p2p.service.inf.user;
 
 import com.jebao.jebaodb.entity.extEntity.PageWhere;
+import com.jebao.jebaodb.entity.extEntity.ResultInfo;
 import com.jebao.jebaodb.entity.user.TbFundsDetails;
 
 import java.util.List;

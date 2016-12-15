@@ -13,8 +13,16 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class FastRechargeServiceImpl {
-    public String post(FastRechargeRequest reqData) throws Exception {
+    public String post(FastRechargeRequest reqData) {
         String httpUrl= FuiouConfig.url+"500001.action";
+        reqData.setPage_notify_url(FuiouConfig.Jebao_Notify_Origin+"api/user/fastRechargeNotify");
+        try {
+            return post(httpUrl,reqData);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+    public String post(String httpUrl,FastRechargeRequest reqData) throws Exception {
         PrintUtil.printLn("Sign:" + reqData.requestSignPlain());
         String signatureStr = SecurityUtils.sign(reqData.requestSignPlain());
         reqData.setSignature(signatureStr);

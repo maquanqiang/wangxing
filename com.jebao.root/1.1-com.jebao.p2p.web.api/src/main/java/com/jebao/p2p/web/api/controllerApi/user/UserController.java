@@ -3,9 +3,7 @@ package com.jebao.p2p.web.api.controllerApi.user;
 import com.jebao.jebaodb.entity.user.TbAccountsFunds;
 import com.jebao.jebaodb.entity.user.TbFundsDetails;
 import com.jebao.jebaodb.entity.user.TbUserDetails;
-import com.jebao.p2p.service.inf.user.IAccountsFundsServiceInf;
-import com.jebao.p2p.service.inf.user.IFundsDetailsServiceInf;
-import com.jebao.p2p.service.inf.user.IUserServiceInf;
+import com.jebao.p2p.service.inf.user.*;
 import com.jebao.p2p.web.api.controllerApi._BaseController;
 import com.jebao.p2p.web.api.requestModel.user.RechargeSM;
 import com.jebao.p2p.web.api.responseModel.base.JsonResult;
@@ -13,6 +11,7 @@ import com.jebao.p2p.web.api.responseModel.base.JsonResultData;
 import com.jebao.p2p.web.api.responseModel.base.JsonResultError;
 import com.jebao.p2p.web.api.responseModel.base.JsonResultOk;
 import com.jebao.p2p.web.api.responseModel.user.UserDetailsVM;
+import com.jebao.p2p.web.api.utils.constants.Constants;
 import com.jebao.p2p.web.api.utils.session.CurrentUser;
 import com.jebao.p2p.web.api.utils.session.CurrentUserContextHolder;
 import com.jebao.p2p.web.api.utils.validation.ValidationResult;
@@ -29,6 +28,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.math.BigDecimal;
+import java.net.URLEncoder;
 import java.util.Date;
 
 /**
@@ -47,7 +47,10 @@ public class UserController extends _BaseController {
     private IFundsDetailsServiceInf fundsDetailsService;
 
     @Autowired
-    private PersonQuickPayServiceImpl personQuickPayService;
+    private IWithdrawServiceInf withdrawService;
+
+    @Autowired
+    private IRechargeServiceInf rechargeService;
 
     @RequestMapping(value = "details", method = RequestMethod.GET)
     @ResponseBody
@@ -78,17 +81,18 @@ public class UserController extends _BaseController {
      * @param form
      * @return
      */
-    @RequestMapping(value = "quickPay",method = RequestMethod.POST, produces = "application/html")
-    public @ResponseBody JsonResult quickPay(RechargeSM form) {
+    /*@RequestMapping(value = "quickpay",method = RequestMethod.POST)
+    public String quickpay(RechargeSM form) {
         CurrentUser currentUser = CurrentUserContextHolder.get();
         if (currentUser == null) {
-            return new JsonResultError("未登陆");
+            return null;
         }
-
-        ValidationResult resultValidation = ValidationUtil.validateEntity(form);
+        String title = "快捷充值失败！";
+        String backUrl = "/user/chargewithdraw"; // web页面内的回跳地址，可以是相对路径
+  *//*      ValidationResult resultValidation = ValidationUtil.validateEntity(form);
         if (resultValidation.isHasErrors()) {
-            return new JsonResultError(resultValidation.getErrorMsg());
-        }
+            goFailedPage(title,resultValidation.getErrorMsg(),backUrl);
+        }*//*
 
         String amt = form.getMoney().multiply(new BigDecimal(100)).toString();
 
@@ -116,17 +120,17 @@ public class UserController extends _BaseController {
                 fdmodel.setFdThirdAccount(currentUser.getName());
                 fundsDetailsService.insert(fdmodel);
                 //todo 输出页面
-                return new JsonResultOk("保存成功");
+               // return new JsonResultOk("保存成功");
             }
         }catch (Exception ex){
             ex.printStackTrace();
-            return new JsonResultError("未登陆");
+           // return new JsonResultError("未登陆");
         }
-        return new JsonResultOk("保存成功");
-    }
+       // return new JsonResultOk("保存成功");
+    }*/
     
-    @RequestMapping(value = "quickPayCallBack",method = RequestMethod.POST, produces = "application/json")
-    public @ResponseBody JsonResult quickPayCallBack(PersonQuickPayResponse form) {
+/*    @RequestMapping(value = "quickPayNotify",method = RequestMethod.POST, produces = "application/json")
+    public @ResponseBody JsonResult quickPayNotify(PersonQuickPayResponse form) {
         String verify= form.getAmt() + "|" + form.getLogin_id() + "|" + form.getMchnt_cd() + "|" + form.getMchnt_txn_ssn() + "|" + form.getResp_code() + "|" + form.getResp_desc();
         boolean isOk = SecurityUtils.verifySign(verify, form.getSignature());
         if(!isOk)
@@ -153,5 +157,23 @@ public class UserController extends _BaseController {
             fundsDetailsService.update(fdmodel);
             return new JsonResultError("充值失败");
         }
-    }
+    }*/
+
+    /**
+     * 跳转到失败页面
+     * @param title 标题
+     * @param content 失败信息
+     * @param backUrl 返回按钮链接
+     */
+  /*  private void goFailedPage(String title,String content,String backUrl){
+        String webOrigin = Constants.JEBAO_WEB_ORIGIN;
+        String errorUrl = webOrigin + "error/failed";
+
+        try {
+            String redirectUrl = errorUrl+"?title="+ URLEncoder.encode(title, "UTF-8")+"&content="+URLEncoder.encode(content,"UTF-8")+"&backUrl="+backUrl;
+            response.sendRedirect(redirectUrl);
+        } catch (Exception e) {
+
+        }
+    }*/
 }
