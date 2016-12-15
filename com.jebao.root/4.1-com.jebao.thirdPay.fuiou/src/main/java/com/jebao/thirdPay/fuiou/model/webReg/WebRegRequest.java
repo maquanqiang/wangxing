@@ -140,6 +140,7 @@ public class WebRegRequest extends BaseRequest {
      */
     public String requestSignPlain() {
         String src = back_notify_url+"|"+bank_nm+"|"+capAcntNo+"|"+certif_id+"|"+city_id+"|"+cust_nm+"|"+email+"|"+mchnt_cd+"|"+mchnt_txn_ssn+"|"+mobile_no+"|"+ page_notify_url +"|"+parent_bank_id+"|"+user_id_from+"|"+ver;
+
         return src;
     }
 }

@@ -19,6 +19,7 @@ public class WebFormUtils {
         StringBuffer sb=new StringBuffer();
         sb.append("<html>");
         sb.append("<head>");
+        sb.append("<meta charset=\"utf-8\" />");
         sb.append("<script type=\"text/javascript\">");
         sb.append("function redirectUrl() {");
         sb.append("document.form0.submit();");

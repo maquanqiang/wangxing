@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -136,8 +137,17 @@ public class TbBidPlanDao {
      * @param map
      * @return
      */
-    public int addSurplus(Map<String, Object> map){
+    public int addSurplus(Map<String, Object> map)
+    {
         return tbBidPlanMapper.addSurplus(map);
+    }
+
+    /**
+     * 改变标的过期状态
+     * @return
+     */
+    public int timeoutBid(Date nowDate){
+        return tbBidPlanMapper.timeoutBid(nowDate);
     }
     @Transactional
     public int insertForTransactional(TbBidPlan record) {
