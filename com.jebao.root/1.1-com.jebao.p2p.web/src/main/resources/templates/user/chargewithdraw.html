@@ -46,36 +46,36 @@
                         </div>
                         <div class="rechange-list">
                             <div class="rechange-item active">
-                                <form>
+                                <form id="quickPay_form">
                                     <div class="account-bankImg clearfix">
                                         <img src="${filePath}/images/account-bank.png" class="fl">
                                         <div class="account-bankDetail fl">
-                                            <h5>中国建设银行</h5>
+                                            <h5>{{ bankInfo.bankParentBankName }}</h5>
                                             <p class="card-type">储蓄卡</p>
-                                            <p class="card-num">6227**********8888</p>
+                                            <p class="card-num">{{ bankInfo.bankCardNo }}</p>
                                         </div>
                                     </div>
                                     <div class="account-banktext clearfix">
                                         <h5>可用金额：</h5>
-                                        <span class="red">2000.00</span><i>元</i>
+                                        <span class="red">{{ bankInfo.balance }}</span><i>元</i>
                                     </div>
                                     <div class="account-banktext clearfix">
                                         <h5>充值金额：</h5>
-                                        <input type="text" value="" placeholder="请输入充值金额">
+                                        <input type="text" name="money" value="" placeholder="请输入充值金额">
                                         <span>元</span>
                                     </div>
                                     <a href="#" class="account-btn">充值</a>
                                 </form>
                             </div>
                             <div class="rechange-item">
-                                <form>
+                                <form id="fastRecharge_form">
                                     <div class="account-banktext clearfix">
                                         <h5>可用金额：</h5>
-                                        <span class="red">2000.00</span><i>元</i>
+                                        <span class="red">{{ bankInfo.balance }}</span><i>元</i>
                                     </div>
                                     <div class="account-banktext clearfix">
                                         <h5>充值金额：</h5>
-                                        <input type="text" value="" placeholder="请输入充值金额">
+                                        <input type="text" name="money" value="" placeholder="请输入充值金额">
                                         <span>元</span>
                                     </div>
                                     <a href="#" class="account-btn">充值</a>
@@ -89,18 +89,18 @@
                         <div class="account-bankImg clearfix">
                             <img src="${filePath}/images/account-bank.png" class="fl">
                             <div class="account-bankDetail fl">
-                                <h5>中国建设银行</h5>
+                                <h5>{{ bankInfo.bankParentBankName }}</h5>
                                 <p class="card-type">储蓄卡</p>
-                                <p class="card-num">6227**********8888</p>
+                                <p class="card-num">{{ bankInfo.bankCardNo }}</p>
                             </div>
                         </div>
                         <div class="account-banktext clearfix">
                             <h5>可用金额：</h5>
-                            <span class="red">2000.00</span><i>元</i>
+                            <span class="red">{{ bankInfo.balance }}</span><i>元</i>
                         </div>
                         <div class="account-banktext clearfix">
-                            <h5>充值金额：</h5>
-                            <input type="text" value="" placeholder="请输入充值金额">
+                            <h5>提现金额：</h5>
+                            <input type="text" name="money" value="" placeholder="请输入充值金额">
                             <span>元</span>
                         </div>
                         <div class="account-banktext clearfix">

@@ -1,5 +1,6 @@
 package com.jebao.thirdPay.fuiou.impl;
 
+import com.jebao.thirdPay.fuiou.constants.FuiouConfig;
 import com.jebao.thirdPay.fuiou.http.WebFormUtils;
 import com.jebao.thirdPay.fuiou.model.fastRecharge.FastRechargeRequest;
 import com.jebao.thirdPay.fuiou.util.PrintUtil;
@@ -12,7 +13,8 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class FastRechargeServiceImpl {
-    public String post(String httpUrl, FastRechargeRequest reqData) throws Exception {
+    public String post(FastRechargeRequest reqData) throws Exception {
+        String httpUrl= FuiouConfig.url+"500001.action";
         PrintUtil.printLn("Sign:" + reqData.requestSignPlain());
         String signatureStr = SecurityUtils.sign(reqData.requestSignPlain());
         reqData.setSignature(signatureStr);

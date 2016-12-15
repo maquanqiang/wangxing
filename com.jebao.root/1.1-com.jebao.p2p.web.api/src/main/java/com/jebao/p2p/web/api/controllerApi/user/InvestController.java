@@ -2,9 +2,9 @@ package com.jebao.p2p.web.api.controllerApi.user;
 
 import com.jebao.jebaodb.entity.extEntity.PageWhere;
 import com.jebao.jebaodb.entity.investment.InvestIng;
-import com.jebao.jebaodb.entity.investment.InvestPaymentIng;
 import com.jebao.jebaodb.entity.investment.InvestPaymented;
 import com.jebao.jebaodb.entity.investment.InvestStatistics;
+import com.jebao.jebaodb.entity.investment.TbIncomeDetail;
 import com.jebao.p2p.service.inf.user.IInvestServiceInf;
 import com.jebao.p2p.web.api.controllerApi._BaseController;
 import com.jebao.p2p.web.api.requestModel.user.InvestSM;
@@ -74,7 +74,7 @@ public class InvestController extends _BaseController {
             investIngList.forEach(o -> viewModelList.add(new InvestIngVM(o)));
             return new JsonResultList<>(viewModelList);
         } else {//还款中
-            List<InvestPaymentIng> ipiList = investService.selectInvestPaymentIngByLoginId(currentUser.getId(), page);
+            List<TbIncomeDetail> ipiList = investService.selectInvestPaymentIngByLoginId(currentUser.getId(), page);
 
             List<InvestPaymentIngVM> vmList = new ArrayList<>();
             ipiList.forEach(o -> vmList.add(new InvestPaymentIngVM(o)));
@@ -110,7 +110,7 @@ public class InvestController extends _BaseController {
             }
             return new JsonResultList<>(viewModelList, count);
         } else if (model.getFreezeStatus() == 2) {//还款中
-            List<InvestPaymentIng> ipiList = investService.selectInvestPaymentIngByLoginId(currentUser.getId(), page);
+            List<TbIncomeDetail> ipiList = investService.selectInvestPaymentIngByLoginId(currentUser.getId(), page);
 
             List<InvestPaymentIngVM> vmlList = new ArrayList<>();
             ipiList.forEach(o -> vmlList.add(new InvestPaymentIngVM(o)));

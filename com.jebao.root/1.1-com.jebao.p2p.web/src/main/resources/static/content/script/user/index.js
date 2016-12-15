@@ -5,7 +5,7 @@
 //Model
 var model = {
     //资金汇总
-    fundSum:{},
+    fundSum:{incomeAmount:0,totalAssets:0,balance:0,freezeAmount:0,dueInPrincipal:0,dueInIncome:0},
     //投资中项目
     investIngs:[],
     //还款中项目

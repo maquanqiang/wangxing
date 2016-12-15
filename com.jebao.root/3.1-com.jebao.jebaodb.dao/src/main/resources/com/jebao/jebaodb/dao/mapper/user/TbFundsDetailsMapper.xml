@@ -183,6 +183,27 @@
         where fd_id = #{fdId,jdbcType=BIGINT}
     </update>
     <!--==================================================华丽分割线==================================================-->
+    <update id="updateBySsn" parameterType="com.jebao.jebaodb.entity.user.TbFundsDetails" >
+        update tb_funds_details
+        <set >
+            <if test="fdSerialTime != null" >
+                fd_serial_time = #{fdSerialTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="fdCommissionCharge != null" >
+                fd_commission_charge = #{fdCommissionCharge,jdbcType=DECIMAL},
+            </if>
+            <if test="fdBalanceStatus != null" >
+                fd_balance_status = #{fdBalanceStatus,jdbcType=INTEGER}
+            </if>
+        </set>
+        where fd_serial_number = #{fdSerialNumber,jdbcType=VARCHAR}
+        <if test="fdThirdAccount != null" >
+            and fd_third_account = #{fdThirdAccount,jdbcType=VARCHAR}
+        </if>
+        <if test="fdLoginId != null" >
+            and fd_login_id = #{fdLoginId,jdbcType=BIGINT}
+        </if>
+    </update>
     <resultMap id="StatisticsResultMap" type="com.jebao.jebaodb.entity.user.FundsStatistics">
         <result column="total_trades" property="totalTrades" jdbcType="INTEGER"/>
         <result column="total_amounts" property="totalAmounts" jdbcType="DECIMAL"/>

@@ -30,4 +30,14 @@ public class FundsDetailsServiceImpl implements IFundsDetailsServiceInf {
         record.setFdLoginId(loginId);
         return tbFundsDetailsDao.selectByParamsForPageCount(record);
     }
+
+    @Override
+    public int insert(TbFundsDetails record) {
+        return tbFundsDetailsDao.insertSelective(record);
+    }
+
+    @Override
+    public int update(TbFundsDetails record) {
+        return tbFundsDetailsDao.updateBySsn(record);
+    }
 }

@@ -23,4 +23,18 @@ public interface IFundsDetailsServiceInf {
      * @return
      */
     int selectFundsDetailsByLoginIdForPageCount(Long loginId);
+
+    /**
+     * 新增资金收支明细
+     * @param record
+     * @return
+     */
+    int insert(TbFundsDetails record);
+
+    /**
+     * 修改资金收支明细
+     * @param record
+     * @return
+     */
+    int update(TbFundsDetails record);
 }

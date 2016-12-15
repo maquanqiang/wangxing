@@ -1,7 +1,7 @@
 package com.jebao.p2p.web.api.responseModel.user;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.jebao.jebaodb.entity.investment.InvestPaymentIng;
+import com.jebao.jebaodb.entity.investment.TbIncomeDetail;
 import com.jebao.p2p.web.api.responseModel.ViewModel;
 
 import java.math.BigDecimal;
@@ -12,15 +12,15 @@ import java.util.Date;
  * Created by Administrator on 2016/12/12.
  */
 public class InvestPaymentIngVM extends ViewModel {
-    public InvestPaymentIngVM(InvestPaymentIng entity){
-        this.bpId = entity.getBpId();
-        this.bpName = entity.getBpName();
-        this.createTime = entity.getCreateTime();
-        this.money = entity.getMoney();
+    public InvestPaymentIngVM(TbIncomeDetail entity){
+        this.bpId = entity.getIndBpId();
+        this.bpName = entity.getIndBpName();
+        this.createTime = entity.getInvestTime();
+        this.money = entity.getInvestMoney();
         this.periods = entity.getPeriods();
-        this.bpRate = entity.getBpRate();
-        this.nextDueDate = entity.getNextDueDate();
-        this.dueMoney = entity.getDueMoney();
+        this.bpRate = entity.getRate();
+        this.nextDueDate = entity.getIndDateTime();
+        this.dueMoney = entity.getIncomeTotal();
         this.contractUrl = entity.getContractUrl();
     }
 
