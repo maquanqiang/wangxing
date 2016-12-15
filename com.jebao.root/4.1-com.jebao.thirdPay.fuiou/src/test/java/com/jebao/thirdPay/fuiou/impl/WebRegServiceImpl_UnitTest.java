@@ -31,5 +31,6 @@ public class WebRegServiceImpl_UnitTest {
         if (result != null) {
             PrintUtil.printLn("[个人用户自助开户注册（网页版）]-测试通过");
         }
+
     }
 }
