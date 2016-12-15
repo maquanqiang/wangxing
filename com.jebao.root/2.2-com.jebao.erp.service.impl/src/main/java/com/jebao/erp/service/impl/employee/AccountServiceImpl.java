@@ -48,7 +48,7 @@ public class AccountServiceImpl implements IAccountServiceInf {
         //更新登录时间
         loginDao.updateByPrimaryKey(loginEntity);
 
-        return new ResultData<Integer>(loginEntity.getLgEmpId(),"登录成功");
+        return new ResultData<Integer>(true,loginEntity.getLgEmpId(),"登录成功");
     }
 
     @Override

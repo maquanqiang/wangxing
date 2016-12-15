@@ -9,4 +9,7 @@ public class FuiouConfig {
     public final static String platNumber= ProjectSetting.getConfigProperty("project.thirdPay.fuiou.platNumber");
     public final static String notifyUrl= ProjectSetting.getConfigProperty("project.thirdPay.fuiou.notifyUrl");
     public final static String pageCallUrl= ProjectSetting.getConfigProperty("project.thirdPay.fuiou.pageCallUrl");
+    public final static String Jebao_Notify_Origin = ProjectSetting.getConfigProperty("project.webapi.origin");
+    public final static String documentVersion = "0.44";
+
 }

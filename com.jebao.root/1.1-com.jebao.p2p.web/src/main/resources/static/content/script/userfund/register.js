@@ -50,7 +50,9 @@ var vm = new Vue({
                     },
                 }
             }).on('success.form.bv', function (e) {
-                e.target.submit();
+                var $form = $(e.target);
+                $form.attr("action",common.apiOrigin + $form.attr("action"));
+                $form[0].submit();
             });
         },
         submit: function () {

@@ -7,6 +7,14 @@ import com.jebao.thirdPay.fuiou.util.Common;
  * Created by Lee on 2016/12/13.
  */
 public class BaseRequest {
-    public String mchnt_cd = FuiouConfig.platNumber;
-    public String mchnt_txn_ssn = Common.mchntTxnSsn();
+    protected String mchnt_cd = FuiouConfig.platNumber;
+    protected String mchnt_txn_ssn = Common.mchntTxnSsn();
+
+    public String getMchnt_cd() {
+        return mchnt_cd;
+    }
+
+    public String getMchnt_txn_ssn() {
+        return mchnt_txn_ssn;
+    }
 }
