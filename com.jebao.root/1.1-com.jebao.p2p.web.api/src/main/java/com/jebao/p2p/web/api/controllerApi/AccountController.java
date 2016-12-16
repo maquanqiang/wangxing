@@ -43,12 +43,12 @@ public class AccountController extends _BaseController {
         if (resultValidation.isHasErrors()) {
             return new JsonResultError(resultValidation.toString());
         }
-        String verifyCode = CaptchaUtil.getCaptchaToken(request, response);
-        if (!StringUtils.isBlank(verifyCode)) {
-            if (!verifyCode.equalsIgnoreCase(loginForm.getVerifyCode())) {
-                return new JsonResultError("校验码错误");
-            }
-        }
+//        String verifyCode = CaptchaUtil.getCaptchaToken(request, response);
+//        if (!StringUtils.isBlank(verifyCode)) {
+//            if (!verifyCode.equalsIgnoreCase(loginForm.getVerifyCode())) {
+//                return new JsonResultError("校验码错误");
+//            }
+//        }
         String ipAddress = new HttpUtil().getIpAddress(request);
         //todo 实际的业务逻辑
         ResultData<Long> resultInfo = accountService.login(loginForm.getJebUsername(), loginForm.getPassword(), ipAddress);

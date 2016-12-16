@@ -1,15 +1,15 @@
 package com.jebao.thirdPay.fuiou.http;
 
+import org.apache.commons.httpclient.HttpClient;
+import org.apache.commons.httpclient.NameValuePair;
+import org.apache.commons.httpclient.methods.PostMethod;
+import org.apache.commons.httpclient.params.HttpMethodParams;
+
 import java.io.IOException;
 import java.lang.reflect.Method;
 import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.NameValuePair;
-import org.apache.commons.httpclient.methods.PostMethod;
-import org.apache.commons.httpclient.params.HttpMethodParams;
 @SuppressWarnings("unchecked")
 public class HttpClientHelper{
 
@@ -38,7 +38,7 @@ public class HttpClientHelper{
                     Object value="";
                     try {
                         value = m.invoke(parameters, null);
-                        NameValuePair nvp=new NameValuePair(param,value.toString());
+                        NameValuePair nvp=new NameValuePair(param,value == null?"":value.toString());
                         list.add(nvp);
                     } catch (Exception e) {
                         // TODO Auto-generated catch block
