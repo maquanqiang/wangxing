@@ -19,7 +19,7 @@ public class FastRechargeServiceImpl_UnitTest {
         reqData.setBack_notify_url("");
         String httpUrl = "https://jzh-test.fuiou.com/jzh/500001.action";
         FastRechargeServiceImpl fastRechargeService = new FastRechargeServiceImpl();
-        String result = fastRechargeService.post(httpUrl, reqData);
+        String result = fastRechargeService.post(reqData);
         PrintUtil.printLn(result);
         if (result != null) {
             PrintUtil.printLn("[商户P2P网站免登录快速充值接口]-测试通过");

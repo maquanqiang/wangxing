@@ -14,6 +14,8 @@ public interface TbAccountsFundsMapper {
     int updateByPrimaryKey(TbAccountsFunds record);
 
     /* ==================================================华丽分割线==================================================*/
+    int updateByLoginId(TbAccountsFunds record);
+
     int deleteByLoginId(Long afLoginId);
 
     TbAccountsFunds selectByLoginId(Long afLoginId);

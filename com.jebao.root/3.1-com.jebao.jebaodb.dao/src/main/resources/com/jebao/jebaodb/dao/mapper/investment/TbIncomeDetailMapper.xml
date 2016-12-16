@@ -477,6 +477,17 @@
         GROUP BY
             detail.ind_bp_id,
             detail.ind_periods
+        ORDER BY detail.ind_id DESC
+        LIMIT #{pageWhere.begin},#{pageWhere.pageSize}
+    </select>
+    <select id="selectFundListForPageCount" resultType="java.lang.Integer">
+        SELECT count(1)
+        FROM tb_income_detail detail
+        LEFT JOIN tb_invest_info info ON detail.ind_ii_id = info.ii_id
+        LEFT JOIN tb_bid_plan plan ON detail.ind_bp_id = plan.bp_id
+        <where>
+            <include refid="selectFundWhere" />
+        </where>
     </select>
     <!--==================================================账户总览统计==================================================-->
     <select id="selectDueInMoneyByLoginId" resultType="java.lang.Double">

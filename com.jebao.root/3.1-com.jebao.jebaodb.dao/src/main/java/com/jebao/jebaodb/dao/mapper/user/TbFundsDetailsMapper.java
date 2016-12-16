@@ -19,6 +19,8 @@ public interface TbFundsDetailsMapper {
     int updateByPrimaryKey(TbFundsDetails record);
 
     /* ==================================================华丽分割线==================================================*/
+    int updateBySsn(TbFundsDetails record);
+
     List<FundsStatistics> statisticsByLoginId(Long loginId);
 
     List<TbFundsDetails> selectForPage(@Param("pageWhere") PageWhere pageWhere);

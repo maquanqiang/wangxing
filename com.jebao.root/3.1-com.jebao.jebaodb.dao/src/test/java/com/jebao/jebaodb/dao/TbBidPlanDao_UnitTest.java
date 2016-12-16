@@ -52,7 +52,7 @@ public class TbBidPlanDao_UnitTest extends _BaseUnitTest {
         FundDetailSM fundDetailSM = new FundDetailSM();
         fundDetailSM.setInvestLoginId(1l);
         fundDetailSM.setDetailStatus(1);
-        List<TbIncomeDetail> incomeDetails = incomeDetailDao.selectFundList(fundDetailSM);
+        List<TbIncomeDetail> incomeDetails = incomeDetailDao.selectFundList(fundDetailSM,null);
         System.out.println();
     }
 

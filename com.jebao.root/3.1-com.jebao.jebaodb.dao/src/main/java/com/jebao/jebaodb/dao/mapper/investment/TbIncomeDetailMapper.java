@@ -32,8 +32,9 @@ public interface TbIncomeDetailMapper {
 
     int selectGroupByConditionCount(@Param("record") RepaymentDetailSM record);
 
-    List<TbIncomeDetail> selectFundList(@Param("record") FundDetailSM record);
+    List<TbIncomeDetail> selectFundList(@Param("record") FundDetailSM record,@Param("pageWhere") PageWhere pageWhere);
 
+    int selectFundListForPageCount(@Param("record") FundDetailSM record);
     /*==================================================账户总览统计==================================================*/
     double selectDueInMoneyByLoginId(@Param("record") TbIncomeDetail record);
 

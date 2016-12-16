@@ -1,6 +1,7 @@
 package com.jebao.p2p.service.inf.user;
 
 import com.jebao.jebaodb.entity.extEntity.PageWhere;
+import com.jebao.jebaodb.entity.extEntity.ResultInfo;
 import com.jebao.jebaodb.entity.user.TbFundsDetails;
 
 import java.util.List;
@@ -23,4 +24,18 @@ public interface IFundsDetailsServiceInf {
      * @return
      */
     int selectFundsDetailsByLoginIdForPageCount(Long loginId);
+
+    /**
+     * 新增资金收支明细
+     * @param record
+     * @return
+     */
+    int insert(TbFundsDetails record);
+
+    /**
+     * 修改资金收支明细
+     * @param record
+     * @return
+     */
+    int update(TbFundsDetails record);
 }

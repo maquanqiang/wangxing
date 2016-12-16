@@ -4,10 +4,7 @@ import com.jebao.jebaodb.dao.dao.investment.TbIncomeDetailDao;
 import com.jebao.jebaodb.dao.dao.investment.TbInvestInfoDao;
 import com.jebao.jebaodb.dao.dao.user.TbAccountsFundsDao;
 import com.jebao.jebaodb.entity.extEntity.PageWhere;
-import com.jebao.jebaodb.entity.investment.InvestIng;
-import com.jebao.jebaodb.entity.investment.InvestPaymentIng;
-import com.jebao.jebaodb.entity.investment.InvestPaymented;
-import com.jebao.jebaodb.entity.investment.InvestStatistics;
+import com.jebao.jebaodb.entity.investment.*;
 import com.jebao.p2p.service.inf.user.IInvestServiceInf;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -58,13 +55,22 @@ public class InvestServiceImpl implements IInvestServiceInf {
     }
 
     @Override
-    public List<InvestPaymentIng> selectInvestPaymentIngByLoginId(Long loginId, PageWhere page) {
-        return null;
+    public List<TbIncomeDetail>
+    selectInvestPaymentIngByLoginId(Long loginId, PageWhere page) {
+        FundDetailSM record = new FundDetailSM();
+        record.setInvestLoginId(loginId);
+        record.setDetailStatus(1);
+        record.setPlanStatus(7);
+        return tbIncomeDetailDao.selectFundList(record, page);
     }
 
     @Override
     public int selectInvestPaymentIngByLoginIdForPageCount(Long loginId) {
-        return 0;
+        FundDetailSM record = new FundDetailSM();
+        record.setInvestLoginId(loginId);
+        record.setDetailStatus(1);
+        record.setPlanStatus(7);
+        return tbIncomeDetailDao.selectFundListForPageCount(record);
     }
 
     @Override
