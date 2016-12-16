@@ -3,6 +3,7 @@ package com.jebao.p2p.web.api.controllerApi.user;
 import com.jebao.jebaodb.entity.extEntity.EnumModel;
 import com.jebao.jebaodb.entity.extEntity.ResultData;
 import com.jebao.jebaodb.entity.extEntity.ResultInfo;
+import com.jebao.jebaodb.entity.user.TbAccountsFunds;
 import com.jebao.jebaodb.entity.user.TbUserDetails;
 import com.jebao.p2p.service.inf.user.IRechargeServiceInf;
 import com.jebao.p2p.service.inf.user.IUserServiceInf;
@@ -46,6 +47,7 @@ public class UserController extends _BaseController {
 
     @Autowired
     private IRechargeServiceInf rechargeService;
+    
     @Autowired
     private IUserfundServiceInf userfundService;
 
@@ -81,9 +83,12 @@ public class UserController extends _BaseController {
         if (userDetails == null) {
             return new JsonResultData<>(null);
         }
-
+        TbAccountsFunds accountsFunds = userService.getAccountsFundsInfo(currentUser.getId());
+        if (accountsFunds == null) {
+            return new JsonResultData<>(null);
+        }
         UserDetailsVM viewModel = new UserDetailsVM();
-        viewModel.setBalance(userService.getAccountsFundsInfo(currentUser.getId()).getAfBalance());
+        viewModel.setBalance(accountsFunds.getAfBalance());
         viewModel.setBankCardNo(userDetails.getUdBankCardNo());
         viewModel.setBankParentBankName(userDetails.getUdBankParentBankName());
         viewModel.setInvitationCode(userDetails.getUdInvitationCode());
