@@ -130,4 +130,12 @@ public class WebRegResponse {
     public void setSignature(String signature) {
         this.signature = signature;
     }
+
+    public String requestSignPlain() {
+        String src = bank_nm+"|"+capAcntNo+"|"+certif_id+"|"+city_id+"|"+cust_nm+"|"+email+"|"+mchnt_cd+"|"+mchnt_txn_ssn+"|"+mobile_no
+                +"|"+parent_bank_id+"|"+resp_code+"|"+user_id_from;
+
+        return src;
+    }
+
 }

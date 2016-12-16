@@ -23,8 +23,8 @@ public class WebRegServiceImpl {
         }
     }
     public String post(String httpUrl, WebRegRequest reqData) throws Exception {
-        PrintUtil.printLn("Sign:" + reqData.requestSignPlain());
-        String signatureStr = SecurityUtils.sign(reqData.requestSignPlain());
+        String signature = reqData.requestSignPlain();
+        String signatureStr = SecurityUtils.sign(signature);
         PrintUtil.printLn(signatureStr);
         reqData.setSignature(signatureStr);
         String formHtml = WebFormUtils.createFormHtml(httpUrl, reqData);

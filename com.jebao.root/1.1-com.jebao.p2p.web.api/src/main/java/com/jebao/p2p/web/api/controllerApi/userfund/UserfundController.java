@@ -66,6 +66,24 @@ public class UserfundController extends _BaseController {
         }
         return null;
     }
+    /**
+     * 第三方资金账户开通回调地址
+     */
+    @RequestMapping("registerNotify")
+    public String registerNotify(WebRegResponse model){
+        CurrentUser user = LoginSessionUtil.User(request,response);
+        ResultInfo resultInfo = userfundService.registerByWebComplete(model,user.getId());
+        if (!resultInfo.getSuccess_is_ok()){
+            String title = "资金账户开通失败！";
+            String content = resultInfo.getMsg();
+            String backUrl = "/userfund/register"; // web页面内的回跳地址，可以是相对路径
+            goFailedPage(title,content,backUrl);
+        }else{
+            goSuccessPage("资金账户开通成功！","开启理财致富之路～","/user/myaccount","查看我的账户");
+        }
+        return null;
+    }
+
 
     /**
      * 跳转到失败页面
@@ -75,32 +93,27 @@ public class UserfundController extends _BaseController {
      */
     private void goFailedPage(String title,String content,String backUrl){
         String webOrigin = Constants.JEBAO_WEB_ORIGIN;
-        String errorUrl = webOrigin + "error/failed";
-
+        String errorUrl = webOrigin + "notify/failed";
+        String charset = "UTF-8";
         try {
-            String redirectUrl = errorUrl+"?title="+URLEncoder.encode(title,"UTF-8")+"&content="+URLEncoder.encode(content,"UTF-8")+"&backUrl="+backUrl;
+            String queryString = "title="+URLEncoder.encode(title,charset)+"&content="+URLEncoder.encode(content,charset)+"&backUrl="+URLEncoder.encode(backUrl,charset);
+            String redirectUrl = errorUrl+"?"+queryString;
             response.sendRedirect(redirectUrl);
         } catch (Exception e) {
 
         }
     }
+    private void goSuccessPage(String title,String content,String backUrl,String btnText){
+        String webOrigin = Constants.JEBAO_WEB_ORIGIN;
+        String errorUrl = webOrigin + "notify/success";
+        String charset = "UTF-8";
+        try {
+            String queryString = "title="+URLEncoder.encode(title,charset)+"&content="+URLEncoder.encode(content,charset)+"&backUrl="+URLEncoder.encode(backUrl,charset)+"&btnText="+URLEncoder.encode(btnText,charset);
+            String redirectUrl = errorUrl+"?"+queryString;
+            response.sendRedirect(redirectUrl);
+        } catch (Exception e) {
 
-    /**
-     * 第三方资金账户开通回调地址
-     */
-    @RequestMapping("registerNotify")
-    public String registerNotify(WebRegResponse model){
-        String title = "资金账户开通失败！";
-        String backUrl = "/userfund/register"; // web页面内的回跳地址，可以是相对路径
-        if (model==null || !"0000".equals(model.getResp_code())){
-            String content = model.getResp_desc();
-            if (StringUtils.isBlank(content)){
-                content = "第三方返回异常";
-            }
-            goFailedPage(title,content,backUrl);
-            return null;
         }
-        return "call back success.";
     }
 
 }
