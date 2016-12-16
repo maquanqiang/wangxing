@@ -1,5 +1,6 @@
 package com.jebao.thirdPay.fuiou.impl;
 
+import com.jebao.thirdPay.fuiou.constants.FuiouConfig;
 import com.jebao.thirdPay.fuiou.http.WebUtils;
 import com.jebao.thirdPay.fuiou.model.queryChangeCard.QueryChangeCardRequest;
 import com.jebao.thirdPay.fuiou.model.queryChangeCard.QueryChangeCardResponse;
@@ -15,19 +16,31 @@ import com.jebao.thirdPay.fuiou.util.XmlUtil;
  */
 @Service
 public class QueryChangeCardServiceImpl {
+    public QueryChangeCardResponse post(QueryChangeCardRequest reqData)  {
+        String httpUrl= FuiouConfig.url+"queryChangeCard.action";
+        String signatureStr = SecurityUtils.sign(reqData.requestSignPlain());
+        reqData.setSignature(signatureStr);
+        try {
+            return post(httpUrl,reqData);
+        } catch (Exception e) {
+            return null;
+        }
+    }
     public QueryChangeCardResponse post(String httpUrl, QueryChangeCardRequest reqData) throws Exception {
         String signatureStr = SecurityUtils.sign(reqData.requestSignPlain());
         reqData.setSignature(signatureStr);
         String xmlData = WebUtils.sendHttp(httpUrl, reqData);
         PrintUtil.printLn(xmlData);
-        QueryChangeCardResponse regResponse= XmlUtil.fromXML(xmlData, QueryChangeCardResponse.class);
-        PrintUtil.printLn(regResponse.getSignature());
         String verifyPlain= RegexUtil.getFirstMatch(xmlData, "<plain>[\\s\\S]+</plain>");
-        boolean isOk = SecurityUtils.verifySign(verifyPlain,regResponse.getSignature());
+        String resSignature= RegexUtil.getFirstMatch(xmlData, "(?<=<signature>)[\\s\\S]+(?=</signature>)");
+        PrintUtil.printLn(resSignature);
+        boolean isOk = SecurityUtils.verifySign(verifyPlain,resSignature);
         if(!isOk)
         {
             throw new Exception("[用户更换银行卡查询接口]-富友返回报文签名验证失败-验签时数据与富友返回报文的signature不一致！");
         }
+        QueryChangeCardResponse regResponse= XmlUtil.fromXML(verifyPlain, QueryChangeCardResponse.class);
+
         return regResponse;
     }
     //测试

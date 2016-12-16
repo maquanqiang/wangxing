@@ -24,5 +24,15 @@ public class EnumModel {
         }
     }
 
+    public enum BankCardChangeStatus{
+        正常(0),更换审核中(1);
+        private int value;
+        private BankCardChangeStatus(int val){
+            this.value=val;
+        }
+        public int getValue(){
+            return this.value;
+        }
+    }
 
 }

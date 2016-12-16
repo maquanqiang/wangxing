@@ -48,3 +48,16 @@
         </li>
     </ul>
 </div>
+
+<script>
+    var theLocationPath = location.pathname;
+    var sidebarNodes = document.querySelectorAll(".sidebar-menu a");
+    for (var i=0;i<sidebarNodes.length;i++){
+        var node = sidebarNodes[i];
+        if(node.getAttribute("href") == theLocationPath){
+            node.setAttribute("class","on");
+        }else{
+            node.setAttribute("class","");
+        }
+    }
+</script>
