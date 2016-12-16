@@ -28,7 +28,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/proxySimple/")
 public class ProxySimpleController {
-    public static final String FILE_SERVICE_URL = Constants.FILE_SERVICE_URL;
+    public static final String FILE_UPLOAD_SERVICE_URL = Constants.FILE_UPLOAD_SERVICE_URL;
     //通过代理指向文件上传的服务器
     //减少前台与后台的关联
     @RequestMapping("uploadFile")
@@ -41,7 +41,7 @@ public class ProxySimpleController {
         }
         Map<String, MultipartFile> multipartFileMap = ((MultipartHttpServletRequest) request).getFileMap();
         MultipartFile file=MapUtil.getFirstOrNull(multipartFileMap);
-        String targetURL=String.format("%s/filePlugin/uploadFile?dir=%s",FILE_SERVICE_URL, URLEncoder.encode(dir, "UTF-8"));
+        String targetURL=String.format("%s/filePlugin/uploadFile?dir=%s",FILE_UPLOAD_SERVICE_URL, URLEncoder.encode(dir, "UTF-8"));
         String jsonResult = HttpClientUtil.FileUploadByMultipartFile(file, targetURL);
         responseWrite(response, jsonResult);
         return ;

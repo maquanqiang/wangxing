@@ -5,6 +5,7 @@ import com.jebao.file.web.utils.constants.Constants;
 import com.jebao.file.web.utils.constants.ProjectSetting;
 import com.jebao.file.web.utils.file.FileUtil;
 import com.jebao.file.web.utils.map.MapUtil;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
@@ -37,7 +38,8 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/filePlugin/")
 public class FilePluginController {
-    public static final String FILE_SERVICE_URL = Constants.FILE_SERVICE_URL;
+    public static final String FILE_UPLOAD_SERVICE_URL = Constants.FILE_UPLOAD_SERVICE_URL;
+    public static final String FILE_UPLOAD_KEY = Constants.FILE_UPLOAD_KEY;
     // 图片的存储路径：public static final String ROOT = "upload-dir";//上传文件的根目录--相对地址
     public static final String ROOT = Constants.FILE_UPLOAD_DIR;//上传文件的根目录--绝对地址
     private final ResourceLoader resourceLoader;
@@ -49,7 +51,11 @@ public class FilePluginController {
     }
 
     @RequestMapping("uploadFile")
-    public UploadReturnJson uploadFile(String dir, HttpServletRequest request) {
+    public UploadReturnJson uploadFile(String dir,String key, HttpServletRequest request) {
+        if(StringUtils.isBlank(key)||!key.equals(FILE_UPLOAD_KEY))
+        {
+            return new UploadReturnJson(1,"上传密钥不正确");
+        }
         UploadReturnJson errorResult= filterRequest(dir,request);
         if(errorResult!=null)
         {
@@ -66,7 +72,7 @@ public class FilePluginController {
             BufferedOutputStream stream = new BufferedOutputStream(FileUtil.getFileOutputStream(filePath, fileName));
             stream.write(bytes);
             stream.close();
-            String fileUrl=String.format("%s/filePlugin/file/%s/%s",FILE_SERVICE_URL,dir,fileName);
+            String fileUrl=String.format("%s/filePlugin/file/%s/%s",FILE_UPLOAD_SERVICE_URL,dir,fileName);
             return new UploadReturnJson(fileUrl);
         } catch (Exception e) {
             return new UploadReturnJson(1,e.getMessage());

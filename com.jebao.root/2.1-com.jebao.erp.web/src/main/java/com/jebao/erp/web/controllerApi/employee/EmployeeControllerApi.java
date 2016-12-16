@@ -86,7 +86,10 @@ public class EmployeeControllerApi extends _BaseController {
 
     @RequestMapping(value = "upload",method = RequestMethod.POST)
     public ResultInfo upload(){
-        FilePluginController fileUploader = new FilePluginController(null);
+        //TODO -功能再完善中……
+        return new ResultInfo(false,"-功能再完善中……");
+        //---------------------------------------------------------------------------------------------------------
+/*        FilePluginController fileUploader = new FilePluginController(null);
         FilePluginController.UploadReturnJson returnJson = fileUploader.uploadFile("file",request);
 
         if (returnJson.getError()==0){
@@ -96,11 +99,14 @@ public class EmployeeControllerApi extends _BaseController {
             return new ResultData<List<Object[]>>(true,rowList,filename);
         }else{
             return new ResultInfo(false,returnJson.getMessage());
-        }
+        }*/
     }
     @RequestMapping(value = "uploadconfirm",method = RequestMethod.POST)
     public ResultInfo uploadconfirm(String filename){
-        String filePath = Paths.get(FilePluginController.ROOT, "projectFile\\file\\p0",filename).toString();
+        //TODO -功能再完善中……
+        return new ResultInfo(false,"-功能再完善中……");
+        //---------------------------------------------------------------------------------------------------------
+        /*String filePath = Paths.get(FilePluginController.ROOT, "projectFile\\file\\p0",filename).toString();
         List<HashMap<String,Object>> mapList =new ExcelUtil().readFileToKv(filePath);
         List<EmployeeIM> modelList = new ArrayList<>();
 
@@ -163,7 +169,7 @@ public class EmployeeControllerApi extends _BaseController {
                 return new ResultInfo(false,"已导入"+successNum+"条。"+modelList.get(i).getName()+" 出现错误："+saveResult.getMsg());
             }
         }
-        return new ResultInfo(true,"执行完毕，导入数据"+successNum+"条。已存在："+existsNum+"条" );
+        return new ResultInfo(true,"执行完毕，导入数据"+successNum+"条。已存在："+existsNum+"条" );*/
     }
 
 

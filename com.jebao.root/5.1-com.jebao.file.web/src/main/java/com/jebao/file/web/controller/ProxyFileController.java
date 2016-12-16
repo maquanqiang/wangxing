@@ -21,7 +21,8 @@ import java.util.Map;
 @RestController
 @RequestMapping("/proxyFile/")
 public class ProxyFileController {
-    public static final String FILE_SERVICE_URL = Constants.FILE_SERVICE_URL;
+    public static final String FILE_UPLOAD_SERVICE_URL = Constants.FILE_UPLOAD_SERVICE_URL;
+    public static final String FILE_UPLOAD_KEY = Constants.FILE_UPLOAD_KEY;
     //通过代理指向文件上传的服务器
     //减少前台与后台的关联
     @RequestMapping("filePlugin/uploadFile")
@@ -34,7 +35,7 @@ public class ProxyFileController {
         }
         Map<String, MultipartFile> multipartFileMap = ((MultipartHttpServletRequest) request).getFileMap();
         MultipartFile file= MapUtil.getFirstOrNull(multipartFileMap);
-        String targetURL=String.format("%s/filePlugin/uploadFile?dir=%s",FILE_SERVICE_URL, URLEncoder.encode(dir, "UTF-8"));
+        String targetURL=String.format("%s/filePlugin/uploadFile?dir=%s&key=%s",FILE_UPLOAD_SERVICE_URL, URLEncoder.encode(dir, "UTF-8"),FILE_UPLOAD_KEY);
         String jsonResult = HttpClientUtil.FileUploadByMultipartFile(file, targetURL);
         responseWrite(response, jsonResult);
         return ;
@@ -49,7 +50,7 @@ public class ProxyFileController {
         }
         Map<String, MultipartFile> multipartFileMap = ((MultipartHttpServletRequest) request).getFileMap();
         MultipartFile file= MapUtil.getFirstOrNull(multipartFileMap);
-        String targetURL=String.format("%s/kindEditor/uploadFile?dir=%s",FILE_SERVICE_URL, URLEncoder.encode(dir, "UTF-8"));
+        String targetURL=String.format("%s/kindEditor/uploadFile?dir=%s&key=%s",FILE_UPLOAD_SERVICE_URL, URLEncoder.encode(dir, "UTF-8"),FILE_UPLOAD_KEY);
         String jsonResult = HttpClientUtil.FileUploadByMultipartFile(file, targetURL);
         responseWrite(response, jsonResult);
         return ;
