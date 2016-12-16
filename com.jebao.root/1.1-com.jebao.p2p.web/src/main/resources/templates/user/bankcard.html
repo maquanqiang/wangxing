@@ -17,7 +17,7 @@
 <!--我的账户导航-->
 <div class="account-nav">
     <p>
-        <a href="首页.html">首页</a><a href="javascript:;" class="red">我的银行卡</a>
+        <a href="/">首页</a><a href="javascript:;" class="red">我的银行卡</a>
     </p>
 </div>
 <!--我的账户内容-->
@@ -35,14 +35,14 @@
             <div class="account-bankImg ml0 clearfix">
                 <img src="${filePath}/images/account-bank.png" class="fl">
                 <div class="account-bankDetail fl">
-                    <h5>中国建设银行</h5>
+                    <h5 v-text="bankName"></h5>
                     <p class="card-type">储蓄卡</p>
-                    <p class="card-num">6227**********8888</p>
+                    <p class="card-num" v-text="bankCardNo"></p>
                     <a href="#" ></a>
                 </div>
             </div>
             <div class="changeCard">
-                <a href="javascript:;">
+                <a href="javascript:;" @click="goChangeCard">
                     <img src="${filePath}/images/account-changeCard.png">
                     <p>更换银行卡</p>
                 </a>
@@ -52,6 +52,6 @@
 </div>
 <!--内容 end-->
 #parse("common/footer.html")
-<script src="/content/script/user/sidebar.js"></script>
+<script src="/content/script/user/bankcard.js"></script>
 </body>
 </html>

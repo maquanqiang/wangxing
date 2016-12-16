@@ -11,8 +11,6 @@ public class ChangeCardServiceImpl_UnitTest {
     @Test
     public void Test() throws Exception {
         ChangeCardRequest reqData = new ChangeCardRequest();
-        reqData.setMchnt_cd("0002900F0041270");
-        reqData.setMchnt_txn_ssn("11032302065863805732");
         reqData.setLogin_id("");
 
         //此处是错误的地址--

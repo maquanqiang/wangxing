@@ -7,4 +7,5 @@ $(function() {
         $('.sidebar-menu a').removeClass('on');
         $(this).addClass('on');
     });
+
 })
