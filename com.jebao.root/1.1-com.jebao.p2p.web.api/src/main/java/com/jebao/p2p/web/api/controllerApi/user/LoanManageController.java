@@ -81,13 +81,16 @@ public class LoanManageController {
 
     @RequestMapping("loanMoneyCount")
     public JsonResult loanMoneyCount(){
-        CurrentUser currentUser = CurrentUserContextHolder.get();
+//        CurrentUser currentUser = CurrentUserContextHolder.get();
+//
+//        if(currentUser==null){
+//            return new JsonResultError("未登录");
+//        }
 
-        if(currentUser==null){
-            return new JsonResultError("未登录");
-        }
+//        Map<String, BigDecimal> map = fundsDetailsService.loanManageInfo(currentUser.getId());
+        Map<String, BigDecimal> map = fundsDetailsService.loanManageInfo(1l);
+        //TODO
 
-        Map<String, BigDecimal> map = fundsDetailsService.loanManageInfo(currentUser.getId());
         LoanManageInfoVM loanManageInfoVM = new LoanManageInfoVM();
         loanManageInfoVM.setAfterTenMoney(map.get("afterTenMoney"));
         loanManageInfoVM.setLoanMoneyTotal(map.get("loanMoneyTotal"));
@@ -97,4 +100,8 @@ public class LoanManageController {
         return new JsonResultData<>(loanManageInfoVM);
 
     }
+
+
+
+
 }

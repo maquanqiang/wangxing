@@ -106,7 +106,7 @@ public class TbIncomeDetailDao {
      * @param loginId
      * @return
      */
-    public BigDecimal loanMoneyTotal(Long loginId){
+    public BigDecimal loanMoneyTotal(@Param("loginId")Long loginId){
         return mapper.loanMoneyTotal(loginId);
     }
 
@@ -115,7 +115,7 @@ public class TbIncomeDetailDao {
      * @param dateTime
      * @return
      */
-    public TbIncomeDetail overdueMoneyOther(Date dateTime){
+    public TbIncomeDetail overdueMoneyOther(@Param("dateTime")Date dateTime){
         return mapper.overdueMoneyOther(dateTime);
     }
 

@@ -61,7 +61,7 @@ var vm = new Vue({
                 bpId:$("#bpId").val()
             }
             //product
-            $.post(common.apiOrigin+$("#defaultForm").attr("action"), form, function (response) {
+            $.post($("#defaultForm").attr("action"), form, function (response) {
                 if (response.success_is_ok) {
                     vm.product = response.data;
                     sta_str=(vm.product.bpStartTime).replace(/-/g,"/");
@@ -78,7 +78,7 @@ var vm = new Vue({
                         vm.flag = true;
                     }
                     //loanerInfo
-                    $.post(common.apiOrigin+"/api/product/loanerInfo", {lid:vm.product.bpLoanerId}, function (response) {
+                    $.post("/api/product/loanerInfo", {lid:vm.product.bpLoanerId}, function (response) {
                         if (response.success_is_ok) {
                             vm.loanerInfo = response.data;
                         }
@@ -86,26 +86,26 @@ var vm = new Vue({
                 }
             });
             //riskDataList
-            $.post(common.apiOrigin+"/api/product/riskListByBpId", form, function (response) {
+            $.post("/api/product/riskListByBpId", form, function (response) {
                 if (response.success_is_ok) {
                     vm.riskDataList = response.data;
                 }
             });
             //investInfoList
-            $.post(common.apiOrigin+"/api/product/investInfoByBpId", form, function (response) {
+            $.post("/api/product/investInfoByBpId", form, function (response) {
                 if (response.success_is_ok) {
                     vm.investInfoList = response.data;
                 }
             });
             //incomeDetailList
-            $.post(common.apiOrigin+"/api/product/incomeDetailByBpId", form, function (response) {
+            $.post("/api/product/incomeDetailByBpId", form, function (response) {
                 if (response.success_is_ok) {
                     vm.incomeDetailList = response.data;
                 }
             });
 
             //statistics
-            $.get(common.apiOrigin+"/api/invest/statistics", function (response) {
+            $.get("/api/invest/statistics", function (response) {
                 if (response.success_is_ok) {
                     vm.statistics = response.data;
                 }
@@ -114,6 +114,11 @@ var vm = new Vue({
         investBtn: function () {
             var investMoney = $("#investMoney").val().trim() * 1;
             if(investMoney > 0){
+                if(investMoney > vm.product.bpTopMoney){
+                    layer.msg("投资金额大于投资上限"+vm.product.bpTopMoney+"元");
+                    $("#investMoney").focus();
+                    return;
+                }
                 if((investMoney-vm.product.bpStartMoney)>=0){
                     if((investMoney-vm.product.bpStartMoney) % vm.product.bpRiseMoney !=0){
                         layer.msg("投资金额不符合递增规则");
@@ -133,7 +138,7 @@ var vm = new Vue({
 
 
             var form = {bpId:$("#bpId").val(), investMoney:$("#investMoney").val().trim()}
-            $.post(common.apiOrigin+"/api/product/investBid", form, function (response) {
+            $.post("/api/product/investBid", form, function (response) {
                 if (response.success_is_ok) {
                     layer.alert(response.msg);
                 }else{
