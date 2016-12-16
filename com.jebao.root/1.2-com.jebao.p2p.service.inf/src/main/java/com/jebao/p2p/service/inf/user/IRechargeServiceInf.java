@@ -1,6 +1,11 @@
 package com.jebao.p2p.service.inf.user;
 
 import com.jebao.jebaodb.entity.extEntity.ResultInfo;
+import com.jebao.thirdPay.fuiou.model.fastRecharge.FastRechargeResponse;
+import com.jebao.thirdPay.fuiou.model.onlineBankRecharge.OnlineBankRechargeResponse;
+import com.jebao.thirdPay.fuiou.model.personQuickPay.PersonQuickPayResponse;
+
+import java.math.BigDecimal;
 
 /**
  * 充值接口
@@ -8,20 +13,55 @@ import com.jebao.jebaodb.entity.extEntity.ResultInfo;
  */
 public interface IRechargeServiceInf {
     /**
-     * 快捷充值
+     * 快捷充值 form表单提交 跳转
      *
      * @param loginId
-     * @param amt
+     * @param money
      * @return
      */
-    ResultInfo personQuickPayByWeb(Long loginId, String amt);
+    ResultInfo personQuickPayByWeb(Long loginId, BigDecimal money);
 
     /**
-     * 快速充值
+     * 快捷充值 返回结果处理
      *
      * @param loginId
-     * @param amt
+     * @param model
      * @return
      */
-    ResultInfo fastRechargeByWeb(Long loginId, String amt);
+    ResultInfo personQuickPayByWebComplete(Long loginId, PersonQuickPayResponse model);
+
+
+    /**
+     * 快速充值 form表单提交 跳转
+     *
+     * @param loginId
+     * @param money
+     * @return
+     */
+    ResultInfo fastRechargeByWeb(Long loginId, BigDecimal money);
+
+    /**
+     * 快速充值 返回结果处理
+     *
+     * @param loginId
+     * @param model
+     * @return
+     */
+    ResultInfo fastRechargeByWebComplete(Long loginId, FastRechargeResponse model);
+
+    /**
+     * 网银充值 form表单提交 跳转
+     * @param loginId
+     * @param money
+     * @return
+     */
+    ResultInfo onlineBankRechargeByWeb(Long loginId, BigDecimal money);
+
+    /**
+     * 网银充值 返回结果处理
+     * @param loginId
+     * @param model
+     * @return
+     */
+    ResultInfo onlineBankRechargeByWebComplete(Long loginId, OnlineBankRechargeResponse model);
 }

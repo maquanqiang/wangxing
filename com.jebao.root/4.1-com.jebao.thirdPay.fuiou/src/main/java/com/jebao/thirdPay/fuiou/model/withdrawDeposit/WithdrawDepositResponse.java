@@ -67,4 +67,13 @@ public class WithdrawDepositResponse {
     public void setSignature(String signature) {
         this.signature = signature;
     }
+    /**
+     * 商户P2P网站免登录提现接口 时请求的明文
+     *
+     * @return
+     */
+    public String requestSignPlain() {
+        String src = amt + "|" + login_id + "|" + mchnt_cd + "|" + mchnt_txn_ssn + "|" + resp_code;
+        return src;
+    }
 }

@@ -1,6 +1,9 @@
 package com.jebao.p2p.service.inf.user;
 
 import com.jebao.jebaodb.entity.extEntity.ResultInfo;
+import com.jebao.thirdPay.fuiou.model.withdrawDeposit.WithdrawDepositResponse;
+
+import java.math.BigDecimal;
 
 /**
  * 提现接口
@@ -8,11 +11,19 @@ import com.jebao.jebaodb.entity.extEntity.ResultInfo;
  */
 public interface IWithdrawServiceInf {
     /**
-     * 提现接口
+     * 提现接口 form表单提交 跳转
      *
      * @param loginId
-     * @param amt
+     * @param money
      * @return
      */
-    ResultInfo withdrawDepositByWeb(Long loginId, String amt);
+    ResultInfo withdrawDepositByWeb(Long loginId, BigDecimal money);
+
+    /**
+     * 提现接口 返回结果处理
+     * @param loginId
+     * @param model
+     * @return
+     */
+    ResultInfo withdrawDepositByWebComplete(Long loginId, WithdrawDepositResponse model);
 }

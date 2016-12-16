@@ -1,35 +1,29 @@
 package com.jebao.p2p.web.api.controllerApi.user;
 
-import com.jebao.jebaodb.entity.user.TbAccountsFunds;
-import com.jebao.jebaodb.entity.user.TbFundsDetails;
+import com.jebao.jebaodb.entity.extEntity.ResultData;
+import com.jebao.jebaodb.entity.extEntity.ResultInfo;
 import com.jebao.jebaodb.entity.user.TbUserDetails;
 import com.jebao.p2p.service.inf.user.*;
 import com.jebao.p2p.web.api.controllerApi._BaseController;
 import com.jebao.p2p.web.api.requestModel.user.RechargeSM;
 import com.jebao.p2p.web.api.responseModel.base.JsonResult;
 import com.jebao.p2p.web.api.responseModel.base.JsonResultData;
-import com.jebao.p2p.web.api.responseModel.base.JsonResultError;
-import com.jebao.p2p.web.api.responseModel.base.JsonResultOk;
 import com.jebao.p2p.web.api.responseModel.user.UserDetailsVM;
 import com.jebao.p2p.web.api.utils.constants.Constants;
 import com.jebao.p2p.web.api.utils.session.CurrentUser;
 import com.jebao.p2p.web.api.utils.session.CurrentUserContextHolder;
 import com.jebao.p2p.web.api.utils.validation.ValidationResult;
 import com.jebao.p2p.web.api.utils.validation.ValidationUtil;
-import com.jebao.thirdPay.fuiou.impl.PersonQuickPayServiceImpl;
-import com.jebao.thirdPay.fuiou.model.personQuickPay.PersonQuickPayRequest;
+import com.jebao.thirdPay.fuiou.model.fastRecharge.FastRechargeResponse;
 import com.jebao.thirdPay.fuiou.model.personQuickPay.PersonQuickPayResponse;
-import com.jebao.thirdPay.fuiou.util.RegexUtil;
-import com.jebao.thirdPay.fuiou.util.SecurityUtils;
+import com.jebao.thirdPay.fuiou.model.withdrawDeposit.WithdrawDepositResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.math.BigDecimal;
 import java.net.URLEncoder;
-import java.util.Date;
 
 /**
  * Created by Administrator on 2016/12/14.
@@ -39,12 +33,6 @@ import java.util.Date;
 public class UserController extends _BaseController {
     @Autowired
     private IUserServiceInf userService;
-
-    @Autowired
-    private IAccountsFundsServiceInf accountsFundsService;
-
-    @Autowired
-    private IFundsDetailsServiceInf fundsDetailsService;
 
     @Autowired
     private IWithdrawServiceInf withdrawService;
@@ -61,7 +49,7 @@ public class UserController extends _BaseController {
         }
 
         TbUserDetails userDetails = userService.getUserDetailsInfo(currentUser.getId());
-        if(userDetails == null){
+        if (userDetails == null) {
             return new JsonResultData<>(null);
         }
 
@@ -76,104 +64,264 @@ public class UserController extends _BaseController {
         return new JsonResultData<>(viewModel);
     }
 
+    //region 快捷充值
     /**
      * 快捷充值
+     *
      * @param form
      * @return
      */
-    /*@RequestMapping(value = "quickpay",method = RequestMethod.POST)
-    public String quickpay(RechargeSM form) {
+    //非ajax请求
+    @RequestMapping(value = "quickPay", method = RequestMethod.POST)
+    public String quickPay(RechargeSM form) throws Exception {
+        //拒绝ajax请求 //如果是ajax请求响应头会有x-requested-with
+        String requestType = request.getHeader("x-requested-with");
+        if (requestType != null && requestType.equalsIgnoreCase("XMLHttpRequest")) {
+            return null;
+        }
+
+
+        String title = "充值失败！";
+        String backUrl = "/user/chargewithdraw"; // web页面内的回跳地址，可以是相对路径
+        //region 验证
+        ValidationResult resultValidation = ValidationUtil.validateEntity(form);
+        if (resultValidation.isHasErrors()) {
+            goFailedPage(title, resultValidation.getErrorMsg().toString(), backUrl);
+            return null;
+        }
+        //endregion
+
         CurrentUser currentUser = CurrentUserContextHolder.get();
         if (currentUser == null) {
             return null;
         }
-        String title = "快捷充值失败！";
-        String backUrl = "/user/chargewithdraw"; // web页面内的回跳地址，可以是相对路径
-  *//*      ValidationResult resultValidation = ValidationUtil.validateEntity(form);
-        if (resultValidation.isHasErrors()) {
-            goFailedPage(title,resultValidation.getErrorMsg(),backUrl);
-        }*//*
 
-        String amt = form.getMoney().multiply(new BigDecimal(100)).toString();
-
-        //todo 实际的业务逻辑
-        PersonQuickPayRequest reqData = new PersonQuickPayRequest();
-        reqData.setLogin_id(currentUser.getName());
-        reqData.setAmt(amt);
-        reqData.setPage_notify_url("/api/user/quickPayCallBack");
-        reqData.setBack_notify_url("");
-
+        ResultInfo resultInfo = rechargeService.personQuickPayByWeb(currentUser.getId(), form.getMoney());
+        if (!resultInfo.getSuccess_is_ok()) {
+            String content = resultInfo.getMsg();
+            goFailedPage(title, content, backUrl);
+            return null;
+        }
         try {
-            String result = personQuickPayService.post(reqData);
-            if (result != null) {
-                //todo 添加资金收支明细
-                TbFundsDetails fdmodel = new TbFundsDetails();
-                fdmodel.setFdLoginId(currentUser.getId());
-                fdmodel.setFdSerialStatus(0);
-                fdmodel.setFdBalanceStatus(1);
-                fdmodel.setFdCommissionCharge(new BigDecimal(0));//手续费
-                fdmodel.setFdSerialAmount(form.getMoney());
-                fdmodel.setFdSerialNumber("");//流水号
-                fdmodel.setFdSerialTime(new Date());
-                fdmodel.setFdSerialTypeId(1);
-                fdmodel.setFdSerialTypeName("充值");
-                fdmodel.setFdThirdAccount(currentUser.getName());
-                fundsDetailsService.insert(fdmodel);
-                //todo 输出页面
-               // return new JsonResultOk("保存成功");
-            }
-        }catch (Exception ex){
-            ex.printStackTrace();
-           // return new JsonResultError("未登陆");
+            ResultData<String> resultData = (ResultData<String>) resultInfo;
+            String responseHtml = resultData.getData();
+            System.out.println(responseHtml);
+            return responseHtml;
+        } catch (Exception e) {
+
         }
-       // return new JsonResultOk("保存成功");
-    }*/
-    
-/*    @RequestMapping(value = "quickPayNotify",method = RequestMethod.POST, produces = "application/json")
-    public @ResponseBody JsonResult quickPayNotify(PersonQuickPayResponse form) {
-        String verify= form.getAmt() + "|" + form.getLogin_id() + "|" + form.getMchnt_cd() + "|" + form.getMchnt_txn_ssn() + "|" + form.getResp_code() + "|" + form.getResp_desc();
-        boolean isOk = SecurityUtils.verifySign(verify, form.getSignature());
-        if(!isOk)
-        {
-            return new JsonResultError("验签失败");
+        return null;
+    }
+
+    /**
+     * 第三方快捷充值回调地址
+     *
+     * @param model
+     * @return
+     */
+    @RequestMapping("quickPayNotify")
+    public String quickPayNotify(PersonQuickPayResponse model) {
+        CurrentUser currentUser = CurrentUserContextHolder.get();
+        if (currentUser == null) {
+            return null;
         }
-        TbFundsDetails fdmodel = new TbFundsDetails();
-        fdmodel.setFdSerialNumber("");//流水号
-        fdmodel.setFdSerialTime(new Date());
-        fdmodel.setFdThirdAccount(form.getLogin_id());
-        if(form.getResp_code() == "0000"){
-            //todo 修改账户资金信息
-            TbAccountsFunds afmodel = new TbAccountsFunds();
-            afmodel.setAfThirdAccount(form.getLogin_id());
-            afmodel.setAfBalance(new BigDecimal(form.getAmt()).divide(new BigDecimal(100)).setScale(2, BigDecimal.ROUND_HALF_UP));
-            afmodel.setAfUpdateTime(new Date());
-            accountsFundsService.update(afmodel);
-            //todo 修改资金收支明细
-            fdmodel.setFdSerialStatus(1);
-            fundsDetailsService.update(fdmodel);
-            return new JsonResultOk("充值成功");
-        }else{
-            fdmodel.setFdSerialStatus(-1);
-            fundsDetailsService.update(fdmodel);
-            return new JsonResultError("充值失败");
+        ResultInfo resultInfo = rechargeService.personQuickPayByWebComplete(currentUser.getId(), model);
+        if (!resultInfo.getSuccess_is_ok()) {
+            String title = "充值失败！";
+            String content = resultInfo.getMsg();
+            String backUrl = "/user/chargewithdraw"; // web页面内的回跳地址，可以是相对路径
+            goFailedPage(title, content, backUrl);
+        } else {
+            goSuccessPage("充值成功！", "", "/user/index", "查看我的账户");
         }
-    }*/
+        return null;
+    }
+    //endregion
+
+    //region 快速充值
+    /**
+     * 快速充值
+     *
+     * @param form
+     * @return
+     */
+    //非ajax请求
+    @RequestMapping(value = "fastRecharge", method = RequestMethod.POST)
+    public String fastRecharge(RechargeSM form) throws Exception {
+        //拒绝ajax请求 //如果是ajax请求响应头会有x-requested-with
+        String requestType = request.getHeader("x-requested-with");
+        if (requestType != null && requestType.equalsIgnoreCase("XMLHttpRequest")) {
+            return null;
+        }
+
+        String title = "充值失败！";
+        String backUrl = "/user/chargewithdraw"; // web页面内的回跳地址，可以是相对路径
+        //region 验证
+        ValidationResult resultValidation = ValidationUtil.validateEntity(form);
+        if (resultValidation.isHasErrors()) {
+            goFailedPage(title, resultValidation.getErrorMsg().toString(), backUrl);
+            return null;
+        }
+        //endregion
+
+        CurrentUser currentUser = CurrentUserContextHolder.get();
+        if (currentUser == null) {
+            return null;
+        }
+
+        ResultInfo resultInfo = rechargeService.fastRechargeByWeb(currentUser.getId(), form.getMoney());
+        if (!resultInfo.getSuccess_is_ok()) {
+            String content = resultInfo.getMsg();
+            goFailedPage(title, content, backUrl);
+            return null;
+        }
+        try {
+            ResultData<String> resultData = (ResultData<String>) resultInfo;
+            String responseHtml = resultData.getData();
+            System.out.println(responseHtml);
+            return responseHtml;
+        } catch (Exception e) {
+
+        }
+        return null;
+    }
+
+    /**
+     * 第三方快速充值回调地址
+     *
+     * @param model
+     * @return
+     */
+    @RequestMapping("fastRechargeNotify")
+    public String fastRechargeNotify(FastRechargeResponse model) {
+        CurrentUser currentUser = CurrentUserContextHolder.get();
+        if (currentUser == null) {
+            return null;
+        }
+        ResultInfo resultInfo = rechargeService.fastRechargeByWebComplete(currentUser.getId(), model);
+        if (!resultInfo.getSuccess_is_ok()) {
+            String title = "充值失败！";
+            String content = resultInfo.getMsg();
+            String backUrl = "/user/chargewithdraw"; // web页面内的回跳地址，可以是相对路径
+            goFailedPage(title, content, backUrl);
+        } else {
+            goSuccessPage("充值成功！", "", "/user/index", "查看我的账户");
+        }
+        return null;
+    }
+    //endregion
+
+    //region 提现
+    /**
+     * 提现
+     *
+     * @param form
+     * @return
+     */
+    //非ajax请求
+    @RequestMapping(value = "withdrawDeposit", method = RequestMethod.POST)
+    public String withdrawDeposit(RechargeSM form) throws Exception {
+        //拒绝ajax请求 //如果是ajax请求响应头会有x-requested-with
+        String requestType = request.getHeader("x-requested-with");
+        if (requestType != null && requestType.equalsIgnoreCase("XMLHttpRequest")) {
+            return null;
+        }
+
+        String title = "提现失败！";
+        String backUrl = "/user/chargewithdraw"; // web页面内的回跳地址，可以是相对路径
+        //region 验证
+        ValidationResult resultValidation = ValidationUtil.validateEntity(form);
+        if (resultValidation.isHasErrors()) {
+            goFailedPage(title, resultValidation.getErrorMsg().toString(), backUrl);
+            return null;
+        }
+        //endregion
+
+        CurrentUser currentUser = CurrentUserContextHolder.get();
+        if (currentUser == null) {
+            return null;
+        }
+
+        ResultInfo resultInfo = withdrawService.withdrawDepositByWeb(currentUser.getId(), form.getMoney());
+        if (!resultInfo.getSuccess_is_ok()) {
+            String content = resultInfo.getMsg();
+            goFailedPage(title, content, backUrl);
+            return null;
+        }
+        try {
+            ResultData<String> resultData = (ResultData<String>) resultInfo;
+            String responseHtml = resultData.getData();
+            System.out.println(responseHtml);
+            return responseHtml;
+        } catch (Exception e) {
+
+        }
+        return null;
+    }
+
+    /**
+     * 第三方快速充值回调地址
+     *
+     * @param model
+     * @return
+     */
+    @RequestMapping("withdrawDepositNotify")
+    public String withdrawDepositNotify(WithdrawDepositResponse model) {
+        CurrentUser currentUser = CurrentUserContextHolder.get();
+        if (currentUser == null) {
+            return null;
+        }
+        ResultInfo resultInfo = withdrawService.withdrawDepositByWebComplete(currentUser.getId(), model);
+        if (!resultInfo.getSuccess_is_ok()) {
+            String title = "提现失败！";
+            String content = resultInfo.getMsg();
+            String backUrl = "/user/chargewithdraw"; // web页面内的回跳地址，可以是相对路径
+            goFailedPage(title, content, backUrl);
+        } else {
+            goSuccessPage("提现成功！", "", "/user/index", "查看我的账户");
+        }
+        return null;
+    }
+    //endregion
 
     /**
      * 跳转到失败页面
-     * @param title 标题
+     *
+     * @param title   标题
      * @param content 失败信息
      * @param backUrl 返回按钮链接
      */
-  /*  private void goFailedPage(String title,String content,String backUrl){
+    private void goFailedPage(String title, String content, String backUrl) {
         String webOrigin = Constants.JEBAO_WEB_ORIGIN;
-        String errorUrl = webOrigin + "error/failed";
-
+        String errorUrl = webOrigin + "notify/failed";
+        String charset = "UTF-8";
         try {
-            String redirectUrl = errorUrl+"?title="+ URLEncoder.encode(title, "UTF-8")+"&content="+URLEncoder.encode(content,"UTF-8")+"&backUrl="+backUrl;
+            String queryString = "title=" + URLEncoder.encode(title, charset) + "&content=" + URLEncoder.encode(content, charset) + "&backUrl=" + URLEncoder.encode(backUrl, charset);
+            String redirectUrl = errorUrl + "?" + queryString;
             response.sendRedirect(redirectUrl);
         } catch (Exception e) {
 
         }
-    }*/
+    }
+
+    /**
+     * 跳转到成功页面
+     *
+     * @param title   标题
+     * @param content
+     * @param backUrl
+     * @param btnText
+     */
+    private void goSuccessPage(String title, String content, String backUrl, String btnText) {
+        String webOrigin = Constants.JEBAO_WEB_ORIGIN;
+        String errorUrl = webOrigin + "notify/success";
+        String charset = "UTF-8";
+        try {
+            String queryString = "title=" + URLEncoder.encode(title, charset) + "&content=" + URLEncoder.encode(content, charset) + "&backUrl=" + URLEncoder.encode(backUrl, charset) + "&btnText=" + URLEncoder.encode(btnText, charset);
+            String redirectUrl = errorUrl + "?" + queryString;
+            response.sendRedirect(redirectUrl);
+        } catch (Exception e) {
+
+        }
+    }
 }

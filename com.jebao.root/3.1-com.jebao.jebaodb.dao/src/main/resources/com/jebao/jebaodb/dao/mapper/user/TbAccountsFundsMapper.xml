@@ -116,7 +116,7 @@
         update tb_accounts_funds
         <set>
             <if test="afBalance != null" >
-                af_balance = af_balance + #{afBalance,jdbcType=DECIMAL},
+                af_balance = #{afBalance,jdbcType=DECIMAL},
             </if>
             <if test="afUpdateTime != null" >
                 af_update_time = #{afUpdateTime,jdbcType=TIMESTAMP},

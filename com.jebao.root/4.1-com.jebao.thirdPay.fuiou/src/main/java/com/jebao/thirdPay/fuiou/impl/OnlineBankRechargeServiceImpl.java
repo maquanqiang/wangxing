@@ -1,5 +1,6 @@
 package com.jebao.thirdPay.fuiou.impl;
 
+import com.jebao.thirdPay.fuiou.constants.FuiouConfig;
 import com.jebao.thirdPay.fuiou.http.WebFormUtils;
 import com.jebao.thirdPay.fuiou.model.onlineBankRecharge.OnlineBankRechargeRequest;
 import com.jebao.thirdPay.fuiou.util.PrintUtil;
@@ -12,6 +13,15 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class OnlineBankRechargeServiceImpl {
+    public String post(OnlineBankRechargeRequest reqData) {
+        String httpUrl= FuiouConfig.url+"500002.action";
+        reqData.setPage_notify_url(FuiouConfig.Jebao_Notify_Origin+"api/user/onlineBankRechargeNotify");
+        try {
+            return post(httpUrl,reqData);
+        } catch (Exception e) {
+            return null;
+        }
+    }
     public String post(String httpUrl, OnlineBankRechargeRequest reqData) throws Exception {
         PrintUtil.printLn("Sign:" + reqData.requestSignPlain());
         String signatureStr = SecurityUtils.sign(reqData.requestSignPlain());
