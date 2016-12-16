@@ -69,7 +69,11 @@
                 #if($_loginUser_header_.isLogin)
                 <p class="plan-money">可用金额：<span>{{statistics.balance}}元</span></p>
                 #else
-                <p class="plan-money">可用金额：<span>----元</span><span><a href="/account/login">登录</a>查看</span></p>
+                <!--<p class="plan-money">可用金额：<span>----元</span><span><a href="/account/login">登录</a>查看</span></p>-->
+                <div class="plan-money clearfix">
+                    <P class="fl">可用金额：<span>----元</span></P>
+                    <a href="/account/login" class="fr" style="margin-top: 14px;">登录<span style="font-size: 16px;margin-left: 5px;">查看</span></a>
+                </div>
                 #end
                 <div class="plan-tip">{{product.bpStartMoney}}元起投，{{product.bpRiseMoney}}元递增</div>
                 <div class="spinner">

@@ -18,6 +18,7 @@ import com.jebao.thirdPay.fuiou.impl.TransferBuServiceImpl;
 import com.jebao.thirdPay.fuiou.model.base.BasePlain;
 import com.jebao.thirdPay.fuiou.model.transferBu.TransferBuRequest;
 import com.jebao.thirdPay.fuiou.model.transferBu.TransferBuResponse;
+import com.jebao.thirdPay.fuiou.util.XmlUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -108,6 +109,7 @@ public class TbBidPlanServiceImpl implements ITbBidPlanServiceInf {
                 reqData.setAmt(amt);
                 reqData.setContract_no(investInfo.getIiContractNo());
                 reqData.setRem("放款");
+
                 TbThirdInterfaceLog thirdInterfaceLog = new TbThirdInterfaceLog();
                 thirdInterfaceLog.setTilCreateTime(new Date());
                 thirdInterfaceLog.setTilType(6);
@@ -119,10 +121,14 @@ public class TbBidPlanServiceImpl implements ITbBidPlanServiceInf {
                     TransferBuResponse thirdResp = transferBuService.post(reqData);
                     BasePlain plain = thirdResp.getPlain();
 
-                    thirdInterfaceLog.setTilReturnCode(plain.getResp_code());
-                    thirdInterfaceLog.setTilReqText("");
-                    thirdInterfaceLog.setTilRespText("");
+                    String respStr = XmlUtil.toXML(thirdResp);
+                    String reqStr = XmlUtil.toXML(reqData);
 
+                    thirdInterfaceLog.setTilReturnCode(plain.getResp_code());
+                    thirdInterfaceLog.setTilReqText(reqStr);
+                    thirdInterfaceLog.setTilRespText(respStr);
+
+                    thirdInterfaceLogDao.updateByPrimaryKeySelective(thirdInterfaceLog);
                     if("0000".equals(plain.getResp_code())){
                         //修改投资列表状态
                         investInfo.setIiFreezeStatus(TbInvestInfo.STATUS_REPAYING);
@@ -135,7 +141,6 @@ public class TbBidPlanServiceImpl implements ITbBidPlanServiceInf {
                     flag = false;
                     e.printStackTrace();
                 }
-                thirdInterfaceLogDao.updateByPrimaryKeySelective(thirdInterfaceLog);
             }
         }
 

@@ -9,6 +9,15 @@ public class FundDetailSM {
     private Long investLoginId;     //投资人登录id
     private Integer detailStatus;         //还款状态
     private Integer planStatus;         //标的状态
+    private Integer period;             //是否是下一期   0:否  1:是
+
+    public Integer getPeriod() {
+        return period;
+    }
+
+    public void setPeriod(Integer period) {
+        this.period = period;
+    }
 
     public Long getLoanLoginId() {
         return loanLoginId;

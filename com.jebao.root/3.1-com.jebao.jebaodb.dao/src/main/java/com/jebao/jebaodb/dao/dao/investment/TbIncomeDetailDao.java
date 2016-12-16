@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -78,8 +79,8 @@ public class TbIncomeDetailDao {
      * @param record
      * @return
      */
-    public List<TbIncomeDetail> selectFundList(@Param("record")FundDetailSM record){
-        return mapper.selectFundList(record);
+    public List<TbIncomeDetail> selectFundList(@Param("record")FundDetailSM record, @Param("pageWhere") PageWhere pageWhere){
+        return mapper.selectFundList(record, pageWhere);
     }
 
 
@@ -87,6 +88,27 @@ public class TbIncomeDetailDao {
         return mapper.selectGroupByConditionCount(record);
     }
 
+    /**
+     * 借款总额
+     * @param loginId
+     * @return
+     */
+    public BigDecimal loanMoneyTotal(Long loginId){
+        return mapper.loanMoneyTotal(loginId);
+    }
+
+    /**
+     * 逾期 待还 未来10天待还
+     * @param dateTime
+     * @return
+     */
+    public TbIncomeDetail overdueMoneyOther(Date dateTime){
+        return mapper.overdueMoneyOther(dateTime);
+    }
+
+    public int selectFundCount(FundDetailSM record){
+        return mapper.selectFundCount(record);
+    }
 
     @Transactional
     public int insertForTransactional(TbIncomeDetail record) {

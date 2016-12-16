@@ -1,13 +1,21 @@
 package com.jebao.p2p.service.impl.user;
 
+import com.jebao.jebaodb.dao.dao.investment.TbIncomeDetailDao;
 import com.jebao.jebaodb.dao.dao.user.TbFundsDetailsDao;
 import com.jebao.jebaodb.entity.extEntity.PageWhere;
+import com.jebao.jebaodb.entity.investment.FundDetailSM;
+import com.jebao.jebaodb.entity.investment.TbIncomeDetail;
+import com.jebao.jebaodb.entity.loaner.LoanMovementTotal;
 import com.jebao.jebaodb.entity.user.TbFundsDetails;
 import com.jebao.p2p.service.inf.user.IFundsDetailsServiceInf;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Administrator on 2016/12/2.
@@ -16,6 +24,8 @@ import java.util.List;
 public class FundsDetailsServiceImpl implements IFundsDetailsServiceInf {
     @Autowired
     private TbFundsDetailsDao tbFundsDetailsDao;
+    @Autowired
+    private TbIncomeDetailDao incomeDetailDao;
 
     @Override
     public List<TbFundsDetails> selectFundsDetailsByLoginIdForPage(Long loginId, PageWhere page) {
@@ -29,5 +39,31 @@ public class FundsDetailsServiceImpl implements IFundsDetailsServiceInf {
         TbFundsDetails record = new TbFundsDetails();
         record.setFdLoginId(loginId);
         return tbFundsDetailsDao.selectByParamsForPageCount(record);
+    }
+
+    @Override
+    public List<TbIncomeDetail> selectFundList(FundDetailSM record, PageWhere pageWhere) {
+        return incomeDetailDao.selectFundList(record, pageWhere);
+    }
+
+    @Override
+    public int selectFundCount(FundDetailSM record) {
+        return incomeDetailDao.selectFundCount(record);
+    }
+
+    @Override
+    public Map<String, BigDecimal> loanManageInfo(Long loginId){
+
+        BigDecimal loanMoneyTotal = incomeDetailDao.loanMoneyTotal(loginId);
+        TbIncomeDetail repaymentTotal = incomeDetailDao.overdueMoneyOther(new Date());
+        TbIncomeDetail overdueMoneyOther = incomeDetailDao.overdueMoneyOther(null);
+
+        Map<String, BigDecimal> map = new HashMap<String, BigDecimal>();
+        map.put("loanMoneyTotal", loanMoneyTotal);
+        map.put("overdueMoneyTotal", overdueMoneyOther.getIndOverdueMoney());
+        map.put("repaymentMoneyTotal", overdueMoneyOther.getIndMoney());
+        map.put("afterTenMoney", repaymentTotal.getIndMoney());
+
+        return map;
     }
 }

@@ -40,9 +40,9 @@ public interface TbBidPlanMapper {
 
     int investBid(Map<String, Object> map);
 
-    int fullBid(Long bpId);
+    int fullBid(@Param("bpId")Long bpId);
 
     int addSurplus(Map<String, Object> map);
 
-    int timeoutBid(Date nowDate);
+    int timeoutBid(@Param("nowDate")Date nowDate);
 }

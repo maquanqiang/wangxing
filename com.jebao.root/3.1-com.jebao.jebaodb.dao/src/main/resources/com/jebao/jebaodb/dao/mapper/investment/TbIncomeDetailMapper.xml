@@ -370,6 +370,10 @@
         <result column="bp_start_time" property="collectTime" jdbcType="TIMESTAMP" />
         <result column="incomeTotal" property="incomeTotal" jdbcType="DECIMAL" />
         <result column="ii_contract_url" property="contractUrl" jdbcType="VARCHAR" />
+        <result column="bp_loan_money" property="bpLoanMoney" jdbcType="DECIMAL" />
+        <result column="bp_cycle_type" property="cycleType" jdbcType="INTEGER" />
+        <result column="bp_start_time" property="bpStartTime" jdbcType="TIMESTAMP" />
+
     </resultMap>
 
     <sql id="selectFundWhere">
@@ -380,12 +384,26 @@
             AND detail.ind_login_id = #{record.investLoginId,jdbcType=BIGINT}
         </if>
         <if test="record.detailStatus != null" >
-            AND detail.ind_status = #{record.detailStatus,jdbcType=BIGINT}
+            AND detail.ind_status = #{record.detailStatus,jdbcType=INTEGER}
         </if>
         <if test="record.planStatus != null" >
-            AND plan.bp_status = #{record.planStatus,jdbcType=BIGINT}
+            AND plan.bp_status = #{record.planStatus,jdbcType=INTEGER}
         </if>
-        AND detail.ind_periods = plan.bp_repayed_periods + 1
+        <if test="record.period != null" >
+            AND detail.ind_periods = plan.bp_repayed_periods + #{record.period,jdbcType=INTEGER}
+        </if>
+
+    </sql>
+
+    <sql id="loanInfoCountWhere">
+        plan.bp_login_id = 1
+        AND detail.ind_status = 1
+        <if test="dateTime != null">
+            <![CDATA[
+            AND detail.ind_date_time <= date_add(#{dateTime}, INTERVAL 10 DAY);
+            ]]>
+        </if>
+
     </sql>
 
     <select id="selectForPage" resultMap="BaseResultMap">
@@ -452,7 +470,7 @@
             <include refid="selectByCondition_Where_Clause" />
         </where>
     </select>
-    <select id="selectFundList" parameterType="map" resultMap="fundResultMap">
+    <select id="selectFundList" resultMap="fundResultMap">
         SELECT
             detail.ind_bp_id,
             detail.ind_bp_name,
@@ -466,7 +484,10 @@
             SUM(detail.ind_overdue_money+detail.ind_money) AS incomeTotal,
             detail.ind_periods,
             plan.bp_start_time,
-            info.ii_contract_url
+            info.ii_contract_url,
+            detail.ind_fact_date_time,
+            plan.bp_loan_money,
+            plan.bp_cycle_type
         FROM
             tb_income_detail detail
         LEFT JOIN tb_invest_info info ON detail.ind_ii_id = info.ii_id
@@ -477,7 +498,46 @@
         GROUP BY
             detail.ind_bp_id,
             detail.ind_periods
+        LIMIT #{pageWhere.begin},#{pageWhere.pageSize}
     </select>
+
+    <select id="selectFundCount" resultType="int">
+        SELECT
+          COUNT(*)
+        FROM
+        tb_income_detail detail
+        LEFT JOIN tb_invest_info info ON detail.ind_ii_id = info.ii_id
+        LEFT JOIN tb_bid_plan plan ON detail.ind_bp_id = plan.bp_id
+        <where>
+            <include refid="selectFundWhere" />
+        </where>
+        GROUP BY
+        detail.ind_bp_id,
+        detail.ind_periods
+    </select>
+
+
+    <select id="loanMoneyTotal" parameterType="long" resultType="java.math.BigDecimal">
+        SELECT
+            SUM(bp_loan_money) AS bp_loan_money
+        FROM
+            tb_bid_plan
+        WHERE
+            bp_login_id = #{loginId}
+    </select>
+
+    <select id="overdueMoneyOther" parameterType="java.util.Date" resultMap="BaseResultMap">
+        SELECT
+            SUM(detail.ind_overdue_money) AS ind_overdue_money,
+            SUM(detail.ind_money + ind_overdue_money) AS ind_money
+        FROM
+          tb_income_detail detail
+        LEFT JOIN tb_bid_plan plan ON detail.ind_bp_id = plan.bp_id
+        WHERE
+          <include refid="loanInfoCountWhere"/>
+    </select>
+
+
     <!--==================================================账户总览统计==================================================-->
     <select id="selectDueInMoneyByLoginId" resultType="java.lang.Double">
         SELECT IFNULL(SUM(ind_money),0)
