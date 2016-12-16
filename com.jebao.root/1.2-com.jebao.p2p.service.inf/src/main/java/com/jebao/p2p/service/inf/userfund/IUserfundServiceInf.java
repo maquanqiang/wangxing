@@ -1,6 +1,7 @@
 package com.jebao.p2p.service.inf.userfund;
 
 import com.jebao.jebaodb.entity.extEntity.ResultInfo;
+import com.jebao.thirdPay.fuiou.model.changeCard.ChangeCardResponse;
 import com.jebao.thirdPay.fuiou.model.webReg.WebRegResponse;
 
 /**
@@ -14,10 +15,25 @@ public interface IUserfundServiceInf {
      * @param idCard 身份证号码
      * @return 开户结果
      */
-    ResultInfo registerByWeb(long userId, String realName, String idCard);
+    ResultInfo registerByWeb(String realName, String idCard,long userId);
 
     /**
      * 第三方资金账户开户完成
      */
     ResultInfo registerByWebComplete(WebRegResponse model,long userId);
+
+    /**
+     * 用户更换银行卡
+     */
+    ResultInfo changeCardByWeb(long userId);
+    /**
+     * 用户更换银行卡完成
+     */
+    ResultInfo changeCardByWebComplete(ChangeCardResponse model,long userId);
+
+    /**
+     * 查询更换银行卡请求的审核结果
+     */
+    ResultInfo queryChangeCardResult(long userId);
+
 }

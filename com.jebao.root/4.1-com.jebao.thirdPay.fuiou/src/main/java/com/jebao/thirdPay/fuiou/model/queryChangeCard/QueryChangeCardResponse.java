@@ -5,7 +5,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 /**
  * Created by Administrator on 2016/9/27.
  */
-@XmlRootElement(name = "ap")
+@XmlRootElement(name = "plain")
 public class QueryChangeCardResponse {
     private String resp_code; //响应码
     private String desc_code; //返回码说明

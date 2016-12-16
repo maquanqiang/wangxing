@@ -1,30 +1,16 @@
 package com.jebao.thirdPay.fuiou.model.changeCard;
 
+
+import com.jebao.thirdPay.fuiou.model.base.BaseRequest;
+
 /**
  * Created by Administrator on 2016/9/27.
  */
-public class ChangeCardRequest {
-    private String mchnt_cd; //商户代码
-    private String mchnt_txn_ssn; //流水号
+public class ChangeCardRequest extends BaseRequest{
+
     private String login_id; //个人用户
     private String page_notify_url; //商户返回地址
     private String signature; //签名数据
-
-    public String getMchnt_cd() {
-        return mchnt_cd;
-    }
-
-    public void setMchnt_cd(String mchnt_cd) {
-        this.mchnt_cd = mchnt_cd;
-    }
-
-    public String getMchnt_txn_ssn() {
-        return mchnt_txn_ssn;
-    }
-
-    public void setMchnt_txn_ssn(String mchnt_txn_ssn) {
-        this.mchnt_txn_ssn = mchnt_txn_ssn;
-    }
 
     public String getLogin_id() {
         return login_id;
