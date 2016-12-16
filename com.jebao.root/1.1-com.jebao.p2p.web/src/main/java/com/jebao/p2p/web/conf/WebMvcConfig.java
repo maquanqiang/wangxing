@@ -21,9 +21,9 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
      * @author yzd
      */
     public void addInterceptors(InterceptorRegistry registry) {
-/*        registry.addInterceptor(new AuthorizeInterceptor())
+        registry.addInterceptor(new AuthorizeInterceptor())
                 .addPathPatterns("/user*//**")
-                .addPathPatterns("/account/logout");*/
+                .addPathPatterns("/account/logout");
     }
     /**
      * SpringMvc_@RequestMapping设置Router Url大小写不敏感

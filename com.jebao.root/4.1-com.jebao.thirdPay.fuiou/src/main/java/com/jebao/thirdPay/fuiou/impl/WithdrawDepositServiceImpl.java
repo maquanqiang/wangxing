@@ -1,5 +1,6 @@
 package com.jebao.thirdPay.fuiou.impl;
 
+import com.jebao.thirdPay.fuiou.constants.FuiouConfig;
 import com.jebao.thirdPay.fuiou.http.WebFormUtils;
 import com.jebao.thirdPay.fuiou.model.withdrawDeposit.WithdrawDepositRequest;
 import com.jebao.thirdPay.fuiou.util.PrintUtil;
@@ -12,6 +13,16 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class WithdrawDepositServiceImpl {
+    public String post(WithdrawDepositRequest reqData) {
+        String httpUrl = FuiouConfig.url + "500003.action";
+        reqData.setPage_notify_url(FuiouConfig.Jebao_Notify_Origin + "api/user/withdrawDepositNotify");
+        try {
+            return post(httpUrl, reqData);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
     public String post(String httpUrl, WithdrawDepositRequest reqData) throws Exception {
         PrintUtil.printLn("Sign:" + reqData.requestSignPlain());
         String signatureStr = SecurityUtils.sign(reqData.requestSignPlain());

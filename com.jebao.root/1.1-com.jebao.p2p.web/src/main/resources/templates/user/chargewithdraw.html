@@ -4,6 +4,7 @@
     <title>充值提现-我的账户</title>
     #parse("common/head.html")
     <!--css-->
+    <link rel="stylesheet" href="${filePath}/css/lib/bootstrapValidator.css">
     <link rel="stylesheet" href="${filePath}/css/sidebar.css">
     <link rel="stylesheet" href="${filePath}/css/myAccount.css">
 </head>
@@ -46,61 +47,61 @@
                         </div>
                         <div class="rechange-list">
                             <div class="rechange-item active">
-                                <form>
+                                <form id="quickPay_form" action="/api/user/quickpay" method="post">
                                     <div class="account-bankImg clearfix">
                                         <img src="${filePath}/images/account-bank.png" class="fl">
                                         <div class="account-bankDetail fl">
-                                            <h5>中国建设银行</h5>
+                                            <h5>{{ bankInfo.bankParentBankName }}</h5>
                                             <p class="card-type">储蓄卡</p>
-                                            <p class="card-num">6227**********8888</p>
+                                            <p class="card-num">{{ bankInfo.bankCardNo }}</p>
                                         </div>
                                     </div>
                                     <div class="account-banktext clearfix">
                                         <h5>可用金额：</h5>
-                                        <span class="red">2000.00</span><i>元</i>
+                                        <span class="red">{{ bankInfo.balance }}</span><i>元</i>
                                     </div>
                                     <div class="account-banktext clearfix">
                                         <h5>充值金额：</h5>
-                                        <input type="text" value="" placeholder="请输入充值金额">
+                                        <input type="text" name="money" value="" placeholder="请输入充值金额">
                                         <span>元</span>
                                     </div>
-                                    <a href="#" class="account-btn">充值</a>
+                                    <a href="javascript:;" class="account-btn" @click="quickPay">充值</a>
                                 </form>
                             </div>
                             <div class="rechange-item">
-                                <form>
+                                <form id="fastRecharge_form" action="/api/user/fastRecharge" method="post">
                                     <div class="account-banktext clearfix">
                                         <h5>可用金额：</h5>
-                                        <span class="red">2000.00</span><i>元</i>
+                                        <span class="red">{{ bankInfo.balance }}</span><i>元</i>
                                     </div>
                                     <div class="account-banktext clearfix">
                                         <h5>充值金额：</h5>
-                                        <input type="text" value="" placeholder="请输入充值金额">
+                                        <input type="text" name="money" value="" placeholder="请输入充值金额">
                                         <span>元</span>
                                     </div>
-                                    <a href="#" class="account-btn">充值</a>
+                                    <a href="javascript:;" class="account-btn" @click="fastRecharge">充值</a>
                                 </form>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="account-rex-item">
-                    <form>
+                    <form id="withdrawDeposit_form" action="/api/user/withdrawDeposit" method="post">
                         <div class="account-bankImg clearfix">
                             <img src="${filePath}/images/account-bank.png" class="fl">
                             <div class="account-bankDetail fl">
-                                <h5>中国建设银行</h5>
+                                <h5>{{ bankInfo.bankParentBankName }}</h5>
                                 <p class="card-type">储蓄卡</p>
-                                <p class="card-num">6227**********8888</p>
+                                <p class="card-num">{{ bankInfo.bankCardNo }}</p>
                             </div>
                         </div>
                         <div class="account-banktext clearfix">
                             <h5>可用金额：</h5>
-                            <span class="red">2000.00</span><i>元</i>
+                            <span class="red">{{ bankInfo.balance }}</span><i>元</i>
                         </div>
                         <div class="account-banktext clearfix">
-                            <h5>充值金额：</h5>
-                            <input type="text" value="" placeholder="请输入充值金额">
+                            <h5>提现金额：</h5>
+                            <input type="text" name="money" value="" placeholder="请输入提现金额">
                             <span>元</span>
                         </div>
                         <div class="account-banktext clearfix">
@@ -111,7 +112,7 @@
                             <h5>手续费：</h5>
                             <span>3元</span>
                         </div>
-                        <a href="#" class="account-btn">提现</a>
+                        <a href="javascript:;" class="account-btn" @click="withdrawDeposit">提现</a>
                     </form>
                 </div>
             </div>
@@ -120,6 +121,9 @@
 </div>
 <!--内容 end-->
 #parse("common/footer.html")
+<script src="/content/js/lib/bootstrapValidator.js"></script>
+<script src="/content/js/lib/bootstrapValidator.ext.js"></script>
 <script src="/content/script/user/sidebar.js"></script>
+<script src="/content/script/user/chargewithdraw.js"></script>
 </body>
 </html>

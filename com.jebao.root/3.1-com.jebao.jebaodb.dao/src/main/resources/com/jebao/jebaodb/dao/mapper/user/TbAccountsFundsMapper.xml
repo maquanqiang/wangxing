@@ -112,6 +112,27 @@
     where af_id = #{afId,jdbcType=BIGINT}
   </update>
     <!--==================================================华丽分割线==================================================-->
+    <update id="updateByLoginId" parameterType="com.jebao.jebaodb.entity.user.TbAccountsFunds" >
+        update tb_accounts_funds
+        <set>
+            <if test="afBalance != null" >
+                af_balance = #{afBalance,jdbcType=DECIMAL},
+            </if>
+            <if test="afUpdateTime != null" >
+                af_update_time = #{afUpdateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="afIsDel != null" >
+                af_is_del = #{afIsDel,jdbcType=INTEGER}
+            </if>
+        </set>
+        where af_is_del=1
+        <if test="afLoginId != null" >
+            AND af_login_id = #{afLoginId,jdbcType=BIGINT}
+        </if>
+        <if test="afThirdAccount != null" >
+            AND af_third_account = #{afThirdAccount,jdbcType=VARCHAR}
+        </if>
+    </update>
     <update id="deleteByLoginId" parameterType="java.lang.Long">
         update tb_accounts_funds
         set af_is_del = 2

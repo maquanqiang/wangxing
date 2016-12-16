@@ -34,6 +34,10 @@ public class TbAccountsFundsDao {
     }
 
     /* ==================================================华丽分割线==================================================*/
+    public int updateByLoginId(TbAccountsFunds record){
+        return tbAccountsFundsMapper.updateByLoginId(record);
+    }
+
     public int deleteByLoginId(Long afLoginId) {
         return tbAccountsFundsMapper.deleteByLoginId(afLoginId);
     }

@@ -35,7 +35,9 @@ public class TbFundsDetailsDao {
     {
         return tbFundsDetailsMapper.updateByPrimaryKey(record);
     }
-
+    public int updateBySsn(TbFundsDetails record){
+        return tbFundsDetailsMapper.updateBySsn(record);
+    }
     public  List<FundsStatistics> statisticsByLoginId(Long loginId){
         return tbFundsDetailsMapper.statisticsByLoginId(loginId);
     }

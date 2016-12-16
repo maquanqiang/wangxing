@@ -1,7 +1,9 @@
 package com.jebao.p2p.service.impl.user;
 
+import com.jebao.jebaodb.dao.dao.user.TbAccountsFundsDao;
 import com.jebao.jebaodb.dao.dao.user.TbLoginInfoDao;
 import com.jebao.jebaodb.dao.dao.user.TbUserDetailsDao;
+import com.jebao.jebaodb.entity.user.TbAccountsFunds;
 import com.jebao.jebaodb.entity.user.TbLoginInfo;
 import com.jebao.jebaodb.entity.user.TbUserDetails;
 import com.jebao.p2p.service.inf.user.IUserServiceInf;
@@ -17,6 +19,9 @@ public class UserServiceImpl implements IUserServiceInf {
     private TbLoginInfoDao loginInfoDao;
     @Autowired
     private TbUserDetailsDao userDetailsDao;
+    @Autowired
+    private TbAccountsFundsDao tbAccountsFundsDao;
+
     @Override
     public TbLoginInfo getUserLoginInfo(String mobile) {
         return loginInfoDao.selectByLoginName(mobile);
@@ -28,5 +33,10 @@ public class UserServiceImpl implements IUserServiceInf {
     @Override
     public TbUserDetails getUserDetailsInfo(long userId) {
         return userDetailsDao.selectByLoginId(userId);
+    }
+
+    @Override
+    public TbAccountsFunds getAccountsFundsInfo(long userId) {
+        return tbAccountsFundsDao.selectByLoginId(userId);
     }
 }

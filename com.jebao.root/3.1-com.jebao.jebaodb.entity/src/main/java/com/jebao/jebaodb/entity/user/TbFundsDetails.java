@@ -12,13 +12,15 @@ public class TbFundsDetails {
 
     private String fdSerialNumber;
 
-    private Date fdSerialTime;
-
     private Integer fdSerialTypeId;
 
     private String fdSerialTypeName;
 
     private BigDecimal fdSerialAmount;
+
+    private BigDecimal fdBalanceBefore;
+
+    private BigDecimal fdBalanceAfter;
 
     private BigDecimal fdCommissionCharge;
 
@@ -26,9 +28,15 @@ public class TbFundsDetails {
 
     private String fdBpName;
 
+    private Date fdCreateTime;
+
+    private Date fdSerialTime;
+
     private Integer fdBalanceStatus;
 
     private Integer fdSerialStatus;
+
+    private Integer fdIsDel;
 
     public Long getFdId() {
         return fdId;
@@ -62,14 +70,6 @@ public class TbFundsDetails {
         this.fdSerialNumber = fdSerialNumber == null ? null : fdSerialNumber.trim();
     }
 
-    public Date getFdSerialTime() {
-        return fdSerialTime;
-    }
-
-    public void setFdSerialTime(Date fdSerialTime) {
-        this.fdSerialTime = fdSerialTime;
-    }
-
     public Integer getFdSerialTypeId() {
         return fdSerialTypeId;
     }
@@ -92,6 +92,22 @@ public class TbFundsDetails {
 
     public void setFdSerialAmount(BigDecimal fdSerialAmount) {
         this.fdSerialAmount = fdSerialAmount;
+    }
+
+    public BigDecimal getFdBalanceBefore() {
+        return fdBalanceBefore;
+    }
+
+    public void setFdBalanceBefore(BigDecimal fdBalanceBefore) {
+        this.fdBalanceBefore = fdBalanceBefore;
+    }
+
+    public BigDecimal getFdBalanceAfter() {
+        return fdBalanceAfter;
+    }
+
+    public void setFdBalanceAfter(BigDecimal fdBalanceAfter) {
+        this.fdBalanceAfter = fdBalanceAfter;
     }
 
     public BigDecimal getFdCommissionCharge() {
@@ -118,6 +134,22 @@ public class TbFundsDetails {
         this.fdBpName = fdBpName == null ? null : fdBpName.trim();
     }
 
+    public Date getFdCreateTime() {
+        return fdCreateTime;
+    }
+
+    public void setFdCreateTime(Date fdCreateTime) {
+        this.fdCreateTime = fdCreateTime;
+    }
+
+    public Date getFdSerialTime() {
+        return fdSerialTime;
+    }
+
+    public void setFdSerialTime(Date fdSerialTime) {
+        this.fdSerialTime = fdSerialTime;
+    }
+
     public Integer getFdBalanceStatus() {
         return fdBalanceStatus;
     }
@@ -132,5 +164,13 @@ public class TbFundsDetails {
 
     public void setFdSerialStatus(Integer fdSerialStatus) {
         this.fdSerialStatus = fdSerialStatus;
+    }
+
+    public Integer getFdIsDel() {
+        return fdIsDel;
+    }
+
+    public void setFdIsDel(Integer fdIsDel) {
+        this.fdIsDel = fdIsDel;
     }
 }

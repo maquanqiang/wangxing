@@ -42,7 +42,7 @@ public interface TbIncomeDetailMapper {
 
     int selectFundCount(@Param("record") FundDetailSM record);
 
-
+    int selectFundListForPageCount(@Param("record") FundDetailSM record);
     /*==================================================账户总览统计==================================================*/
     double selectDueInMoneyByLoginId(@Param("record") TbIncomeDetail record);
 

@@ -1,12 +1,14 @@
 package com.jebao.thirdPay.fuiou.model.fastRecharge;
 
+import com.jebao.thirdPay.fuiou.model.base.BaseRequest;
+
 /**
  * 商户P2P网站免登录快速充值接口请求参数
  * Created by Administrator on 2016/9/27.
  */
-public class FastRechargeRequest {
-    private String mchnt_cd; //商户代码
-    private String mchnt_txn_ssn; //流水号
+public class FastRechargeRequest extends BaseRequest {
+/*    private String mchnt_cd; //商户代码
+    private String mchnt_txn_ssn; //流水号*/
     private String login_id; //用户登录名
     private String amt; //充值金额
     private String page_notify_url; //商户返回地址

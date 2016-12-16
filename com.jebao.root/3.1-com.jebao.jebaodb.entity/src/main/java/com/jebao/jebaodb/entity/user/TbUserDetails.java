@@ -45,6 +45,10 @@ public class TbUserDetails {
 
     private String udBankCardNo;
 
+    private Integer udBankCardNoChangeStatus;
+
+    private Integer udPosStatus;
+
     private Date udCreateTime;
 
     private Date udUpdateTime;
@@ -217,6 +221,22 @@ public class TbUserDetails {
 
     public void setUdBankCardNo(String udBankCardNo) {
         this.udBankCardNo = udBankCardNo == null ? null : udBankCardNo.trim();
+    }
+
+    public Integer getUdBankCardNoChangeStatus() {
+        return udBankCardNoChangeStatus;
+    }
+
+    public void setUdBankCardNoChangeStatus(Integer udBankCardNoChangeStatus) {
+        this.udBankCardNoChangeStatus = udBankCardNoChangeStatus;
+    }
+
+    public Integer getUdPosStatus() {
+        return udPosStatus;
+    }
+
+    public void setUdPosStatus(Integer udPosStatus) {
+        this.udPosStatus = udPosStatus;
     }
 
     public Date getUdCreateTime() {

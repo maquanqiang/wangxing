@@ -20,5 +20,9 @@ public class Constants {
     public static int LOGIN_SESSION_EXPIRE_TIME=60 * 60 * 12;//12小时-相对时间
     public static final String LOGIN_SESSION_CACHE_NAME=DOMAIN+"login_session_";
     public static final String LOGIN_SESSION_COOKIE_NAME=DOMAIN+"LS";
+    //
+    public static final String FILE_UPLOAD_SERVICE_URL=ProjectSetting.getConfigProperty("project.file.upload.service.url");
+
+    public static final String FILE_UPLOAD_KEY=ProjectSetting.getConfigProperty("project.file.upload.key");
 
 }

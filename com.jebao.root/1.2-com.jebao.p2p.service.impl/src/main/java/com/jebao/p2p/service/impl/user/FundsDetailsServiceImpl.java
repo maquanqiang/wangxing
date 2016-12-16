@@ -52,7 +52,7 @@ public class FundsDetailsServiceImpl implements IFundsDetailsServiceInf {
     }
 
     @Override
-    public Map<String, BigDecimal> loanManageInfo(Long loginId){
+    public Map<String, BigDecimal> loanManageInfo(Long loginId) {
 
         BigDecimal loanMoneyTotal = incomeDetailDao.loanMoneyTotal(loginId);
         TbIncomeDetail repaymentTotal = incomeDetailDao.overdueMoneyOther(new Date());
@@ -65,5 +65,15 @@ public class FundsDetailsServiceImpl implements IFundsDetailsServiceInf {
         map.put("afterTenMoney", repaymentTotal.getIndMoney());
 
         return map;
+    }
+
+    @Override
+    public int insert(TbFundsDetails record) {
+        return tbFundsDetailsDao.insertSelective(record);
+    }
+
+    @Override
+    public int update(TbFundsDetails record) {
+        return tbFundsDetailsDao.updateBySsn(record);
     }
 }

@@ -1,5 +1,6 @@
 package com.jebao.p2p.service.inf.user;
 
+import com.jebao.jebaodb.entity.user.TbAccountsFunds;
 import com.jebao.jebaodb.entity.user.TbLoginInfo;
 import com.jebao.jebaodb.entity.user.TbUserDetails;
 
@@ -28,4 +29,10 @@ public interface IUserServiceInf {
      */
     TbUserDetails getUserDetailsInfo(long userId);
 
+    /**
+     * 获取账户资金信息
+     * @param userId
+     * @return
+     */
+    TbAccountsFunds getAccountsFundsInfo(long userId);
 }

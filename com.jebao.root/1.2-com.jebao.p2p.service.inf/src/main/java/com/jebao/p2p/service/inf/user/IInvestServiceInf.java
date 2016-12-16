@@ -2,9 +2,9 @@ package com.jebao.p2p.service.inf.user;
 
 import com.jebao.jebaodb.entity.extEntity.PageWhere;
 import com.jebao.jebaodb.entity.investment.InvestIng;
-import com.jebao.jebaodb.entity.investment.InvestPaymentIng;
 import com.jebao.jebaodb.entity.investment.InvestPaymented;
 import com.jebao.jebaodb.entity.investment.InvestStatistics;
+import com.jebao.jebaodb.entity.investment.TbIncomeDetail;
 
 import java.util.List;
 
@@ -45,7 +45,7 @@ public interface IInvestServiceInf {
      * @param page
      * @return
      */
-    List<InvestPaymentIng> selectInvestPaymentIngByLoginId(Long loginId, PageWhere page);
+    List<TbIncomeDetail> selectInvestPaymentIngByLoginId(Long loginId, PageWhere page);
 
     /**
      * 还款中的项目总数
