@@ -75,4 +75,13 @@ public class UserController extends _BaseController {
     public String chargewithdraw(){
         return "user/chargewithdraw";
     }
+
+    /**
+     * 借款管理
+     * @return
+     */
+    @RequestMapping("loanmanage")
+    public String loanmanage(){
+        return "user/loanmanage";
+    }
 }

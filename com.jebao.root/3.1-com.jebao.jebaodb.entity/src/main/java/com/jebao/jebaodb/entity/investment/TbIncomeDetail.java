@@ -58,6 +58,33 @@ public class TbIncomeDetail {
     private BigDecimal incomeTotal;         //应收总额
     private Date collectTime;               //募集时间
     private String contractUrl;             //合同url
+    private BigDecimal bpLoanMoney;         //借款额
+    private Date bpStartTime;               //募集时间
+    private Integer cycleType;              //周期类型
+
+    public Integer getCycleType() {
+        return cycleType;
+    }
+
+    public void setCycleType(Integer cycleType) {
+        this.cycleType = cycleType;
+    }
+
+    public Date getBpStartTime() {
+        return bpStartTime;
+    }
+
+    public void setBpStartTime(Date bpStartTime) {
+        this.bpStartTime = bpStartTime;
+    }
+
+    public BigDecimal getBpLoanMoney() {
+        return bpLoanMoney;
+    }
+
+    public void setBpLoanMoney(BigDecimal bpLoanMoney) {
+        this.bpLoanMoney = bpLoanMoney;
+    }
 
     public String getContractUrl() {
         return contractUrl;

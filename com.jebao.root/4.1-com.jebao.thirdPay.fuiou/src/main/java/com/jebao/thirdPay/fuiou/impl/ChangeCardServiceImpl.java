@@ -1,8 +1,8 @@
 package com.jebao.thirdPay.fuiou.impl;
 
+import com.jebao.thirdPay.fuiou.constants.FuiouConfig;
 import com.jebao.thirdPay.fuiou.http.WebFormUtils;
 import com.jebao.thirdPay.fuiou.model.changeCard.ChangeCardRequest;
-import com.jebao.thirdPay.fuiou.util.PrintUtil;
 import com.jebao.thirdPay.fuiou.util.SecurityUtils;
 import org.springframework.stereotype.Service;
 
@@ -12,8 +12,16 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class ChangeCardServiceImpl {
+    public String post(ChangeCardRequest reqData) {
+        String httpUrl= FuiouConfig.url+"changeCard2.action";
+        reqData.setPage_notify_url(FuiouConfig.Jebao_Notify_Origin+"api/userfund/changeCardNotify");
+        try {
+            return post(httpUrl,reqData);
+        } catch (Exception e) {
+            return null;
+        }
+    }
     public String post(String httpUrl, ChangeCardRequest reqData) throws Exception {
-        PrintUtil.printLn("Sign:" + reqData.requestSignPlain());
         String signatureStr = SecurityUtils.sign(reqData.requestSignPlain());
         reqData.setSignature(signatureStr);
         String formHtml = WebFormUtils.createFormHtml(httpUrl, reqData);

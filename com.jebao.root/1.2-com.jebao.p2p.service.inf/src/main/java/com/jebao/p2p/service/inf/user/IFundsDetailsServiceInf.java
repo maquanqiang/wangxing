@@ -1,10 +1,13 @@
 package com.jebao.p2p.service.inf.user;
 
 import com.jebao.jebaodb.entity.extEntity.PageWhere;
-import com.jebao.jebaodb.entity.extEntity.ResultInfo;
+import com.jebao.jebaodb.entity.investment.FundDetailSM;
+import com.jebao.jebaodb.entity.investment.TbIncomeDetail;
 import com.jebao.jebaodb.entity.user.TbFundsDetails;
 
+import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Administrator on 2016/12/2.
@@ -26,7 +29,23 @@ public interface IFundsDetailsServiceInf {
     int selectFundsDetailsByLoginIdForPageCount(Long loginId);
 
     /**
-     * 新增资金收支明细
+     * 还款清单
+     * @param record
+     * @return
+     */
+    public List<TbIncomeDetail> selectFundList(FundDetailSM record, PageWhere pageWhere);
+
+
+    public int selectFundCount(FundDetailSM record);
+
+    /**
+     * 借款管理统计
+     * @param loginId
+     * @return
+     */
+    public Map<String, BigDecimal> loanManageInfo(Long loginId);
+
+     /** 新增资金收支明细
      * @param record
      * @return
      */

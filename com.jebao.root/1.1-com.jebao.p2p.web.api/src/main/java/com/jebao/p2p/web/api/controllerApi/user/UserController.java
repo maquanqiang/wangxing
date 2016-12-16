@@ -1,17 +1,24 @@
 package com.jebao.p2p.web.api.controllerApi.user;
 
+import com.jebao.jebaodb.entity.extEntity.EnumModel;
 import com.jebao.jebaodb.entity.extEntity.ResultData;
 import com.jebao.jebaodb.entity.extEntity.ResultInfo;
 import com.jebao.jebaodb.entity.user.TbUserDetails;
-import com.jebao.p2p.service.inf.user.*;
+import com.jebao.p2p.service.inf.user.IRechargeServiceInf;
+import com.jebao.p2p.service.inf.user.IUserServiceInf;
+import com.jebao.p2p.service.inf.user.IWithdrawServiceInf;
+import com.jebao.p2p.service.inf.userfund.IUserfundServiceInf;
 import com.jebao.p2p.web.api.controllerApi._BaseController;
 import com.jebao.p2p.web.api.requestModel.user.RechargeSM;
 import com.jebao.p2p.web.api.responseModel.base.JsonResult;
 import com.jebao.p2p.web.api.responseModel.base.JsonResultData;
+import com.jebao.p2p.web.api.responseModel.base.JsonResultError;
 import com.jebao.p2p.web.api.responseModel.user.UserDetailsVM;
+import com.jebao.p2p.web.api.responseModel.user.UserVM;
 import com.jebao.p2p.web.api.utils.constants.Constants;
 import com.jebao.p2p.web.api.utils.session.CurrentUser;
 import com.jebao.p2p.web.api.utils.session.CurrentUserContextHolder;
+import com.jebao.p2p.web.api.utils.session.LoginSessionUtil;
 import com.jebao.p2p.web.api.utils.validation.ValidationResult;
 import com.jebao.p2p.web.api.utils.validation.ValidationUtil;
 import com.jebao.thirdPay.fuiou.model.fastRecharge.FastRechargeResponse;
@@ -39,6 +46,28 @@ public class UserController extends _BaseController {
 
     @Autowired
     private IRechargeServiceInf rechargeService;
+    @Autowired
+    private IUserfundServiceInf userfundService;
+
+    @RequestMapping("getUser")
+    public JsonResult getUser(){
+        CurrentUser user = LoginSessionUtil.User(request,response);
+        if (user == null){
+            return new JsonResultError("用户未登录");
+        }
+        TbUserDetails userDetailsEntity = userService.getUserDetailsInfo(user.getId());
+        if (userDetailsEntity.getUdBankCardNoChangeStatus() !=null && userDetailsEntity.getUdBankCardNoChangeStatus() == EnumModel.BankCardChangeStatus.更换审核中.getValue()){
+            //去富友查询银行卡更换结果
+            ResultInfo resultInfo = userfundService.queryChangeCardResult(user.getId());
+            if (resultInfo.getSuccess_is_ok()){
+                ResultData<TbUserDetails> resultData = (ResultData<TbUserDetails>) resultInfo;
+                userDetailsEntity = resultData.getData();
+            }
+        }
+        UserVM userVM = new UserVM(userDetailsEntity);
+
+        return new JsonResultData<>(userVM);
+    }
 
     @RequestMapping(value = "details", method = RequestMethod.GET)
     @ResponseBody

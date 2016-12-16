@@ -957,7 +957,7 @@
             bp_surplus_money = 0
         AND bp_id = #{bpId}
     </update>
-    <update id="timeoutBid" parameterType="date">
+    <update id="timeoutBid" parameterType="java.util.Date">
         <![CDATA[
             UPDATE tb_bid_plan
             SET bp_status = 4,

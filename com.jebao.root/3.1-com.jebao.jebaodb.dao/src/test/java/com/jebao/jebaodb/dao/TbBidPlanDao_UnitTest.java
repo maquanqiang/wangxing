@@ -48,11 +48,19 @@ public class TbBidPlanDao_UnitTest extends _BaseUnitTest {
     }
 
     @Test
+    public void overdueMoneyOther(){
+
+        TbIncomeDetail tbIncomeDetail = incomeDetailDao.overdueMoneyOther(null);
+        System.out.println();
+    }
+
+    @Test
     public void select(){
         FundDetailSM fundDetailSM = new FundDetailSM();
         fundDetailSM.setInvestLoginId(1l);
         fundDetailSM.setDetailStatus(1);
-        List<TbIncomeDetail> incomeDetails = incomeDetailDao.selectFundList(fundDetailSM,null);
+        PageWhere pageWhere = new PageWhere(0,2);
+        List<TbIncomeDetail> incomeDetails = incomeDetailDao.selectFundList(fundDetailSM,pageWhere);
         System.out.println();
     }
 

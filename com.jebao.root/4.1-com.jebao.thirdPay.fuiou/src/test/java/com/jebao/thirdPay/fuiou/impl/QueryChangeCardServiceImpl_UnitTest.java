@@ -12,8 +12,6 @@ public class QueryChangeCardServiceImpl_UnitTest {
     @Test
     public void Test() throws Exception {
         QueryChangeCardRequest reqData=new QueryChangeCardRequest();
-        reqData.setMchnt_cd("0002900F0041077");
-        reqData.setMchnt_txn_ssn("96f14200a794dbcc91cad69b50ef05");
         reqData.setLogin_id("");
         reqData.setTxn_ssn("");
         //

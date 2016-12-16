@@ -5,12 +5,14 @@ import com.jebao.jebaodb.dao.dao.investment.TbInvestInfoDao;
 import com.jebao.jebaodb.dao.dao.loaner.TbLoanerDao;
 import com.jebao.jebaodb.dao.dao.loanmanage.TbBidPlanDao;
 import com.jebao.jebaodb.dao.dao.loanmanage.TbBidRiskDataDao;
+import com.jebao.jebaodb.dao.dao.loanmanage.TbThirdInterfaceLogDao;
 import com.jebao.jebaodb.dao.dao.user.TbLoginInfoDao;
 import com.jebao.jebaodb.dao.dao.user.TbUserDetailsDao;
 import com.jebao.jebaodb.entity.investment.TbIncomeDetail;
 import com.jebao.jebaodb.entity.investment.TbInvestInfo;
 import com.jebao.jebaodb.entity.loaner.TbLoaner;
 import com.jebao.jebaodb.entity.loanmanage.TbBidRiskData;
+import com.jebao.jebaodb.entity.loanmanage.TbThirdInterfaceLog;
 import com.jebao.jebaodb.entity.postLoan.search.RepaymentDetailSM;
 import com.jebao.jebaodb.entity.product.ProductSM;
 import com.jebao.jebaodb.entity.extEntity.PageWhere;
@@ -21,6 +23,7 @@ import com.jebao.p2p.service.inf.product.IProductServiceInf;
 import com.jebao.thirdPay.fuiou.impl.PreAuthServiceImpl;
 import com.jebao.thirdPay.fuiou.model.preAuth.PreAuthRequest;
 import com.jebao.thirdPay.fuiou.model.preAuth.PreAuthResponse;
+import com.jebao.thirdPay.fuiou.util.XmlUtil;
 import org.hibernate.validator.internal.util.logging.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -54,6 +57,8 @@ public class ProductServiceImpl implements IProductServiceInf {
     private TbUserDetailsDao tbUserDetailsDao;
     @Autowired
     private TbLoginInfoDao tbLoginInfoDao;
+    @Autowired
+    private TbThirdInterfaceLogDao thirdInterfaceLogDao;
 
     @Override
     public List<TbBidPlan> selectP2PList(ProductSM record, PageWhere pageWhere) {
@@ -100,7 +105,24 @@ public class ProductServiceImpl implements IProductServiceInf {
                 preAuthRequest.setOut_cust_no(outUser.getUdThirdAccount());
                 preAuthRequest.setRem("投标");
                 preAuthRequest.setAmt(amt);
+                //保存日志信息
+                TbThirdInterfaceLog thirdInterfaceLog = new TbThirdInterfaceLog();
+                thirdInterfaceLog.setTilCreateTime(new Date());
+                thirdInterfaceLog.setTilSerialNumber(preAuthRequest.getMchnt_txn_ssn());
+                thirdInterfaceLog.setTilType(3);
+
+                thirdInterfaceLogDao.insert(thirdInterfaceLog);
+
                 PreAuthResponse response = preAuthService.post(preAuthRequest);
+                //更新日志信息
+                String respStr = XmlUtil.toXML(response);
+                String reqStr = XmlUtil.toXML(preAuthRequest);
+
+                thirdInterfaceLog.setTilReturnCode(response.getPlain().getResp_code());
+                thirdInterfaceLog.setTilReqText(reqStr);
+                thirdInterfaceLog.setTilRespText(respStr);
+
+                thirdInterfaceLogDao.updateByPrimaryKeySelective(thirdInterfaceLog);
                 if("0000".equals(response.getPlain().getResp_code())){  //冻结成功
                     //添加投资记录
 
