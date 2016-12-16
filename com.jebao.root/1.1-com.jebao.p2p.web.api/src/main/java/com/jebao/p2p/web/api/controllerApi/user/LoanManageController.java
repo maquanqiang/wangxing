@@ -101,7 +101,18 @@ public class LoanManageController {
 
     }
 
+    @RequestMapping("repay")
+    public JsonResult repay(){
+        CurrentUser currentUser = CurrentUserContextHolder.get();
+        if(currentUser==null){
+            return new JsonResultError("登录超时");
+        }
+        //
 
 
+
+
+        return new JsonResultData<>();
+    }
 
 }

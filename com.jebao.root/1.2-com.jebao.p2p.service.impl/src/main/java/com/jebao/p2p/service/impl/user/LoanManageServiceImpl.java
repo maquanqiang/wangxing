@@ -3,6 +3,7 @@ package com.jebao.p2p.service.impl.user;
 import com.jebao.jebaodb.dao.dao.investment.TbIncomeDetailDao;
 import com.jebao.jebaodb.entity.investment.TbIncomeDetail;
 import com.jebao.p2p.service.inf.user.ILoanManageServiceInf;
+import com.jebao.thirdPay.fuiou.impl.TransferBuServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +17,8 @@ public class LoanManageServiceImpl implements ILoanManageServiceInf {
 
     @Autowired
     private TbIncomeDetailDao tbIncomeDetailDao;
-
+    @Autowired
+    private TransferBuServiceImpl transferBuService;
 
     @Override
     public boolean repay(Long bpId, Long loginId, Integer period, BigDecimal repayMoney) {
