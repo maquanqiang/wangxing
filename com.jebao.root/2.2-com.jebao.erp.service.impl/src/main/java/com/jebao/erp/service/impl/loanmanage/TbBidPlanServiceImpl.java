@@ -5,6 +5,8 @@ import com.jebao.jebaodb.dao.dao.investment.TbInvestInfoDao;
 import com.jebao.jebaodb.dao.dao.loanmanage.TbBidPlanDao;
 import com.jebao.jebaodb.dao.dao.loanmanage.TbBidRiskDataDao;
 import com.jebao.jebaodb.dao.dao.loanmanage.TbThirdInterfaceLogDao;
+import com.jebao.jebaodb.dao.dao.user.TbAccountsFundsDao;
+import com.jebao.jebaodb.dao.dao.user.TbFundsDetailsDao;
 import com.jebao.jebaodb.dao.dao.user.TbUserDetailsDao;
 import com.jebao.jebaodb.entity.extEntity.PageWhere;
 import com.jebao.jebaodb.entity.investment.TbInvestInfo;
@@ -13,6 +15,8 @@ import com.jebao.jebaodb.entity.loanmanage.TbBidPlan;
 import com.jebao.jebaodb.entity.loanmanage.TbBidRiskData;
 import com.jebao.jebaodb.entity.loanmanage.TbThirdInterfaceLog;
 import com.jebao.jebaodb.entity.loanmanage.search.BidPlanSM;
+import com.jebao.jebaodb.entity.user.TbAccountsFunds;
+import com.jebao.jebaodb.entity.user.TbFundsDetails;
 import com.jebao.jebaodb.entity.user.TbUserDetails;
 import com.jebao.thirdPay.fuiou.impl.TransferBuServiceImpl;
 import com.jebao.thirdPay.fuiou.model.base.BasePlain;
@@ -38,11 +42,14 @@ public class TbBidPlanServiceImpl implements ITbBidPlanServiceInf {
     @Autowired
     private TbThirdInterfaceLogDao thirdInterfaceLogDao;
     @Autowired
-    private TbUserDetailsDao userDetailsDao;
+    private TbAccountsFundsDao accountsFundsDao;
     @Autowired
     private TbInvestInfoDao investInfoDao;
     @Autowired
     private TransferBuServiceImpl transferBuService;
+    @Autowired
+    private TbFundsDetailsDao fundsDetailsDao;
+
 
     @Override
     public int add(TbBidPlan plan) {
@@ -89,7 +96,7 @@ public class TbBidPlanServiceImpl implements ITbBidPlanServiceInf {
     @Override
     public boolean doLoan(TbBidPlan record) {
 
-        TbUserDetails tbUserDetails = userDetailsDao.selectByLoginId(record.getBpLoginId());
+        TbAccountsFunds tbAccountsFunds = accountsFundsDao.selectByLoginId(record.getBpLoginId());
 
         boolean flag = true;
         TbInvestInfo tbInvestInfo = new TbInvestInfo();
@@ -105,10 +112,10 @@ public class TbBidPlanServiceImpl implements ITbBidPlanServiceInf {
                 String amt = investInfo.getIiMoney().multiply(new BigDecimal(100)).toString();
 
                 reqData.setOut_cust_no(investInfo.getIiThirdAccount());
-                reqData.setIn_cust_no(tbUserDetails.getUdThirdAccount());
+                reqData.setIn_cust_no(tbAccountsFunds.getAfThirdAccount());
                 reqData.setAmt(amt);
                 reqData.setContract_no(investInfo.getIiContractNo());
-                reqData.setRem("放款");
+                reqData.setRem("doLoan");
 
                 TbThirdInterfaceLog thirdInterfaceLog = new TbThirdInterfaceLog();
                 thirdInterfaceLog.setTilCreateTime(new Date());
@@ -121,11 +128,11 @@ public class TbBidPlanServiceImpl implements ITbBidPlanServiceInf {
                     TransferBuResponse thirdResp = transferBuService.post(reqData);
                     BasePlain plain = thirdResp.getPlain();
 
+                    //日志更新
                     String respStr = XmlUtil.toXML(thirdResp);
-                    String reqStr = XmlUtil.toXML(reqData);
 
                     thirdInterfaceLog.setTilReturnCode(plain.getResp_code());
-                    thirdInterfaceLog.setTilReqText(reqStr);
+                    thirdInterfaceLog.setTilReqText(reqData.getSignature());
                     thirdInterfaceLog.setTilRespText(respStr);
 
                     thirdInterfaceLogDao.updateByPrimaryKeySelective(thirdInterfaceLog);
@@ -133,6 +140,62 @@ public class TbBidPlanServiceImpl implements ITbBidPlanServiceInf {
                         //修改投资列表状态
                         investInfo.setIiFreezeStatus(TbInvestInfo.STATUS_REPAYING);
                         investInfoDao.updateByPrimaryKeySelective(investInfo);
+
+                        //添加出账流水记录
+
+                        TbAccountsFunds outAccount = accountsFundsDao.selectByLoginId(investInfo.getIiLoginId());
+
+                        TbFundsDetails outFundsDetails = new TbFundsDetails();
+                        outFundsDetails.setFdLoginId(investInfo.getIiLoginId());
+                        outFundsDetails.setFdThirdAccount(outAccount.getAfThirdAccount());
+                        outFundsDetails.setFdSerialNumber(reqData.getMchnt_txn_ssn());
+                        outFundsDetails.setFdSerialTypeId(7);            //3投资冻结 4 借款入账  5本金还款  6付息  7投资转账
+                        outFundsDetails.setFdSerialTypeName("投资转账");
+                        outFundsDetails.setFdSerialAmount(investInfo.getIiMoney());
+                        outFundsDetails.setFdBalanceBefore(outAccount.getAfBalance());
+                        outFundsDetails.setFdBalanceAfter(outAccount.getAfBalance());
+                        outFundsDetails.setFdCommissionCharge(BigDecimal.ZERO);
+                        outFundsDetails.setFdBpId(investInfo.getIiBpId());
+                        outFundsDetails.setFdBpName(investInfo.getIiBpName());
+                        outFundsDetails.setFdCreateTime(new Date());
+                        outFundsDetails.setFdSerialTime(new Date());
+                        outFundsDetails.setFdBalanceStatus(2);           //支出
+                        outFundsDetails.setFdSerialStatus(1);
+                        outFundsDetails.setFdIsDel(1);
+                        fundsDetailsDao.insert(outFundsDetails);
+
+                        outAccount.setAfUpdateTime(new Date());
+                        accountsFundsDao.updateByPrimaryKeySelective(outAccount);
+
+
+
+                        //添加入账流水记录
+
+
+                        TbFundsDetails inFundsDetails = new TbFundsDetails();
+                        inFundsDetails.setFdLoginId(record.getBpLoginId());
+                        inFundsDetails.setFdThirdAccount(tbAccountsFunds.getAfThirdAccount());
+                        inFundsDetails.setFdSerialNumber(reqData.getMchnt_txn_ssn());
+                        inFundsDetails.setFdSerialTypeId(4);            //3投资冻结 4 借款入账  5本金还款  6付息
+                        inFundsDetails.setFdSerialTypeName("借款入账");
+                        inFundsDetails.setFdSerialAmount(investInfo.getIiMoney());
+                        inFundsDetails.setFdBalanceBefore(tbAccountsFunds.getAfBalance());
+                        inFundsDetails.setFdBalanceAfter(tbAccountsFunds.getAfBalance().add(investInfo.getIiMoney()));
+                        inFundsDetails.setFdCommissionCharge(BigDecimal.ZERO);
+                        inFundsDetails.setFdBpId(investInfo.getIiBpId());
+                        inFundsDetails.setFdBpName(investInfo.getIiBpName());
+                        inFundsDetails.setFdCreateTime(new Date());
+                        inFundsDetails.setFdSerialTime(new Date());
+                        inFundsDetails.setFdBalanceStatus(1);           //收入
+                        inFundsDetails.setFdSerialStatus(1);
+                        inFundsDetails.setFdIsDel(1);
+                        fundsDetailsDao.insert(inFundsDetails);
+
+                        tbAccountsFunds.setAfUpdateTime(new Date());
+                        tbAccountsFunds.setAfBalance(tbAccountsFunds.getAfBalance().add(investInfo.getIiMoney()));
+                        accountsFundsDao.updateByPrimaryKeySelective(tbAccountsFunds);
+
+
                     }else{
                         //记录异常状态
                         flag = false;

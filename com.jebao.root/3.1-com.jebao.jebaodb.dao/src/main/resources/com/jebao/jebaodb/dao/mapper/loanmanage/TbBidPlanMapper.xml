@@ -933,7 +933,7 @@
             SET bp_surplus_money = bp_surplus_money - #{investMoney},
             bp_update_time = NOW()
             WHERE
-                plan.bp_start_time <= NOW()
+                bp_start_time <= NOW()
                 AND bp_surplus_money >= #{investMoney}
                 AND bp_top_money >= #{investMoney}
                 AND bp_id = #{bpId}
@@ -945,7 +945,7 @@
             SET bp_surplus_money = bp_surplus_money + #{investMoney},
             bp_update_time = NOW()
             WHERE
-                AND bp_id = #{bpId}
+                bp_id = #{bpId}
     </update>
 
     <update id="fullBid" parameterType="long">

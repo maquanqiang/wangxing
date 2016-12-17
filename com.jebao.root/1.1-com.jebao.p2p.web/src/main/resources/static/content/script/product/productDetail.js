@@ -144,6 +144,7 @@ var vm = new Vue({
                 }else{
                     layer.alert(response.error);
                 }
+                setTimeout(function(){window.location.reload();},5000)
             });
         }
     }

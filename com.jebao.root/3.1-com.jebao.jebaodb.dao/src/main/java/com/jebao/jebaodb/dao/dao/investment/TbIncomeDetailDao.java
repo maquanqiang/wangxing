@@ -119,14 +119,24 @@ public class TbIncomeDetailDao {
         return mapper.overdueMoneyOther(dateTime);
     }
 
-    public int selectFundCount(FundDetailSM record){
+    public int selectFundCount(@Param("record")FundDetailSM record){
         return mapper.selectFundCount(record);
     }
+
+    public List<TbIncomeDetail> repaymentList(TbIncomeDetail record){
+        return mapper.repaymentList(record);
+    };
+
+
+    public BigDecimal repaymoneyTotal(TbIncomeDetail record){
+        return mapper.repaymoneyTotal(record);
+    };
 
     @Transactional
     public int insertForTransactional(TbIncomeDetail record) {
         return mapper.insert(record);
     }
+
 
     /*==================================================账户总览统计==================================================*/
 

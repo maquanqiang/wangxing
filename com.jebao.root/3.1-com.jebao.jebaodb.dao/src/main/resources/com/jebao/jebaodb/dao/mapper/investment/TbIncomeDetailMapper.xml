@@ -547,6 +547,34 @@
           <include refid="loanInfoCountWhere"/>
     </select>
 
+    <select id="repaymentList" resultMap="BaseResultMap">
+        SELECT
+          detail.ind_bp_id,
+            detail.ind_id,
+            detail.ind_ii_id,
+            detail.ind_login_id,
+            IFNULL(SUM(detail.ind_money+detail.ind_overdue_money),0) AS ind_money,
+            detail.ind_third_account,
+            detail.ind_fund_type
+
+        FROM
+            tb_income_detail detail
+        <where>
+            <include refid="selectByCondition_Where_Clause" />
+        </where>
+        GROUP BY
+            detail.ind_ii_id, detail.ind_fund_type
+    </select>
+
+    <select id="repaymoneyTotal" resultType="java.math.BigDecimal">
+        SELECT
+            SUM(ind_money+ind_overdue_money) ind_money
+        FROM
+            tb_income_detail
+        <where>
+            <include refid="selectByCondition_Where_Clause" />
+        </where>
+    </select>
 
     <!--==================================================账户总览统计==================================================-->
     <select id="selectDueInMoneyByLoginId" resultType="java.lang.Double">

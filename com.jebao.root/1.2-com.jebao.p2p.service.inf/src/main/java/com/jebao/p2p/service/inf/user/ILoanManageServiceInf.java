@@ -7,5 +7,5 @@ import java.math.BigDecimal;
  */
 public interface ILoanManageServiceInf {
 
-    public boolean repay(Long bpId, Long loginId, Integer period, BigDecimal repayMoney);
+    public String repay(Long bpId, Long loginId, Integer period, BigDecimal repayMoney);
 }

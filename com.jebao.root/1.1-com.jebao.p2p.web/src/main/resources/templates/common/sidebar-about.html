@@ -35,3 +35,14 @@
         </li>
     </ul>
 </div>
+<script>
+    var path = location.pathname;
+    $(".sidebar-menu a").each(function(){
+        var hrefVal = $(this).attr("href");
+        if(path == hrefVal){
+            $(this).addClass("on")
+        }else{
+            $(this).removeClass();
+        }
+    })
+</script>

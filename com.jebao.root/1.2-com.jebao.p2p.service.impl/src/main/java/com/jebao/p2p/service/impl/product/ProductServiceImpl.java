@@ -6,6 +6,8 @@ import com.jebao.jebaodb.dao.dao.loaner.TbLoanerDao;
 import com.jebao.jebaodb.dao.dao.loanmanage.TbBidPlanDao;
 import com.jebao.jebaodb.dao.dao.loanmanage.TbBidRiskDataDao;
 import com.jebao.jebaodb.dao.dao.loanmanage.TbThirdInterfaceLogDao;
+import com.jebao.jebaodb.dao.dao.user.TbAccountsFundsDao;
+import com.jebao.jebaodb.dao.dao.user.TbFundsDetailsDao;
 import com.jebao.jebaodb.dao.dao.user.TbLoginInfoDao;
 import com.jebao.jebaodb.dao.dao.user.TbUserDetailsDao;
 import com.jebao.jebaodb.entity.investment.TbIncomeDetail;
@@ -17,6 +19,8 @@ import com.jebao.jebaodb.entity.postLoan.search.RepaymentDetailSM;
 import com.jebao.jebaodb.entity.product.ProductSM;
 import com.jebao.jebaodb.entity.extEntity.PageWhere;
 import com.jebao.jebaodb.entity.loanmanage.TbBidPlan;
+import com.jebao.jebaodb.entity.user.TbAccountsFunds;
+import com.jebao.jebaodb.entity.user.TbFundsDetails;
 import com.jebao.jebaodb.entity.user.TbLoginInfo;
 import com.jebao.jebaodb.entity.user.TbUserDetails;
 import com.jebao.p2p.service.inf.product.IProductServiceInf;
@@ -59,6 +63,10 @@ public class ProductServiceImpl implements IProductServiceInf {
     private TbLoginInfoDao tbLoginInfoDao;
     @Autowired
     private TbThirdInterfaceLogDao thirdInterfaceLogDao;
+    @Autowired
+    private TbAccountsFundsDao accountsFundsDao;
+    @Autowired
+    private TbFundsDetailsDao fundsDetailsDao;
 
     @Override
     public List<TbBidPlan> selectP2PList(ProductSM record, PageWhere pageWhere) {
@@ -96,14 +104,16 @@ public class ProductServiceImpl implements IProductServiceInf {
                 //查询标的信息
                 TbBidPlan tbBidPlan = tbBidPlanDao.selectByPrimaryKey(bpId);
                 TbUserDetails inUser = tbUserDetailsDao.selectByLoginId(tbBidPlan.getBpLoginId());
-
                 TbUserDetails outUser = tbUserDetailsDao.selectByLoginId(loginId);
+                //投资人账户
+                TbAccountsFunds accountsFunds = accountsFundsDao.selectByLoginId(loginId);
+
                 TbLoginInfo tbLoginInfo = tbLoginInfoDao.selectByPrimaryKey(loginId);
 
                 PreAuthRequest preAuthRequest = new PreAuthRequest();
                 preAuthRequest.setIn_cust_no(inUser.getUdThirdAccount());
                 preAuthRequest.setOut_cust_no(outUser.getUdThirdAccount());
-                preAuthRequest.setRem("投标");
+                preAuthRequest.setRem("investBid");
                 preAuthRequest.setAmt(amt);
                 //保存日志信息
                 TbThirdInterfaceLog thirdInterfaceLog = new TbThirdInterfaceLog();
@@ -116,10 +126,9 @@ public class ProductServiceImpl implements IProductServiceInf {
                 PreAuthResponse response = preAuthService.post(preAuthRequest);
                 //更新日志信息
                 String respStr = XmlUtil.toXML(response);
-                String reqStr = XmlUtil.toXML(preAuthRequest);
 
                 thirdInterfaceLog.setTilReturnCode(response.getPlain().getResp_code());
-                thirdInterfaceLog.setTilReqText(reqStr);
+                thirdInterfaceLog.setTilReqText(preAuthRequest.getSignature());
                 thirdInterfaceLog.setTilRespText(respStr);
 
                 thirdInterfaceLogDao.updateByPrimaryKeySelective(thirdInterfaceLog);
@@ -150,6 +159,32 @@ public class ProductServiceImpl implements IProductServiceInf {
                         tbBidPlanDao.fullBid(bpId);
                     }
                     message = "投资成功";
+                    //添加流水记录
+                    TbFundsDetails tbFundsDetails = new TbFundsDetails();
+                    tbFundsDetails.setFdLoginId(loginId);
+                    tbFundsDetails.setFdThirdAccount(outUser.getUdThirdAccount());
+                    tbFundsDetails.setFdSerialNumber(preAuthRequest.getMchnt_txn_ssn());
+                    tbFundsDetails.setFdSerialTypeId(3);            //3投资冻结 4 借款入账
+                    tbFundsDetails.setFdSerialTypeName("投资资金冻结");
+                    tbFundsDetails.setFdSerialAmount(investMoney);
+                    tbFundsDetails.setFdBalanceBefore(accountsFunds.getAfBalance());
+                    tbFundsDetails.setFdBalanceAfter(accountsFunds.getAfBalance().subtract(investMoney));
+                    tbFundsDetails.setFdCommissionCharge(BigDecimal.ZERO);
+                    tbFundsDetails.setFdBpId(bpId);
+                    tbFundsDetails.setFdBpName(tbBidPlan.getBpName());
+                    tbFundsDetails.setFdCreateTime(new Date());
+                    tbFundsDetails.setFdSerialTime(new Date());
+                    tbFundsDetails.setFdBalanceStatus(2);           //支出
+                    tbFundsDetails.setFdSerialStatus(1);
+                    tbFundsDetails.setFdIsDel(1);
+
+                    fundsDetailsDao.insert(tbFundsDetails);
+
+                    //修改余额
+                    accountsFunds.setAfBalance(accountsFunds.getAfBalance().subtract(investMoney));
+                    accountsFunds.setAfUpdateTime(new Date());
+                    accountsFundsDao.updateByPrimaryKeySelective(accountsFunds);
+
                 }else{
                     message = "投资失败";
                     tbBidPlanDao.addSurplus(map);

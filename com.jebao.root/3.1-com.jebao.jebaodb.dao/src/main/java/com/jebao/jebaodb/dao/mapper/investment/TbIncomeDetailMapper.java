@@ -43,6 +43,10 @@ public interface TbIncomeDetailMapper {
     int selectFundCount(@Param("record") FundDetailSM record);
 
     int selectFundListForPageCount(@Param("record") FundDetailSM record);
+
+    List<TbIncomeDetail> repaymentList(@Param("record") TbIncomeDetail record);
+
+    BigDecimal repaymoneyTotal(@Param("record") TbIncomeDetail record);
     /*==================================================账户总览统计==================================================*/
     double selectDueInMoneyByLoginId(@Param("record") TbIncomeDetail record);
 

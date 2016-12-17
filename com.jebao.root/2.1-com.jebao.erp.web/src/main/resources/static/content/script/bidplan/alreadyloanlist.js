@@ -56,7 +56,8 @@ var vm = new Vue({
                         //调用分页
                         laypage({
                             cont: $('#pageNum'), //容器。值支持id名、原生dom对象，jquery对象,
-                            pages: pageCount, //总页数
+                            pages : pageCount, //总页数
+                            curr : model.searchObj.pageIndex+1,
                             groups: 7, //连续显示分页数
                             jump: function(obj, first){ //触发分页后的回调
                                 if(!first){ //点击跳页触发函数自身，并传递当前页：obj.curr
