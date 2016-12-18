@@ -1,5 +1,6 @@
 package com.jebao.erp.web.controllerApi.loaner;
 
+import com.jebao.erp.service.inf.investment.IIncomeDetailServiceInf;
 import com.jebao.erp.service.inf.loanmanage.ITbBidPlanServiceInf;
 import com.jebao.erp.service.inf.user.IFundsDetailsServiceInf;
 import com.jebao.erp.web.requestModel.loaner.FundsDetailsSM;
@@ -10,6 +11,7 @@ import com.jebao.erp.web.responseModel.loaner.FundsDetailsVM;
 import com.jebao.erp.web.responseModel.loaner.FundsSumVM;
 import com.jebao.erp.web.responseModel.loaner.FundsVM;
 import com.jebao.jebaodb.entity.extEntity.PageWhere;
+import com.jebao.jebaodb.entity.investment.search.IncomeDetailSM;
 import com.jebao.jebaodb.entity.loaner.LoanTotal;
 import com.jebao.jebaodb.entity.user.FundsStatistics;
 import com.jebao.jebaodb.entity.user.TbFundsDetails;
@@ -34,6 +36,9 @@ public class FundsControllerApi {
 
     @Autowired
     private ITbBidPlanServiceInf tbBidPlanService;
+
+    @Autowired
+    private IIncomeDetailServiceInf incomeDetailService;
 
     @RequestMapping(value = "details", method = RequestMethod.GET)
     @ResponseBody
@@ -65,15 +70,15 @@ public class FundsControllerApi {
         }
 
         List<FundsStatistics> fsList = fundsDetailsService.statisticsByLoginId(loginId);
-        if(fsList == null || fsList.size() == 0) {
+        if (fsList == null || fsList.size() == 0) {
             return new JsonResultData<>(null);
         }
         FundsSumVM viewModel = new FundsSumVM();
-        for(FundsStatistics fs : fsList){
-            if(fs.getSerialTypeId() == 1){
+        for (FundsStatistics fs : fsList) {
+            if (fs.getSerialTypeId() == 1) {
                 viewModel.setCzCount(fs.getTotalTrades());
                 viewModel.setCzAmounts(fs.getTotalAmounts());
-            }else if(fs.getSerialTypeId() == 2){
+            } else if (fs.getSerialTypeId() == 2) {
                 viewModel.setTxCount(fs.getTotalTrades());
                 viewModel.setTxAmounts(fs.getTotalAmounts());
             }
@@ -89,16 +94,17 @@ public class FundsControllerApi {
         }
 
         LoanTotal loanTotal = tbBidPlanService.totalLoanByLoanerId(loanerId);
-        if(loanTotal == null){
+        if (loanTotal == null) {
             return new JsonResultData<>(null);
         }
+
         FundsVM viewModel = new FundsVM();
         viewModel.setJkAmounts(loanTotal.getTotalAmounts());
         viewModel.setJkInterests(loanTotal.getInterests());
         viewModel.setServiceCharge(loanTotal.getServiceCharge());
         viewModel.setBalance(loanTotal.getAccountBalance());
-        viewModel.setDhAmounts(new BigDecimal(0));
-        viewModel.setDhInterests(new BigDecimal(0));
+        viewModel.setDhAmounts(incomeDetailService.repaymoneyTotalByloanerId(loanerId, 1));
+        viewModel.setDhInterests(incomeDetailService.repaymoneyTotalByloanerId(loanerId, 2));
         return new JsonResultData<>(viewModel);
     }
 }

@@ -1,6 +1,5 @@
 package com.jebao.p2p.web.api.responseModel.user;
 
-import com.jebao.jebaodb.entity.investment.InvestStatistics;
 import com.jebao.p2p.web.api.responseModel.ViewModel;
 
 import java.math.BigDecimal;
@@ -10,15 +9,6 @@ import java.math.BigDecimal;
  * Created by Administrator on 2016/12/12.
  */
 public class InvestStatisticsVM extends ViewModel {
-    public InvestStatisticsVM(InvestStatistics entity){
-        this.incomeAmount = entity.getIncomeAmount();
-        this.totalAssets = entity.getTotalAssets();
-        this.balance = entity.getBalance();
-        this.freezeAmount = entity.getFreezeAmount();
-        this.dueInPrincipal = entity.getDueInPrincipal();
-        this.dueInIncome = entity.getDueInIncome();
-    }
-
     //累计收益
     private BigDecimal incomeAmount;
 

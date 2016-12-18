@@ -576,6 +576,18 @@
         </where>
     </select>
 
+    <!--==================================================借款人相关信息==================================================-->
+    <select id="repaymoneyTotalByloanerId" resultType="java.math.BigDecimal" parameterType="com.jebao.jebaodb.entity.investment.search.IncomeDetailSM">
+        SELECT
+            SUM(ind_money+ind_overdue_money) ind_money
+        FROM
+            tb_income_detail ind
+        LEFT JOIN tb_bid_plan bp ON ind.ind_bp_id = bp.bp_id
+        WHERE bp.bp_loaner_id = #{loanerId,jdbcType=BIGINT}
+        AND ind.ind_status = 1
+        AND ind.ind_fund_type = #{fundType,jdbcType=INTEGER}
+    </select>
+
     <!--==================================================账户总览统计==================================================-->
     <select id="selectDueInMoneyByLoginId" resultType="java.lang.Double">
         SELECT IFNULL(SUM(ind_money),0)

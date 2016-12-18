@@ -3,10 +3,11 @@ package com.jebao.p2p.service.inf.user;
 import com.jebao.jebaodb.entity.extEntity.PageWhere;
 import com.jebao.jebaodb.entity.investment.InvestIng;
 import com.jebao.jebaodb.entity.investment.InvestPaymented;
-import com.jebao.jebaodb.entity.investment.InvestStatistics;
 import com.jebao.jebaodb.entity.investment.TbIncomeDetail;
 
+import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 投资记录和账户总览接口
@@ -14,12 +15,12 @@ import java.util.List;
  */
 public interface IInvestServiceInf {
     /**
-     * 账户总览
+     * 账户资金汇总
      *
      * @param loginId
      * @return
      */
-    InvestStatistics getInvestStatisticsByLoginId(Long loginId);
+    Map<String, BigDecimal> getInvestStatisticsByLoginId(Long loginId);
 
     /**
      * 投资中项目

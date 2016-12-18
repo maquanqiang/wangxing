@@ -4,6 +4,7 @@ import com.jebao.jebaodb.dao.mapper.investment.TbIncomeDetailMapper;
 import com.jebao.jebaodb.entity.extEntity.PageWhere;
 import com.jebao.jebaodb.entity.investment.FundDetailSM;
 import com.jebao.jebaodb.entity.investment.TbIncomeDetail;
+import com.jebao.jebaodb.entity.investment.search.IncomeDetailSM;
 import com.jebao.jebaodb.entity.postLoan.search.RepaymentDetailSM;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -125,21 +126,28 @@ public class TbIncomeDetailDao {
 
     public List<TbIncomeDetail> repaymentList(TbIncomeDetail record){
         return mapper.repaymentList(record);
-    };
-
+    }
 
     public BigDecimal repaymoneyTotal(TbIncomeDetail record){
         return mapper.repaymoneyTotal(record);
-    };
+    }
 
     @Transactional
     public int insertForTransactional(TbIncomeDetail record) {
         return mapper.insert(record);
     }
 
+    /*==================================================借款人相关信息==================================================*/
+    /**
+     * 统计借款人待还金额（本金、利息）
+     * @param model
+     * @return
+     */
+    public BigDecimal repaymoneyTotalByloanerId(IncomeDetailSM model){
+        return mapper.repaymoneyTotalByloanerId(model);
+    }
 
     /*==================================================账户总览统计==================================================*/
-
     /**
      * 统计待收本金、利息
      *
