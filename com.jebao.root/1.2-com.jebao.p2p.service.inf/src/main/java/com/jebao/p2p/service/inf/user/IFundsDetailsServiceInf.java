@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * 资金明细接口
  * Created by Administrator on 2016/12/2.
  */
 public interface IFundsDetailsServiceInf {

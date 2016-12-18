@@ -1,5 +1,6 @@
 package com.jebao.thirdPay.fuiou.impl;
 
+import com.jebao.thirdPay.fuiou.constants.FuiouConfig;
 import com.jebao.thirdPay.fuiou.http.WebUtils;
 import com.jebao.thirdPay.fuiou.model.queryUserInfs.QueryUserInfsRequest;
 import com.jebao.thirdPay.fuiou.model.queryUserInfs.QueryUserInfsResponse;
@@ -15,6 +16,15 @@ import com.jebao.thirdPay.fuiou.util.XmlUtil;
  */
 @Service
 public class QueryUserInfsServiceImpl {
+    public QueryUserInfsResponse post(QueryUserInfsRequest reqData) {
+        String httpUrl= FuiouConfig.url+"queryUserInfs.action";
+        try {
+            return post(httpUrl,reqData);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
     public QueryUserInfsResponse post(String httpUrl, QueryUserInfsRequest reqData) throws Exception {
         String signatureStr = SecurityUtils.sign(reqData.requestSignPlain());
         reqData.setSignature(signatureStr);

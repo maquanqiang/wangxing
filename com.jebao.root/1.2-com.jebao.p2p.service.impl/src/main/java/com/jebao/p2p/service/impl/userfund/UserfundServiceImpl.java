@@ -1,8 +1,8 @@
 package com.jebao.p2p.service.impl.userfund;
 
+import com.jebao.common.utils.date.DateUtil;
 import com.jebao.common.utils.fastjson.FastJsonUtil;
 import com.jebao.jebaodb.dao.dao.loanmanage.TbThirdInterfaceLogDao;
-import com.jebao.jebaodb.dao.dao.user.TbAccountsFundsDao;
 import com.jebao.jebaodb.dao.dao.user.TbUserDetailsDao;
 import com.jebao.jebaodb.dao.dao.user.TbUserLogDao;
 import com.jebao.jebaodb.entity.extEntity.EnumModel;
@@ -12,15 +12,21 @@ import com.jebao.jebaodb.entity.loanmanage.TbThirdInterfaceLog;
 import com.jebao.jebaodb.entity.user.TbAccountsFunds;
 import com.jebao.jebaodb.entity.user.TbUserDetails;
 import com.jebao.jebaodb.entity.user.TbUserLog;
+import com.jebao.p2p.service.inf.user.IAccountsFundsServiceInf;
 import com.jebao.p2p.service.inf.userfund.IUserfundServiceInf;
 import com.jebao.thirdPay.fuiou.constants.FuiouConfig;
 import com.jebao.thirdPay.fuiou.impl.ChangeCardServiceImpl;
 import com.jebao.thirdPay.fuiou.impl.QueryChangeCardServiceImpl;
+import com.jebao.thirdPay.fuiou.impl.QueryUserInfsServiceImpl;
 import com.jebao.thirdPay.fuiou.impl.WebRegServiceImpl;
 import com.jebao.thirdPay.fuiou.model.changeCard.ChangeCardRequest;
 import com.jebao.thirdPay.fuiou.model.changeCard.ChangeCardResponse;
 import com.jebao.thirdPay.fuiou.model.queryChangeCard.QueryChangeCardRequest;
 import com.jebao.thirdPay.fuiou.model.queryChangeCard.QueryChangeCardResponse;
+import com.jebao.thirdPay.fuiou.model.queryUserInfs.QueryUserInfsRequest;
+import com.jebao.thirdPay.fuiou.model.queryUserInfs.QueryUserInfsResponse;
+import com.jebao.thirdPay.fuiou.model.queryUserInfs.ResponsePlain;
+import com.jebao.thirdPay.fuiou.model.queryUserInfs.ResponsePlainResult;
 import com.jebao.thirdPay.fuiou.model.webReg.WebRegRequest;
 import com.jebao.thirdPay.fuiou.model.webReg.WebRegResponse;
 import com.jebao.thirdPay.fuiou.util.SecurityUtils;
@@ -30,6 +36,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by Jack on 2016/12/14.
@@ -41,7 +48,7 @@ public class UserfundServiceImpl implements IUserfundServiceInf {
     @Autowired
     private TbUserLogDao userLogDao;
     @Autowired
-    private TbAccountsFundsDao accountsFundsDao;
+    private IAccountsFundsServiceInf accountsFundsService;
     @Autowired
     private TbThirdInterfaceLogDao thirdInterfaceLogDao;
     @Autowired
@@ -50,6 +57,8 @@ public class UserfundServiceImpl implements IUserfundServiceInf {
     private ChangeCardServiceImpl fyChangeCardService;
     @Autowired
     private QueryChangeCardServiceImpl fyQueryChangeCardService;
+    @Autowired
+    private QueryUserInfsServiceImpl fyQueryUserInfsService;
 
     /**
      * 第三方资金账户开户
@@ -178,7 +187,7 @@ public class UserfundServiceImpl implements IUserfundServiceInf {
         tbAccountsFundsModel.setAfCreateTime(new Date());
         tbAccountsFundsModel.setAfUpdateTime(new Date());
         tbAccountsFundsModel.setAfIsDel(1);
-        accountsFundsDao.insert(tbAccountsFundsModel);
+        accountsFundsService.insert(tbAccountsFundsModel);
         //endregion
 
         return new ResultInfo(true, "资金账户开户完成");
@@ -311,5 +320,43 @@ public class UserfundServiceImpl implements IUserfundServiceInf {
             }
         }
         return new ResultInfo(false, "接口调用失败");
+    }
+
+    /**
+     * 同步（富有）用户信息，并返回POS机签约状态
+     * @param userId
+     * @return
+     */
+    @Override
+    public int queryUserInfs(long userId) {
+        TbUserDetails userDetailsEntity = userDetailsDao.selectByLoginId(userId);
+        if (userDetailsEntity == null) {
+            return 0;
+        }
+        int posStatus = 0;
+        QueryUserInfsRequest reqData = new QueryUserInfsRequest();
+        reqData.setUser_ids(userDetailsEntity.getUdThirdAccount());
+        reqData.setMchnt_txn_dt(DateUtil.dateToString(new Date(),"yyyyMMdd"));
+
+        QueryUserInfsResponse response = fyQueryUserInfsService.post(reqData);
+        if(response != null && response.getPlain() != null){
+            ResponsePlain plain = response.getPlain();
+            if (FuiouConfig.Success_Code.equals(plain.getResp_code())) {
+                List<ResponsePlainResult> results = plain.getResults();
+                for (ResponsePlainResult item : results){
+                    //todo 如果POS签约就更新用户详情表POS签约状态
+                    if(StringUtils.isNotBlank(item.getCard_pwd_verify_st())){
+                        posStatus = Integer.parseInt(item.getCard_pwd_verify_st());
+                        if(userDetailsEntity.getUdPosStatus() != posStatus){
+                            userDetailsEntity.setUdPosStatus(posStatus);
+                            userDetailsDao.updateByPrimaryKeySelective(userDetailsEntity);
+                        }
+                    }else{
+                        posStatus=0;
+                    }
+                }
+            }
+        }
+        return posStatus;
     }
 }

@@ -1,7 +1,10 @@
 package com.jebao.p2p.service.impl.user;
 
+import com.jebao.common.utils.fastjson.FastJsonUtil;
+import com.jebao.jebaodb.dao.dao.loanmanage.TbThirdInterfaceLogDao;
 import com.jebao.jebaodb.entity.extEntity.ResultData;
 import com.jebao.jebaodb.entity.extEntity.ResultInfo;
+import com.jebao.jebaodb.entity.loanmanage.TbThirdInterfaceLog;
 import com.jebao.jebaodb.entity.user.TbAccountsFunds;
 import com.jebao.jebaodb.entity.user.TbFundsDetails;
 import com.jebao.jebaodb.entity.user.TbUserDetails;
@@ -42,6 +45,9 @@ public class RechargeServiceImpl implements IRechargeServiceInf {
     private IFundsDetailsServiceInf fundsDetailsService;
 
     @Autowired
+    private TbThirdInterfaceLogDao thirdInterfaceLogDao;
+
+    @Autowired
     private PersonQuickPayServiceImpl personQuickPayService;
 
     @Autowired
@@ -76,10 +82,10 @@ public class RechargeServiceImpl implements IRechargeServiceInf {
             fundsDetails.setFdSerialAmount(money);
             fundsDetails.setFdSerialNumber(reqData.getMchnt_txn_ssn());//流水号
             fundsDetails.setFdCreateTime(new Date());
-            //fundsDetails.setFdSerialTime(new Date());
             fundsDetails.setFdSerialTypeId(1);
             fundsDetails.setFdSerialTypeName("充值");
             fundsDetails.setFdThirdAccount(userDetails.getUdThirdAccount());
+            fundsDetails.setFdIsDel(1);
             fundsDetailsService.insert(fundsDetails);
 
             return new ResultData<String>(true, html, "提交第三方");
@@ -97,7 +103,7 @@ public class RechargeServiceImpl implements IRechargeServiceInf {
     @Override
     public ResultInfo personQuickPayByWebComplete(Long loginId, PersonQuickPayResponse model) {
         //获取变更前账户资金信息
-        TbAccountsFunds afEntity = accountsFundsService.selectByLoginId(loginId);
+        TbAccountsFunds afEntity = userService.getAccountsFundsInfo(loginId);
         BigDecimal balance = afEntity.getAfBalance();
 
         //资金收支明细
@@ -105,6 +111,7 @@ public class RechargeServiceImpl implements IRechargeServiceInf {
         fundsDetails.setFdSerialNumber(model.getMchnt_txn_ssn());//流水号
         fundsDetails.setFdThirdAccount(model.getLogin_id());
         fundsDetails.setFdBalanceBefore(balance);
+        fundsDetails.setFdBalanceAfter(balance);
 
         if (model == null || !FuiouConfig.Success_Code.equals(model.getResp_code())) {
             String responseMessage = model.getResp_desc();
@@ -127,7 +134,15 @@ public class RechargeServiceImpl implements IRechargeServiceInf {
             return new ResultInfo(false,"操作异常，校验失败");
         }
         //region 富有返回成功，记录接口日志
-
+        TbThirdInterfaceLog thirdInterfaceLog = new TbThirdInterfaceLog();
+        thirdInterfaceLog.setTilType(23); // 接口编号
+        thirdInterfaceLog.setTilSerialNumber(model.getMchnt_txn_ssn());
+        thirdInterfaceLog.setTilReturnCode(model.getResp_code());
+        String jsonText = FastJsonUtil.serialize(model);
+        thirdInterfaceLog.setTilReqText("form跳转请求，接口请求内容查看上一条记录");
+        thirdInterfaceLog.setTilRespText(jsonText);
+        thirdInterfaceLog.setTilCreateTime(new Date());
+        thirdInterfaceLogDao.insert(thirdInterfaceLog);
         //endregion
         TbUserDetails userDetails = userService.getUserDetailsInfo(loginId);
         if(userDetails == null){
@@ -183,6 +198,7 @@ public class RechargeServiceImpl implements IRechargeServiceInf {
             fundsDetails.setFdSerialTypeId(1);
             fundsDetails.setFdSerialTypeName("充值");
             fundsDetails.setFdThirdAccount(userDetails.getUdThirdAccount());
+            fundsDetails.setFdIsDel(1);
             fundsDetailsService.insert(fundsDetails);
             return new ResultData<String>(true, html, "提交第三方");
         }
@@ -199,7 +215,7 @@ public class RechargeServiceImpl implements IRechargeServiceInf {
     @Override
     public ResultInfo fastRechargeByWebComplete(Long loginId, FastRechargeResponse model) {
         //获取变更前账户资金信息
-        TbAccountsFunds afEntity = accountsFundsService.selectByLoginId(loginId);
+        TbAccountsFunds afEntity = userService.getAccountsFundsInfo(loginId);
         BigDecimal balance = afEntity.getAfBalance();
 
         //资金收支明细
@@ -207,7 +223,7 @@ public class RechargeServiceImpl implements IRechargeServiceInf {
         fundsDetails.setFdSerialNumber(model.getMchnt_txn_ssn());//流水号
         fundsDetails.setFdThirdAccount(model.getLogin_id());
         fundsDetails.setFdBalanceBefore(balance);
-
+        fundsDetails.setFdBalanceAfter(balance);
         if (model == null || !FuiouConfig.Success_Code.equals(model.getResp_code())) {
             String responseMessage = model.getResp_desc();
             if (StringUtils.isBlank(responseMessage)) {
@@ -229,7 +245,15 @@ public class RechargeServiceImpl implements IRechargeServiceInf {
             return new ResultInfo(false,"操作异常，校验失败");
         }
         //region 富有返回成功，记录接口日志
-
+        TbThirdInterfaceLog thirdInterfaceLog = new TbThirdInterfaceLog();
+        thirdInterfaceLog.setTilType(15); // 接口编号
+        thirdInterfaceLog.setTilSerialNumber(model.getMchnt_txn_ssn());
+        thirdInterfaceLog.setTilReturnCode(model.getResp_code());
+        String jsonText = FastJsonUtil.serialize(model);
+        thirdInterfaceLog.setTilReqText("form跳转请求，接口请求内容查看上一条记录");
+        thirdInterfaceLog.setTilRespText(jsonText);
+        thirdInterfaceLog.setTilCreateTime(new Date());
+        thirdInterfaceLogDao.insert(thirdInterfaceLog);
         //endregion
         TbUserDetails userDetails = userService.getUserDetailsInfo(loginId);
         if(userDetails == null){
@@ -289,6 +313,7 @@ public class RechargeServiceImpl implements IRechargeServiceInf {
             fundsDetails.setFdSerialTypeId(1);
             fundsDetails.setFdSerialTypeName("充值");
             fundsDetails.setFdThirdAccount(userDetails.getUdThirdAccount());
+            fundsDetails.setFdIsDel(1);
             fundsDetailsService.insert(fundsDetails);
             return new ResultData<String>(true, html, "提交第三方");
         }
@@ -304,7 +329,7 @@ public class RechargeServiceImpl implements IRechargeServiceInf {
     @Override
     public ResultInfo onlineBankRechargeByWebComplete(Long loginId, OnlineBankRechargeResponse model) {
         //获取变更前账户资金信息
-        TbAccountsFunds afEntity = accountsFundsService.selectByLoginId(loginId);
+        TbAccountsFunds afEntity = userService.getAccountsFundsInfo(loginId);
         BigDecimal balance = afEntity.getAfBalance();
 
         //资金收支明细
@@ -312,6 +337,7 @@ public class RechargeServiceImpl implements IRechargeServiceInf {
         fundsDetails.setFdSerialNumber(model.getMchnt_txn_ssn());//流水号
         fundsDetails.setFdThirdAccount(model.getLogin_id());
         fundsDetails.setFdBalanceBefore(balance);
+        fundsDetails.setFdBalanceAfter(balance);
 
         if (model == null || !FuiouConfig.Success_Code.equals(model.getResp_code())) {
             String responseMessage = model.getRem();
@@ -334,7 +360,15 @@ public class RechargeServiceImpl implements IRechargeServiceInf {
             return new ResultInfo(false,"操作异常，校验失败");
         }
         //region 富有返回成功，记录接口日志
-
+        TbThirdInterfaceLog thirdInterfaceLog = new TbThirdInterfaceLog();
+        thirdInterfaceLog.setTilType(16); // 接口编号
+        thirdInterfaceLog.setTilSerialNumber(model.getMchnt_txn_ssn());
+        thirdInterfaceLog.setTilReturnCode(model.getResp_code());
+        String jsonText = FastJsonUtil.serialize(model);
+        thirdInterfaceLog.setTilReqText("form跳转请求，接口请求内容查看上一条记录");
+        thirdInterfaceLog.setTilRespText(jsonText);
+        thirdInterfaceLog.setTilCreateTime(new Date());
+        thirdInterfaceLogDao.insert(thirdInterfaceLog);
         //endregion
         TbUserDetails userDetails = userService.getUserDetailsInfo(loginId);
         if(userDetails == null){

@@ -1,12 +1,13 @@
 package com.jebao.thirdPay.fuiou.model.queryUserInfs;
 
+import com.jebao.thirdPay.fuiou.constants.FuiouConfig;
+import com.jebao.thirdPay.fuiou.model.base.BaseRequest;
+
 /**
  * Created by Administrator on 2016/9/27.
  */
-public class QueryUserInfsRequest {
-    private String ver; //文档版本号
-    private String mchnt_cd; //商户代码
-    private String mchnt_txn_ssn; //流水号
+public class QueryUserInfsRequest extends BaseRequest {
+    private String ver = FuiouConfig.documentVersion;//文档版本号
     private String mchnt_txn_dt; //交易日期
     private String user_ids; //待查询的登录帐户列表
     private String signature; //签名数据
@@ -19,7 +20,7 @@ public class QueryUserInfsRequest {
         this.ver = ver;
     }
 
-    public String getMchnt_cd() {
+/*    public String getMchnt_cd() {
         return mchnt_cd;
     }
 
@@ -33,7 +34,7 @@ public class QueryUserInfsRequest {
 
     public void setMchnt_txn_ssn(String mchnt_txn_ssn) {
         this.mchnt_txn_ssn = mchnt_txn_ssn;
-    }
+    }*/
 
     public String getMchnt_txn_dt() {
         return mchnt_txn_dt;
