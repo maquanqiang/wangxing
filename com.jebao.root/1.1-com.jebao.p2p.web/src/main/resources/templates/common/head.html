@@ -22,4 +22,15 @@
     [v-cloak] {
         display: none;
     }
+    .disabled {
+        background-color: #eee!important;
+    }
+    .btn.disabled, input[disabled],textarea[disabled] {
+        pointer-events: none;
+        cursor: not-allowed;
+        filter: alpha(opacity=65);
+        -webkit-box-shadow: none;
+        box-shadow: none;
+        opacity: .65;
+    }
 </style>

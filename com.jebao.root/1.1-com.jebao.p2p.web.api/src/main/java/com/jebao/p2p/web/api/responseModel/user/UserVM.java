@@ -3,6 +3,7 @@ package com.jebao.p2p.web.api.responseModel.user;
 import com.jebao.common.utils.regex.RegexUtil;
 import com.jebao.jebaodb.entity.user.TbUserDetails;
 import com.jebao.p2p.web.api.responseModel.ViewModel;
+import org.apache.commons.lang.StringUtils;
 
 /**
  * Created by Jack on 2016/12/16.
@@ -20,7 +21,7 @@ public class UserVM extends ViewModel{
         if (theBankCardNo != null){
             this.bankCardNo = theBankCardNo.replaceAll("(?<=\\d{4})\\d+(?=\\d{4})"," **** **** "); //银行卡号 中间替换 *
         }
-
+        this.hasFundAccount = !StringUtils.isBlank(entity.getUdThirdAccount());
     }
 
     /**
@@ -35,6 +36,7 @@ public class UserVM extends ViewModel{
      * 开户银行
      */
     private String bankName;
+    private boolean hasFundAccount;
     /**
      * 银行卡号
      */
@@ -70,5 +72,13 @@ public class UserVM extends ViewModel{
 
     public void setBankCardNo(String bankCardNo) {
         this.bankCardNo = bankCardNo;
+    }
+
+    public boolean getHasFundAccount() {
+        return hasFundAccount;
+    }
+
+    public void setHasFundAccount(boolean hasFundAccount) {
+        this.hasFundAccount = hasFundAccount;
     }
 }

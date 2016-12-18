@@ -1,5 +1,7 @@
 package com.jebao.p2p.web.api.controllerApi;
 
+import com.jebao.jebaodb.entity.extEntity.ResultInfo;
+import com.jebao.p2p.web.api.responseModel.base.ErrorEnum;
 import com.jebao.common.utils.validation.ValidatorUtil;
 import com.jebao.jebaodb.entity.extEntity.ResultData;
 import com.jebao.jebaodb.entity.user.TbLoginInfo;
@@ -20,6 +22,7 @@ import com.jebao.p2p.web.api.utils.validation.ValidationUtil;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
@@ -85,13 +88,13 @@ public class AccountController extends _BaseController {
         //图形验证码校验
         String verifyCode = CaptchaUtil.getCaptchaToken(request, response);
         if (StringUtils.isBlank(verifyCode) || !verifyCode.equalsIgnoreCase(model.getImgCode())) {
-            return new JsonResultError("图形验证码错误",1001);
+            return new JsonResultError("图形验证码错误",ErrorEnum.imageVerifyCode.getValue());
         }
         //短信验证码校验
         String mobile = model.getMobile();
         MessageUtil messageUtil = new MessageUtil();
         if (!messageUtil.isValidCode(mobile, model.getMessageCode())) {
-            return new JsonResultError("短信验证码错误",1002);
+            return new JsonResultError("短信验证码错误",ErrorEnum.messageVefiryCode.getValue());
         }
         HttpUtil httpUtil = new HttpUtil();
         String ip = httpUtil.getIpAddress(request);
@@ -114,7 +117,7 @@ public class AccountController extends _BaseController {
         //图形验证码校验
         String verifyCode = CaptchaUtil.getCaptchaToken(request, response);
         if (StringUtils.isBlank(verifyCode) || !verifyCode.equalsIgnoreCase(imgCode)) {
-            return new JsonResultError("图形验证码错误",1001);
+            return new JsonResultError("图形验证码错误",ErrorEnum.imageVerifyCode.getValue());
         }
         String ip = new HttpUtil().getIpAddress(request);
         JsonResult jsonResult = new MessageUtil().sendMessageVerifyCode(mobile, ip);
@@ -134,6 +137,57 @@ public class AccountController extends _BaseController {
         map.put("valid",valid);
         //map.put("valid",true);
         return map;
+    }
+    @RequestMapping(value = "forgotStep1",method = RequestMethod.POST)
+    public JsonResult forgotStep1(String mobile,String imgCode){
+        TbLoginInfo existsUserInfo = userService.getUserLoginInfo(mobile);
+        if (existsUserInfo == null) {
+            return new JsonResultError("该手机号未注册",ErrorEnum.userNotExists.getValue());
+        }
+        //图形验证码校验
+        String verifyCode = CaptchaUtil.getCaptchaToken(request, response);
+        if (StringUtils.isBlank(verifyCode) || !verifyCode.equalsIgnoreCase(imgCode)) {
+            return new JsonResultError("图形验证码错误",ErrorEnum.imageVerifyCode.getValue());
+        }
+        return new JsonResultOk();
+    }
+    @RequestMapping(value = "forgotStep2",method = RequestMethod.POST)
+    public JsonResult forgotStep2(RegisterModel model){
+        //region 验证
+        ValidationResult resultValidation = ValidationUtil.validateEntity(model);
+        if (resultValidation.isHasErrors()) {
+            return new JsonResultError(resultValidation.toString());
+        }
+        if (!model.getPassword().equalsIgnoreCase(model.getPasswordAgain())) {
+            return new JsonResultError("俩次密码不一致");
+        }
+        //图形验证码校验
+        String verifyCode = CaptchaUtil.getCaptchaToken(request, response);
+        if (StringUtils.isBlank(verifyCode) || !verifyCode.equalsIgnoreCase(model.getImgCode())) {
+            return new JsonResultError("图形验证码错误",ErrorEnum.imageVerifyCode.getValue());
+        }
+        //短信验证码校验
+        String mobile = model.getMobile();
+        MessageUtil messageUtil = new MessageUtil();
+        if (!messageUtil.isValidCode(mobile, model.getMessageCode())) {
+            return new JsonResultError("短信验证码错误",ErrorEnum.messageVefiryCode.getValue());
+        }
+        //endregion
+
+        // 找回密码
+        ResultInfo resultInfo = accountService.setPassword(mobile, model.getPassword());
+        if (resultInfo.getSuccess_is_ok()) {
+            //成功，设置登录状态
+//            ResultData<Long> resultData = (ResultData<Long>)resultInfo;
+//            CurrentUser currentUser = new CurrentUser();
+//            currentUser.setId(resultData.getData());
+//            currentUser.setName(mobile);
+//            LoginSessionUtil.setLogin(currentUser,request,response);
+            return new JsonResultOk(resultInfo.getMsg());
+        } else {
+            return new JsonResultError(resultInfo.getMsg());
+        }
+
     }
 
 }
