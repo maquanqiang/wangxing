@@ -66,7 +66,7 @@
                             <th>还款日应还本息合计</th>
                             <th>当前罚息</th>
                             <th>当前应还总额</th>
-                            <th>查看</th>
+                            <!--<th>查看</th>-->
                             <th>操作</th>
                         </tr>
                         </thead>
@@ -80,9 +80,9 @@
                             <td>{{data.repayMoney}}</td>
                             <td>{{data.dueMoney}}</td>
                             <td>{{data.repayMoney+data.dueMoney}}</td>
-                            <td></td>
+                            <!--<td></td>-->
                             <td>
-                                <a href="#" class="table-btn">还款</a>
+                                <a href="javascript:;" class="table-btn" @click="repay(data.bpPeriod, data.indBpId, data.repayMoney+data.dueMoney)">还款</a>
                             </td>
                         </tr>
                         </tbody>
@@ -107,7 +107,7 @@
                             <th>年化利率</th>
                             <th>还款总额</th>
                             <th>还清日期</th>
-                            <th>查看</th>
+                            <!--<th>查看</th>-->
                         </tr>
                         </thead>
                         <tbody>
@@ -121,7 +121,7 @@
                             <td>{{data.bpRate}}%</td>
                             <td>{{data.totalMoney}}</td>
                             <td>{{data.repayedDate}}</td>
-                            <td></td>
+                            <!--<td></td>-->
                         </tr>
                         </tbody>
                     </table>

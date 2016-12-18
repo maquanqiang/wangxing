@@ -22,8 +22,19 @@
                 <a href="/html/secure">安全保障</a>
             </li>
             <li>
-                <a href="#" class="red">我的账户</a>
+                <a href="/user/index" class="red">我的账户</a>
             </li>
         </ul>
     </div>
 </div>
+<script>
+    var path = location.pathname;
+    $(".header_nav a").each(function(){
+        var hrefVal = $(this).attr("href");
+        if(path == hrefVal){
+            $(this).addClass("red")
+        }else{
+            $(this).removeClass();
+        }
+    })
+</script>

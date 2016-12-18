@@ -106,7 +106,7 @@ public class TbIncomeDetailDao {
      * @param loginId
      * @return
      */
-    public BigDecimal loanMoneyTotal(Long loginId){
+    public BigDecimal loanMoneyTotal(@Param("loginId")Long loginId){
         return mapper.loanMoneyTotal(loginId);
     }
 
@@ -115,18 +115,28 @@ public class TbIncomeDetailDao {
      * @param dateTime
      * @return
      */
-    public TbIncomeDetail overdueMoneyOther(Date dateTime){
+    public TbIncomeDetail overdueMoneyOther(@Param("dateTime")Date dateTime){
         return mapper.overdueMoneyOther(dateTime);
     }
 
-    public int selectFundCount(FundDetailSM record){
+    public int selectFundCount(@Param("record")FundDetailSM record){
         return mapper.selectFundCount(record);
     }
+
+    public List<TbIncomeDetail> repaymentList(TbIncomeDetail record){
+        return mapper.repaymentList(record);
+    };
+
+
+    public BigDecimal repaymoneyTotal(TbIncomeDetail record){
+        return mapper.repaymoneyTotal(record);
+    };
 
     @Transactional
     public int insertForTransactional(TbIncomeDetail record) {
         return mapper.insert(record);
     }
+
 
     /*==================================================账户总览统计==================================================*/
 

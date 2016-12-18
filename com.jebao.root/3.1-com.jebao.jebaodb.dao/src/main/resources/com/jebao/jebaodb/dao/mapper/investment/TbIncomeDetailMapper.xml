@@ -457,7 +457,7 @@
             <include refid="selectByCondition_Where_Clause" />
         </where>
         GROUP BY
-            ind_bp_number, ind_fund_type DESC, ind_periods
+            ind_bp_id, ind_fund_type DESC, ind_periods
         <if test="pageWhere.orderBy!=null">
             ORDER BY ${pageWhere.orderBy}
         </if>
@@ -479,9 +479,9 @@
             plan.bp_periods,
             plan.bp_rate,
             detail.ind_date_time,
-            SUM(detail.ind_money) AS ind_money,
-            SUM(detail.ind_overdue_money) AS ind_overdue_money,
-            SUM(detail.ind_overdue_money+detail.ind_money) AS incomeTotal,
+            IFNULL(SUM(detail.ind_money),0) AS ind_money,
+            IFNULL(SUM(detail.ind_overdue_money),0) AS ind_overdue_money,
+            IFNULL(SUM(detail.ind_overdue_money+detail.ind_money),0) AS incomeTotal,
             detail.ind_periods,
             plan.bp_start_time,
             info.ii_contract_url,
@@ -502,7 +502,7 @@
         LIMIT #{pageWhere.begin},#{pageWhere.pageSize}
     </select>
     <select id="selectFundListForPageCount" resultType="java.lang.Integer">
-        SELECT count(1)
+        SELECT count(*)
         FROM tb_income_detail detail
         LEFT JOIN tb_invest_info info ON detail.ind_ii_id = info.ii_id
         LEFT JOIN tb_bid_plan plan ON detail.ind_bp_id = plan.bp_id
@@ -529,7 +529,7 @@
 
     <select id="loanMoneyTotal" parameterType="long" resultType="java.math.BigDecimal">
         SELECT
-            SUM(bp_loan_money) AS bp_loan_money
+            IFNULL(SUM(bp_loan_money),0) AS bp_loan_money
         FROM
             tb_bid_plan
         WHERE
@@ -538,8 +538,8 @@
 
     <select id="overdueMoneyOther" parameterType="java.util.Date" resultMap="BaseResultMap">
         SELECT
-            SUM(detail.ind_overdue_money) AS ind_overdue_money,
-            SUM(detail.ind_money + ind_overdue_money) AS ind_money
+            IFNULL(SUM(detail.ind_overdue_money),0) AS ind_overdue_money,
+            IFNULL(SUM(detail.ind_money + ind_overdue_money),0) AS ind_money
         FROM
           tb_income_detail detail
         LEFT JOIN tb_bid_plan plan ON detail.ind_bp_id = plan.bp_id
@@ -547,6 +547,34 @@
           <include refid="loanInfoCountWhere"/>
     </select>
 
+    <select id="repaymentList" resultMap="BaseResultMap">
+        SELECT
+          detail.ind_bp_id,
+            detail.ind_id,
+            detail.ind_ii_id,
+            detail.ind_login_id,
+            IFNULL(SUM(detail.ind_money+detail.ind_overdue_money),0) AS ind_money,
+            detail.ind_third_account,
+            detail.ind_fund_type
+
+        FROM
+            tb_income_detail detail
+        <where>
+            <include refid="selectByCondition_Where_Clause" />
+        </where>
+        GROUP BY
+            detail.ind_ii_id, detail.ind_fund_type
+    </select>
+
+    <select id="repaymoneyTotal" resultType="java.math.BigDecimal">
+        SELECT
+            SUM(ind_money+ind_overdue_money) ind_money
+        FROM
+            tb_income_detail
+        <where>
+            <include refid="selectByCondition_Where_Clause" />
+        </where>
+    </select>
 
     <!--==================================================账户总览统计==================================================-->
     <select id="selectDueInMoneyByLoginId" resultType="java.lang.Double">

@@ -64,6 +64,7 @@ var vm = new Vue({
                         skin: '#e88a6e',
                         cont: $('#page'), //容器。值支持id名、原生dom对象，jquery对象,
                         pages: pageCount, //总页数
+                        curr : model.searchObj.pageIndex + 1,
                         groups: 7, //连续显示分页数
                         jump: function (obj, first) { //触发分页后的回调
                             if (!first) { //点击跳页触发函数自身，并传递当前页：obj.curr
@@ -86,6 +87,18 @@ var vm = new Vue({
     },
     //方法，可用于绑定事件或直接调用
     methods: {
+        repay:function(period, bpId, repayMoney){
+            $.post("/api/loanManage/repay",{period:period, bpId:bpId, repayMoney:repayMoney}, function (response) {
+                if(response.success_is_ok){
+                    layer.alert(response.msg);
+                    location.reload();
+                }else{
+                    layer.alert(response.error);
+                }
 
+            })
+
+
+        }
     }
 });
