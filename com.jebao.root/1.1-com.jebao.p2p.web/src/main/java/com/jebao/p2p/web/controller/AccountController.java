@@ -47,5 +47,9 @@ public class AccountController extends _BaseController {
     public String registerSuccess(){
         return "account/registerSuccess";
     }
+    @RequestMapping("forgot")
+    public String forgot(){
+        return "account/forgot";
+    }
 
 }
