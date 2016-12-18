@@ -11,9 +11,8 @@ import java.util.List;
  */
 public class ResponsePlain extends BasePlain {
     private String mchnt_nm="";
-    @XmlElementWrapper(name="results")
-    @XmlElement(name="result")
-    List<ResponsePlainResult> results=new ArrayList<ResponsePlainResult>();
+
+    private List<ResponsePlainResult> results=new ArrayList<ResponsePlainResult>();
 
     public String getMchnt_nm() {
         return mchnt_nm;
@@ -21,5 +20,15 @@ public class ResponsePlain extends BasePlain {
 
     public void setMchnt_nm(String mchnt_nm) {
         this.mchnt_nm = mchnt_nm;
+    }
+
+    @XmlElementWrapper(name="results")
+    @XmlElement(name="result")
+    public List<ResponsePlainResult> getResults() {
+        return results;
+    }
+
+    public void setResults(List<ResponsePlainResult> results) {
+        this.results = results;
     }
 }

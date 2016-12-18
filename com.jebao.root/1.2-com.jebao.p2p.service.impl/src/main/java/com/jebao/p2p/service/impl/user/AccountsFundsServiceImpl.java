@@ -23,9 +23,4 @@ public class AccountsFundsServiceImpl implements IAccountsFundsServiceInf {
     public int update(TbAccountsFunds record) {
         return tbAccountsFundsDao.updateByLoginId(record);
     }
-
-    @Override
-    public TbAccountsFunds selectByLoginId(Long loginId) {
-        return tbAccountsFundsDao.selectByLoginId(loginId);
-    }
 }

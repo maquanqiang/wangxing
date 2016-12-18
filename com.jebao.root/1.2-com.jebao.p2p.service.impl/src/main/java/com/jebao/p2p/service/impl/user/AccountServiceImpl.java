@@ -10,6 +10,7 @@ import com.jebao.jebaodb.entity.employee.EmployeeInfo;
 import com.jebao.jebaodb.entity.employee.TbEmployee;
 import com.jebao.jebaodb.entity.extEntity.EnumModel;
 import com.jebao.jebaodb.entity.extEntity.ResultData;
+import com.jebao.jebaodb.entity.extEntity.ResultInfo;
 import com.jebao.jebaodb.entity.user.TbLoginInfo;
 import com.jebao.jebaodb.entity.user.TbUserDetails;
 import com.jebao.jebaodb.entity.user.TbUserLog;
@@ -119,5 +120,26 @@ public class AccountServiceImpl implements IAccountServiceInf {
         }
         return new ResultData(false,0l,"注册失败，请稍后再试");
     }
+    @Override
+    public ResultInfo setPassword(String mobile, String password){
+        TbLoginInfo existsLoginEntity = loginInfoDao.selectByLoginName(mobile);
+        if (existsLoginEntity == null){
+            return new ResultInfo(false,"用户不存在");
+        }
+        String newPassword =new EncryptUtil().encryptToMD5(password);
+        existsLoginEntity.setLiPassword(newPassword);
+        int reval = loginInfoDao.updateByPrimaryKey(existsLoginEntity);
+        if (reval>0){
+            //记录日志
+            TbUserLog logModel = new TbUserLog();
+            logModel.setUlUserId(existsLoginEntity.getLiId());
+            logModel.setUlContent("用户重设密码");
+            logModel.setUlCreateUserId(existsLoginEntity.getLiId());
+            logModel.setUlCreateUserTime(new Date());
+            userLogDao.insert(logModel);
 
+            return new ResultData<Long>(true,existsLoginEntity.getLiId(),"设置成功");
+        }
+        return new ResultInfo(false,"服务器异常，操作失败");
+    }
 }

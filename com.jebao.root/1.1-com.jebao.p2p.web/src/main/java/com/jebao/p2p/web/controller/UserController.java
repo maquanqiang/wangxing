@@ -1,9 +1,10 @@
 package com.jebao.p2p.web.controller;
 
 
-import com.jebao.p2p.web.requestModel.user.UserForm;
+import com.jebao.p2p.web.utils.session.CurrentUser;
+import com.jebao.p2p.web.utils.session.LoginSessionUtil;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
@@ -54,7 +55,10 @@ public class UserController extends _BaseController {
      * @return
      */
     @RequestMapping("setting")
-    public String setting(){
+    public String setting(Model model){
+        CurrentUser user = LoginSessionUtil.User(request,response);
+        String mobile = user.getName().replaceFirst("(?<=\\d{3})\\d+(?=\\d{4})","****");
+        model.addAttribute("mobile",mobile);
         return "user/setting";
     }
 

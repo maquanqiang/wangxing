@@ -13,6 +13,10 @@ public class ResponsePlainResult {
     private String parent_bank_id;
     private String bank_nm;
     private String capAcntNo;
+    private String card_pwd_verify_st;
+    private String id_nm_verify_st;
+    private String contract_st;
+    private String user_st;
 
     public String getMobile_no() {
         return mobile_no;
@@ -84,5 +88,37 @@ public class ResponsePlainResult {
 
     public void setCapAcntNo(String capAcntNo) {
         this.capAcntNo = capAcntNo;
+    }
+
+    public String getCard_pwd_verify_st() {
+        return card_pwd_verify_st;
+    }
+
+    public void setCard_pwd_verify_st(String card_pwd_verify_st) {
+        this.card_pwd_verify_st = card_pwd_verify_st;
+    }
+
+    public String getId_nm_verify_st() {
+        return id_nm_verify_st;
+    }
+
+    public void setId_nm_verify_st(String id_nm_verify_st) {
+        this.id_nm_verify_st = id_nm_verify_st;
+    }
+
+    public String getContract_st() {
+        return contract_st;
+    }
+
+    public void setContract_st(String contract_st) {
+        this.contract_st = contract_st;
+    }
+
+    public String getUser_st() {
+        return user_st;
+    }
+
+    public void setUser_st(String user_st) {
+        this.user_st = user_st;
     }
 }

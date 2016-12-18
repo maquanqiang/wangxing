@@ -1,5 +1,6 @@
 package com.jebao.thirdPay.fuiou.model.queryUserInfs;
 
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -7,9 +8,12 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @XmlRootElement(name = "ap")
 public class QueryUserInfsResponse {
+
     private ResponsePlain plain;
+
     private String signature;//签名数据
 
+    @XmlElement(name="plain")
     public ResponsePlain getPlain() {
         return plain;
     }

@@ -18,7 +18,7 @@
 <!--我的账户导航-->
 <div class="account-nav">
     <p>
-        <a href="首页.html">首页</a><a href="javascript:;" class="red">充值提现</a>
+        <a href="/">首页</a><a href="javascript:;" class="red">充值提现</a>
     </p>
 </div>
 <!--我的账户内容-->
@@ -41,17 +41,17 @@
                 <div class="account-rex-item  active">
                     <div class="recharge-type">
                         <div class="rechange-type-title clearfix">
-                            <h5 class="active">快捷充值</h5>
-                            <h5>快速充值</h5>
-                            <!--<h5>网银充值</h5>-->
+                            <h5 v-if="!posStatus" class="active">快捷充值</h5>
+                            <h5 v-if="posStatus" class="active">快速充值</h5>
+                            <h5>网银充值</h5>
                         </div>
                         <div class="rechange-list">
-                            <div class="rechange-item active">
+                            <div v-if="!posStatus" class="rechange-item active">
                                 <form id="quickPay_form" action="/api/user/quickpay" method="post">
                                     <div class="account-bankImg clearfix">
                                         <img src="${filePath}/images/account-bank.png" class="fl">
                                         <div class="account-bankDetail fl">
-                                            <h5>{{ bankInfo.bankParentBankName }}</h5>
+                                            <h5>{{ bankInfo.bankName }}</h5>
                                             <p class="card-type">储蓄卡</p>
                                             <p class="card-num">{{ bankInfo.bankCardNo }}</p>
                                         </div>
@@ -60,26 +60,40 @@
                                         <h5>可用金额：</h5>
                                         <span class="red">{{ bankInfo.balance }}</span><i>元</i>
                                     </div>
-                                    <div class="account-banktext clearfix">
+                                    <div class="form-group account-banktext clearfix">
                                         <h5>充值金额：</h5>
                                         <input type="text" name="money" value="" placeholder="请输入充值金额">
                                         <span>元</span>
                                     </div>
-                                    <a href="javascript:;" class="account-btn" @click="quickPay">充值</a>
+                                    <a href="javascript:;" class="account-btn" @click="submit('#quickPay_form')">充值</a>
                                 </form>
                             </div>
-                            <div class="rechange-item">
+                            <div v-if="posStatus" class="rechange-item active">
                                 <form id="fastRecharge_form" action="/api/user/fastRecharge" method="post">
                                     <div class="account-banktext clearfix">
                                         <h5>可用金额：</h5>
                                         <span class="red">{{ bankInfo.balance }}</span><i>元</i>
                                     </div>
-                                    <div class="account-banktext clearfix">
+                                    <div class="form-group account-banktext clearfix">
                                         <h5>充值金额：</h5>
                                         <input type="text" name="money" value="" placeholder="请输入充值金额">
                                         <span>元</span>
                                     </div>
-                                    <a href="javascript:;" class="account-btn" @click="fastRecharge">充值</a>
+                                    <a href="javascript:;" class="account-btn" @click="submit('#fastRecharge_form')">充值</a>
+                                </form>
+                            </div>
+                            <div class="rechange-item">
+                                <form id="onlineBankRecharge_form" action="/api/user/onlineBankRecharge" method="post">
+                                    <div class="account-banktext clearfix">
+                                        <h5>可用金额：</h5>
+                                        <span class="red">{{ bankInfo.balance }}</span><i>元</i>
+                                    </div>
+                                    <div class="form-group account-banktext clearfix">
+                                        <h5>充值金额：</h5>
+                                        <input type="text" name="money" value="" placeholder="请输入充值金额">
+                                        <span>元</span>
+                                    </div>
+                                    <a href="javascript:;" class="account-btn" @click="submit('#onlineBankRecharge_form')">充值</a>
                                 </form>
                             </div>
                         </div>
@@ -90,7 +104,7 @@
                         <div class="account-bankImg clearfix">
                             <img src="${filePath}/images/account-bank.png" class="fl">
                             <div class="account-bankDetail fl">
-                                <h5>{{ bankInfo.bankParentBankName }}</h5>
+                                <h5>{{ bankInfo.bankName }}</h5>
                                 <p class="card-type">储蓄卡</p>
                                 <p class="card-num">{{ bankInfo.bankCardNo }}</p>
                             </div>
@@ -99,20 +113,20 @@
                             <h5>可用金额：</h5>
                             <span class="red">{{ bankInfo.balance }}</span><i>元</i>
                         </div>
-                        <div class="account-banktext clearfix">
+                        <div class="form-group account-banktext clearfix">
                             <h5>提现金额：</h5>
                             <input type="text" name="money" value="" placeholder="请输入提现金额">
                             <span>元</span>
                         </div>
                         <div class="account-banktext clearfix">
                             <h5>到账时间：</h5>
-                            <p>预计<span>2016-12-12 </span><em>( 实际到账时间以银行入账为准 )</em></p>
+                            <p>预计<span>{{ inTime }} </span><em>( 实际到账时间以银行入账为准 )</em></p>
                         </div>
                         <div class="account-banktext clearfix">
                             <h5>手续费：</h5>
                             <span>3元</span>
                         </div>
-                        <a href="javascript:;" class="account-btn" @click="withdrawDeposit">提现</a>
+                        <a href="javascript:;" class="account-btn" @click="submit('#withdrawDeposit_form')">提现</a>
                     </form>
                 </div>
             </div>
