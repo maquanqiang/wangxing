@@ -606,21 +606,6 @@
   </update>
 
     <!--==================================================华丽分割线==================================================-->
-    <resultMap id="StatisticsResultMap" type="com.jebao.jebaodb.entity.loaner.LoanTotal">
-        <result column="total_trades" property="totalTrades" jdbcType="INTEGER"/>
-        <result column="total_amounts" property="totalAmounts" jdbcType="DECIMAL"/>
-        <result column="interests" property="interests" jdbcType="DECIMAL"/>
-        <result column="service_charge" property="serviceCharge" jdbcType="DECIMAL"/>
-        <result column="account_balance" property="accountBalance" jdbcType="DECIMAL"/>
-    </resultMap>
-    <select id="statisticsByLoanerId" resultMap="StatisticsResultMap" parameterType="java.lang.Long">
-        SELECT COUNT(1) AS total_trades,SUM(bp.bp_loan_money) AS total_amounts,SUM(bp.bp_loan_money / IFNULL(bp.bp_rate,0)) AS interests,
-        SUM(bp.bp_loan_money / IFNULL(bp.bp_service_charge_rate,0)) AS service_charge,af_balance AS account_balance
-        FROM tb_bid_plan bp
-        LEFT JOIN tb_accounts_funds af ON bp.bp_login_id = af.af_login_id
-        WHERE bp.bp_is_del=1 AND bp.bp_status >= 7
-        AND bp.bp_loaner_id=#{bpLoanerId,jdbcType=BIGINT}
-    </select>
     <sql id="selectByCondition_Where_Clause">
         <if test="record.bpName != null and record.bpName != ''" >
           AND bp_name = #{record.bpName,jdbcType=VARCHAR}
@@ -968,6 +953,35 @@
             AND bp_end_time <= #{nowTime}
         ]]>
     </update>
-
-
+    <!--==================================================借款人相关借款统计查询==================================================-->
+    <resultMap id="LoanTotalResultMap" type="com.jebao.jebaodb.entity.loaner.LoanTotal">
+        <result column="loaner_id" property="loanerId" jdbcType="BIGINT"/>
+        <result column="total_trades" property="totalTrades" jdbcType="INTEGER"/>
+        <result column="total_amounts" property="totalAmounts" jdbcType="DECIMAL"/>
+        <result column="interests" property="interests" jdbcType="DECIMAL"/>
+        <result column="service_charge" property="serviceCharge" jdbcType="DECIMAL"/>
+    </resultMap>
+    <select id="statisticsByLoanerId" resultMap="LoanTotalResultMap" parameterType="java.lang.Long">
+        SELECT bp_loaner_id AS loaner_id,
+        COUNT(1) AS total_trades,
+        IFNULL(SUM(IFNULL(bp_loan_money,0)),0) AS total_amounts,
+        IFNULL(SUM(IFNULL(bp_loan_money,0) / IFNULL(bp_rate,0)),0) AS interests,
+        IFNULL(SUM(IFNULL(bp_loan_money,0) / IFNULL(bp_service_charge_rate,0)),0) AS service_charge
+        FROM tb_bid_plan
+        WHERE bp_is_del=1 AND bp_status >= 7
+        AND bp_loaner_id=#{bpLoanerId,jdbcType=BIGINT}
+    </select>
+    <select id="selectLoanTotalByLoanerIds" resultMap="LoanTotalResultMap">
+        SELECT bp_loaner_id AS loaner_id,
+        IFNULL(SUM(IFNULL(bp_loan_money,0)),0) AS total_amounts,
+        COUNT(1) AS total_trades
+        FROM tb_bid_plan
+        WHERE bp_loaner_id IN
+        <foreach item="item" index="index" collection="ids" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        AND bp_status>=7 and bp_is_del=1
+        GROUP BY bp_loaner_id
+        ORDER BY bp_loaner_id DESC
+    </select>
 </mapper>

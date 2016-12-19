@@ -20,6 +20,8 @@ public interface TbLoanerMapper {
     /* ==================================================华丽分割线==================================================*/
     int deleteByPrimaryKey(Long lId);
 
+    TbLoaner selectByLoginId(Long lLoginId);
+
     List<TbLoaner> selectForPage(@Param("pageWhere") PageWhere pageWhere);
 
     List<TbLoaner> selectByParamsForPage(@Param("record") TbLoaner record, @Param("pageWhere") PageWhere pageWhere);

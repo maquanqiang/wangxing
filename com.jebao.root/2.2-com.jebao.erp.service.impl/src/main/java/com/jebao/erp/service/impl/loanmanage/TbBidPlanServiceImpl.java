@@ -3,21 +3,17 @@ package com.jebao.erp.service.impl.loanmanage;
 import com.jebao.erp.service.inf.loanmanage.ITbBidPlanServiceInf;
 import com.jebao.jebaodb.dao.dao.investment.TbInvestInfoDao;
 import com.jebao.jebaodb.dao.dao.loanmanage.TbBidPlanDao;
-import com.jebao.jebaodb.dao.dao.loanmanage.TbBidRiskDataDao;
 import com.jebao.jebaodb.dao.dao.loanmanage.TbThirdInterfaceLogDao;
 import com.jebao.jebaodb.dao.dao.user.TbAccountsFundsDao;
 import com.jebao.jebaodb.dao.dao.user.TbFundsDetailsDao;
-import com.jebao.jebaodb.dao.dao.user.TbUserDetailsDao;
 import com.jebao.jebaodb.entity.extEntity.PageWhere;
 import com.jebao.jebaodb.entity.investment.TbInvestInfo;
 import com.jebao.jebaodb.entity.loaner.LoanTotal;
 import com.jebao.jebaodb.entity.loanmanage.TbBidPlan;
-import com.jebao.jebaodb.entity.loanmanage.TbBidRiskData;
 import com.jebao.jebaodb.entity.loanmanage.TbThirdInterfaceLog;
 import com.jebao.jebaodb.entity.loanmanage.search.BidPlanSM;
 import com.jebao.jebaodb.entity.user.TbAccountsFunds;
 import com.jebao.jebaodb.entity.user.TbFundsDetails;
-import com.jebao.jebaodb.entity.user.TbUserDetails;
 import com.jebao.thirdPay.fuiou.impl.TransferBuServiceImpl;
 import com.jebao.thirdPay.fuiou.model.base.BasePlain;
 import com.jebao.thirdPay.fuiou.model.transferBu.TransferBuRequest;
@@ -26,7 +22,6 @@ import com.jebao.thirdPay.fuiou.util.XmlUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.xml.ws.ServiceMode;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
@@ -210,8 +205,24 @@ public class TbBidPlanServiceImpl implements ITbBidPlanServiceInf {
         return flag;
     }
 
+    /* ==================================================借款人相关借款统计查询==================================================*/
+    /**
+     * 借款资金统计
+     * @param loanerId
+     * @return
+     */
     @Override
     public LoanTotal totalLoanByLoanerId(Long loanerId){
         return bidPlanDao.statisticsByLoanerId(loanerId);
+    }
+
+    /**
+     * 批量查询统计借款人借款金额，数量
+     * @param loanerIds
+     * @return
+     */
+    @Override
+    public List<LoanTotal> selectLoanTotalByLoanerIds(List<Long> loanerIds) {
+        return bidPlanDao.selectLoanTotalByLoanerIds(loanerIds);
     }
 }

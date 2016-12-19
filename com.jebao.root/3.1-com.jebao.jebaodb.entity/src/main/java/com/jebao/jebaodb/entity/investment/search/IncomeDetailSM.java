@@ -13,6 +13,11 @@ public class IncomeDetailSM {
      */
     private int fundType;
 
+    /**
+     * 还款状态  1未还  2已还
+     */
+    private int status;
+
     public Long getLoanerId() {
         return loanerId;
     }
@@ -27,5 +32,13 @@ public class IncomeDetailSM {
 
     public void setFundType(int fundType) {
         this.fundType = fundType;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
     }
 }

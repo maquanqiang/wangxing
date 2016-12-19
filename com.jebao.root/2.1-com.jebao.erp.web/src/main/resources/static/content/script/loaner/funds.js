@@ -23,6 +23,16 @@ var vm = new Vue({
         model.searchObj=$("#search_form").serializeObject();
         model.searchObj.pageIndex=0;
         model.searchObj.pageSize=10;
+        model.fundsSum.czCount = 0;
+        model.fundsSum.czAmounts = 0.00;
+        model.fundsSum.txCount = 0;
+        model.fundsSum.txAmounts = 0.00;
+        model.fundsGk.balance = 0.00;
+        model.fundsGk.jkAmounts = 0.00;
+        model.fundsGk.jkInterests = 0.00;
+        model.fundsGk.serviceCharge = 0.00;
+        model.fundsGk.dhAmounts = 0.00;
+        model.fundsGk.dhInterests = 0.00;
     },
     //初始化远程数据
     created:function(){

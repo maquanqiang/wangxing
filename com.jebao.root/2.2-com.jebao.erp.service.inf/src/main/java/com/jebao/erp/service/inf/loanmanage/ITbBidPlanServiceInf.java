@@ -29,10 +29,18 @@ public interface ITbBidPlanServiceInf {
 
     boolean doLoan(TbBidPlan record);
 
+    /* ==================================================借款人相关借款统计查询==================================================*/
     /**
      * 借款资金统计
      * @param loanerId
      * @return
      */
     LoanTotal totalLoanByLoanerId(Long loanerId);
+
+    /**
+     * 批量查询统计借款人借款金额，数量
+     * @param loanerIds
+     * @return
+     */
+    List<LoanTotal> selectLoanTotalByLoanerIds(List<Long> loanerIds);
 }

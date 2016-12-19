@@ -163,6 +163,11 @@ public class LoanerServiceImpl implements ILoanerServiceInf {
     }
 
     @Override
+    public TbLoaner findLoanerByLoginId(Long loginId) {
+        return tbLoanerDao.selectByLoginId(loginId);
+    }
+
+    @Override
     public int selectLoanerByParamsForPageCount(TbLoaner record) {
         return tbLoanerDao.selectByParamsForPageCount(record);
     }

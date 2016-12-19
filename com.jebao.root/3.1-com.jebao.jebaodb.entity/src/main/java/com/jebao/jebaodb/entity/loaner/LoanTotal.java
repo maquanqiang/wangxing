@@ -7,8 +7,8 @@ import java.math.BigDecimal;
  * Created by Administrator on 2016/12/6.
  */
 public class LoanTotal {
-    //账户可用金额
-    private BigDecimal accountBalance;
+    //借款人ID
+    private Long loanerId;
 
     //借款总次数
     private int totalTrades;
@@ -50,15 +50,11 @@ public class LoanTotal {
         return interests;
     }
 
-    public void setInterests(BigDecimal interests) {
-        this.interests = interests;
+    public Long getLoanerId() {
+        return loanerId;
     }
 
-    public BigDecimal getAccountBalance() {
-        return accountBalance;
-    }
-
-    public void setAccountBalance(BigDecimal accountBalance) {
-        this.accountBalance = accountBalance;
+    public void setLoanerId(Long loanerId) {
+        this.loanerId = loanerId;
     }
 }
