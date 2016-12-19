@@ -6,6 +6,11 @@
     <!--css-->
     <link rel="stylesheet" href="${filePath}/css/sidebar.css">
     <link rel="stylesheet" href="${filePath}/css/myAccount.css">
+    <style>
+        .account-Invitation-item input[type=text]{
+            width: 360px;
+        }
+    </style>
 </head>
 
 <body>
@@ -35,12 +40,12 @@
             <div class="account-Invitation-list">
                 <div class="account-Invitation-item clearfix">
                     <p>我的推荐码：</p>
-                    <input type="text" value="$_loginUser_sidebar_.userName" class="text-content">
+                    <input type="text" value="$_loginUser_sidebar_.userName" class="text-content" readonly>
                     <input type=button  value="复制" class="copyBtn">
                 </div>
                 <div class="account-Invitation-item clearfix">
                     <p>我的推荐链接：</p>
-                    <input type="text" value="http://www.jebao.net/$_loginUser_sidebar_.userName" class="text-content">
+                    <input type="text" value="${inviteUrl}" class="text-content" readonly>
                     <input type=button  value="复制" class="copyBtn">
                 </div>
             </div>
@@ -54,16 +59,12 @@
         //复制
         $('.copyBtn').click(function () {
             $(this).prev().select();
-            document.execCommand('Copy');
-            layer.open({
-                title:'提示',
-                content:'复制成功！',
-                btn: ['确认'],
-                area: '280px',
-                yes: function(){
-                    layer.closeAll();
-                }
-            });
+            try {
+                document.execCommand('copy');
+                layer.msg('已复制到剪贴板');
+            } catch (err) {
+                layer.alert("您的浏览器不支持自动复制，请使用 Ctrl + C 快捷键复制");
+            }
         });
     })
 </script>

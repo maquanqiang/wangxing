@@ -1,4 +1,8 @@
 $(document).ready(function () {
+    var lgn = $.cookie("jebao_lgn");
+    if (lgn){
+        $("#loginForm .userName input").val(lgn);
+    }
     //表单登录验证封装
     function initValidateForm() {
         $('#loginForm').bootstrapValidator({
@@ -34,25 +38,26 @@ $(document).ready(function () {
             var $errorPlace = $("#login_message").addClass("none");
             // Get the form instance
             var $form = $(e.target);
-
+            var submitData = $form.serializeObject();
             // Use Ajax to submit form data
-            $.post($form.attr('action'), $form.serialize(), function (response) {
+            $.post($form.attr('action'), submitData, function (response) {
                 if (response.success_is_ok) {
-                    //var code = response.msg;
+                    if(submitData.remember === "1"){
+                        $.cookie("jebao_lgn",submitData.jebUsername,{ expires: 3 });
+                    }
                     var redirectUrl = common.getUrlParam("redirectUrl") || "/";
-                    //window.location.href = "/account/token?code="+code+"&redirectUrl"+redirectUrl;
                     window.location.href=redirectUrl;
                     return;
                 } else {
                     $errorPlace.removeClass("none").find("span").html(response.error);
                 }
             });
+
         });
     }
 
     initValidateForm();
     $(".login-in-btn").click(function () {
-        //$('#loginForm').trigger('success.form.bv');
         $('#loginForm').submit();
     });
 });
