@@ -1,14 +1,14 @@
 package com.jebao.p2p.web.api.controllerApi;
 
-import com.jebao.jebaodb.entity.extEntity.ResultInfo;
-import com.jebao.p2p.web.api.responseModel.base.ErrorEnum;
 import com.jebao.common.utils.validation.ValidatorUtil;
 import com.jebao.jebaodb.entity.extEntity.ResultData;
+import com.jebao.jebaodb.entity.extEntity.ResultInfo;
 import com.jebao.jebaodb.entity.user.TbLoginInfo;
 import com.jebao.p2p.service.inf.user.IAccountServiceInf;
 import com.jebao.p2p.service.inf.user.IUserServiceInf;
 import com.jebao.p2p.web.api.requestModel.account.LoginForm;
 import com.jebao.p2p.web.api.requestModel.account.RegisterModel;
+import com.jebao.p2p.web.api.responseModel.base.ErrorEnum;
 import com.jebao.p2p.web.api.responseModel.base.JsonResult;
 import com.jebao.p2p.web.api.responseModel.base.JsonResultError;
 import com.jebao.p2p.web.api.responseModel.base.JsonResultOk;
