@@ -75,8 +75,9 @@ public class UserController extends _BaseController {
         TbAccountsFunds accountsFunds = userService.getAccountsFundsInfo(user.getId());
         if (accountsFunds == null) {
             userVM.setBalance(new BigDecimal(0));
+        }else{
+            userVM.setBalance(accountsFunds.getAfBalance());
         }
-        userVM.setBalance(accountsFunds.getAfBalance());
         //endregion
         return new JsonResultData<>(userVM);
     }

@@ -23,7 +23,7 @@ public interface IProductServiceInf {
 
     TbBidPlan selectByBpId(Long bpId);
 
-    String investBid(Long bpId, Long loginId, BigDecimal investMoney);
+    String[] investBid(Long bpId, Long loginId, BigDecimal investMoney);
 
     TbLoaner selectByPrimaryKey(Long lId);
 

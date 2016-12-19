@@ -2,6 +2,7 @@ package com.jebao.p2p.web.controller;
 
 
 import com.jebao.p2p.web.utils.session.CurrentUser;
+import com.jebao.p2p.web.utils.session.CurrentUserContextHolder;
 import com.jebao.p2p.web.utils.session.LoginSessionUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -46,7 +47,12 @@ public class UserController extends _BaseController {
      * @return
      */
     @RequestMapping("invite")
-    public String invite(){
+    public String invite(Model model){
+        StringBuffer url = request.getRequestURL();
+        String domainUrl = url.delete(url.length() - request.getRequestURI().length(), url.length()).append("/").toString();
+        CurrentUser user = CurrentUserContextHolder.get();
+        String inviteUrl = domainUrl+"account/register?code="+user.getName();
+        model.addAttribute("inviteUrl",inviteUrl);
         return "user/invite";
     }
 
