@@ -205,7 +205,7 @@ public class UserfundServiceImpl implements IUserfundServiceInf {
         ChangeCardRequest reqData = new ChangeCardRequest();
         String thirdAccount = userDetailsEntity.getUdThirdAccount();
         if (StringUtils.isBlank(thirdAccount)) {
-            return new ResultInfo(false, "账户异常，请联系客服");
+            return new ResultInfo(false, "您尚未开通第三方资金账户",1);
         }
         reqData.setLogin_id(userDetailsEntity.getUdThirdAccount()); // 第三方资金账户
         String html = fyChangeCardService.post(reqData);
