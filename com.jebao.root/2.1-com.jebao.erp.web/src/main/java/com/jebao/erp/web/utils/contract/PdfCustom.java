@@ -1,7 +1,6 @@
 package com.jebao.erp.web.utils.contract;
 
 import com.jebao.erp.web.utils.constants.Constants;
-import org.apache.xmlbeans.impl.store.Path;
 
 import java.io.BufferedReader;
 import java.io.IOException;

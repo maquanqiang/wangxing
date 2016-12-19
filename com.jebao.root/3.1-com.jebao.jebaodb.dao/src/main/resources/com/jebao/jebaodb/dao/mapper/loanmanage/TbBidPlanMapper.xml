@@ -984,4 +984,25 @@
         GROUP BY bp_loaner_id
         ORDER BY bp_loaner_id DESC
     </select>
+    <select id="selectByLoanerIdForPage" resultMap="BaseResultMap" parameterType="com.jebao.jebaodb.entity.loanmanage.search.BidPlanExtSM">
+        select
+        <include refid="Base_Column_List" />
+        from tb_bid_plan
+        where
+        <include refid="selectByLoanerId_Where_Clause" />
+        order by bp_id desc
+        LIMIT #{begin},#{pageSize}
+    </select>
+    <select id="selectByLoanerIdForPageCount" resultType="java.lang.Integer" parameterType="com.jebao.jebaodb.entity.loanmanage.search.BidPlanExtSM">
+        select count(*)
+        from tb_bid_plan
+        where
+        <include refid="selectByLoanerId_Where_Clause" />
+    </select>
+    <sql id="selectByLoanerId_Where_Clause">
+        bp_is_del = 1
+        and bp_loaner_id = #{loanerId,jdbcType=BIGINT}
+        and bp_status >= #{bpStatus,jdbcType=INTEGER}
+    </sql>
+
 </mapper>

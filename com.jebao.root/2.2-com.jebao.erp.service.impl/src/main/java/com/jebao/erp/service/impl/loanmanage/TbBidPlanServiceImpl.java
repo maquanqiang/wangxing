@@ -11,6 +11,7 @@ import com.jebao.jebaodb.entity.investment.TbInvestInfo;
 import com.jebao.jebaodb.entity.loaner.LoanTotal;
 import com.jebao.jebaodb.entity.loanmanage.TbBidPlan;
 import com.jebao.jebaodb.entity.loanmanage.TbThirdInterfaceLog;
+import com.jebao.jebaodb.entity.loanmanage.search.BidPlanExtSM;
 import com.jebao.jebaodb.entity.loanmanage.search.BidPlanSM;
 import com.jebao.jebaodb.entity.user.TbAccountsFunds;
 import com.jebao.jebaodb.entity.user.TbFundsDetails;
@@ -224,5 +225,20 @@ public class TbBidPlanServiceImpl implements ITbBidPlanServiceInf {
     @Override
     public List<LoanTotal> selectLoanTotalByLoanerIds(List<Long> loanerIds) {
         return bidPlanDao.selectLoanTotalByLoanerIds(loanerIds);
+    }
+
+    /**
+     * 借款人相关借款记录列表
+     * @param model
+     * @return
+     */
+    @Override
+    public List<TbBidPlan> selectByLoanerIdForPage(BidPlanExtSM model) {
+        return bidPlanDao.selectByLoanerIdForPage(model);
+    }
+
+    @Override
+    public int selectByLoanerIdForPageCount(BidPlanExtSM model) {
+        return bidPlanDao.selectByLoanerIdForPageCount(model);
     }
 }

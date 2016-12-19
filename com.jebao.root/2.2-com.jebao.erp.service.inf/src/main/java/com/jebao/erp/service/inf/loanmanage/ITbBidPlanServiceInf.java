@@ -4,6 +4,7 @@ import com.jebao.jebaodb.entity.extEntity.PageWhere;
 import com.jebao.jebaodb.entity.loaner.LoanTotal;
 import com.jebao.jebaodb.entity.loanmanage.TbBidPlan;
 import com.jebao.jebaodb.entity.loanmanage.TbBidRiskData;
+import com.jebao.jebaodb.entity.loanmanage.search.BidPlanExtSM;
 import com.jebao.jebaodb.entity.loanmanage.search.BidPlanSM;
 
 import java.util.List;
@@ -43,4 +44,13 @@ public interface ITbBidPlanServiceInf {
      * @return
      */
     List<LoanTotal> selectLoanTotalByLoanerIds(List<Long> loanerIds);
+
+    /**
+     * 借款人相关借款记录列表
+     * @param model
+     * @return
+     */
+    List<TbBidPlan> selectByLoanerIdForPage(BidPlanExtSM model);
+
+    int selectByLoanerIdForPageCount(BidPlanExtSM model);
 }
