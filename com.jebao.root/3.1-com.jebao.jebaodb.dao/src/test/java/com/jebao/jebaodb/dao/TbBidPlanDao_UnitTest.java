@@ -2,16 +2,19 @@ package com.jebao.jebaodb.dao;
 
 import com.jebao.jebaodb.dao.base._BaseUnitTest;
 import com.jebao.jebaodb.dao.dao.investment.TbIncomeDetailDao;
+import com.jebao.jebaodb.dao.dao.investment.TbInvestInfoDao;
 import com.jebao.jebaodb.dao.dao.loanmanage.TbBidPlanDao;
 import com.jebao.jebaodb.dao.dao.loanmanage.TbBidRiskDataDao;
 import com.jebao.jebaodb.entity.extEntity.PageWhere;
 import com.jebao.jebaodb.entity.investment.FundDetailSM;
 import com.jebao.jebaodb.entity.investment.TbIncomeDetail;
+import com.jebao.jebaodb.entity.investment.TbInvestInfo;
 import com.jebao.jebaodb.entity.loaner.TbRiskCtlPrjTemp;
 import com.jebao.jebaodb.entity.loanmanage.TbBidPlan;
 import com.jebao.jebaodb.entity.loanmanage.TbBidRiskData;
 import com.jebao.jebaodb.entity.product.ProductSM;
 import org.apache.ibatis.annotations.Param;
+import org.hibernate.validator.internal.constraintvalidators.bv.past.PastValidatorForReadableInstant;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -32,6 +35,9 @@ public class TbBidPlanDao_UnitTest extends _BaseUnitTest {
     private TbBidRiskDataDao riskDataDao;
     @Autowired
     private TbIncomeDetailDao incomeDetailDao;
+    @Autowired
+    private TbInvestInfoDao investInfoDao;
+
     @Test
     public void selectList()
     {
@@ -49,8 +55,9 @@ public class TbBidPlanDao_UnitTest extends _BaseUnitTest {
 
     @Test
     public void overdueMoneyOther(){
-
-        TbIncomeDetail tbIncomeDetail = incomeDetailDao.overdueMoneyOther(null);
+        TbInvestInfo tbInvestInfo = new TbInvestInfo();
+        PageWhere pageWhere = new PageWhere(0, 10000);
+        List<TbInvestInfo> tbInvestInfos = investInfoDao.selectBybpId(tbInvestInfo, pageWhere);
         System.out.println();
     }
 

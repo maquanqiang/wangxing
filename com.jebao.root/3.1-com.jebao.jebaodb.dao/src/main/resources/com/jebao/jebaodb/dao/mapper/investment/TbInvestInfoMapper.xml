@@ -309,8 +309,10 @@
         select
         <include refid="bp_Column_List" />
         from tb_invest_info, tb_bid_plan
-        where ii_bp_id = bp_id and
-        <include refid="selectByCondition_Where_Clause" />
+        <where>
+            <include refid="selectByCondition_Where_Clause" />
+            AND ii_bp_id = bp_id
+        </where>
     </select>
 
     <select id="investTotal" parameterType="java.lang.Long" resultType="java.math.BigDecimal">

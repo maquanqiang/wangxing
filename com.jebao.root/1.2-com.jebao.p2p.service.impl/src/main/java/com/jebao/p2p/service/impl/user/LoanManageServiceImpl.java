@@ -16,6 +16,8 @@ import com.jebao.thirdPay.fuiou.impl.TransferBuServiceImpl;
 import com.jebao.thirdPay.fuiou.model.transferBu.TransferBuRequest;
 import com.jebao.thirdPay.fuiou.model.transferBu.TransferBuResponse;
 import com.jebao.thirdPay.fuiou.util.XmlUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -42,6 +44,7 @@ public class LoanManageServiceImpl implements ILoanManageServiceInf {
     @Autowired
     private TbFundsDetailsDao fundsDetailsDao;
 
+    private final static Logger LOGGER = LoggerFactory.getLogger(LoanManageServiceImpl.class);
 
     @Override
     public String repay(Long bpId, Long loginId, Integer period, BigDecimal repayMoney) {
@@ -168,9 +171,16 @@ public class LoanManageServiceImpl implements ILoanManageServiceInf {
                         //TODO  修改投资记录中已还款期数
                     }else{
                         flag = false;
+                        if(LOGGER.isDebugEnabled()){
+                            LOGGER.debug("还款失败，当前还款记录ID：{}, 第三方返回码：{}",detail.getIndId(), response.getPlain().getResp_code());
+                        }
+
                     }
                 } catch (Exception e) {
                     flag = false;
+                    if(LOGGER.isDebugEnabled()){
+                        LOGGER.debug("还款失败，当前还款记录ID：{}",detail.getIndId());
+                    }
                     e.printStackTrace();
                 }
             }
