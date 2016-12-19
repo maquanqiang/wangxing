@@ -28,17 +28,29 @@
     <div class="account-content fr">
         <!--我的银行卡-->
         <div class="my-account">
-            <h2>我的银行卡</h2>
+            <div class="my-account-title">
+                <h2>我的银行卡</h2>
+            </div>
+
+            <div class="account-install-list" v-if="!hasFundAccount">
+                <div class="account-install-item clearfix">
+                    <img src="${filePath}/images/account-error.png">
+                    <h5>资金托管账户</h5>
+                    <p class="pt5">由第三方（富友）提供资金托管服务，保障资金独立与安全</p>
+                    <a href="/userfund/register" class="account-open open-btn">开通</a>
+                </div>
+            </div>
+
         </div>
         <!--添加银行卡-->
-        <div class="project">
+        <div class="project" v-if="hasFundAccount">
             <div class="account-bankImg ml0 clearfix">
                 <img src="${filePath}/images/account-bank.png" class="fl">
                 <div class="account-bankDetail fl">
                     <h5 v-text="bankName"></h5>
                     <p class="card-type">储蓄卡</p>
                     <p class="card-num" v-text="bankCardNo"></p>
-                    <a href="#" ></a>
+                    <a href="#"></a>
                 </div>
             </div>
             <div class="changeCard">
@@ -48,6 +60,7 @@
                 </a>
             </div>
         </div>
+
     </div>
 </div>
 <!--内容 end-->

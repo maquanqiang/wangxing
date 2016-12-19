@@ -103,14 +103,15 @@ var vm = new Vue({
                         model.form2.show=false;
                         model.form3.show=true;
 
-                        var leftSeconds = 3;
+                        var $timer = $("#complete .time");
+                        var leftSeconds = parseInt($timer.val());
                         var timerInterval = setInterval(function () {
                             leftSeconds--;
                             if (leftSeconds === 0) {
                                 clearInterval(timerInterval);
                                 window.location.href= $("#complete .go-btn").attr("href");
                             }else{
-                                $("#complete .time").html(leftSeconds);
+                                $timer.html(leftSeconds);
                             }
                         }, 1000);
                     } else {
