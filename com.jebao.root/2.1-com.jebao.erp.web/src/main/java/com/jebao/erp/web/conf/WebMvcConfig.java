@@ -27,6 +27,7 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
                 .excludePathPatterns("/account/login")
                 .excludePathPatterns("/captcha/getCode")
                 .excludePathPatterns("/api/account/login")
+                .excludePathPatterns("/contract/template/**")
                 .excludePathPatterns("/content/**")
                 .excludePathPatterns("/favicon.ico");
     }

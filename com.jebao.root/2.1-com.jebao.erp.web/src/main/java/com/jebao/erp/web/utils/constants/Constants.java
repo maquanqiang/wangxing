@@ -22,7 +22,10 @@ public class Constants {
     public static final String LOGIN_SESSION_COOKIE_NAME=DOMAIN+"LS";
     //
     public static final String FILE_UPLOAD_SERVICE_URL=ProjectSetting.getConfigProperty("project.file.upload.service.url");
-
     public static final String FILE_UPLOAD_KEY=ProjectSetting.getConfigProperty("project.file.upload.key");
+    //
+    public static final String CONTRACT_PDF_PHANTONJS_EXE_PATH=ProjectSetting.getConfigProperty("project.contract.pdf.phantomjs.exe.path");
+    public static final String CONTRACT_PDF_PHANTONJS_SCRIPT_PATH=ProjectSetting.getConfigProperty("project.contract.pdf.phantomjs.script.path");
+    public static final String CONTRACT_PDF_FILE_SAVE_PATH=ProjectSetting.getConfigProperty("project.contract.pdf.file.save.path");
 
 }
