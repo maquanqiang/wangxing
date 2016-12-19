@@ -140,9 +140,12 @@ var vm = new Vue({
             var form = {bpId:$("#bpId").val(), investMoney:$("#investMoney").val().trim()}
             $.post("/api/product/investBid", form, function (response) {
                 if (response.success_is_ok) {
-                    layer.alert(response.msg);
-                }else{
-                    layer.alert(response.error);
+                    var data = response.data;
+                    if(data.flag){
+                        $.post("/product/productSuccess", {investMoney:data.investMoney})
+                    }else{
+                        $.post("/product/productFail", {msg:data.msg})
+                    }
                 }
                 setTimeout(function(){window.location.reload();},5000)
             });

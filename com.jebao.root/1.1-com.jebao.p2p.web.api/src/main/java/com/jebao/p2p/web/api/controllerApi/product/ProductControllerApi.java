@@ -140,7 +140,11 @@ public class ProductControllerApi {
         }
 
 
-        String message = productService.investBid(form.getBpId(), currentUser.getId(), form.getInvestMoney());
-        return new JsonResultOk(message);
+        String[] result = productService.investBid(form.getBpId(), currentUser.getId(), form.getInvestMoney());
+
+        ProductResultVM productResultVM = new ProductResultVM();
+        productResultVM.setFlag(result[0]);
+        productResultVM.setMsg(result[1]);
+        return new JsonResultData<>(productResultVM);
     }
 }

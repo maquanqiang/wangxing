@@ -89,9 +89,11 @@ public class ProductServiceImpl implements IProductServiceInf {
      * @return
      */
     @Override
-    public String investBid(Long bpId, Long loginId, BigDecimal investMoney) {
+    public String[] investBid(Long bpId, Long loginId, BigDecimal investMoney) {
 
-        String message = "";
+        String[] result = new String[2];
+
+        result[0] = "true";
         //更新标的信息表
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("bpId", bpId);
@@ -158,7 +160,6 @@ public class ProductServiceImpl implements IProductServiceInf {
                     if(tbBidPlan.getBpBidMoney().compareTo(investTotal) == 0){
                         tbBidPlanDao.fullBid(bpId);
                     }
-                    message = "投资成功";
                     //添加流水记录
                     TbFundsDetails tbFundsDetails = new TbFundsDetails();
                     tbFundsDetails.setFdLoginId(loginId);
@@ -184,21 +185,24 @@ public class ProductServiceImpl implements IProductServiceInf {
                     accountsFunds.setAfBalance(accountsFunds.getAfBalance().subtract(investMoney));
                     accountsFunds.setAfUpdateTime(new Date());
                     accountsFundsDao.updateByPrimaryKeySelective(accountsFunds);
-
+                    result[1] = "投资成功";
                 }else{
-                    message = "投资失败";
+                    result[0] = "false";
+                    result[1] = "请核实您的账户信息";
                     tbBidPlanDao.addSurplus(map);
                 }
             } catch (Exception e) {
-                message = "投资失败";
+                result[0] = "false";
+                result[1] = "操作异常";
                 tbBidPlanDao.addSurplus(map);
                 e.printStackTrace();
             }
         }else {
-            message = "投资失败";
+            result[0] = "false";
+            result[1] = "投资金额大于剩余金额";
         }
 
-        return message;
+        return result;
     }
 
     @Override
