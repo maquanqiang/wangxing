@@ -88,17 +88,28 @@ var vm = new Vue({
     //方法，可用于绑定事件或直接调用
     methods: {
         repay:function(period, bpId, repayMoney){
-            $.post("/api/loanManage/repay",{period:period, bpId:bpId, repayMoney:repayMoney}, function (response) {
-                if(response.success_is_ok){
-                    layer.alert(response.msg);
-                    location.reload();
-                }else{
-                    layer.alert(response.error);
+            $(this).removeClass()
+            //还款弹出框
+            layer.open({
+                title:'还款提示',
+                content:'确认现在还款?',
+                btn: ['确认', '稍后'],
+                area: ['340px', '180px'],
+                yes: function(){
+                    $.post("/api/loanManage/repay",{period:period, bpId:bpId, repayMoney:repayMoney}, function (response) {
+                        if(response.success_is_ok){
+                            layer.alert(response.msg);
+                            window.location.reload();
+                        }else{
+                            layer.alert(response.error);
+                        }
+
+                    })
+                },
+                btn2: function(){
+                    layer.closeAll();
                 }
-
-            })
-
-
+            });
         }
     }
 });

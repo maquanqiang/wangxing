@@ -35,4 +35,19 @@ public class NotifyController {
 
         return "notify/success";
     }
+
+    @RequestMapping("redirect")
+    public String redirect(String yes,String title, String content, String redirectUrl,Model model){
+        model.addAttribute("yes",yes);
+        model.addAttribute("title",title);
+        model.addAttribute("content",content);
+        model.addAttribute("redirectUrl",redirectUrl);
+
+        return "notify/redirect";
+    }
+    @RequestMapping("noRegFundAccount")
+    public String noRegFundAccount(){
+        return "notify/noRegFundAccount";
+    }
+
 }

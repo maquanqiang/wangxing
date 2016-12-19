@@ -4,7 +4,7 @@
 (function () {
     //页面公共对象
     var common = {
-        apiOrigin: "http://localhost:9089",
+        apiOrigin: "",
         //获取url参数
         getUrlParam: function (name) {
             var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");

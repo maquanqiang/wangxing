@@ -1,5 +1,7 @@
 package com.jebao.p2p.web.utils.toolbox;
 
+import com.jebao.p2p.web.utils.constants.Constants;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.security.MessageDigest;
@@ -13,6 +15,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class UrlHelperTool {
     private static final Map<String, String> urlMap = new ConcurrentHashMap<String,String>();
+
     public String href(String hrefKey)
     {
         String hrefVal= urlMap.get(hrefKey);
@@ -57,4 +60,9 @@ public class UrlHelperTool {
         }
         return md5.toString();
     }
+
+    public String getApiOrigin(){
+        return Constants.WebApiOrgin;
+    }
+
 }

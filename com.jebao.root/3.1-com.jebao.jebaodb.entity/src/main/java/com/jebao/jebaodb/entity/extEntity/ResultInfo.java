@@ -11,8 +11,14 @@ public class ResultInfo {
         this.setSuccess_is_ok(success);
         this.setMsg(msg);
     }
+    public ResultInfo(boolean success,String msg,int code){
+        this.success_is_ok=success;
+        this.msg=msg;
+        this.code=code;
+    }
     private boolean success_is_ok;
     private String msg;
+    private int code;
 
     public boolean getSuccess_is_ok() {
         return success_is_ok;
@@ -28,5 +34,13 @@ public class ResultInfo {
 
     public void setMsg(String msg) {
         this.msg = msg;
+    }
+
+    public int getCode() {
+        return code;
+    }
+
+    public void setCode(int code) {
+        this.code = code;
     }
 }
