@@ -161,6 +161,7 @@ public class UserfundServiceImpl implements IUserfundServiceInf {
         }
 
         //更新第三方资金账户信息
+        userDetailsEntity.setUdTrueName(model.getCust_nm()); // 客户姓名
         userDetailsEntity.setUdIdNumber(model.getCertif_id()); // 身份证号码
         userDetailsEntity.setUdEmail(model.getEmail()); //邮箱地址
         userDetailsEntity.setUdBankCityCode(model.getCity_id()); //开户行地区代码

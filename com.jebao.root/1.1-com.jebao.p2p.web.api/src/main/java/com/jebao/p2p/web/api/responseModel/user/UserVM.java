@@ -24,6 +24,7 @@ public class UserVM extends ViewModel{
             this.bankCardNo = theBankCardNo.replaceAll("(?<=\\d{4})\\d+(?=\\d{4})"," **** **** "); //银行卡号 中间替换 *
         }
         this.hasFundAccount = !StringUtils.isBlank(entity.getUdThirdAccount());
+        this.balance = new BigDecimal(0);
     }
 
     /**

@@ -20,7 +20,6 @@ import com.jebao.p2p.web.api.responseModel.user.UserVM;
 import com.jebao.p2p.web.api.utils.constants.Constants;
 import com.jebao.p2p.web.api.utils.session.CurrentUser;
 import com.jebao.p2p.web.api.utils.session.CurrentUserContextHolder;
-import com.jebao.p2p.web.api.utils.session.LoginSessionUtil;
 import com.jebao.p2p.web.api.utils.validation.ValidationResult;
 import com.jebao.p2p.web.api.utils.validation.ValidationUtil;
 import com.jebao.thirdPay.fuiou.model.fastRecharge.FastRechargeResponse;
@@ -56,7 +55,7 @@ public class UserController extends _BaseController {
 
     @RequestMapping("getUser")
     public JsonResult getUser(){
-        CurrentUser user = LoginSessionUtil.User(request,response);
+        CurrentUser user = CurrentUserContextHolder.get();
         if (user == null){
             return new JsonResultError("用户未登录");
         }
@@ -72,12 +71,15 @@ public class UserController extends _BaseController {
         UserVM userVM = new UserVM(userDetailsEntity);
 
         //region 账户余额
-        TbAccountsFunds accountsFunds = userService.getAccountsFundsInfo(user.getId());
-        if (accountsFunds == null) {
-            userVM.setBalance(new BigDecimal(0));
-        }else{
-            userVM.setBalance(accountsFunds.getAfBalance());
+        if (userVM.getHasFundAccount()){
+            TbAccountsFunds accountsFunds = userService.getAccountsFundsInfo(user.getId());
+            if (accountsFunds == null) {
+                userVM.setBalance(new BigDecimal(0));
+            }else{
+                userVM.setBalance(accountsFunds.getAfBalance());
+            }
         }
+
         //endregion
         return new JsonResultData<>(userVM);
     }
