@@ -3,7 +3,6 @@ package com.jebao.p2p.web.api.controllerApi.user;
 import com.jebao.jebaodb.entity.extEntity.PageWhere;
 import com.jebao.jebaodb.entity.investment.InvestIng;
 import com.jebao.jebaodb.entity.investment.InvestPaymented;
-import com.jebao.jebaodb.entity.investment.InvestStatistics;
 import com.jebao.jebaodb.entity.investment.TbIncomeDetail;
 import com.jebao.p2p.service.inf.user.IInvestServiceInf;
 import com.jebao.p2p.web.api.controllerApi._BaseController;
@@ -23,8 +22,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Administrator on 2016/12/8.
@@ -49,8 +50,14 @@ public class InvestController extends _BaseController {
             return new JsonResultData<>(null);
         }
 
-        InvestStatistics investStatistics = investService.getInvestStatisticsByLoginId(currentUser.getId());
-        InvestStatisticsVM viewModel = new InvestStatisticsVM(investStatistics);
+        Map<String, BigDecimal> map = investService.getInvestStatisticsByLoginId(currentUser.getId());
+        InvestStatisticsVM viewModel = new InvestStatisticsVM();
+        viewModel.setBalance(map.get("balance"));
+        viewModel.setDueInIncome(map.get("dueInIncome"));
+        viewModel.setDueInPrincipal(map.get("dueInPrincipal"));
+        viewModel.setFreezeAmount(map.get("freezeAmount"));
+        viewModel.setIncomeAmount(map.get("incomeAmount"));
+        viewModel.setTotalAssets(map.get("totalAssets"));
         return new JsonResultData<>(viewModel);
     }
 

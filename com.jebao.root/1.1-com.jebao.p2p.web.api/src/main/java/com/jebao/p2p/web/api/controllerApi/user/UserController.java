@@ -14,6 +14,7 @@ import com.jebao.p2p.web.api.requestModel.user.RechargeSM;
 import com.jebao.p2p.web.api.responseModel.base.JsonResult;
 import com.jebao.p2p.web.api.responseModel.base.JsonResultData;
 import com.jebao.p2p.web.api.responseModel.base.JsonResultError;
+import com.jebao.p2p.web.api.responseModel.base.JsonResultOk;
 import com.jebao.p2p.web.api.responseModel.user.UserDetailsVM;
 import com.jebao.p2p.web.api.responseModel.user.UserVM;
 import com.jebao.p2p.web.api.utils.constants.Constants;
@@ -23,6 +24,7 @@ import com.jebao.p2p.web.api.utils.session.LoginSessionUtil;
 import com.jebao.p2p.web.api.utils.validation.ValidationResult;
 import com.jebao.p2p.web.api.utils.validation.ValidationUtil;
 import com.jebao.thirdPay.fuiou.model.fastRecharge.FastRechargeResponse;
+import com.jebao.thirdPay.fuiou.model.onlineBankRecharge.OnlineBankRechargeResponse;
 import com.jebao.thirdPay.fuiou.model.personQuickPay.PersonQuickPayResponse;
 import com.jebao.thirdPay.fuiou.model.withdrawDeposit.WithdrawDepositResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +33,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.math.BigDecimal;
 import java.net.URLEncoder;
 
 /**
@@ -68,7 +71,25 @@ public class UserController extends _BaseController {
         }
         UserVM userVM = new UserVM(userDetailsEntity);
 
+        //region 账户余额
+        TbAccountsFunds accountsFunds = userService.getAccountsFundsInfo(user.getId());
+        if (accountsFunds == null) {
+            userVM.setBalance(new BigDecimal(0));
+        }else{
+            userVM.setBalance(accountsFunds.getAfBalance());
+        }
+        //endregion
         return new JsonResultData<>(userVM);
+    }
+
+    @RequestMapping("syncThirdAccount")
+    public JsonResult syncThirdAccount(){
+        CurrentUser currentUser = CurrentUserContextHolder.get();
+        if (currentUser == null) {
+            return new JsonResultError("0");
+        }
+        int reslut = userfundService.queryUserInfs(currentUser.getId());
+        return new JsonResultOk(String.valueOf(reslut));
     }
 
     @RequestMapping(value = "details", method = RequestMethod.GET)
@@ -113,7 +134,6 @@ public class UserController extends _BaseController {
         if (requestType != null && requestType.equalsIgnoreCase("XMLHttpRequest")) {
             return null;
         }
-
 
         String title = "充值失败！";
         String backUrl = "/user/chargewithdraw"; // web页面内的回跳地址，可以是相对路径
@@ -245,6 +265,79 @@ public class UserController extends _BaseController {
     }
     //endregion
 
+    //region 网银充值
+    /**
+     * 网银充值
+     *
+     * @param form
+     * @return
+     */
+    //非ajax请求
+    @RequestMapping(value = "onlineBankRecharge", method = RequestMethod.POST)
+    public String onlineBankRecharge(RechargeSM form) throws Exception {
+        //拒绝ajax请求 //如果是ajax请求响应头会有x-requested-with
+        String requestType = request.getHeader("x-requested-with");
+        if (requestType != null && requestType.equalsIgnoreCase("XMLHttpRequest")) {
+            return null;
+        }
+
+        String title = "充值失败！";
+        String backUrl = "/user/chargewithdraw"; // web页面内的回跳地址，可以是相对路径
+        //region 验证
+        ValidationResult resultValidation = ValidationUtil.validateEntity(form);
+        if (resultValidation.isHasErrors()) {
+            goFailedPage(title, resultValidation.getErrorMsg().toString(), backUrl);
+            return null;
+        }
+        //endregion
+
+        CurrentUser currentUser = CurrentUserContextHolder.get();
+        if (currentUser == null) {
+            return null;
+        }
+
+        ResultInfo resultInfo = rechargeService.onlineBankRechargeByWeb(currentUser.getId(), form.getMoney());
+        if (!resultInfo.getSuccess_is_ok()) {
+            String content = resultInfo.getMsg();
+            goFailedPage(title, content, backUrl);
+            return null;
+        }
+        try {
+            ResultData<String> resultData = (ResultData<String>) resultInfo;
+            String responseHtml = resultData.getData();
+            System.out.println(responseHtml);
+            return responseHtml;
+        } catch (Exception e) {
+
+        }
+        return null;
+    }
+
+    /**
+     * 第三方网银充值回调地址
+     *
+     * @param model
+     * @return
+     */
+    @RequestMapping("onlineBankRechargeNotify")
+    public String onlineBankRechargeNotify(OnlineBankRechargeResponse model) {
+        CurrentUser currentUser = CurrentUserContextHolder.get();
+        if (currentUser == null) {
+            return null;
+        }
+        ResultInfo resultInfo = rechargeService.onlineBankRechargeByWebComplete(currentUser.getId(), model);
+        if (!resultInfo.getSuccess_is_ok()) {
+            String title = "充值失败！";
+            String content = resultInfo.getMsg();
+            String backUrl = "/user/chargewithdraw"; // web页面内的回跳地址，可以是相对路径
+            goFailedPage(title, content, backUrl);
+        } else {
+            goSuccessPage("充值成功！", "", "/user/index", "查看我的账户");
+        }
+        return null;
+    }
+    //endregion
+
     //region 提现
     /**
      * 提现
@@ -294,7 +387,7 @@ public class UserController extends _BaseController {
     }
 
     /**
-     * 第三方快速充值回调地址
+     * 第三方提现回调地址
      *
      * @param model
      * @return

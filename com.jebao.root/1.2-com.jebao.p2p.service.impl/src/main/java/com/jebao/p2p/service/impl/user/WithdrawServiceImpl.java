@@ -1,7 +1,10 @@
 package com.jebao.p2p.service.impl.user;
 
+import com.jebao.common.utils.fastjson.FastJsonUtil;
+import com.jebao.jebaodb.dao.dao.loanmanage.TbThirdInterfaceLogDao;
 import com.jebao.jebaodb.entity.extEntity.ResultData;
 import com.jebao.jebaodb.entity.extEntity.ResultInfo;
+import com.jebao.jebaodb.entity.loanmanage.TbThirdInterfaceLog;
 import com.jebao.jebaodb.entity.user.TbAccountsFunds;
 import com.jebao.jebaodb.entity.user.TbFundsDetails;
 import com.jebao.jebaodb.entity.user.TbUserDetails;
@@ -36,6 +39,9 @@ public class WithdrawServiceImpl implements IWithdrawServiceInf {
     private IFundsDetailsServiceInf fundsDetailsService;
 
     @Autowired
+    private TbThirdInterfaceLogDao thirdInterfaceLogDao;
+
+    @Autowired
     private WithdrawDepositServiceImpl withdrawDepositService;
 
     /**
@@ -66,10 +72,11 @@ public class WithdrawServiceImpl implements IWithdrawServiceInf {
             fundsDetails.setFdCommissionCharge(new BigDecimal(0));//手续费
             fundsDetails.setFdSerialAmount(money);
             fundsDetails.setFdSerialNumber(reqData.getMchnt_txn_ssn());//流水号
-            fundsDetails.setFdSerialTime(new Date());
+            fundsDetails.setFdCreateTime(new Date());
             fundsDetails.setFdSerialTypeId(2);
             fundsDetails.setFdSerialTypeName("提现");
             fundsDetails.setFdThirdAccount(userDetails.getUdThirdAccount());
+            fundsDetails.setFdIsDel(1);
             fundsDetailsService.insert(fundsDetails);
             return new ResultData<String>(true,html,"提交第三方");
         }
@@ -84,11 +91,16 @@ public class WithdrawServiceImpl implements IWithdrawServiceInf {
      */
     @Override
     public ResultInfo withdrawDepositByWebComplete(Long loginId, WithdrawDepositResponse model) {
+        //获取变更前账户资金信息
+        TbAccountsFunds afEntity = userService.getAccountsFundsInfo(loginId);
+        BigDecimal balance = afEntity.getAfBalance();
+
         //资金收支明细
         TbFundsDetails fundsDetails = new TbFundsDetails();
         fundsDetails.setFdSerialNumber(model.getMchnt_txn_ssn());//流水号
-        fundsDetails.setFdSerialTime(new Date());
         fundsDetails.setFdThirdAccount(model.getLogin_id());
+        fundsDetails.setFdBalanceBefore(balance);
+        fundsDetails.setFdBalanceAfter(balance);
 
         if (model == null || !FuiouConfig.Success_Code.equals(model.getResp_code())) {
             String responseMessage = model.getResp_desc();
@@ -97,6 +109,7 @@ public class WithdrawServiceImpl implements IWithdrawServiceInf {
             }
             //更新资金收支明细状态为失败
             fundsDetails.setFdSerialStatus(-1);
+            fundsDetails.setFdSerialTime(new Date());
             fundsDetailsService.update(fundsDetails);
             return new ResultInfo(false, responseMessage);
         }
@@ -105,11 +118,20 @@ public class WithdrawServiceImpl implements IWithdrawServiceInf {
         if (!isValid){
             //更新资金收支明细状态为失败
             fundsDetails.setFdSerialStatus(-1);
+            fundsDetails.setFdSerialTime(new Date());
             fundsDetailsService.update(fundsDetails);
             return new ResultInfo(false,"操作异常，校验失败");
         }
         //region 富有返回成功，记录接口日志
-
+        TbThirdInterfaceLog thirdInterfaceLog = new TbThirdInterfaceLog();
+        thirdInterfaceLog.setTilType(18); // 接口编号
+        thirdInterfaceLog.setTilSerialNumber(model.getMchnt_txn_ssn());
+        thirdInterfaceLog.setTilReturnCode(model.getResp_code());
+        String jsonText = FastJsonUtil.serialize(model);
+        thirdInterfaceLog.setTilReqText("form跳转请求，接口请求内容查看上一条记录");
+        thirdInterfaceLog.setTilRespText(jsonText);
+        thirdInterfaceLog.setTilCreateTime(new Date());
+        thirdInterfaceLogDao.insert(thirdInterfaceLog);
         //endregion
         TbUserDetails userDetails = userService.getUserDetailsInfo(loginId);
         if(userDetails == null){
@@ -119,21 +141,21 @@ public class WithdrawServiceImpl implements IWithdrawServiceInf {
             return new ResultInfo(false,"资金托管帐号错误，请联系客服");
         }
 
+        BigDecimal balance_new = balance.subtract(new BigDecimal(model.getAmt()).divide(new BigDecimal(100))).setScale(2, BigDecimal.ROUND_HALF_UP);
+
         //更新资金收支明细状态为成功
+        fundsDetails.setFdBalanceAfter(balance_new);
         fundsDetails.setFdSerialStatus(1);
+        fundsDetails.setFdSerialTime(new Date());
         fundsDetailsService.update(fundsDetails);
 
         //todo 修改账户资金信息
-        TbAccountsFunds afEntity = accountsFundsService.selectByLoginId(loginId);
-        BigDecimal balance = afEntity.getAfBalance();
-        balance = balance.subtract(new BigDecimal(model.getAmt()).divide(new BigDecimal(100))).setScale(2, BigDecimal.ROUND_HALF_UP);
-
         TbAccountsFunds accountsFunds = new TbAccountsFunds();
         accountsFunds.setAfThirdAccount(model.getLogin_id());
-        accountsFunds.setAfBalance(balance);
+        accountsFunds.setAfBalance(balance_new);
         accountsFunds.setAfUpdateTime(new Date());
         accountsFundsService.update(accountsFunds);
 
-        return new ResultInfo(true,"充值成功");
+        return new ResultInfo(true,"提现成功");
     }
 }

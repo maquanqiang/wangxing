@@ -13,8 +13,6 @@ public class QueryUserInfsServiceImpl_UnitTest {
     public void Test() throws Exception {
         QueryUserInfsRequest reqData = new QueryUserInfsRequest();
         reqData.setVer("0.44");
-        reqData.setMchnt_cd("0002900F0041077");
-        reqData.setMchnt_txn_ssn("11032302065863805732");
         reqData.setMchnt_txn_dt("20110519");
         reqData.setUser_ids("13678424821|13312324854");
         //

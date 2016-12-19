@@ -10,7 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Administrator on 2016/12/10.
@@ -26,22 +28,28 @@ public class InvestServiceImpl implements IInvestServiceInf {
     @Autowired
     private TbAccountsFundsDao tbAccountsFundsDao;
 
+    /**
+     * 账户资金汇总
+     *
+     * @param loginId
+     * @return
+     */
     @Override
-    public InvestStatistics getInvestStatisticsByLoginId(Long loginId) {
-        InvestStatistics model = new InvestStatistics();
+    public Map<String, BigDecimal> getInvestStatisticsByLoginId(Long loginId) {
         BigDecimal balance = tbAccountsFundsDao.selectByLoginId(loginId).getAfBalance();
         BigDecimal freeze = tbInvestInfoDao.selectFreezeMoneyByLoginId(loginId);
         BigDecimal income = tbIncomeDetailDao.selectIncomeMoneyByLoginId(loginId);
         BigDecimal dueInPrincipal = tbIncomeDetailDao.selectDueInMoneyByLoginId(loginId, 1);
         BigDecimal dueInIncome = tbIncomeDetailDao.selectDueInMoneyByLoginId(loginId, 2);
         BigDecimal totalAssets = new BigDecimal(0);
-        model.setTotalAssets(totalAssets.add(balance).add(freeze).add(dueInPrincipal).add(dueInIncome));
-        model.setBalance(balance);
-        model.setDueInIncome(dueInIncome);
-        model.setDueInPrincipal(dueInPrincipal);
-        model.setFreezeAmount(freeze);
-        model.setIncomeAmount(income);
-        return model;
+        Map<String, BigDecimal> map = new HashMap<String, BigDecimal>();
+        map.put("totalAssets", totalAssets.add(balance).add(freeze).add(dueInPrincipal).add(dueInIncome));
+        map.put("incomeAmount",income);
+        map.put("balance",balance);
+        map.put("freezeAmount",freeze);
+        map.put("dueInPrincipal",dueInPrincipal);
+        map.put("dueInIncome",dueInIncome);
+        return map;
     }
 
     @Override

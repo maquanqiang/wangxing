@@ -4,6 +4,7 @@ package com.jebao.jebaodb.dao.mapper.investment;
 import com.jebao.jebaodb.entity.extEntity.PageWhere;
 import com.jebao.jebaodb.entity.investment.FundDetailSM;
 import com.jebao.jebaodb.entity.investment.TbIncomeDetail;
+import com.jebao.jebaodb.entity.investment.search.IncomeDetailSM;
 import com.jebao.jebaodb.entity.postLoan.search.RepaymentDetailSM;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -47,6 +48,9 @@ public interface TbIncomeDetailMapper {
     List<TbIncomeDetail> repaymentList(@Param("record") TbIncomeDetail record);
 
     BigDecimal repaymoneyTotal(@Param("record") TbIncomeDetail record);
+
+    /*==================================================借款人相关信息==================================================*/
+    BigDecimal repaymoneyTotalByloanerId(IncomeDetailSM model);
     /*==================================================账户总览统计==================================================*/
     double selectDueInMoneyByLoginId(@Param("record") TbIncomeDetail record);
 

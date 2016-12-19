@@ -10,6 +10,4 @@ public interface IAccountsFundsServiceInf {
     int insert(TbAccountsFunds record);
 
     int update(TbAccountsFunds record);
-
-    TbAccountsFunds selectByLoginId(Long loginId);
 }

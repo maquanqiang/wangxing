@@ -1,11 +1,6 @@
 /**
  * Created by Jack on 2016/12/8.
  */
-//点击切换验证码图片
-$(".verification").click(function () {
-    $(this).attr('src', '/captcha/getCode?' + Math.random());
-});
-
 var model = {
     form: {},
     codeDisabled: false,
@@ -21,10 +16,17 @@ var vm = new Vue({
         //初始化 model.form
         model.form = $("#registerForm").serializeObject();
         model.form.agree = false;
+        //处理邀请码
         var invitationCode = common.getUrlParam("code");
+        if (invitationCode) {
+            $.cookie("invitation_code",invitationCode);
+        }else{
+            invitationCode =  $.cookie("invitation_code");
+        }
         if (invitationCode) {
             model.form.invitationCode = invitationCode;
             model.codeDisabled = true;
+            $.cookie("invitation_code",invitationCode);
         }
     },
     mounted: function () {

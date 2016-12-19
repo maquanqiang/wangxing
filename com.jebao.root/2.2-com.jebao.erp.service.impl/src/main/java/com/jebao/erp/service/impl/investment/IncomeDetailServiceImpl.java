@@ -6,10 +6,12 @@ import com.jebao.jebaodb.dao.dao.investment.TbIncomeDetailDao;
 import com.jebao.jebaodb.dao.dao.investment.TbIncomeDetailDao;
 import com.jebao.jebaodb.entity.extEntity.PageWhere;
 import com.jebao.jebaodb.entity.investment.TbIncomeDetail;
+import com.jebao.jebaodb.entity.investment.search.IncomeDetailSM;
 import com.jebao.jebaodb.entity.postLoan.search.RepaymentDetailSM;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -68,6 +70,20 @@ public class IncomeDetailServiceImpl implements IIncomeDetailServiceInf {
     @Override
     public int selectGroupByConditionCount(RepaymentDetailSM record) {
         return incomeDetailDao.selectGroupByConditionCount(record);
+    }
+
+    /**
+     * 统计借款人待还金额（本金、利息）
+     * @param loanerId
+     * @param fundType
+     * @return
+     */
+    @Override
+    public BigDecimal repaymoneyTotalByloanerId(Long loanerId, int fundType) {
+        IncomeDetailSM model = new IncomeDetailSM();
+        model.setFundType(fundType);
+        model.setLoanerId(loanerId);
+        return incomeDetailDao.repaymoneyTotalByloanerId(model);
     }
 
 

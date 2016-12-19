@@ -18,7 +18,8 @@ public class AuthorizeInterceptor implements HandlerInterceptor {
         //验证用户是否登陆
         boolean isLogin = LoginSessionUtil.isLogin(request, response);
         if (!isLogin) {
-            response.sendRedirect(request.getContextPath() + "/account/login");
+            String redirectUrl = request.getRequestURI();
+            response.sendRedirect(request.getContextPath() + "/account/login?redirectUrl="+redirectUrl);
             return false;
         }
         return true;
