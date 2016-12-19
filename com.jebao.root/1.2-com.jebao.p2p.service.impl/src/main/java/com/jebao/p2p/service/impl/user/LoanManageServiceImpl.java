@@ -1,11 +1,14 @@
 package com.jebao.p2p.service.impl.user;
 
 import com.jebao.jebaodb.dao.dao.investment.TbIncomeDetailDao;
+import com.jebao.jebaodb.dao.dao.investment.TbInvestInfoDao;
 import com.jebao.jebaodb.dao.dao.loanmanage.TbBidPlanDao;
 import com.jebao.jebaodb.dao.dao.loanmanage.TbThirdInterfaceLogDao;
 import com.jebao.jebaodb.dao.dao.user.TbAccountsFundsDao;
 import com.jebao.jebaodb.dao.dao.user.TbFundsDetailsDao;
+import com.jebao.jebaodb.entity.extEntity.PageWhere;
 import com.jebao.jebaodb.entity.investment.TbIncomeDetail;
+import com.jebao.jebaodb.entity.investment.TbInvestInfo;
 import com.jebao.jebaodb.entity.investment.TbLoanerRepaymentDetail;
 import com.jebao.jebaodb.entity.loanmanage.TbBidPlan;
 import com.jebao.jebaodb.entity.loanmanage.TbThirdInterfaceLog;
@@ -43,6 +46,9 @@ public class LoanManageServiceImpl implements ILoanManageServiceInf {
     private TbThirdInterfaceLogDao thirdInterfaceLogDao;
     @Autowired
     private TbFundsDetailsDao fundsDetailsDao;
+    @Autowired
+    private TbInvestInfoDao investInfoDao;
+
 
     private final static Logger LOGGER = LoggerFactory.getLogger(LoanManageServiceImpl.class);
 
@@ -167,8 +173,6 @@ public class LoanManageServiceImpl implements ILoanManageServiceInf {
                         inAccount.setAfBalance(accountsFunds.getAfBalance().subtract(detail.getIndMoney()));
                         accountsFundsDao.updateByPrimaryKeySelective(inAccount);
 
-
-                        //TODO  修改投资记录中已还款期数
                     }else{
                         flag = false;
                         if(LOGGER.isDebugEnabled()){
@@ -188,11 +192,33 @@ public class LoanManageServiceImpl implements ILoanManageServiceInf {
         //成功返回true 修改标的信息
         if(flag){
 
-            TbBidPlan tbBidPlan = new TbBidPlan();
-            tbBidPlan.setBpId(bpId);
-            tbBidPlan.setBpUpdateTime(new Date());
-            tbBidPlan.setBpRepayedPeriods(period);
-            tbBidPlanDao.updateByPrimaryKeySelective(tbBidPlan);
+            plan.setBpId(bpId);
+            plan.setBpUpdateTime(new Date());
+            plan.setBpRepayedPeriods(period);
+            if(period == plan.getBpPeriods()){      //说明已到最后一期  修改标的为完成
+                plan.setBpStatus(10);
+            }
+            tbBidPlanDao.updateByPrimaryKeySelective(plan);
+            //修改投资记录中已还款期数
+            TbInvestInfo tbInvestInfo = new TbInvestInfo();
+            tbInvestInfo.setIiBpId(bpId);
+            tbInvestInfo.setIiIsDel(1);
+            PageWhere pageWhere = new PageWhere(0, 10000);
+            List<TbInvestInfo> tbInvestInfos = investInfoDao.selectByConditionForPage(tbInvestInfo, pageWhere);
+
+            if(tbInvestInfos!=null && tbInvestInfos.size()>0){
+                for(TbInvestInfo info : tbInvestInfos){
+                    info.setIiBpRepayedPeriods(period);
+                    info.setIiUpdateTime(new Date());
+                    if(period == plan.getBpPeriods()){
+                        info.setIiFreezeStatus(10);
+                    }
+                    investInfoDao.updateByPrimaryKeySelective(info);
+                }
+            }
+
+
+
             //TODO 借款人还款明细 作废
 //            TbLoanerRepaymentDetail tbLoanerRepaymentDetail = new TbLoanerRepaymentDetail();
 //            tbLoanerRepaymentDetail.setLrdFactDateTime(new Date());
