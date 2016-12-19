@@ -1,5 +1,6 @@
 package com.jebao.erp.web.conf;
 
+import com.jebao.erp.web.utils.contract.PdfCustom;
 import org.springframework.boot.context.embedded.EmbeddedServletContainerInitializedEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Configuration;
@@ -14,5 +15,6 @@ public class StartupListener implements ApplicationListener<EmbeddedServletConta
     public void onApplicationEvent(EmbeddedServletContainerInitializedEvent event) {
         int serverPort = event.getEmbeddedServletContainer().getPort();
         EmbeddedServletInstance.setServerPort(serverPort);
+        new PdfCustom().doTaskForCreateContractPdf();
     }
 }
