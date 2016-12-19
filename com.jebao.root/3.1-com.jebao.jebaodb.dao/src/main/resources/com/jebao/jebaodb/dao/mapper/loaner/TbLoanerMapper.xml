@@ -437,6 +437,13 @@
         set l_is_del = 2
         where l_id = #{lId,jdbcType=BIGINT}
     </update>
+    <select id="selectByLoginId" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+        select
+        <include refid="Base_Column_List" />
+        from tb_loaner
+        where l_login_id = #{lLoginId,jdbcType=BIGINT}
+        and l_is_del = 1
+    </select>
     <select id="selectForPage" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>

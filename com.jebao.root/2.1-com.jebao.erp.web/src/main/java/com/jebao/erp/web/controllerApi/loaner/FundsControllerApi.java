@@ -1,7 +1,9 @@
 package com.jebao.erp.web.controllerApi.loaner;
 
 import com.jebao.erp.service.inf.investment.IIncomeDetailServiceInf;
+import com.jebao.erp.service.inf.loaner.ILoanerServiceInf;
 import com.jebao.erp.service.inf.loanmanage.ITbBidPlanServiceInf;
+import com.jebao.erp.service.inf.user.IAccountsFundsServiceInf;
 import com.jebao.erp.service.inf.user.IFundsDetailsServiceInf;
 import com.jebao.erp.web.requestModel.loaner.FundsDetailsSM;
 import com.jebao.erp.web.responseModel.base.JsonResult;
@@ -13,7 +15,9 @@ import com.jebao.erp.web.responseModel.loaner.FundsVM;
 import com.jebao.jebaodb.entity.extEntity.PageWhere;
 import com.jebao.jebaodb.entity.investment.search.IncomeDetailSM;
 import com.jebao.jebaodb.entity.loaner.LoanTotal;
+import com.jebao.jebaodb.entity.loaner.TbLoaner;
 import com.jebao.jebaodb.entity.user.FundsStatistics;
+import com.jebao.jebaodb.entity.user.TbAccountsFunds;
 import com.jebao.jebaodb.entity.user.TbFundsDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,12 +37,14 @@ import java.util.List;
 public class FundsControllerApi {
     @Autowired
     private IFundsDetailsServiceInf fundsDetailsService;
-
     @Autowired
     private ITbBidPlanServiceInf tbBidPlanService;
-
     @Autowired
     private IIncomeDetailServiceInf incomeDetailService;
+    @Autowired
+    private ILoanerServiceInf loanerService;
+    @Autowired
+    private IAccountsFundsServiceInf accountsFundsService;
 
     @RequestMapping(value = "details", method = RequestMethod.GET)
     @ResponseBody
@@ -88,23 +94,32 @@ public class FundsControllerApi {
 
     @RequestMapping(value = "total", method = RequestMethod.GET)
     @ResponseBody
-    public JsonResult total(Long loanerId) {
-        if (loanerId == null || loanerId == 0) {
+    public JsonResult total(Long loginId) {
+        if (loginId == null || loginId == 0) {
             return new JsonResultData<>(null);
         }
 
-        LoanTotal loanTotal = tbBidPlanService.totalLoanByLoanerId(loanerId);
-        if (loanTotal == null) {
+        TbLoaner loaner = loanerService.findLoanerByLoginId(loginId);
+        if (loaner == null) {
+            return new JsonResultData<>(null);
+        }
+
+        LoanTotal loanTotal = tbBidPlanService.totalLoanByLoanerId(loaner.getlId());
+        if (loanTotal == null || loanTotal.getLoanerId() == null) {
             return new JsonResultData<>(null);
         }
 
         FundsVM viewModel = new FundsVM();
-        viewModel.setJkAmounts(loanTotal.getTotalAmounts());
-        viewModel.setJkInterests(loanTotal.getInterests());
-        viewModel.setServiceCharge(loanTotal.getServiceCharge());
-        viewModel.setBalance(loanTotal.getAccountBalance());
-        viewModel.setDhAmounts(incomeDetailService.repaymoneyTotalByloanerId(loanerId, 1));
-        viewModel.setDhInterests(incomeDetailService.repaymoneyTotalByloanerId(loanerId, 2));
+        TbAccountsFunds accountsFunds = accountsFundsService.findAccountsFundsByloginId(loginId);
+        if (accountsFunds == null) {
+            viewModel.setBalance(new BigDecimal(0));
+        }
+        viewModel.setBalance(accountsFunds.getAfBalance());
+        viewModel.setJkAmounts(loanTotal.getTotalAmounts().setScale(2, BigDecimal.ROUND_HALF_UP));
+        viewModel.setJkInterests(loanTotal.getInterests().setScale(2, BigDecimal.ROUND_HALF_UP));
+        viewModel.setServiceCharge(loanTotal.getServiceCharge().setScale(2, BigDecimal.ROUND_HALF_UP));
+        viewModel.setDhAmounts(incomeDetailService.totalMoneyByloanerId(loaner.getlId(), 1, 1).setScale(2, BigDecimal.ROUND_HALF_UP));
+        viewModel.setDhInterests(incomeDetailService.totalMoneyByloanerId(loaner.getlId(), 2, 1).setScale(2, BigDecimal.ROUND_HALF_UP));
         return new JsonResultData<>(viewModel);
     }
 }

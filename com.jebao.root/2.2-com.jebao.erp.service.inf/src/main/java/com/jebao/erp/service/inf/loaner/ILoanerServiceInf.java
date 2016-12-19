@@ -55,6 +55,13 @@ public interface ILoanerServiceInf {
     TbLoaner findLoanerById(Long lId);
 
     /**
+     * 根据用户Id获取借款人信息
+     * @param loginId
+     * @return
+     */
+    TbLoaner findLoanerByLoginId(Long loginId);
+
+    /**
      * 根据查询条件统计借款人信息总数
      * @param record
      * @return

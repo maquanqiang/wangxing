@@ -32,8 +32,6 @@ public interface TbBidPlanMapper {
 
     int selectBySelfConditionCount(@Param("record") BidPlanSM record);
 
-    LoanTotal statisticsByLoanerId(Long loanerId);
-
     List<TbBidPlan> selectP2PList(@Param("record") ProductSM record, @Param("pageWhere") PageWhere pageWhere);
 
     int selectP2PListCount(@Param("record") ProductSM record);
@@ -45,4 +43,8 @@ public interface TbBidPlanMapper {
     int addSurplus(Map<String, Object> map);
 
     int timeoutBid(@Param("nowDate")Date nowDate);
+    /* ==================================================借款人相关借款统计查询==================================================*/
+    LoanTotal statisticsByLoanerId(Long loanerId);
+
+    List<LoanTotal> selectLoanTotalByLoanerIds(@Param("ids")List<Long> loanerIds);
 }

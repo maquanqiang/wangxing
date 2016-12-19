@@ -1,13 +1,8 @@
 package com.jebao.erp.web.controller;
 
-import com.jebao.erp.service.inf.loaner.ILoanerServiceInf;
-import com.jebao.jebaodb.entity.loaner.TbLoaner;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 /**
  * Created by Administrator on 2016/11/14.
@@ -15,14 +10,9 @@ import java.util.List;
 @Controller
 @RequestMapping("/loaner/")
 public class LoanerController extends _BaseController {
-    @Autowired
-    private ILoanerServiceInf loanerService;
-
     //region 借款人
     @RequestMapping("index")
-    public String index(Model model) {
-        List<TbLoaner> list = loanerService.selectLoanerByParamsForPage(null, null);
-        model.addAttribute("list", list);
+    public String index() {
         return "loaner/index";
     }
 

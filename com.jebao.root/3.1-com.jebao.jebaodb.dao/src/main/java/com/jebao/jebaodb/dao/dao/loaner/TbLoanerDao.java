@@ -36,9 +36,14 @@ public class TbLoanerDao {
     {
         return tbLoanerMapper.updateByPrimaryKey(record);
     }
+
+    /* ==================================================华丽分割线==================================================*/
     public int deleteByPrimaryKey(Long lId)
     {
         return tbLoanerMapper.deleteByPrimaryKey(lId);
+    }
+    public TbLoaner selectByLoginId(Long lLoginId){
+        return tbLoanerMapper.selectByLoginId(lLoginId);
     }
     public List<TbLoaner> selectForPage(PageWhere pageWhere)
     {

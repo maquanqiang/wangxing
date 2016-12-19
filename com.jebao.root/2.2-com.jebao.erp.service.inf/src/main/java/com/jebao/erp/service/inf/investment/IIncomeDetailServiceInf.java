@@ -25,11 +25,12 @@ public interface IIncomeDetailServiceInf {
 
     int selectGroupByConditionCount(RepaymentDetailSM record);
 
+    /*==================================================借款人相关信息==================================================*/
+
     /**
-     * 统计借款人待还金额（本金、利息）
-     * @param loanerId
-     * @param fundType
+     * 统计借款人待还(已还)金额（本金、利息）
+     *
      * @return
      */
-    BigDecimal repaymoneyTotalByloanerId(Long loanerId, int fundType);
+    BigDecimal totalMoneyByloanerId(Long loanerId, int fundType, int status);
 }

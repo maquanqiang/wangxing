@@ -1,5 +1,6 @@
 package com.jebao.erp.web.controllerApi.loaner;
 
+import com.jebao.erp.service.inf.investment.IIncomeDetailServiceInf;
 import com.jebao.erp.service.inf.loanmanage.ITbBidPlanServiceInf;
 import com.jebao.erp.web.requestModel.loaner.LoanRecordSM;
 import com.jebao.erp.web.responseModel.base.JsonResult;
@@ -28,6 +29,8 @@ import java.util.List;
 public class LoanRecordControllerApi {
     @Autowired
     private ITbBidPlanServiceInf tbBidPlanService;
+    @Autowired
+    private IIncomeDetailServiceInf incomeDetailService;
 
     @RequestMapping(value = "list", method = RequestMethod.GET)
     @ResponseBody
@@ -60,14 +63,14 @@ public class LoanRecordControllerApi {
         }
 
         LoanTotal loanTotal = tbBidPlanService.totalLoanByLoanerId(loanerId);
-        if(loanTotal == null){
+        if (loanTotal == null) {
             return new JsonResultData<>(null);
         }
         LoanRecordSumVM viewModel = new LoanRecordSumVM();
         viewModel.setJkCount(loanTotal.getTotalTrades());
         viewModel.setJkAmounts(loanTotal.getTotalAmounts());
-        viewModel.setDhAmounts(new BigDecimal(0));
-        viewModel.setYhAmounts(new BigDecimal(0));
+        viewModel.setDhAmounts(incomeDetailService.totalMoneyByloanerId(loanerId, 1, 1).setScale(2, BigDecimal.ROUND_HALF_UP));
+        viewModel.setYhAmounts(incomeDetailService.totalMoneyByloanerId(loanerId, 1, 2).setScale(2, BigDecimal.ROUND_HALF_UP));
         return new JsonResultData<>(viewModel);
     }
 }

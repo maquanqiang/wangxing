@@ -14,7 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 /**
  * Created by Administrator on 2016/10/20.
@@ -86,15 +85,6 @@ public class TbBidPlanDao {
     }
 
     /**
-     * 统计借款总金额，个数
-     * @param loanerId
-     * @return
-     */
-    public LoanTotal statisticsByLoanerId(Long loanerId){
-        return tbBidPlanMapper.statisticsByLoanerId(loanerId);
-    }
-
-    /**
      * p2p条件查询列表
      * @param record
      * @param pageWhere
@@ -152,5 +142,24 @@ public class TbBidPlanDao {
     @Transactional
     public int insertForTransactional(TbBidPlan record) {
         return tbBidPlanMapper.insert(record);
+    }
+
+    /* ==================================================借款人相关借款统计查询==================================================*/
+    /**
+     * 统计借款总金额，数量
+     * @param loanerId
+     * @return
+     */
+    public LoanTotal statisticsByLoanerId(Long loanerId){
+        return tbBidPlanMapper.statisticsByLoanerId(loanerId);
+    }
+
+    /**
+     * 批量查询统计借款人借款金额，数量
+     * @param loanerIds
+     * @return
+     */
+    public List<LoanTotal> selectLoanTotalByLoanerIds(@Param("ids")List<Long> loanerIds){
+        return tbBidPlanMapper.selectLoanTotalByLoanerIds(loanerIds);
     }
 }

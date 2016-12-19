@@ -83,7 +83,7 @@
                                                     <a href="javascript:;" class="btn btn-default btn-xs" role="button" @click="openEditForm(item.id)">修改</a>
                                                     <a :href="getDetailHref(item.id)" class="btn btn-default btn-xs" role="button" target="_blank">查看详情</a>
                                                     <a :href="getFundsHref(item.loginId)" class="btn btn-default btn-xs" role="button" target="_blank">资金信息</a>
-                                                    <a class="btn btn-default btn-xs" role="button" target="_blank">借款信息</a>
+                                                    <a :href="getLoanHref(item.id)" class="btn btn-default btn-xs" role="button" target="_blank">借款信息</a>
                                                     <a :href="getRiskHref(item.id)" class="btn btn-default btn-xs" role="button" target="_blank">风控信息</a>
                                                     <a class="btn btn-default btn-xs remove-msg" role="button" @click="openDeleteWin(item.id)">删除</a>
                                                 </td>

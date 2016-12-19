@@ -39,7 +39,7 @@ public class IncomeDetailServiceImpl implements IIncomeDetailServiceInf {
         return result;
     }
 
-    public int addInvestInfo(TbIncomeDetail record){
+    public int addInvestInfo(TbIncomeDetail record) {
         int result = incomeDetailDao.insert(record);
         return result;
     }
@@ -72,23 +72,24 @@ public class IncomeDetailServiceImpl implements IIncomeDetailServiceInf {
         return incomeDetailDao.selectGroupByConditionCount(record);
     }
 
-    /**
-     * 统计借款人待还金额（本金、利息）
-     * @param loanerId
-     * @param fundType
-     * @return
-     */
-    @Override
-    public BigDecimal repaymoneyTotalByloanerId(Long loanerId, int fundType) {
-        IncomeDetailSM model = new IncomeDetailSM();
-        model.setFundType(fundType);
-        model.setLoanerId(loanerId);
-        return incomeDetailDao.repaymoneyTotalByloanerId(model);
-    }
-
-
     public int updateByBidIdSelective(TbIncomeDetail record) {
         int result = incomeDetailDao.updateByPrimaryKeySelective(record);
         return result;
+    }
+
+        /*==================================================借款人相关信息==================================================*/
+
+    /**
+     * 统计借款人待还(已还)金额（本金、利息）
+     *
+     * @return
+     */
+    @Override
+    public BigDecimal totalMoneyByloanerId(Long loanerId, int fundType, int status) {
+        IncomeDetailSM model = new IncomeDetailSM();
+        model.setFundType(fundType);
+        model.setLoanerId(loanerId);
+        model.setStatus(status);
+        return incomeDetailDao.totalMoneyByloanerId(model);
     }
 }

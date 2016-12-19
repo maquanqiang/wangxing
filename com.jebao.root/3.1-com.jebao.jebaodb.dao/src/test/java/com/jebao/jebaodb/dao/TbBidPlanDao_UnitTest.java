@@ -7,15 +7,15 @@ import com.jebao.jebaodb.dao.dao.loanmanage.TbBidRiskDataDao;
 import com.jebao.jebaodb.entity.extEntity.PageWhere;
 import com.jebao.jebaodb.entity.investment.FundDetailSM;
 import com.jebao.jebaodb.entity.investment.TbIncomeDetail;
-import com.jebao.jebaodb.entity.loaner.TbRiskCtlPrjTemp;
 import com.jebao.jebaodb.entity.loanmanage.TbBidPlan;
 import com.jebao.jebaodb.entity.loanmanage.TbBidRiskData;
 import com.jebao.jebaodb.entity.product.ProductSM;
-import org.apache.ibatis.annotations.Param;
+import com.jebao.jebaodb.entity.loaner.LoanTotal;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -122,4 +122,15 @@ public class TbBidPlanDao_UnitTest extends _BaseUnitTest {
 
     }
 
+    @Test
+    public void selectLoanTotalByLoanerIds(){
+        List<Long> ids = new ArrayList<Long>();
+        ids.add(1l);
+        ids.add(2l);
+        ids.add(4l);
+        List<LoanTotal> list = tbBidPlanDao.selectLoanTotalByLoanerIds(ids);
+        if(list!= null){
+            System.out.println(list.size());
+        }
+    }
 }

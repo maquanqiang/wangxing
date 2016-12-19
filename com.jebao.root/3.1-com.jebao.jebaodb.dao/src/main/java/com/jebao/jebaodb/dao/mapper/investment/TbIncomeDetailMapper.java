@@ -50,7 +50,7 @@ public interface TbIncomeDetailMapper {
     BigDecimal repaymoneyTotal(@Param("record") TbIncomeDetail record);
 
     /*==================================================借款人相关信息==================================================*/
-    BigDecimal repaymoneyTotalByloanerId(IncomeDetailSM model);
+    BigDecimal totalMoneyByloanerId(IncomeDetailSM model);
     /*==================================================账户总览统计==================================================*/
     double selectDueInMoneyByLoginId(@Param("record") TbIncomeDetail record);
 

@@ -55,6 +55,15 @@
         $('.copyBtn').click(function () {
             $(this).prev().select();
             document.execCommand('Copy');
+            layer.open({
+                title:'提示',
+                content:'复制成功！',
+                btn: ['确认'],
+                area: '280px',
+                yes: function(){
+                    layer.closeAll();
+                }
+            });
         });
     })
 </script>

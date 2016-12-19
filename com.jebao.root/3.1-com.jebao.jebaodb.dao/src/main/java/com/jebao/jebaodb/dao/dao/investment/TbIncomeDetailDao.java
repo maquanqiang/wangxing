@@ -143,8 +143,8 @@ public class TbIncomeDetailDao {
      * @param model
      * @return
      */
-    public BigDecimal repaymoneyTotalByloanerId(IncomeDetailSM model){
-        return mapper.repaymoneyTotalByloanerId(model);
+    public BigDecimal totalMoneyByloanerId(IncomeDetailSM model){
+        return mapper.totalMoneyByloanerId(model);
     }
 
     /*==================================================账户总览统计==================================================*/
