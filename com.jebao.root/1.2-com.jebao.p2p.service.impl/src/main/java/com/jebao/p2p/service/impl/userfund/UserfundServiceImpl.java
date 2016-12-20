@@ -316,7 +316,7 @@ public class UserfundServiceImpl implements IUserfundServiceInf {
                     logModel.setUlContent(userLogContent+"。流水号："+response.getMchnt_txn_ssn());
                     return new ResultData<TbUserDetails>(true, userDetailsEntity,"更换成功");
                 }else{
-                    return new ResultInfo(false, "正在审核中...");
+                    return new ResultInfo(false, response.getBank_nm()+","+response.getCard_no(),1);
                 }
             }
         }

@@ -75,7 +75,7 @@ public class UserfundController extends _BaseController {
             String backUrl = "/userfund/register"; // web页面内的回跳地址，可以是相对路径
             goFailedPage(title, content, backUrl);
         } else {
-            goSuccessPage("资金账户开通成功！", "开启理财致富之路～", "/user/myaccount", "查看我的账户");
+            goSuccessPage("资金账户开通成功！", "开启理财致富之路～", "/user/index", "查看我的账户");
         }
         return null;
     }
