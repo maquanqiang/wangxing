@@ -76,7 +76,11 @@ public class CreateRepaymentDetails {
         RepaymentDetail pLoanIntent = new RepaymentDetail();
         pLoanIntent.setFundType(1);
         pLoanIntent.setMoney(money);
-        pLoanIntent.setIntentPeriod(periods);
+        if(payType == 1){
+            pLoanIntent.setIntentPeriod(1);
+        }else {
+            pLoanIntent.setIntentPeriod(periods);
+        }
         pLoanIntent.setRepayDate(now.getTime());
 
         loanFundIntents.add(pLoanIntent);

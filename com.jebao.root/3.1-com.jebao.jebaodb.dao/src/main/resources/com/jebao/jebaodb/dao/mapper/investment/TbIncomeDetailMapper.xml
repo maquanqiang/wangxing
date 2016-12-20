@@ -38,6 +38,9 @@
     where ind_id = #{indId,jdbcType=BIGINT}
   </select>
   <insert id="insert" parameterType="com.jebao.jebaodb.entity.investment.TbIncomeDetail" >
+      <selectKey resultType="java.lang.Long" keyProperty="indId" order="AFTER" >
+          SELECT LAST_INSERT_ID()
+      </selectKey>
     insert into tb_income_detail (ind_id, ind_ii_id, ind_login_id, 
       ind_true_name, ind_third_account, ind_bp_number, 
       ind_bp_name, ind_periods, ind_date_time, 
@@ -252,16 +255,15 @@
       <if test="indCreateTime != null" >
         ind_create_time = #{indCreateTime,jdbcType=TIMESTAMP},
       </if>
-      <!--<if test="indUpdateTime != null" >-->
-        <!--ind_update_time = #{indUpdateTime,jdbcType=TIMESTAMP},-->
-      <!--</if>-->
+      <if test="indUpdateTime != null" >
+        ind_update_time = #{indUpdateTime,jdbcType=TIMESTAMP},
+      </if>
       <if test="indIsDel != null" >
         ind_is_del = #{indIsDel,jdbcType=INTEGER},
       </if>
         <if test="indBpId != null" >
             ind_bp_id = #{indBpId,jdbcType=BIGINT},
         </if>
-        ind_update_time = NOW()
     </set>
     where ind_id = #{indId,jdbcType=BIGINT}
   </update>

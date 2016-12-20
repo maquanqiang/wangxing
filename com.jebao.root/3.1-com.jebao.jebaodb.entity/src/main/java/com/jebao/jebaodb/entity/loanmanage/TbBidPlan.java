@@ -1,5 +1,7 @@
 package com.jebao.jebaodb.entity.loanmanage;
 
+import com.jebao.jebaodb.entity.loanmanage.search.BidPlanSM;
+
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -100,6 +102,16 @@ public class TbBidPlan {
     private String bpDesc;
 
     private Integer bpType;
+
+    private BigDecimal bpUpRate;
+
+    public BigDecimal getBpUpRate() {
+        return bpUpRate;
+    }
+
+    public void setBpUpRate(BigDecimal bpUpRate) {
+        this.bpUpRate = bpUpRate;
+    }
 
     public Long getBpId() {
         return bpId;

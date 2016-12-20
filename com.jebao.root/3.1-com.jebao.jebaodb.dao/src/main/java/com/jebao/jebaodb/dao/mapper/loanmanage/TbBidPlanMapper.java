@@ -38,7 +38,7 @@ public interface TbBidPlanMapper {
 
     int investBid(Map<String, Object> map);
 
-    int fullBid(@Param("bpId")Long bpId);
+    int fullBid(Map<String, Object> map);
 
     int addSurplus(Map<String, Object> map);
 

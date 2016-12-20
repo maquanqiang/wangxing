@@ -20,7 +20,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -55,10 +57,13 @@ public class TbBidPlanDao_UnitTest extends _BaseUnitTest {
 
     @Test
     public void overdueMoneyOther(){
-        TbInvestInfo tbInvestInfo = new TbInvestInfo();
-        PageWhere pageWhere = new PageWhere(0, 10000);
-        List<TbInvestInfo> tbInvestInfos = investInfoDao.selectBybpId(tbInvestInfo, pageWhere);
-        System.out.println();
+        Map<String, Object> map = new HashMap<>();
+        map.put("bpId", 10);
+        map.put("nowTime", new Date());
+
+        int i = tbBidPlanDao.fullBid(map);
+        System.out.println(i);
+
     }
 
     @Test

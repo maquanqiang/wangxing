@@ -1,6 +1,7 @@
 package com.jebao.erp.web.requestModel.bidplan;
 
 import com.jebao.jebaodb.entity.loanmanage.TbBidPlan;
+import com.jebao.jebaodb.entity.loanmanage.search.BidPlanSM;
 import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -45,6 +46,7 @@ public class AddPlanForm {
         bidPlan.setBpRiskOpinion(planForm.getBpRiskOpinion());
         bidPlan.setBpType(planForm.getBpType());
         bidPlan.setBpDesc(planForm.getBpDesc());
+        bidPlan.setBpUpRate(planForm.getBpUpRate());
         return bidPlan;
     }
 
@@ -109,6 +111,16 @@ public class AddPlanForm {
     private Integer bpType;
     @DecimalMin(value = "1")
     private Integer bpLoanerType;
+
+    private BigDecimal bpUpRate;
+
+    public BigDecimal getBpUpRate() {
+        return bpUpRate;
+    }
+
+    public void setBpUpRate(BigDecimal bpUpRate) {
+        this.bpUpRate = bpUpRate;
+    }
 
     public Long getRcptId() {
         return rcptId;

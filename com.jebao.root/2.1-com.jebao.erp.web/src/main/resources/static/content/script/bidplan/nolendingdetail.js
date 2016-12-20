@@ -65,6 +65,18 @@ var vm = new Vue({
             }
         })
     },
+    //watch可以监视数据变动，针对相应的数据设置监视函数即可
+    watch: {
+        //
+        "plan.bpType" : function (newVal,oldVal) {
+            if(newVal == 3){
+                $("#bpUpRateDiv").show()
+            }else{
+                $("#bpUpRateDiv").hide()
+                $("#bpUpRate").val(0)
+            }
+        }
+    },
     //方法，可用于绑定事件或直接调用
     methods: {
         //表单登录验证封装

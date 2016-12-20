@@ -12,7 +12,7 @@ public class InvestInfoForm {
     @NotNull(message="姓名不能为空！")
     private Long bpId;
 
-    @DecimalMin(value="1000",message="投资金额最小值是1000")
+    @DecimalMin(value="1",message="投资金额最小值是1")
     @NotNull(message = "投资金额不能为空")
     private BigDecimal investMoney;
 

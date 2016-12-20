@@ -21,6 +21,7 @@ $(function () {
         var interest = parseInt(($(this).val())*time*(model.product.bpRate)/100/365);
         $('.money-income').html(interest);
     });
+
 });
 
 
@@ -136,19 +137,33 @@ var vm = new Vue({
                 return;
             }
 
-
             var form = {bpId:$("#bpId").val(), investMoney:$("#investMoney").val().trim()}
-            $.post("/api/product/investBid", form, function (response) {
-                if (response.success_is_ok) {
-                    var data = response.data;
-                    if(data.flag){
-                        $.post("/product/productSuccess", {investMoney:data.investMoney})
-                    }else{
-                        $.post("/product/productFail", {msg:data.msg})
-                    }
+            //投资弹出框
+            layer.open({
+                title:'投资提示',
+                content:'确认投资：金额为'+form.investMoney,
+                btn: ['确认', '稍后'],
+                area: ['340px', '180px'],
+                yes: function() {
+                    layer.closeAll();
+                    $.post("/api/product/investBid", form, function (response) {
+                        if (response.success_is_ok) {
+                            var data = response.data;
+                            if(data.flag){
+                                window.location.href="/product/productSuccess?investMoney="+form.investMoney;
+                            }else{
+                                window.location.href="/product/productFail?msg="+data.msg;
+                            }
+                        }else{
+                            layer.alert(response.error);
+                            setTximeout(function(){window.location.reload();},5000)
+                        }
+                    });
+                },
+                btn2: function(){
+                    layer.closeAll();
                 }
-                setTimeout(function(){window.location.reload();},5000)
-            });
+            })
         }
     }
 });

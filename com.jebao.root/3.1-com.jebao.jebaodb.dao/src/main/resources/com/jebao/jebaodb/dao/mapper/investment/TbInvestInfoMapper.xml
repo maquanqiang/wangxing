@@ -31,6 +31,9 @@
     where ii_id = #{iiId,jdbcType=BIGINT}
   </select>
   <insert id="insert" parameterType="com.jebao.jebaodb.entity.investment.TbInvestInfo" >
+      <selectKey resultType="java.lang.Long" keyProperty="iiId" order="AFTER" >
+          SELECT LAST_INSERT_ID()
+      </selectKey>
     insert into tb_invest_info (ii_id, ii_login_id, ii_login_name, 
       ii_true_name, ii_third_account, ii_contract_no, 
       ii_bp_id, ii_bp_name, ii_money, 

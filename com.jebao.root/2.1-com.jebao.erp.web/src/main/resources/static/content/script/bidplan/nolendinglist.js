@@ -53,6 +53,13 @@ var vm = new Vue({
     //方法，可用于绑定事件或直接调用
     methods: {
         search:function(event){
+            if(model.searchObj.searchDateSt!=null||model.searchObj.searchDateEnd!=null){
+                if(model.searchObj.searchDateType==null){
+                    layer.alert("请选择时间查询类型");
+                    return;
+                }
+            }
+
             if (typeof event !== "undefined"){ //点击查询按钮的话，是查询第一页数据
                 model.searchObj.pageIndex=0;
             }

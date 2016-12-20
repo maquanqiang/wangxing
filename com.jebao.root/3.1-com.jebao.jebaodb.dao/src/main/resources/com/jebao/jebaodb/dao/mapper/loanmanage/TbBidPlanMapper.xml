@@ -45,6 +45,8 @@
         <result column="bp_repayed_periods" property="bpRepayedPeriods" jdbcType="INTEGER" />
         <result column="bp_is_del" property="bpIsDel" jdbcType="INTEGER" />
         <result column="bp_type" property="bpType" jdbcType="INTEGER" />
+        <result column="bp_up_rate" property="bpUpRate" jdbcType="DECIMAL" />
+
     </resultMap>
     <resultMap id="ResultMapWithBLOBs" type="com.jebao.jebaodb.entity.loanmanage.TbBidPlan" extends="BaseResultMap" >
         <result column="bp_desc" property="bpDesc" jdbcType="LONGVARCHAR" />
@@ -57,7 +59,7 @@
         bp_loaner_type, bp_interest_pay_type, bp_open_time, bp_interest_st,
         bp_remark, bp_expect_loan_date, bp_expect_repay_date, bp_service_charge_rate, bp_late_rate,
         bp_borrow_desc, bp_funds_purpose, bp_repaying_source, bp_personal_credit, bp_mortgage_info,
-        bp_risk_opinion, bp_repayed_periods, bp_is_del, bp_type
+        bp_risk_opinion, bp_repayed_periods, bp_is_del, bp_type, bp_up_rate
     </sql>
     <sql id="Blob_Column_List" >
         bp_desc
@@ -88,7 +90,7 @@
         bp_service_charge_rate, bp_late_rate, bp_borrow_desc,
         bp_funds_purpose, bp_repaying_source, bp_personal_credit,
         bp_mortgage_info, bp_risk_opinion, bp_repayed_periods,
-        bp_is_del, bp_desc, bp_type)
+        bp_is_del, bp_desc, bp_type, bp_up_rate)
         values (#{bpId,jdbcType=BIGINT}, #{bpName,jdbcType=VARCHAR}, #{bpNumber,jdbcType=VARCHAR},
         #{bpPeriodsDisplay,jdbcType=INTEGER}, #{bpPeriods,jdbcType=INTEGER}, #{bpCycleType,jdbcType=INTEGER},
         #{bpCycleSize,jdbcType=INTEGER}, #{bpSurplusMoney,jdbcType=DECIMAL}, #{bpLoanMoney,jdbcType=DECIMAL},
@@ -103,7 +105,7 @@
         #{bpServiceChargeRate,jdbcType=DECIMAL}, #{bpLateRate,jdbcType=DECIMAL}, #{bpBorrowDesc,jdbcType=VARCHAR},
         #{bpFundsPurpose,jdbcType=VARCHAR}, #{bpRepayingSource,jdbcType=VARCHAR}, #{bpPersonalCredit,jdbcType=VARCHAR},
         #{bpMortgageInfo,jdbcType=VARCHAR}, #{bpRiskOpinion,jdbcType=VARCHAR}, #{bpRepayedPeriods,jdbcType=INTEGER},
-        #{bpIsDel,jdbcType=INTEGER}, #{bpDesc,jdbcType=LONGVARCHAR}, #{bpType,jdbcType=INTEGER})
+        #{bpIsDel,jdbcType=INTEGER}, #{bpDesc,jdbcType=LONGVARCHAR}, #{bpType,jdbcType=INTEGER},  #{bpUpRate,jdbcType=DECIMAL})
     </insert>
     <insert id="insertSelective" parameterType="com.jebao.jebaodb.entity.loanmanage.TbBidPlan" >
         insert into tb_bid_plan
@@ -240,6 +242,9 @@
             <if test="bpType != null" >
                 bp_type,
             </if>
+            <if test="bpUpRate != null" >
+                bp_up_rate,
+            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides="," >
             <if test="bpId != null" >
@@ -374,6 +379,9 @@
             <if test="bpType != null" >
                 #{bpType,jdbcType=INTEGER},
             </if>
+            <if test="bpUpRate != null" >
+                #{bpUpRate,jdbcType=DECIMAL},
+            </if>
         </trim>
     </insert>
     <update id="updateByPrimaryKeySelective" parameterType="com.jebao.jebaodb.entity.loanmanage.TbBidPlan" >
@@ -433,10 +441,9 @@
             <if test="bpCreateTime != null" >
                 bp_create_time = #{bpCreateTime,jdbcType=TIMESTAMP},
             </if>
-            bp_update_time = now(),
-            <!--<if test="bpUpdateTime != null" >-->
-                <!--bp_update_time = #{bpUpdateTime,jdbcType=TIMESTAMP},-->
-            <!--</if>-->
+            <if test="bpUpdateTime != null" >
+                bp_update_time = #{bpUpdateTime,jdbcType=TIMESTAMP},
+            </if>
             <if test="bpLoanTime != null" >
                 bp_loan_time = #{bpLoanTime,jdbcType=TIMESTAMP},
             </if>
@@ -509,6 +516,9 @@
             <if test="bpType != null" >
                 bp_type = #{bpType,jdbcType=INTEGER},
             </if>
+            <if test="bpUpRate != null" >
+                bp_up_rate = #{bpUpRate,jdbcType=DECIMAL},
+            </if>
         </set>
         where bp_id = #{bpId,jdbcType=BIGINT}
     </update>
@@ -556,7 +566,8 @@
         bp_repayed_periods = #{bpRepayedPeriods,jdbcType=INTEGER},
         bp_is_del = #{bpIsDel,jdbcType=INTEGER},
         bp_desc = #{bpDesc,jdbcType=LONGVARCHAR},
-        bp_type = #{bpType,jdbcType=INTEGER}
+        bp_type = #{bpType,jdbcType=INTEGER},
+        bp_up_rate = #{bpUpRate,jdbcType=DECIMAL}
         where bp_id = #{bpId,jdbcType=BIGINT}
     </update>
     <update id="updateByPrimaryKey" parameterType="com.jebao.jebaodb.entity.loanmanage.TbBidPlan" >
@@ -601,7 +612,8 @@
       bp_risk_opinion = #{bpRiskOpinion,jdbcType=VARCHAR},
       bp_repayed_periods = #{bpRepayedPeriods,jdbcType=INTEGER},
       bp_is_del = #{bpIsDel,jdbcType=INTEGER},
-      bp_type = #{bpType,jdbcType=INTEGER}
+      bp_type = #{bpType,jdbcType=INTEGER},
+      bp_up_rate = #{bpUpRate,jdbcType=DECIMAL}
     where bp_id = #{bpId,jdbcType=BIGINT}
   </update>
 
@@ -732,6 +744,9 @@
         <!--</if>-->
         <if test="record.bpType != null" >
             AND bp_type = #{record.bpType,jdbcType=INTEGER}
+        </if>
+        <if test="record.bpUpRate != null" >
+            AND bp_up_rate = #{record.bpUpRate,jdbcType=DECIMAL}
         </if>
         AND bp_is_del = 1
     </sql>
@@ -916,9 +931,9 @@
         <![CDATA[
         UPDATE tb_bid_plan
             SET bp_surplus_money = bp_surplus_money - #{investMoney},
-            bp_update_time = NOW()
+            bp_update_time = #{nowTime}
             WHERE
-                bp_start_time <= NOW()
+                bp_start_time <= #{nowTime}
                 AND bp_surplus_money >= #{investMoney}
                 AND bp_top_money >= #{investMoney}
                 AND bp_id = #{bpId}
@@ -928,15 +943,15 @@
     <update id="addSurplus"  parameterType="map">
         UPDATE tb_bid_plan
             SET bp_surplus_money = bp_surplus_money + #{investMoney},
-            bp_update_time = NOW()
+            bp_update_time = #{nowTime}
             WHERE
                 bp_id = #{bpId}
     </update>
 
-    <update id="fullBid" parameterType="long">
+    <update id="fullBid" parameterType="map">
         UPDATE tb_bid_plan
-        SET bp_full_time = NOW(),
-         bp_update_time = NOW(),
+        SET bp_full_time = #{nowTime},
+         bp_update_time = #{nowTime},
          bp_status = 3
         WHERE
             bp_surplus_money = 0
