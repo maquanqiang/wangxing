@@ -108,7 +108,7 @@
     <!-- 页面主内容 -->
     <div class="content-wrapper">
         <section class="content-header">
-            <h1>部门管理</h1>
+            <h1>职级管理</h1>
         </section>
         <section class="content">
             <!-- 查询条件块 -->
@@ -121,26 +121,6 @@
                                     <div class="input-group margin">
                                         <div class="input-group-addon">名称</div>
                                         <input type="text" class="form-control" name="name" v-model="searchObj.name">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="input-group margin">
-                                        <div class="input-group-addon">只看部级</div>
-                                        <select class="form-control" name="isDepartment" style="width: 15rem;" v-model="searchObj.isDepartment">
-                                            <option value="">全部</option>
-                                            <option value="1">是</option>
-                                            <option value="0">否</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="input-group margin">
-                                        <div class="input-group-addon">部门</div>
-                                        <select class="select2" name="parentId" style="width: 15rem;" v-model.number="searchObj.parentId">
-                                            <option value="">全部</option>
-                                            <option v-for="item in departments" :value="item.id">{{ item.name }}
-                                            </option>
-                                        </select>
                                     </div>
                                 </div>
 
@@ -169,7 +149,7 @@
                         <ul class="nav nav-tabs pull-right ui-sortable-handle">
                             <li><a href="#content-chart" data-toggle="tab">图表</a></li>
                             <li class="active"><a href="#content-table" data-toggle="tab">表格</a></li>
-                            <li class="pull-left header"><i class="fa fa-bar-chart-o"></i> 部门/团队信息</li>
+                            <li class="pull-left header"><i class="fa fa-bar-chart-o"></i> 职级信息</li>
                         </ul>
                         <div class="tab-content no-padding">
                             <!-- tab 表格内容切换区域 -->
@@ -179,7 +159,7 @@
                                     <tr>
                                         <th>名称</th>
                                         <th>上级名称</th>
-                                        <th>是否部级</th>
+                                        <th>业绩提成比例</th>
                                         <th>操作</th>
                                     </tr>
                                     </thead>
@@ -189,7 +169,7 @@
                                         <tr>
                                             <td>{{item.name}}</td>
                                             <td>{{item.parentName}}</td>
-                                            <td>{{item.isDepartment?"是":"否"}}</td>
+                                            <td>{{item.brokerage | percent}}</td>
                                             <td>
                                                 <a href="javascript:;" class="btn btn-default btn-xs"
                                                    role="button" @click="openPostForm(item.id)">修改</a>
@@ -226,31 +206,31 @@
 
 <!--添加模板-->
 <div class="modal col-xs-12 js-open-modal">
-    <form class="form-horizontal">
+    <form class="form-horizontal" autocomplete="off">
         <input type="hidden" name="id" v-model.number="formData.id" >
         <div class="box-body">
             <div class="form-group">
                 <label class="col-sm-3 control-label">名称:</label>
                 <div class="col-sm-8">
-                    <input type="text" class="form-control" autocomplete="off" name="name" v-model="formData.name">
+                    <input type="text" class="form-control" name="name" v-model="formData.name">
                 </div>
             </div>
             <div class="form-group">
-                <label class="col-sm-3 control-label">上级部门:</label>
+                <label class="col-sm-3 control-label">上级:</label>
                 <div class="col-sm-8">
                     <select class="select2" style="width:100%;height: 34px;border-color: #d2d6de;"  name="parentId" v-model.number="formData.parentId" :disabled="isEdit">
                         <option value="0">无</option>
-                        <option v-for="item in departments" :value="item.id">{{ item.name }}</option>
+                        <option v-for="item in ranks" :value="item.id">{{ item.name }}</option>
                     </select>
                 </div>
             </div>
             <div class="form-group">
-                <label class="col-sm-3 control-label">级别:</label>
+                <label class="col-sm-3 control-label">业绩提成:</label>
                 <div class="col-sm-8">
-                    <select class="form-control" style="width:100%;height: 34px;border-color: #d2d6de;"  name="isDepartment" v-model.number="formData.isDepartment" :disabled="isEdit">
-                        <option value="1">部门</option>
-                        <option value="0">团队/小组</option>
-                    </select>
+                    <div class="input-group">
+                        <input type="text" class="form-control" name="brokerage" v-model="formData.brokerage">
+                        <span class="input-group-addon">%</span>
+                    </div>
                 </div>
             </div>
 
@@ -276,6 +256,6 @@
         </ul>
     </li>
 </script>
-<script src=$UrlHelperTool.href("/content/script/employee/department.js")></script>
+<script src="/content/script/employee/rank.js"></script>
 </body>
 </html>

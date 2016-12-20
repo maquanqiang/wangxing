@@ -1,6 +1,3 @@
-/**
- * Created by Jack on 2016/11/30.
- */
 // define the item component
 Vue.component('tree-item', {
     template: '#item-template',
@@ -30,10 +27,8 @@ Vue.component('tree-item', {
 var model = {
     //查询条件
     searchObj: {},
-    //部门
-    departments:[],
-    //团队
-    teams:[],
+    //职级
+    ranks:[],
     dataList:[],
     //弹窗vm实例
     openFormVm:{}
@@ -44,15 +39,15 @@ var vm = new Vue({
     data:model,
     computed:{
         treeData:function(){
-            var dataSource = this.teams;
+            var dataSource = this.ranks;
             if (dataSource.length === 0){
                 return {name:"金额宝"};
             }
-            var findChildrenFunc = function(teamId){
+            var findChildrenFunc = function(parentId){
                 var children = [];
                 for (var i=0;i<dataSource.length;i++){
                     var item = dataSource[i];
-                    if (item.parentId === teamId){
+                    if (item.parentId === parentId){
                         var itemChildren = findChildrenFunc(item.id);
                         item.children = itemChildren;
                         children.push(item);
@@ -67,36 +62,31 @@ var vm = new Vue({
     beforeCreate:function(){
         //初始化数据
         model.searchObj=$("#search_form").serializeObject();
-        model.searchObj.parentAndSelf=true;
         model.searchObj.pageIndex=0;
-        model.searchObj.pageSize=10000;
+        model.searchObj.pageSize=100;
         //在这里的远程数据更新，必须是在对象已经具备相应属性。否则有可能不会绑定映射
         //获取部门、团队数据
-        $.get("/api/department/list",{pageIndex:0,pageSize:1000},function(response){
+        $.get("/api/rank/list",{pageIndex:0,pageSize:1000},function(response){
             if (response.success_is_ok){
-                var teams = response.data;
-                var departments = new Array();
-                teams.forEach(function(item){
-                    if(item.isDepartment){
-                        departments.push(item);
-                    }
-                });
-                vm.teams=teams;
-                vm.departments=departments;
-                vm.search();//此页面vm.search 查询依赖于vm.teams
+                var list = response.data;
+                for (var i=0;i<list.length;i++){
+                    var item =list[i];
+                    var parentItem = vm.getItem(item.parentId);
+                    item.parentName=parentItem.name;
+                }
+                model.ranks = list;
             }
         });
     },
     created:function(){
-        //this.search();
+        this.search();
     },
-    mounted:function(){
-        //在 el 被替换后，做页面元素变动的操作
-        $("#search_form select.select2").select2().on("change",function(){
-            model.searchObj[this.name]=this.value;
-        });
+    filters: {
+        percent: function (value) {
+            if (isNaN(value)) return '';
+            return (value * 100).toFixed(2)+" %";
+        }
     },
-
     methods:{
         //查询
         search:function(event){
@@ -105,15 +95,15 @@ var vm = new Vue({
             }
             $("#btnSearch").addClass("disabled");//禁用按钮
             var loadIndex = layer.load(2);
-            $.get("/api/department/list",model.searchObj,function(response){
+            $.get("/api/rank/list",model.searchObj,function(response){
                 if (response.success_is_ok){
-                    var teamList = response.data;
-                    for (var i=0;i<teamList.length;i++){
-                        var item =teamList[i];
-                        var parentTeam = vm.getTeam(item.parentId);
-                        item.parentName=parentTeam.name;
+                    var list = response.data;
+                    for (var i=0;i<list.length;i++){
+                        var item =list[i];
+                        var parentItem = vm.getItem(item.parentId);
+                        item.parentName=parentItem.name;
                     }
-                    vm.dataList=teamList;
+                    model.dataList=list;
                     //设置分页
                     var pageCount = Math.ceil(response.count / model.searchObj.pageSize);
                     if (pageCount>0){
@@ -125,7 +115,7 @@ var vm = new Vue({
                             groups: 7, //连续显示分页数
                             jump: function(obj, first){ //触发分页后的回调
                                 if(!first){ //点击跳页触发函数自身，并传递当前页：obj.curr
-                                    vm.searchObj.pageIndex=obj.curr -1;//设置查询指定页
+                                    model.searchObj.pageIndex=obj.curr -1;//设置查询指定页
                                     vm.search();
                                 }
                             },
@@ -137,10 +127,10 @@ var vm = new Vue({
                 layer.close(loadIndex);
             });
         },
-        getTeam:function(teamId){
-            for (var i=0;i<vm.teams.length;i++){
-                if (vm.teams[i].id==teamId){
-                    return vm.teams[i];
+        getItem:function(itemId){
+            for (var i=0;i<vm.ranks.length;i++){
+                if (vm.ranks[i].id==itemId){
+                    return vm.ranks[i];
                 }
             }
             return {name:""};
@@ -157,8 +147,9 @@ var vm = new Vue({
                 area:['500px'],
                 btn1: function(){
                     var $form = $("#openForm");
-                    var bootstrapValidator = $form.data('bootstrapValidator').validate();
-                    if(!bootstrapValidator.isValid()){
+                    var $validator = $form.data('bootstrapValidator');
+                    if(!$validator.isValid()){
+                        $validator.validate();
                         return false;
                     }else{
                         vm.post($form);
@@ -172,7 +163,7 @@ var vm = new Vue({
             var openVmModel ={
                 formSelector:formSelector,
                 formData:$(formSelector).serializeObject(),
-                departments:vm.departments,
+                ranks:model.ranks,
                 error:{hide:true,message:""}
             };
             openVmModel.formData.id=itemId;
@@ -188,12 +179,11 @@ var vm = new Vue({
                     var itemId =openVmModel.formData.id;
                     //填充窗体数据
                     if (itemId>0){
-                        for (var i=0;i<vm.dataList.length;i++){
-                            var item =vm.dataList[i];
+                        for (var i=0;i<model.dataList.length;i++){
+                            var item =model.dataList[i];
                             if (item.id==itemId){
-                                openVmModel.formData.name = item.name;
-                                openVmModel.formData.parentId = item.parentId;
-                                openVmModel.formData.isDepartment = item.isDepartment;
+                                openVmModel.formData = item;
+                                openVmModel.formData.id = itemId;
                             }
                         }
                     }
@@ -212,7 +202,7 @@ var vm = new Vue({
             var $button =$form.parent().parent().children(".layui-layer-btn").children("a:first");
             $button.addClass("btn disabled");
             var layerIndex = layer.load(2);
-            $.post("/api/department/post",vm.openFormVm.formData,function(response){
+            $.post("/api/rank/post",vm.openFormVm.formData,function(response){
                 if (response.success_is_ok){
                     layer.msg(response.msg);
                     vm.search();
@@ -228,7 +218,7 @@ var vm = new Vue({
         openDeleteWin:function(itemId){
             layer.confirm('确定要删除吗?', {icon: 3, title:'询问'}, function(index){
                 layer.load(2);
-                $.post("/api/department/delete",{id:itemId},function(response){
+                $.post("/api/rank/delete",{id:itemId},function(response){
                     layer.closeAll();
                     if (response.success_is_ok){
                         layer.msg(response.msg);

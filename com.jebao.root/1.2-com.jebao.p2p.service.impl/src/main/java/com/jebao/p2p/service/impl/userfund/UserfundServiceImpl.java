@@ -161,6 +161,7 @@ public class UserfundServiceImpl implements IUserfundServiceInf {
         }
 
         //更新第三方资金账户信息
+        userDetailsEntity.setUdTrueName(model.getCust_nm()); // 客户姓名
         userDetailsEntity.setUdIdNumber(model.getCertif_id()); // 身份证号码
         userDetailsEntity.setUdEmail(model.getEmail()); //邮箱地址
         userDetailsEntity.setUdBankCityCode(model.getCity_id()); //开户行地区代码
@@ -205,7 +206,7 @@ public class UserfundServiceImpl implements IUserfundServiceInf {
         ChangeCardRequest reqData = new ChangeCardRequest();
         String thirdAccount = userDetailsEntity.getUdThirdAccount();
         if (StringUtils.isBlank(thirdAccount)) {
-            return new ResultInfo(false, "账户异常，请联系客服");
+            return new ResultInfo(false, "您尚未开通第三方资金账户",1);
         }
         reqData.setLogin_id(userDetailsEntity.getUdThirdAccount()); // 第三方资金账户
         String html = fyChangeCardService.post(reqData);
@@ -315,7 +316,7 @@ public class UserfundServiceImpl implements IUserfundServiceInf {
                     logModel.setUlContent(userLogContent+"。流水号："+response.getMchnt_txn_ssn());
                     return new ResultData<TbUserDetails>(true, userDetailsEntity,"更换成功");
                 }else{
-                    return new ResultInfo(false, "正在审核中...");
+                    return new ResultInfo(false, response.getBank_nm()+","+response.getCard_no(),1);
                 }
             }
         }

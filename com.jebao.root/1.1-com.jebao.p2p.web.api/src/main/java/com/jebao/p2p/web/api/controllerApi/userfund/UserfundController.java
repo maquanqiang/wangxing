@@ -7,7 +7,7 @@ import com.jebao.p2p.service.inf.userfund.IUserfundServiceInf;
 import com.jebao.p2p.web.api.controllerApi._BaseController;
 import com.jebao.p2p.web.api.utils.constants.Constants;
 import com.jebao.p2p.web.api.utils.session.CurrentUser;
-import com.jebao.p2p.web.api.utils.session.LoginSessionUtil;
+import com.jebao.p2p.web.api.utils.session.CurrentUserContextHolder;
 import com.jebao.thirdPay.fuiou.model.changeCard.ChangeCardResponse;
 import com.jebao.thirdPay.fuiou.model.webReg.WebRegResponse;
 import org.apache.commons.lang.StringUtils;
@@ -50,7 +50,7 @@ public class UserfundController extends _BaseController {
         }
         //endregion
 
-        CurrentUser user = LoginSessionUtil.User(request, response);
+        CurrentUser user = CurrentUserContextHolder.get();
         ResultInfo resultInfo = userfundService.registerByWeb(realName, idCard, user.getId());
         if (!resultInfo.getSuccess_is_ok()) {
             String content = resultInfo.getMsg();
@@ -67,7 +67,7 @@ public class UserfundController extends _BaseController {
      */
     @RequestMapping(value = "registerNotify", method = RequestMethod.POST)
     public String registerNotify(WebRegResponse model) {
-        CurrentUser user = LoginSessionUtil.User(request, response);
+        CurrentUser user = CurrentUserContextHolder.get();
         ResultInfo resultInfo = userfundService.registerByWebComplete(model, user.getId());
         if (!resultInfo.getSuccess_is_ok()) {
             String title = "资金账户开通失败！";
@@ -75,7 +75,7 @@ public class UserfundController extends _BaseController {
             String backUrl = "/userfund/register"; // web页面内的回跳地址，可以是相对路径
             goFailedPage(title, content, backUrl);
         } else {
-            goSuccessPage("资金账户开通成功！", "开启理财致富之路～", "/user/myaccount", "查看我的账户");
+            goSuccessPage("资金账户开通成功！", "开启理财致富之路～", "/user/index", "查看我的账户");
         }
         return null;
     }
@@ -87,13 +87,18 @@ public class UserfundController extends _BaseController {
         if (requestType != null && requestType.equalsIgnoreCase("XMLHttpRequest")) {
             return null;
         }
-        CurrentUser user = LoginSessionUtil.User(request,response);
+        CurrentUser user = CurrentUserContextHolder.get();
         ResultInfo resultInfo = userfundService.changeCardByWeb(user.getId());
         if (!resultInfo.getSuccess_is_ok()){
             String title = "更换银行卡请求失败！";
-            String backUrl = "/user/bankcard"; // web页面内的回跳地址，可以是相对路径
             String content = resultInfo.getMsg();
-            goFailedPage(title, content, backUrl);
+            if (resultInfo.getCode() == 1){
+                String redirectUrl="notify/noRegFundAccount";
+                goPage(redirectUrl);
+            }else{
+                String backUrl = "/user/bankcard"; // web页面内的回跳地址，可以是相对路径
+                goFailedPage(title, content, backUrl);
+            }
             return null;
         }
         ResultData<String> resultData = (ResultData<String>) resultInfo;
@@ -102,7 +107,7 @@ public class UserfundController extends _BaseController {
     }
     @RequestMapping(value = "changeCardNotify",method = RequestMethod.POST)
     public String changeCardNotify(ChangeCardResponse model){
-        CurrentUser user = LoginSessionUtil.User(request, response);
+        CurrentUser user = CurrentUserContextHolder.get();
         ResultInfo resultInfo = userfundService.changeCardByWebComplete(model, user.getId());
         if (!resultInfo.getSuccess_is_ok()) {
             String title = "更换银行卡请求失败！";
@@ -137,12 +142,36 @@ public class UserfundController extends _BaseController {
 
     private void goSuccessPage(String title, String content, String backUrl, String btnText) {
         String webOrigin = Constants.JEBAO_WEB_ORIGIN;
-        String errorUrl = webOrigin + "notify/success";
+        String uri = webOrigin + "notify/success";
         String charset = "UTF-8";
         try {
             String queryString = "title=" + URLEncoder.encode(title, charset) + "&content=" + URLEncoder.encode(content, charset) + "&backUrl=" + URLEncoder.encode(backUrl, charset) + "&btnText=" + URLEncoder.encode(btnText, charset);
-            String redirectUrl = errorUrl + "?" + queryString;
+            String redirectUrl = uri + "?" + queryString;
             response.sendRedirect(redirectUrl);
+        } catch (Exception e) {
+
+        }
+    }
+
+    private void goRedirectPage(String yes,String title, String redirectUrl,String redirectPageName) {
+        String webOrigin = Constants.JEBAO_WEB_ORIGIN;
+        String uri = webOrigin + "notify/redirect";
+        String redirectContent = "<span class=\"time\">3</span>秒后返回<a href=\""+redirectUrl+"\" class=\"myAccount\">"+redirectPageName+"</a>";
+        String charset = "UTF-8";
+        try {
+            String queryString = "yes="+yes+"&title=" + URLEncoder.encode(title, charset) + "&content=" + URLEncoder.encode(redirectContent, charset) + "&redirectUrl=" + URLEncoder.encode(redirectUrl, charset);
+            String serverRedirectUrl = uri + "?" + queryString;
+            response.sendRedirect(serverRedirectUrl);
+        } catch (Exception e) {
+
+        }
+    }
+
+    private void goPage(String url){
+        String webOrigin = Constants.JEBAO_WEB_ORIGIN;
+        String uri = webOrigin + url;
+        try {
+            response.sendRedirect(uri);
         } catch (Exception e) {
 
         }

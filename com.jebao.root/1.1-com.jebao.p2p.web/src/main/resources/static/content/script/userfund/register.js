@@ -28,6 +28,7 @@ var vm = new Vue({
             return $('#defaultForm').bootstrapValidator({
                 fields: {
                     realName: {
+                        threshold:2,
                         validators: {
                             notEmpty: {
                                 message: '请输入真实姓名'

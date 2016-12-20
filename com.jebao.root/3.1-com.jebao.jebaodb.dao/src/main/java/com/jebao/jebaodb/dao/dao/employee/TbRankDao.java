@@ -22,4 +22,6 @@ public class TbRankDao {
     public int updateByPrimaryKey(TbRank record){return mapper.updateByPrimaryKey(record);}
 
     public List<TbRank> selectList(RankSM model){return mapper.selectList(model);}
+    public int selectListCount(RankSM model){return mapper.selectListCount(model);}
+    public int delete(int id){return mapper.delete(id);}
 }

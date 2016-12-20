@@ -2,15 +2,14 @@ package com.jebao.erp.web.controllerApi.loaner;
 
 import com.jebao.erp.service.inf.investment.IIncomeDetailServiceInf;
 import com.jebao.erp.service.inf.loanmanage.ITbBidPlanServiceInf;
-import com.jebao.erp.web.requestModel.loaner.LoanRecordSM;
 import com.jebao.erp.web.responseModel.base.JsonResult;
 import com.jebao.erp.web.responseModel.base.JsonResultData;
 import com.jebao.erp.web.responseModel.base.JsonResultList;
 import com.jebao.erp.web.responseModel.loaner.LoanRecordSumVM;
 import com.jebao.erp.web.responseModel.loaner.LoanRecordVM;
-import com.jebao.jebaodb.entity.extEntity.PageWhere;
 import com.jebao.jebaodb.entity.loaner.LoanTotal;
 import com.jebao.jebaodb.entity.loanmanage.TbBidPlan;
+import com.jebao.jebaodb.entity.loanmanage.search.BidPlanExtSM;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -34,24 +33,19 @@ public class LoanRecordControllerApi {
 
     @RequestMapping(value = "list", method = RequestMethod.GET)
     @ResponseBody
-    public JsonResult list(LoanRecordSM model) {
+    public JsonResult list(BidPlanExtSM model) {
         if (model == null) {
             return new JsonResultList<>(null);
         }
-        TbBidPlan record = new TbBidPlan();
-        record.setBpLoanerId(model.getLoanerId());
-        record.setBpStatus(7);//待定
-
-        PageWhere page = new PageWhere(model.getPageIndex(), model.getPageSize());
-        List<TbBidPlan> fdList = tbBidPlanService.selectByConditionForPage(record, page);
+        model.setBpStatus(7);
+        List<TbBidPlan> planList = tbBidPlanService.selectByLoanerIdForPage(model);
         List<LoanRecordVM> viewModelList = new ArrayList<>();
-        fdList.forEach(o -> viewModelList.add(new LoanRecordVM(o)));
+        planList.forEach(o -> viewModelList.add(new LoanRecordVM(o)));
 
         int count = 0;
         if (model.getPageIndex() == 0) {
-            count = tbBidPlanService.selectByConditionCount(record);
+            count = tbBidPlanService.selectByLoanerIdForPageCount(model);
         }
-
         return new JsonResultList<>(viewModelList, count);
     }
 

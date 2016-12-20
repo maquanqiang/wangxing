@@ -22,4 +22,6 @@ public class Constants {
     public static final String LOGIN_SESSION_TOKEN_CACHE_NAME=DOMAIN+"login_token_";
     //金额宝web站点地址
     public static final String JEBAO_WEB_ORIGIN = ProjectSetting.getConfigProperty("project.web.origin");
+    //测试代码
+    public static final boolean IsTest = ProjectSetting.getConfigProperty("project.isTest").equalsIgnoreCase("true");
 }

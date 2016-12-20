@@ -1,5 +1,6 @@
 package com.jebao.jebaodb.dao.mapper.loanmanage;
 
+import com.jebao.jebaodb.entity.loanmanage.search.BidPlanExtSM;
 import com.jebao.jebaodb.entity.product.ProductSM;
 import com.jebao.jebaodb.entity.extEntity.PageWhere;
 import com.jebao.jebaodb.entity.loaner.LoanTotal;
@@ -47,4 +48,13 @@ public interface TbBidPlanMapper {
     LoanTotal statisticsByLoanerId(Long loanerId);
 
     List<LoanTotal> selectLoanTotalByLoanerIds(@Param("ids")List<Long> loanerIds);
+
+    /**
+     * 借款人相关借款记录列表
+     * @param model
+     * @return
+     */
+    List<TbBidPlan> selectByLoanerIdForPage(BidPlanExtSM model);
+
+    int selectByLoanerIdForPageCount(BidPlanExtSM model);
 }
