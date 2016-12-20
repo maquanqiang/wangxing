@@ -1,24 +1,26 @@
-package com.jebao.erp.web.responseModel.employee;
+package com.jebao.erp.web.requestModel.employee;
 
-import com.jebao.erp.web.responseModel.ViewModel;
 import com.jebao.jebaodb.entity.employee.TbRank;
+import org.hibernate.validator.constraints.NotBlank;
 
 import java.math.BigDecimal;
 
 /**
- * Created by Jack on 2016/11/21.
+ * Created by Jack on 2016/12/20.
  */
-public class RankVM extends ViewModel {
-    public RankVM(TbRank entity) {
-        this.id = entity.getRankId();
-        this.name = entity.getRankName();
-        this.parentId = entity.getRankParentId();
-        this.brokerage = entity.getRankBrokeragePercent();
+public class RankIM {
+    public TbRank toEntity(){
+        TbRank entity = new TbRank();
+        entity.setRankId(this.id);
+        entity.setRankName(this.name);
+        entity.setRankParentId(this.parentId);
+        entity.setRankBrokeragePercent(this.brokerage);
+        return entity;
     }
-
     private int id;
+    @NotBlank(message = "名称不能为空")
     private String name;
-    private int parentId;
+    private Integer parentId;
     private BigDecimal brokerage;
 
     public int getId() {
@@ -37,11 +39,11 @@ public class RankVM extends ViewModel {
         this.name = name;
     }
 
-    public int getParentId() {
+    public Integer getParentId() {
         return parentId;
     }
 
-    public void setParentId(int parentId) {
+    public void setParentId(Integer parentId) {
         this.parentId = parentId;
     }
 
