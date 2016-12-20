@@ -1,6 +1,3 @@
-/**
- * Created by Jack on 2016/11/30.
- */
 // define the item component
 Vue.component('tree-item', {
     template: '#item-template',

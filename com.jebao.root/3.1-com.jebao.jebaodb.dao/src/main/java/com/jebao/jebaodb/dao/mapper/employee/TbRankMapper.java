@@ -17,4 +17,6 @@ public interface TbRankMapper {
     int updateByPrimaryKey(TbRank record);
 
     List<TbRank> selectList(RankSM model);
+    int selectListCount(RankSM model);
+    int delete(int id);
 }

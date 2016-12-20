@@ -40,6 +40,10 @@ public class EmployeeController extends _BaseController {
     public String department(){
         return "employee/department";
     }
+    @RequestMapping("rank")
+    public String rank(){
+        return "employee/rank";
+    }
     @RequestMapping("uploadtemplate")
     public ResponseEntity<?> uploadtemplate(){
         URL fileUrl = getClass().getResource("/static/uploadtemplates/employee.xlsx");

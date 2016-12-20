@@ -84,6 +84,12 @@
     </where>
     order by rank_parent_id LIMIT #{begin},#{pageSize}
   </select>
+  <select id="selectListCount" resultType="integer">
+    SELECT COUNT(*) FROM tb_rank
+    <where>
+      <include refid="dynamicWehre"/>
+    </where>
+  </select>
   <sql id="dynamicWehre">
     <if test="name != null and name != ''">
       AND rank_name LIKE #{name,jdbcType=VARCHAR}
@@ -97,5 +103,8 @@
     </if>
 
   </sql>
+  <delete id="delete" parameterType="integer">
+    DELETE FROM tb_rank where rank_id = #{value,jdbcType=INTEGER}
+  </delete>
 
 </mapper>

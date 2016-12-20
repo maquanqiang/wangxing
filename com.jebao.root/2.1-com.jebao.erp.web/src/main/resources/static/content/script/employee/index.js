@@ -66,6 +66,7 @@ var vm = new Vue({
                 model.searchObj.pageIndex=0;
             }
             $("#btnSearch").addClass("disabled");//禁用按钮
+            var loadIndex = layer.load(2);
             $.get("/api/employee/list",model.searchObj,function(response){
                 if (response.success_is_ok){
                     //递归查询所属部门
@@ -94,7 +95,7 @@ var vm = new Vue({
                         item.departmentName =findParentDepartmentFunc(item.teamId);
                     }
                     vm.employees=response.data;
-                    var pageCount = Math.ceil(response.count / model.pageSize);
+                    var pageCount = Math.ceil(response.count / model.searchObj.pageSize);
                     if (pageCount>0){
                         //调用分页
                         laypage({
@@ -113,6 +114,7 @@ var vm = new Vue({
                     }
                 }
                 $("#btnSearch").removeClass("disabled");//解除禁用
+                layer.close(loadIndex);
             });
         },
         findParentDepartmentFunc:function(teamId){
