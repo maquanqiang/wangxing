@@ -10,20 +10,12 @@
         .verification {
             cursor: pointer
         }
-
-        .get_code_btn.disabled, .get_code_btn[disabled] {
-            pointer-events: none;
-            cursor: not-allowed;
-            filter: alpha(opacity=65);
-            -webkit-box-shadow: none;
-            box-shadow: none;
-            opacity: .65;
+        div.disabled{
+            background-color: #eee;
         }
-
         .agreement-wrap {
             z-index: 9999
         }
-
         .bv-form .help-block{width:100%;}
     </style>
 </head>
@@ -79,7 +71,7 @@
                     <em></em><input type="text" value="" placeholder="请输入短信验证码" name="messageCode"
                                     v-model="form.messageCode">
                 </div>
-                <input type="button" value="获取验证码" class="get_code_btn color fr" @click="sendMessage">
+                <input type="button" value="获取验证码" class="get_code_btn color fr btn" @click="sendMessage">
             </div>
 
             <div class="userInvite form-group clearfix" :class="{disabled:codeDisabled}">

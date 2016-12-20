@@ -24,6 +24,7 @@
         <result column="ud_bank_parent_bank_name" property="udBankParentBankName" jdbcType="VARCHAR" />
         <result column="ud_bank_card_no" property="udBankCardNo" jdbcType="VARCHAR" />
         <result column="ud_bank_card_no_change_status" property="udBankCardNoChangeStatus" jdbcType="INTEGER" />
+        <result column="ud_interface_mchnt_txn_ssn" property="udInterfaceMchntTxnSsn" jdbcType="VARCHAR" />
         <result column="ud_pos_status" property="udPosStatus" jdbcType="INTEGER" />
         <result column="ud_create_time" property="udCreateTime" jdbcType="TIMESTAMP" />
         <result column="ud_update_time" property="udUpdateTime" jdbcType="TIMESTAMP" />
@@ -34,8 +35,8 @@
         ud_invitation_code, ud_customer_manager_id, ud_loaner_id, ud_platform, ud_third_account,
         ud_third_login_password, ud_third_pay_password, ud_bank_provinces_code, ud_bank_provinces_name,
         ud_bank_city_code, ud_bank_city_name, ud_bank_parent_bank_code, ud_bank_parent_bank_name,
-        ud_bank_card_no, ud_bank_card_no_change_status, ud_pos_status, ud_create_time, ud_update_time,
-        ud_is_del
+        ud_bank_card_no, ud_bank_card_no_change_status, ud_interface_mchnt_txn_ssn, ud_pos_status,
+        ud_create_time, ud_update_time, ud_is_del
     </sql>
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
         select
@@ -55,8 +56,8 @@
         ud_bank_provinces_code, ud_bank_provinces_name,
         ud_bank_city_code, ud_bank_city_name, ud_bank_parent_bank_code,
         ud_bank_parent_bank_name, ud_bank_card_no, ud_bank_card_no_change_status,
-        ud_pos_status, ud_create_time, ud_update_time,
-        ud_is_del)
+        ud_interface_mchnt_txn_ssn, ud_pos_status, ud_create_time,
+        ud_update_time, ud_is_del)
         values (#{udLoginId,jdbcType=BIGINT}, #{udNickName,jdbcType=VARCHAR}, #{udTrueName,jdbcType=VARCHAR},
         #{udIdNumber,jdbcType=VARCHAR}, #{udEmail,jdbcType=VARCHAR}, #{udPhone,jdbcType=VARCHAR},
         #{udInvitationCode,jdbcType=VARCHAR}, #{udCustomerManagerId,jdbcType=INTEGER},
@@ -65,8 +66,8 @@
         #{udBankProvincesCode,jdbcType=VARCHAR}, #{udBankProvincesName,jdbcType=VARCHAR},
         #{udBankCityCode,jdbcType=VARCHAR}, #{udBankCityName,jdbcType=VARCHAR}, #{udBankParentBankCode,jdbcType=VARCHAR},
         #{udBankParentBankName,jdbcType=VARCHAR}, #{udBankCardNo,jdbcType=VARCHAR}, #{udBankCardNoChangeStatus,jdbcType=INTEGER},
-        #{udPosStatus,jdbcType=INTEGER}, #{udCreateTime,jdbcType=TIMESTAMP}, #{udUpdateTime,jdbcType=TIMESTAMP},
-        #{udIsDel,jdbcType=INTEGER})
+        #{udInterfaceMchntTxnSsn,jdbcType=VARCHAR}, #{udPosStatus,jdbcType=INTEGER}, #{udCreateTime,jdbcType=TIMESTAMP},
+        #{udUpdateTime,jdbcType=TIMESTAMP}, #{udIsDel,jdbcType=INTEGER})
     </insert>
     <insert id="insertSelective" parameterType="com.jebao.jebaodb.entity.user.TbUserDetails" >
         <selectKey resultType="java.lang.Long" keyProperty="udId" order="AFTER" >
@@ -136,6 +137,9 @@
             </if>
             <if test="udBankCardNoChangeStatus != null" >
                 ud_bank_card_no_change_status,
+            </if>
+            <if test="udInterfaceMchntTxnSsn != null" >
+                ud_interface_mchnt_txn_ssn,
             </if>
             <if test="udPosStatus != null" >
                 ud_pos_status,
@@ -213,6 +217,9 @@
             </if>
             <if test="udBankCardNoChangeStatus != null" >
                 #{udBankCardNoChangeStatus,jdbcType=INTEGER},
+            </if>
+            <if test="udInterfaceMchntTxnSsn != null" >
+                #{udInterfaceMchntTxnSsn,jdbcType=VARCHAR},
             </if>
             <if test="udPosStatus != null" >
                 #{udPosStatus,jdbcType=INTEGER},
@@ -294,6 +301,9 @@
             <if test="udBankCardNoChangeStatus != null" >
                 ud_bank_card_no_change_status = #{udBankCardNoChangeStatus,jdbcType=INTEGER},
             </if>
+            <if test="udInterfaceMchntTxnSsn != null" >
+                ud_interface_mchnt_txn_ssn = #{udInterfaceMchntTxnSsn,jdbcType=VARCHAR},
+            </if>
             <if test="udPosStatus != null" >
                 ud_pos_status = #{udPosStatus,jdbcType=INTEGER},
             </if>
@@ -332,6 +342,7 @@
         ud_bank_parent_bank_name = #{udBankParentBankName,jdbcType=VARCHAR},
         ud_bank_card_no = #{udBankCardNo,jdbcType=VARCHAR},
         ud_bank_card_no_change_status = #{udBankCardNoChangeStatus,jdbcType=INTEGER},
+        ud_interface_mchnt_txn_ssn = #{udInterfaceMchntTxnSsn,jdbcType=VARCHAR},
         ud_pos_status = #{udPosStatus,jdbcType=INTEGER},
         ud_create_time = #{udCreateTime,jdbcType=TIMESTAMP},
         ud_update_time = #{udUpdateTime,jdbcType=TIMESTAMP},
