@@ -31,17 +31,8 @@
             <div class="my-account-title">
                 <h2>我的银行卡</h2>
             </div>
-
-            <div class="account-install-list" v-if="!hasFundAccount">
-                <div class="account-install-item clearfix">
-                    <img src="${filePath}/images/account-error.png">
-                    <h5>资金托管账户</h5>
-                    <p class="pt5">由第三方（富友）提供资金托管服务，保障资金独立与安全</p>
-                    <a href="/userfund/register" class="account-open open-btn">开通</a>
-                </div>
-            </div>
-
         </div>
+
         <!--添加银行卡-->
         <div class="project" v-if="hasFundAccount">
             <div class="account-bankImg ml0 clearfix">
@@ -56,8 +47,19 @@
             <div class="changeCard">
                 <a href="javascript:;" @click="goChangeCard">
                     <img src="${filePath}/images/account-changeCard.png">
-                    <p>更换银行卡</p>
+                    <p v-if="newBankCardNo">更换银行卡审核中</p>
+                    <p v-else>更换银行卡</p>
                 </a>
+            </div>
+        </div>
+        <div class="my-account" v-else>
+            <div class="account-install-list">
+                <div class="account-install-item clearfix">
+                    <img src="${filePath}/images/account-error.png">
+                    <h5>资金托管账户</h5>
+                    <p class="pt5">由第三方（富友）提供资金托管服务，保障资金独立与安全</p>
+                    <a href="/userfund/register" class="account-open open-btn">开通</a>
+                </div>
             </div>
         </div>
 

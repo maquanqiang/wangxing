@@ -30,7 +30,7 @@ var vm = new Vue({
             $.get("/api/funds/details",model.searchObj,function(response){
                 if (response.success_is_ok){
                     vm.fundsDetails=response.data;
-                    if(response.data == null || response.count == 0){
+                    if(response.data == null){
                         vm.isHasDate = false;
                     }else{
                         vm.isHasDate = true;

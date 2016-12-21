@@ -25,6 +25,8 @@ public interface IIncomeDetailServiceInf {
 
     int selectGroupByConditionCount(RepaymentDetailSM record);
 
+    int updateByConditionSelective(TbIncomeDetail record);
+
     /*==================================================借款人相关信息==================================================*/
 
     /**

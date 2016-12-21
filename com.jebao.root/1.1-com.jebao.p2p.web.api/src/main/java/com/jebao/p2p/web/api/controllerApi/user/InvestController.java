@@ -1,9 +1,7 @@
 package com.jebao.p2p.web.api.controllerApi.user;
 
 import com.jebao.jebaodb.entity.extEntity.PageWhere;
-import com.jebao.jebaodb.entity.investment.InvestIng;
-import com.jebao.jebaodb.entity.investment.InvestPaymented;
-import com.jebao.jebaodb.entity.investment.TbIncomeDetail;
+import com.jebao.jebaodb.entity.investment.*;
 import com.jebao.p2p.service.inf.user.IInvestServiceInf;
 import com.jebao.p2p.web.api.controllerApi._BaseController;
 import com.jebao.p2p.web.api.requestModel.user.InvestSM;
@@ -75,16 +73,44 @@ public class InvestController extends _BaseController {
         }
 
         PageWhere page = new PageWhere(0, 2);
+
+        TbInvestInfo record = new TbInvestInfo();
+        record.setIiLoginId(currentUser.getId());
+
         if (freezeStatus == 1) {//投资中
-            List<InvestIng> investIngList = investService.selectInvestIngByLoginId(currentUser.getId(), page);
+            record.setIiFreezeStatus(1);
+            List<InvestBase> investIngList = investService.selectInvestBaseByLoginId(record, page);
+            if (investIngList == null || investIngList.size() == 0) {
+                return new JsonResultList<>(null);
+            }
+
             List<InvestIngVM> viewModelList = new ArrayList<>();
             investIngList.forEach(o -> viewModelList.add(new InvestIngVM(o)));
             return new JsonResultList<>(viewModelList);
         } else {//还款中
-            List<TbIncomeDetail> ipiList = investService.selectInvestPaymentIngByLoginId(currentUser.getId(), page);
+            record.setIiFreezeStatus(2);
+            List<InvestBase> baseList = investService.selectInvestBaseByLoginId(record, page);
+            if (baseList == null || baseList.size() == 0) {
+                return new JsonResultList<>(null);
+            }
+
+            List<Long> iiIds = new ArrayList<>();
+            baseList.forEach(o -> iiIds.add(o.getIiId()));
 
             List<InvestPaymentIngVM> vmList = new ArrayList<>();
-            ipiList.forEach(o -> vmList.add(new InvestPaymentIngVM(o)));
+            List<InvestPayment> paymentIngList = investService.selectPaymentByIds(iiIds, 1, 1);
+
+            for (int i = 0; i < baseList.size(); i++) {
+                InvestPaymentIngVM vm = new InvestPaymentIngVM(baseList.get(i));
+                for (int j = 0; j < paymentIngList.size(); j++) {
+                    if (paymentIngList.get(j).getIiId() == vm.getIiId()) {
+                        vm.setDueMoney(paymentIngList.get(j).getTotalMoney());
+                        vm.setNextDueDate(paymentIngList.get(j).getDateTime());
+                        break;
+                    }
+                }
+                vmList.add(vm);
+            }
             return new JsonResultList<>(vmList);
         }
     }
@@ -104,38 +130,91 @@ public class InvestController extends _BaseController {
         if (currentUser == null) {
             return new JsonResultList<>(null);
         }
-
+        TbInvestInfo record = new TbInvestInfo();
+        record.setIiLoginId(currentUser.getId());
         PageWhere page = new PageWhere(model.getPageIndex(), model.getPageSize());
-        if (model.getFreezeStatus() == 1) {//投资中
-            List<InvestIng> investIngList = investService.selectInvestIngByLoginId(currentUser.getId(), page);
 
+        if (model.getFreezeStatus() == 1) {//投资中
+            record.setIiFreezeStatus(1);
+            List<InvestBase> investIngList = investService.selectInvestBaseByLoginId(record, page);
+            if (investIngList == null || investIngList.size() == 0) {
+                return new JsonResultList<>(null);
+            }
             List<InvestIngVM> viewModelList = new ArrayList<>();
             investIngList.forEach(o -> viewModelList.add(new InvestIngVM(o)));
+
             int count = 0;
             if (model.getPageIndex() == 0) {
-                count = investService.selectInvestIngByLoginIdForPageCount(currentUser.getId());
+                count = investService.selectInvestBaseByLoginIdForPageCount(record);
             }
             return new JsonResultList<>(viewModelList, count);
         } else if (model.getFreezeStatus() == 2) {//还款中
-            List<TbIncomeDetail> ipiList = investService.selectInvestPaymentIngByLoginId(currentUser.getId(), page);
+            record.setIiFreezeStatus(2);
+            List<InvestBase> baseList = investService.selectInvestBaseByLoginId(record, page);
+            if (baseList == null || baseList.size() == 0) {
+                return new JsonResultList<>(null);
+            }
+            List<Long> iiIds = new ArrayList<>();
+            baseList.forEach(o -> iiIds.add(o.getIiId()));
 
-            List<InvestPaymentIngVM> vmlList = new ArrayList<>();
-            ipiList.forEach(o -> vmlList.add(new InvestPaymentIngVM(o)));
+            List<InvestPaymentIngVM> vmList = new ArrayList<>();
+
+            List<InvestPayment> paymentIngList = investService.selectPaymentByIds(iiIds, 1, 1);
+
+            for (int i = 0; i < baseList.size(); i++) {
+                InvestPaymentIngVM vm = new InvestPaymentIngVM(baseList.get(i));
+                for (int j = 0; j < paymentIngList.size(); j++) {
+                    if (paymentIngList.get(j).getIiId() == vm.getIiId()) {
+                        vm.setDueMoney(paymentIngList.get(j).getTotalMoney());
+                        vm.setNextDueDate(paymentIngList.get(j).getDateTime());
+                        break;
+                    }
+                }
+                vmList.add(vm);
+            }
+
             int count = 0;
             if (model.getPageIndex() == 0) {
-                count = investService.selectInvestPaymentIngByLoginIdForPageCount(currentUser.getId());
+                count = investService.selectInvestBaseByLoginIdForPageCount(record);
             }
-            return new JsonResultList<>(vmlList, count);
+            return new JsonResultList<>(vmList, count);
         } else {//已还款
-            List<InvestPaymented> ipdList = investService.selectInvestPaymentedByLoginId(currentUser.getId(), page);
+            record.setIiFreezeStatus(3);
+            List<InvestBase> baseList = investService.selectInvestBaseByLoginId(record, page);
+            if (baseList == null || baseList.size() == 0) {
+                return new JsonResultList<>(null);
+            }
+            List<Long> iiIds = new ArrayList<>();
+            baseList.forEach(o -> iiIds.add(o.getIiId()));
 
-            List<InvestPaymentedVM> vmlList = new ArrayList<>();
-            ipdList.forEach(o -> vmlList.add(new InvestPaymentedVM(o)));
+            List<InvestPaymentedVM> vmList = new ArrayList<>();
+
+            List<InvestPayment> factList = investService.selectPaymentByIds(iiIds, 2, 1);
+            List<InvestPayment> makeList = investService.selectPaymentByIds(iiIds, 2, 2);
+
+            for (int i = 0; i < baseList.size(); i++) {
+                InvestPaymentedVM vm = new InvestPaymentedVM(baseList.get(i));
+                for (int j = 0; j < factList.size(); j++) {
+                    if (factList.get(j).getIiId() == vm.getIiId()) {
+                        vm.setFactMoeny(factList.get(j).getTotalMoney());
+                        vm.setSettleDate(factList.get(j).getDateTime());
+                    }
+                    break;
+                }
+                for (int j = 0; j < makeList.size(); j++) {
+                    if (makeList.get(j).getIiId() == vm.getIiId()) {
+                        vm.setMakeMoney(makeList.get(j).getTotalMoney());
+                    }
+                    break;
+                }
+                vmList.add(vm);
+            }
+
             int count = 0;
             if (model.getPageIndex() == 0) {
-                count = investService.selectInvestPaymentedByLoginIdForPageCount(currentUser.getId());
+                count = investService.selectInvestBaseByLoginIdForPageCount(record);
             }
-            return new JsonResultList<>(vmlList, count);
+            return new JsonResultList<>(vmList, count);
         }
     }
 }

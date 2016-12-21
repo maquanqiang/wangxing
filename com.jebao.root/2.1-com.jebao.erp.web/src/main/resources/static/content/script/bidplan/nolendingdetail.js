@@ -14,7 +14,7 @@ $(function () {
 //Model
 var model = {
     //查询条件
-    search: {},
+    searchObj: {},
     //标的
     plan: {},
     //台账列表
@@ -33,6 +33,10 @@ var vm = new Vue({
     data: model,
     beforeCreate:function(){
         //初始化本地数据
+        //初始化本地数据
+        model.searchObj.indBpId = $("#bpId").val();
+        model.searchObj.pageIndex=0;
+        model.searchObj.pageSize=1000;
     },
     //初始化远程数据
     created:function(){
@@ -54,16 +58,36 @@ var vm = new Vue({
                 $("#bpRepayTime").val(date);
             }
         });
+        //riskDataList
         $.get("/api/bidRiskData/getRiskDataListForPage", dataVal, function (response) {
             if (response.success_is_ok) {
                 vm.riskDataList = response.data;
             }
         })
+        //investInfoList
         $.get("/api/investInfo/list", dataVal, function (response) {
             if (response.success_is_ok) {
                 vm.investInfoList = response.data;
             }
         })
+        //intentList
+        $.get("/api/incomeDetail/repaymentList",model.searchObj,function(response) {
+            if (response.success_is_ok) {
+                vm.intentList = response.data;
+            }
+        })
+    },
+    //watch可以监视数据变动，针对相应的数据设置监视函数即可
+    watch: {
+        //
+        "plan.bpType" : function (newVal,oldVal) {
+            if(newVal == 3){
+                $("#bpUpRateDiv").show()
+            }else{
+                $("#bpUpRateDiv").hide()
+                $("#bpUpRate").val(0)
+            }
+        }
     },
     //方法，可用于绑定事件或直接调用
     methods: {
@@ -126,12 +150,35 @@ var vm = new Vue({
             if (!bootstrapValidator.isValid()) {
                 return false;
             }
+            var loanMoney = $("#defaultForm input[name=bpLoanMoney]").val();
+            if(loanMoney*1<=0){
+                layer.msg("放款金额为0");
+                return false;
+            }
+
             var form = $("#defaultForm").serializeObject();
             $.post("/api/bidPlan/doLoan",form,function(response){
                 if(response.success_is_ok){
                     layer.alert(response.msg, 5);
                     window.location.href = "/postLoan/index";
                 }
+
+            })
+        },
+        closeBtn:function(){
+            var money = $("#defaultForm input[name=bpLoanMoney]").val();
+            if(money*1>0){
+                alert("放款金额不为空，不能关闭");
+                return false;
+            }
+            $.post("/api/bidPlan/close",{bpId : $("#bpId").val()}, function(response){
+                if(response.success_is_ok){
+                    layer.msg(response.msg);
+                    window.location.href = "/bidplan/noLendingList";
+                }else{
+                    layer.msg(response.error);
+                }
+
 
             })
         }

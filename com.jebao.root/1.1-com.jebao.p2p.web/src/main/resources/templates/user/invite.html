@@ -23,7 +23,7 @@
 <!--我的账户导航-->
 <div class="account-nav">
     <p>
-        <a href="首页.html">首页</a><a href="javascript:;" class="red">邀请好友</a>
+        <a href="/">首页</a><a href="javascript:;" class="red">邀请好友</a>
     </p>
 </div>
 <!--我的账户内容-->
@@ -54,25 +54,8 @@
 </div>
 <!--内容 end-->
 #parse("common/footer.html")
+
 <script>
-    $(function () {
-        //复制
-        $('.copyBtn').click(function () {
-            $(this).prev().select();
-            document.execCommand('Copy');
-            layer.open({
-                title:'提示',
-                content:'复制成功！',
-                btn: ['确认'],
-                area: '280px',
-                yes: function(){
-                    layer.closeAll();
-                }
-            });
-        });
-    })
-</script>
-<!--<script>
     $(function () {
         //复制
         $('.copyBtn').click(function () {
@@ -85,6 +68,7 @@
             }
         });
     })
-</script>-->
+</script>
+
 </body>
 </html>

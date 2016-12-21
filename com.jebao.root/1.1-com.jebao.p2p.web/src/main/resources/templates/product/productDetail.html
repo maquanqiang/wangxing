@@ -60,6 +60,9 @@
 
                 <p>剩余期限：<span id="span1">0天0时0分0秒</span></p>
             </div>
+            <div class="plan-value clearfix" v-show="product.bpType == 3">
+                <p>加息利率：<span>{{product.bpUpRate}}</span></p>
+            </div>
         </div>
         <!--项目头部右侧-->
         <div class="plan-investment fr">

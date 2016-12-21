@@ -72,6 +72,11 @@ public class IncomeDetailServiceImpl implements IIncomeDetailServiceInf {
         return incomeDetailDao.selectGroupByConditionCount(record);
     }
 
+    @Override
+    public int updateByConditionSelective(TbIncomeDetail record) {
+        return incomeDetailDao.updateByConditionSelective(record);
+    }
+
     public int updateByBidIdSelective(TbIncomeDetail record) {
         int result = incomeDetailDao.updateByPrimaryKeySelective(record);
         return result;

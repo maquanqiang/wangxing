@@ -26,6 +26,15 @@ public class UserVM extends ViewModel{
         this.hasFundAccount = !StringUtils.isBlank(entity.getUdThirdAccount());
         this.balance = new BigDecimal(0);
     }
+    public UserVM(TbUserDetails entity,String inChangeBankName,String inChangeBankCardNo){
+        this(entity);
+        if (inChangeBankName!=null){
+            this.newBankName = RegexUtil.getFirstMatch(inChangeBankName,"^[\\u4e00-\\u9fa5]+银行");
+        }
+        if (inChangeBankCardNo!=null) {
+            this.newBankCardNo = inChangeBankCardNo.replaceAll("(?<=\\d{4})\\d+(?=\\d{4})", " **** **** ");
+        }
+    }
 
     /**
      * 手机号
@@ -43,6 +52,14 @@ public class UserVM extends ViewModel{
      * 银行卡号
      */
     private String bankCardNo;
+    private String newBankName;
+    /**
+     * 新银行卡号，有在更换申请中的卡号。处于审核中状态
+     */
+    private String newBankCardNo;
+    /**
+     * 是否开通第三方账户
+     */
     private boolean hasFundAccount;
 
     public boolean getHasFundAccount() {
@@ -96,5 +113,21 @@ public class UserVM extends ViewModel{
 
     public void setBalance(BigDecimal balance) {
         this.balance = balance;
+    }
+
+    public String getNewBankCardNo() {
+        return newBankCardNo;
+    }
+
+    public void setNewBankCardNo(String newBankCardNo) {
+        this.newBankCardNo = newBankCardNo;
+    }
+
+    public String getNewBankName() {
+        return newBankName;
+    }
+
+    public void setNewBankName(String newBankName) {
+        this.newBankName = newBankName;
     }
 }

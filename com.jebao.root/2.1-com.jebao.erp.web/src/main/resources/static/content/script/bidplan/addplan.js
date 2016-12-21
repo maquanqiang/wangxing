@@ -14,7 +14,8 @@ var model = {
     intentList : [],
     principalTotal : 0,
     interestTotal : 0,
-    total : 0
+    total : 0,
+    typeSelected : ''
 
 };
 
@@ -49,9 +50,15 @@ var vm = new Vue({
                 }
             });
         },
-        "bpStartTime" : function(val, oldVal){
-            console.log(val)
+        "typeSelected" : function (newVal,oldVal) {
+            if(newVal == 3){
+                $("#bpUpRateDiv").show()
+            }else{
+                $("#bpUpRateDiv").hide()
+                $("#bpUpRate").val(0)
+            }
         }
+
 
     },
     //方法，可用于绑定事件或直接调用

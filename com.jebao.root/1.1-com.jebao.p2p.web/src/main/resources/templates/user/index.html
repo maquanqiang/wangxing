@@ -16,7 +16,7 @@
 <!--我的账户导航-->
 <div class="account-nav">
     <p>
-        <a href="首页.html">首页</a><a href="javascript:;" class="red">账户总览</a>
+        <a href="/">首页</a><a href="javascript:;" class="red">账户总览</a>
     </p>
 </div>
 <!--我的账户内容-->
@@ -52,33 +52,33 @@
                     </li>
                 </ul>
                 <div class="my-account-btn fl">
-                    <a href="/user/chargewithdraw" class="rechange">充值</a>
-                    <a href="/user/chargewithdraw" class="expressive">提现</a>
+                    <a href="/user/chargewithdraw/1" class="rechange">充值</a>
+                    <a href="/user/chargewithdraw/2" class="expressive">提现</a>
                 </div>
             </div>
         </div>
         <!--开通资金账户-->
         <ul class="user-function clearfix">
             <li>
-                <a href="#">
+                <a href="/userfund/register">
                     <img src="${filePath}/images/account-open.png">
                     <p>开通资金账户</p>
                 </a>
             </li>
             <li>
-                <a href="/user/chargewithdraw">
+                <a href="/user/chargewithdraw/1">
                     <img src="${filePath}/images/account-recharge.png">
                     <p>充值</p>
                 </a>
             </li>
             <li>
-                <a href="/user/chargewithdraw">
+                <a href="/user/chargewithdraw/2">
                     <img src="${filePath}/images/account-invest.png">
                     <p>提现</p>
                 </a>
             </li>
             <li>
-                <a href="#">
+                <a href="html/product">
                     <img src="${filePath}/images/account-expressive.png">
                     <p>我要投资</p>
                 </a>
@@ -87,8 +87,8 @@
         <!--投资中的项目-->
         <div class="project">
             <div class="project-menu clearfix">
-                <h4 class="active">投资中的项目</h4>
-                <h4>还款中的项目</h4>
+                <h4 class="active" @click="search(1)">投资中的项目</h4>
+                <h4 @click="search(2)">还款中的项目</h4>
                 <div class="project-more fr">
                     <a href="/user/investrecord">更多<i></i></a>
                 </div>
@@ -109,7 +109,7 @@
                         <tbody>
                         <template v-for="item in investIngs">
                             <tr>
-                                <td><a href="#">{{ item.bpName }}</a></td>
+                                <td><a :href="getDetailHref(item.bpId)">{{ item.bpName }}</a></td>
                                 <td>{{ item.createTime }}</td>
                                 <td>{{ item.money }}</td>
                                 <td>{{ item.periods }}</td>

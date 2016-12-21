@@ -2,9 +2,8 @@ package com.jebao.jebaodb.dao.dao.investment;
 
 import com.jebao.jebaodb.dao.mapper.investment.TbInvestInfoMapper;
 import com.jebao.jebaodb.entity.extEntity.PageWhere;
+import com.jebao.jebaodb.entity.investment.InvestBase;
 import com.jebao.jebaodb.entity.investment.TbInvestInfo;
-import com.jebao.jebaodb.entity.investment.InvestIng;
-import com.jebao.jebaodb.entity.investment.InvestPaymented;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -85,43 +84,22 @@ public class TbInvestInfoDao {
     /**
      * 投资中项目
      *
-     * @param loginId
+     * @param record
      * @param pageWhere
      * @return
      */
-    public List<InvestIng> selectInvestIngByLoginId(@Param("loginId") Long loginId, @Param("pageWhere") PageWhere pageWhere) {
-        return mapper.selectInvestIngByLoginId(loginId, pageWhere);
+    public List<InvestBase> selectInvestBaseByLoginId(@Param("record") TbInvestInfo record, @Param("pageWhere") PageWhere pageWhere) {
+        return mapper.selectInvestBaseByLoginId(record, pageWhere);
     }
 
     /**
      * 投资中项目总数
      *
-     * @param iiLoginId
+     * @param record
      * @return
      */
-    public int selectInvestIngByLoginIdForPageCount(Long iiLoginId) {
-        return mapper.selectInvestIngByLoginIdForPageCount(iiLoginId);
-    }
-
-    /**
-     * 已还款的项目
-     *
-     * @param loginId
-     * @param pageWhere
-     * @return
-     */
-    public List<InvestPaymented> selectInvestPaymentedByLoginId(@Param("loginId") Long loginId, @Param("pageWhere") PageWhere pageWhere) {
-        return mapper.selectInvestPaymentedByLoginId(loginId, pageWhere);
-    }
-
-    /**
-     * 已还款的项目总数
-     *
-     * @param iiLoginId
-     * @return
-     */
-    public int selectInvestPaymentedByLoginIdForPageCount(Long iiLoginId) {
-        return mapper.selectInvestPaymentedByLoginIdForPageCount(iiLoginId);
+    public int selectInvestBaseByLoginIdForPageCount(@Param("record") TbInvestInfo record) {
+        return mapper.selectInvestBaseByLoginIdForPageCount(record);
     }
 
     /**
@@ -130,7 +108,7 @@ public class TbInvestInfoDao {
      * @param iiLoginId
      * @return
      */
-    public BigDecimal selectFreezeMoneyByLoginId(Long iiLoginId) {
-        return new BigDecimal(mapper.selectFreezeMoneyByLoginId(iiLoginId)).setScale(2, BigDecimal.ROUND_HALF_UP);
+    public BigDecimal totalFreezeMoneyByLoginId(Long iiLoginId) {
+        return mapper.totalFreezeMoneyByLoginId(iiLoginId);
     }
 }

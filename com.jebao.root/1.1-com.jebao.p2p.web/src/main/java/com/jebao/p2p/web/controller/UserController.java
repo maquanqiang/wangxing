@@ -1,12 +1,13 @@
 package com.jebao.p2p.web.controller;
 
-
 import com.jebao.p2p.web.utils.session.CurrentUser;
 import com.jebao.p2p.web.utils.session.CurrentUserContextHolder;
 import com.jebao.p2p.web.utils.session.LoginSessionUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 /**
  * Created by Administrator on 2016/9/21.
@@ -26,6 +27,7 @@ public class UserController extends _BaseController {
 
     /**
      * 收支明细
+     *
      * @return
      */
     @RequestMapping("funds")
@@ -35,63 +37,70 @@ public class UserController extends _BaseController {
 
     /**
      * 投资记录
+     *
      * @return
      */
     @RequestMapping("investrecord")
-    public String invest(){
+    public String invest() {
         return "user/investrecord";
     }
 
     /**
      * 邀请好友
+     *
      * @return
      */
     @RequestMapping("invite")
-    public String invite(Model model){
+    public String invite(Model model) {
         StringBuffer url = request.getRequestURL();
         String domainUrl = url.delete(url.length() - request.getRequestURI().length(), url.length()).append("/").toString();
         CurrentUser user = CurrentUserContextHolder.get();
-        String inviteUrl = domainUrl+"account/register?code="+user.getName();
-        model.addAttribute("inviteUrl",inviteUrl);
+        String inviteUrl = domainUrl + "account/register?code=" + user.getName();
+        model.addAttribute("inviteUrl", inviteUrl);
         return "user/invite";
     }
 
     /**
      * 账户设置
+     *
      * @return
      */
     @RequestMapping("setting")
-    public String setting(Model model){
-        CurrentUser user = LoginSessionUtil.User(request,response);
-        String mobile = user.getName().replaceFirst("(?<=\\d{3})\\d+(?=\\d{4})","****");
-        model.addAttribute("mobile",mobile);
+    public String setting(Model model) {
+        CurrentUser user = LoginSessionUtil.User(request, response);
+        String mobile = user.getName().replaceFirst("(?<=\\d{3})\\d+(?=\\d{4})", "****");
+        model.addAttribute("mobile", mobile);
         return "user/setting";
     }
 
     /**
      * 我的银行卡
+     *
      * @return
      */
     @RequestMapping("bankcard")
-    public String mybankcard(){
+    public String mybankcard() {
         return "user/bankcard";
     }
 
     /**
      * 充值提现
+     *
      * @return
      */
-    @RequestMapping("chargewithdraw")
-    public String chargewithdraw(){
+    @RequestMapping(value = "chargewithdraw/{typeId}", method = RequestMethod.GET)
+    public String chargewithdraw(@PathVariable int typeId, Model model) {
+        model.addAttribute("typeId", typeId);
         return "user/chargewithdraw";
     }
 
     /**
      * 借款管理
+     *
      * @return
      */
     @RequestMapping("loanmanage")
-    public String loanmanage(){
+    public String loanmanage() {
         return "user/loanmanage";
     }
 }

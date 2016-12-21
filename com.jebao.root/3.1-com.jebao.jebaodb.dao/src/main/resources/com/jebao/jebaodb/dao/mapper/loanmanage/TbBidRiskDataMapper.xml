@@ -24,6 +24,9 @@
     where brd_id = #{brdId,jdbcType=BIGINT}
   </select>
   <insert id="insert" parameterType="com.jebao.jebaodb.entity.loanmanage.TbBidRiskData" >
+      <selectKey resultType="java.lang.Long" keyProperty="brdId" order="AFTER" >
+          SELECT LAST_INSERT_ID()
+      </selectKey>
     insert into tb_bid_risk_data (brd_id, brd_bp_id, brd_name, 
       brd_no, brd_path, brd_url,
       brd_create_time, brd_update_time, brd_remark, 
@@ -121,10 +124,9 @@
       <if test="brdCreateTime != null" >
         brd_create_time = #{brdCreateTime,jdbcType=TIMESTAMP},
       </if>
-        brd_update_time = now(),
-        <!--<if test="brdUpdateTime != null" >-->
-        <!--brd_update_time = #{brdUpdateTime,jdbcType=TIMESTAMP},-->
-      <!--</if>-->
+      <if test="brdUpdateTime != null" >
+        brd_update_time = #{brdUpdateTime,jdbcType=TIMESTAMP},
+      </if>
       <if test="brdRemark != null" >
         brd_remark = #{brdRemark,jdbcType=VARCHAR},
       </if>
