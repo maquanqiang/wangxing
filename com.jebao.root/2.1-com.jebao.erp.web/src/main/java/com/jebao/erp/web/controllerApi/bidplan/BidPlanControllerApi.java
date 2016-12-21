@@ -64,6 +64,7 @@ public class BidPlanControllerApi extends _BaseController {
         TbBidPlan tbBidPlan = new TbBidPlan();
         tbBidPlan.setBpId(bpId);
         tbBidPlan.setBpIsDel(2);
+        tbBidPlan.setBpUpdateTime(new Date());
         int count = bidPlanService.updateByBidIdSelective(tbBidPlan);
         if(count>0){
             return new JsonResultOk("删除成功");
@@ -168,6 +169,7 @@ public class BidPlanControllerApi extends _BaseController {
     public JsonResult updatePlan(UpdatePlanForm form){
         TbBidPlan bidPlan = UpdatePlanForm.toEntity(form);
         bidPlan.setBpStatus(TbBidPlan.STATUS_UNAUDITED);                             //改为待审核状态
+        bidPlan.setBpUpdateTime(new Date());
         int count = bidPlanService.updateByBidIdSelective(bidPlan);
         if(count>0){
             return new JsonResultOk("信息修改成功");
@@ -264,8 +266,9 @@ public class BidPlanControllerApi extends _BaseController {
         tbBidPlan.setBpStatus(status);
         tbBidPlan.setBpId(bpId);
         tbBidPlan.setBpRemark(remark);
+        tbBidPlan.setBpUpdateTime(new Date());
         if(status==TbBidPlan.STATUS_AUDITE_FAIL){
-            tbBidPlan.setBpCreateTime(new Date());
+            tbBidPlan.setBpCreateTime(tbBidPlan.getBpUpdateTime());
         }
         int result = bidPlanService.updateByBidIdSelective(tbBidPlan);
         if(result>0){
@@ -297,17 +300,22 @@ public class BidPlanControllerApi extends _BaseController {
     public JsonResult doLoan(RepaymentForm form){
 
         TbBidPlan tbBidPlan = bidPlanService.selectByBpId(form.getBpId());
-        if(tbBidPlan.getBpStatus() != TbBidPlan.STATUS_AUDITE_SUCCESS){
+        if(tbBidPlan.getBpStatus() != TbBidPlan.STATUS_BID_FULL){
             return new JsonResultError("不能操作还款,标的状态为:"+tbBidPlan.getBpStatus());
         }
-        TbBidPlan record = form.toEntity(form);
 
-        boolean flag = bidPlanService.doLoan(record);
+        tbBidPlan.setBpLoanMoney(form.getBpLoanMoney());
+        tbBidPlan.setBpInterestSt(form.getBpInterestSt());
+        tbBidPlan.setBpRepayTime(form.getBpRepayTime());
+
+
+        boolean flag = bidPlanService.doLoan(tbBidPlan);
         if(flag){
             //修改标的信息
-            record.setBpLoanTime(new Date());
-            record.setBpStatus(TbBidPlan.STATUS_REPAYING);
-            bidPlanService.updateByBidIdSelective(record);
+            tbBidPlan.setBpLoanTime(new Date());
+            tbBidPlan.setBpUpdateTime(tbBidPlan.getBpLoanTime());
+            tbBidPlan.setBpStatus(TbBidPlan.STATUS_REPAYING);
+            bidPlanService.updateByBidIdSelective(tbBidPlan);
             return new JsonResultOk("放款成功");
         }else {
             return new JsonResultError("放款失败-联系管理员");

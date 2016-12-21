@@ -60,16 +60,22 @@ public class UserController extends _BaseController {
             return new JsonResultError("用户未登录");
         }
         TbUserDetails userDetailsEntity = userService.getUserDetailsInfo(user.getId());
+        String newBankName = null; //更换中的银行卡
+        String newBankCardNo = null;
         if (userDetailsEntity.getUdBankCardNoChangeStatus() !=null && userDetailsEntity.getUdBankCardNoChangeStatus() == EnumModel.BankCardChangeStatus.更换审核中.getValue()){
             //去富友查询银行卡更换结果
             ResultInfo resultInfo = userfundService.queryChangeCardResult(user.getId());
             if (resultInfo.getSuccess_is_ok()){
                 ResultData<TbUserDetails> resultData = (ResultData<TbUserDetails>) resultInfo;
                 userDetailsEntity = resultData.getData();
+            }else if(resultInfo.getCode() == 1){
+                //更换的卡在审核中..
+                String[] newBankArrays = resultInfo.getMsg().split(",");
+                newBankName = newBankArrays[0];
+                newBankCardNo = newBankArrays.length>0?newBankArrays[1]:"";
             }
         }
-        UserVM userVM = new UserVM(userDetailsEntity);
-
+        UserVM userVM = new UserVM(userDetailsEntity,newBankName,newBankCardNo);
         //region 账户余额
         if (userVM.getHasFundAccount()){
             TbAccountsFunds accountsFunds = userService.getAccountsFundsInfo(user.getId());

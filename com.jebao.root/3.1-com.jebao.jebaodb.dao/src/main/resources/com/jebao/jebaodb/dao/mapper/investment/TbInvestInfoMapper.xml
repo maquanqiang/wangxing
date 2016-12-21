@@ -31,20 +31,23 @@
         where ii_id = #{iiId,jdbcType=BIGINT}
     </select>
     <insert id="insert" parameterType="com.jebao.jebaodb.entity.investment.TbInvestInfo">
-    insert into tb_invest_info (ii_id, ii_login_id, ii_login_name, 
-      ii_true_name, ii_third_account, ii_contract_no, 
-      ii_bp_id, ii_bp_name, ii_money, 
-      ii_freeze_status, ii_contract_url, ii_bp_repayed_periods, 
-      ii_create_time, ii_update_time, ii_is_del, ii_ssn
-      )
-    values (#{iiId,jdbcType=BIGINT}, #{iiLoginId,jdbcType=BIGINT}, #{iiLoginName,jdbcType=VARCHAR}, 
-      #{iiTrueName,jdbcType=VARCHAR}, #{iiThirdAccount,jdbcType=VARCHAR}, #{iiContractNo,jdbcType=VARCHAR}, 
-      #{iiBpId,jdbcType=BIGINT}, #{iiBpName,jdbcType=VARCHAR}, #{iiMoney,jdbcType=DECIMAL}, 
-      #{iiFreezeStatus,jdbcType=INTEGER}, #{iiContractUrl,jdbcType=VARCHAR}, #{iiBpRepayedPeriods,jdbcType=INTEGER},
-      #{iiCreateTime,jdbcType=TIMESTAMP}, #{iiUpdateTime,jdbcType=TIMESTAMP}, #{iiIsDel,jdbcType=INTEGER},
-      #{iiSsn,jdbcType=VARCHAR}
-      )
-  </insert>
+        <selectKey resultType="java.lang.Long" keyProperty="iiId" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into tb_invest_info (ii_id, ii_login_id, ii_login_name,
+        ii_true_name, ii_third_account, ii_contract_no,
+        ii_bp_id, ii_bp_name, ii_money,
+        ii_freeze_status, ii_contract_url, ii_bp_repayed_periods,
+        ii_create_time, ii_update_time, ii_is_del, ii_ssn
+        )
+        values (#{iiId,jdbcType=BIGINT}, #{iiLoginId,jdbcType=BIGINT}, #{iiLoginName,jdbcType=VARCHAR},
+        #{iiTrueName,jdbcType=VARCHAR}, #{iiThirdAccount,jdbcType=VARCHAR}, #{iiContractNo,jdbcType=VARCHAR},
+        #{iiBpId,jdbcType=BIGINT}, #{iiBpName,jdbcType=VARCHAR}, #{iiMoney,jdbcType=DECIMAL},
+        #{iiFreezeStatus,jdbcType=INTEGER}, #{iiContractUrl,jdbcType=VARCHAR}, #{iiBpRepayedPeriods,jdbcType=INTEGER},
+        #{iiCreateTime,jdbcType=TIMESTAMP}, #{iiUpdateTime,jdbcType=TIMESTAMP}, #{iiIsDel,jdbcType=INTEGER},
+        #{iiSsn,jdbcType=VARCHAR}
+        )
+    </insert>
     <insert id="insertSelective" parameterType="com.jebao.jebaodb.entity.investment.TbInvestInfo">
         insert into tb_invest_info
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -336,7 +339,7 @@
         <result column="cycle_type" property="cycleType" jdbcType="INTEGER"/>
         <result column="bp_rate" property="bpRate" jdbcType="DECIMAL"/>
         <result column="progress" property="progress" jdbcType="DECIMAL"/>
-        <result column="contract_url" property="contractUrl" jdbcType="VARCHAR" />
+        <result column="contract_url" property="contractUrl" jdbcType="VARCHAR"/>
     </resultMap>
     <select id="selectInvestBaseByLoginId" resultMap="InvestBaseResultMap">
         select
@@ -365,7 +368,7 @@
         SELECT COUNT(1)
         FROM tb_invest_info
         WHERE ii_login_id = #{record.iiLoginId,jdbcType=BIGINT}
-        AND ii_freeze_status =  #{record.iiFreezeStatus,jdbcType=INTEGER}
+        AND ii_freeze_status = #{record.iiFreezeStatus,jdbcType=INTEGER}
         AND ii_is_del = 1
     </select>
     <select id="totalFreezeMoneyByLoginId" resultType="java.math.BigDecimal" parameterType="java.lang.Long">

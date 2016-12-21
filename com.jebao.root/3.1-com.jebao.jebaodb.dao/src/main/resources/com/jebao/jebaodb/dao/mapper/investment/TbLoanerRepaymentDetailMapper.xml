@@ -34,6 +34,9 @@
     where lrd_id = #{lrdId,jdbcType=BIGINT}
   </select>
   <insert id="insert" parameterType="com.jebao.jebaodb.entity.investment.TbLoanerRepaymentDetail" >
+      <selectKey resultType="java.lang.Long" keyProperty="lrdId" order="AFTER" >
+          SELECT LAST_INSERT_ID()
+      </selectKey>
     insert into tb_loaner_repayment_detail (lrd_id, lrd_bp_id, lrd_bp_number, 
       lrd_bp_name, lrd_date_time, lrd_periods, 
       lrd_fund_type, lrd_money, lrd_fact_money, 
@@ -207,16 +210,15 @@
       <if test="lrdCreateTime != null" >
         lrd_create_time = #{lrdCreateTime,jdbcType=TIMESTAMP},
       </if>
-      <!--<if test="lrdUpdateTime != null" >-->
-        <!--lrd_update_time = #{lrdUpdateTime,jdbcType=TIMESTAMP},-->
-      <!--</if>-->
+      <if test="lrdUpdateTime != null" >
+        lrd_update_time = #{lrdUpdateTime,jdbcType=TIMESTAMP},
+      </if>
       <if test="lrdIsDel != null" >
         lrd_is_del = #{lrdIsDel,jdbcType=INTEGER},
       </if>
         <if test="lrdFactDateTime != null" >
             lrd_fact_date_time = #{lrdFactDateTime,jdbcType=TIMESTAMP},
         </if>
-        lrd_update_time = NOW()
     </set>
     where lrd_id = #{lrdId,jdbcType=BIGINT}
   </update>

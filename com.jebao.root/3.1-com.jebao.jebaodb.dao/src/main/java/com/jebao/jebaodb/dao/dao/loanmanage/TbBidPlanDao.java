@@ -9,6 +9,7 @@ import com.jebao.jebaodb.entity.loanmanage.TbBidPlan;
 import com.jebao.jebaodb.entity.loanmanage.search.BidPlanSM;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.support.nativejdbc.OracleJdbc4NativeJdbcExtractor;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -116,11 +117,10 @@ public class TbBidPlanDao {
 
     /**
      * 修改满标状态
-     * @param bpId
      * @return
      */
-    public int fullBid(Long bpId){
-        return tbBidPlanMapper.fullBid(bpId);
+    public int fullBid(Map<String, Object> map){
+        return tbBidPlanMapper.fullBid(map);
     }
 
     /**

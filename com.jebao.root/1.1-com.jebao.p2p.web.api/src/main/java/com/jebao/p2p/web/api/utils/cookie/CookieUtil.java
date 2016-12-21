@@ -1,6 +1,7 @@
 package com.jebao.p2p.web.api.utils.cookie;
 
 import com.jebao.common.utils.encrypt.EncryptDESUtil;
+import com.jebao.p2p.web.api.utils.constants.ProjectSetting;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
@@ -16,7 +17,7 @@ public class CookieUtil {
     private HttpServletRequest request;
     private HttpServletResponse response;
     private int age;//设置cookie经过多长秒后被删除
-
+    private String domain=getDomainVal();
     public CookieUtil(HttpServletRequest request,
                       HttpServletResponse response, int age) {
         this.request = request;
@@ -31,6 +32,10 @@ public class CookieUtil {
         }
         Cookie cookies = new Cookie(name, value);
         cookies.setPath("/");
+        if(!StringUtils.isBlank(domain))
+        {
+            cookies.setDomain(domain);
+        }
         //cookies.setMaxAge(-1);//设置cookie经过多长秒后被删除。如果0，就说明立即删除。如果是负数就表明当浏览器关闭时自动删除。
         cookies.setMaxAge(age);
         response.addCookie(cookies);
@@ -93,6 +98,10 @@ public class CookieUtil {
             e.printStackTrace();
         }
         return true;
+    }
+
+    private String getDomainVal() {
+        return ProjectSetting.getConfigProperty("project.login.session.domain");
     }
 
     /**

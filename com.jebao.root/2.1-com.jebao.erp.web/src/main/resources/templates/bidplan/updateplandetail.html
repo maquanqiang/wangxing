@@ -54,7 +54,14 @@
                                             style="width: 160px;">
                                         <option value="1">普通理财</option>
                                         <option value="2">新手专享</option>
+                                        <option value="3">加息标</option>
                                     </select>
+                                </div>
+                            </div>
+                            <div class="form-group " style="display:none" id="bpUpRateDiv">
+                                <div class="input-group margin">
+                                    <div class="input-group-addon">加息利率(年化%)</div>
+                                    <input type="text" placeholder="" class="form-control" id="bpUpRate" name="bpUpRate" v-model="plan.bpUpRate">
                                 </div>
                             </div>
                             <br>

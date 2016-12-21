@@ -88,7 +88,8 @@ var vm = new Vue({
     //方法，可用于绑定事件或直接调用
     methods: {
         repay:function(period, bpId, repayMoney){
-            $(this).removeClass()
+            var th = $(this)
+            th.removeAttr("@click");
             //还款弹出框
             layer.open({
                 title:'还款提示',
@@ -96,6 +97,7 @@ var vm = new Vue({
                 btn: ['确认', '稍后'],
                 area: ['340px', '180px'],
                 yes: function(){
+                    layer.closeAll();
                     $.post("/api/loanManage/repay",{period:period, bpId:bpId, repayMoney:repayMoney}, function (response) {
                         if(response.success_is_ok){
                             layer.alert(response.msg);

@@ -38,24 +38,27 @@
         where ind_id = #{indId,jdbcType=BIGINT}
     </select>
     <insert id="insert" parameterType="com.jebao.jebaodb.entity.investment.TbIncomeDetail">
-    insert into tb_income_detail (ind_id, ind_ii_id, ind_login_id, 
-      ind_true_name, ind_third_account, ind_bp_number, 
-      ind_bp_name, ind_periods, ind_date_time, 
-      ind_fact_date_time, ind_overdue_days, ind_overdue_money, 
-      ind_fund_type, ind_money, ind_fact_moeny, 
-      ind_interest_st, ind_interest_et, ind_status, 
-      ind_create_time, ind_update_time, ind_is_del, ind_bp_id
-      )
-    values (#{indId,jdbcType=BIGINT}, #{indIiId,jdbcType=BIGINT}, #{indLoginId,jdbcType=BIGINT}, 
-      #{indTrueName,jdbcType=VARCHAR}, #{indThirdAccount,jdbcType=VARCHAR}, #{indBpNumber,jdbcType=VARCHAR}, 
-      #{indBpName,jdbcType=VARCHAR}, #{indPeriods,jdbcType=INTEGER}, #{indDateTime,jdbcType=TIMESTAMP}, 
-      #{indFactDateTime,jdbcType=TIMESTAMP}, #{indOverdueDays,jdbcType=INTEGER}, #{indOverdueMoney,jdbcType=DECIMAL}, 
-      #{indFundType,jdbcType=INTEGER}, #{indMoney,jdbcType=DECIMAL}, #{indFactMoeny,jdbcType=DECIMAL}, 
-      #{indInterestSt,jdbcType=TIMESTAMP}, #{indInterestEt,jdbcType=TIMESTAMP}, #{indStatus,jdbcType=INTEGER}, 
-      #{indCreateTime,jdbcType=TIMESTAMP}, #{indUpdateTime,jdbcType=TIMESTAMP}, #{indIsDel,jdbcType=INTEGER},
-      #{indBpId,jdbcType=BIGINT}
-      )
-  </insert>
+        <selectKey resultType="java.lang.Long" keyProperty="indId" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into tb_income_detail (ind_id, ind_ii_id, ind_login_id,
+        ind_true_name, ind_third_account, ind_bp_number,
+        ind_bp_name, ind_periods, ind_date_time,
+        ind_fact_date_time, ind_overdue_days, ind_overdue_money,
+        ind_fund_type, ind_money, ind_fact_moeny,
+        ind_interest_st, ind_interest_et, ind_status,
+        ind_create_time, ind_update_time, ind_is_del, ind_bp_id
+        )
+        values (#{indId,jdbcType=BIGINT}, #{indIiId,jdbcType=BIGINT}, #{indLoginId,jdbcType=BIGINT},
+        #{indTrueName,jdbcType=VARCHAR}, #{indThirdAccount,jdbcType=VARCHAR}, #{indBpNumber,jdbcType=VARCHAR},
+        #{indBpName,jdbcType=VARCHAR}, #{indPeriods,jdbcType=INTEGER}, #{indDateTime,jdbcType=TIMESTAMP},
+        #{indFactDateTime,jdbcType=TIMESTAMP}, #{indOverdueDays,jdbcType=INTEGER}, #{indOverdueMoney,jdbcType=DECIMAL},
+        #{indFundType,jdbcType=INTEGER}, #{indMoney,jdbcType=DECIMAL}, #{indFactMoeny,jdbcType=DECIMAL},
+        #{indInterestSt,jdbcType=TIMESTAMP}, #{indInterestEt,jdbcType=TIMESTAMP}, #{indStatus,jdbcType=INTEGER},
+        #{indCreateTime,jdbcType=TIMESTAMP}, #{indUpdateTime,jdbcType=TIMESTAMP}, #{indIsDel,jdbcType=INTEGER},
+        #{indBpId,jdbcType=BIGINT}
+        )
+    </insert>
     <insert id="insertSelective" parameterType="com.jebao.jebaodb.entity.investment.TbIncomeDetail">
         insert into tb_income_detail
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -252,16 +255,15 @@
             <if test="indCreateTime != null">
                 ind_create_time = #{indCreateTime,jdbcType=TIMESTAMP},
             </if>
-            <!--<if test="indUpdateTime != null" >-->
-            <!--ind_update_time = #{indUpdateTime,jdbcType=TIMESTAMP},-->
-            <!--</if>-->
+            <if test="indUpdateTime != null">
+                ind_update_time = #{indUpdateTime,jdbcType=TIMESTAMP},
+            </if>
             <if test="indIsDel != null">
                 ind_is_del = #{indIsDel,jdbcType=INTEGER},
             </if>
             <if test="indBpId != null">
                 ind_bp_id = #{indBpId,jdbcType=BIGINT},
             </if>
-            ind_update_time = NOW()
         </set>
         where ind_id = #{indId,jdbcType=BIGINT}
     </update>

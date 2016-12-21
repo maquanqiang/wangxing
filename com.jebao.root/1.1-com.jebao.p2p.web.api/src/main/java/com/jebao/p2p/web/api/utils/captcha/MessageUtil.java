@@ -50,7 +50,12 @@ public class MessageUtil {
         }
 
         String verifyCode = generateVerifyCode(6); //生成短信验证码
-        SmsSendUtil.sendVerifyCode(mobile,verifyCode); //发送短信验证码
+        if (Constants.IsTest){
+            verifyCode="0000"; //测试环境默认短信验证码： 0000
+        }else{
+            SmsSendUtil.sendVerifyCode(mobile,verifyCode); //发送短信验证码
+        }
+
         //设置/更新 redis
         if (mobileRedisValue == null){
             mobileRedisValue = new MessageRedisValue();

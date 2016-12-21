@@ -20,8 +20,11 @@ import com.jebao.thirdPay.fuiou.model.base.BasePlain;
 import com.jebao.thirdPay.fuiou.model.transferBu.TransferBuRequest;
 import com.jebao.thirdPay.fuiou.model.transferBu.TransferBuResponse;
 import com.jebao.thirdPay.fuiou.util.XmlUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import sun.rmi.runtime.Log;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -46,6 +49,7 @@ public class TbBidPlanServiceImpl implements ITbBidPlanServiceInf {
     @Autowired
     private TbFundsDetailsDao fundsDetailsDao;
 
+    private static Logger LOGGER = LoggerFactory.getLogger(TbBidPlanServiceImpl.class);
 
     @Override
     public int add(TbBidPlan plan) {
@@ -91,22 +95,47 @@ public class TbBidPlanServiceImpl implements ITbBidPlanServiceInf {
 
     @Override
     public boolean doLoan(TbBidPlan record) {
-
+        //借款人账户
         TbAccountsFunds tbAccountsFunds = accountsFundsDao.selectByLoginId(record.getBpLoginId());
 
         boolean flag = true;
+
+        //获取该标的投资列表
         TbInvestInfo tbInvestInfo = new TbInvestInfo();
         tbInvestInfo.setIiBpId(record.getBpId());
-
         PageWhere pageWhere = new PageWhere(0, 10000);
         List<TbInvestInfo> tbInvestInfos = investInfoDao.selectBybpId(tbInvestInfo, pageWhere);
 
         //调用富友接口
         if(tbInvestInfos!=null && tbInvestInfos.size()>0){
             for (TbInvestInfo investInfo : tbInvestInfos){
-                TransferBuRequest reqData = new TransferBuRequest();
-                String amt = investInfo.getIiMoney().multiply(new BigDecimal(100)).toString();
 
+
+                TransferBuRequest reqData = new TransferBuRequest();
+                //添加出账流水记录
+                TbAccountsFunds outAccount = accountsFundsDao.selectByLoginId(investInfo.getIiLoginId());
+
+                TbFundsDetails outFundsDetails = new TbFundsDetails();
+                outFundsDetails.setFdLoginId(investInfo.getIiLoginId());
+                outFundsDetails.setFdThirdAccount(outAccount.getAfThirdAccount());
+                outFundsDetails.setFdSerialNumber(reqData.getMchnt_txn_ssn());
+                outFundsDetails.setFdSerialTypeId(7);            //3投资冻结 4 借款入账  5本金还款  6付息  7投资转账
+                outFundsDetails.setFdSerialTypeName("投资转账");
+                outFundsDetails.setFdSerialAmount(investInfo.getIiMoney());
+                outFundsDetails.setFdBalanceBefore(outAccount.getAfBalance());
+                outFundsDetails.setFdBalanceAfter(outAccount.getAfBalance());
+                outFundsDetails.setFdCommissionCharge(BigDecimal.ZERO);
+                outFundsDetails.setFdBpId(investInfo.getIiBpId());
+                outFundsDetails.setFdBpName(investInfo.getIiBpName());
+                outFundsDetails.setFdCreateTime(new Date());
+                outFundsDetails.setFdSerialTime(new Date());
+                outFundsDetails.setFdBalanceStatus(2);           //支出
+                outFundsDetails.setFdSerialStatus(0);
+                outFundsDetails.setFdIsDel(1);
+                fundsDetailsDao.insert(outFundsDetails);
+
+                //提交富友参数
+                String amt = investInfo.getIiMoney().multiply(new BigDecimal(100)).setScale(0).toString();
                 reqData.setOut_cust_no(investInfo.getIiThirdAccount());
                 reqData.setIn_cust_no(tbAccountsFunds.getAfThirdAccount());
                 reqData.setAmt(amt);
@@ -116,6 +145,7 @@ public class TbBidPlanServiceImpl implements ITbBidPlanServiceInf {
                 TbThirdInterfaceLog thirdInterfaceLog = new TbThirdInterfaceLog();
                 thirdInterfaceLog.setTilCreateTime(new Date());
                 thirdInterfaceLog.setTilType(6);
+                thirdInterfaceLog.setTilReqText(reqData.requestSignPlain());
                 thirdInterfaceLog.setTilSerialNumber(reqData.getMchnt_txn_ssn());
 
                 thirdInterfaceLogDao.insert(thirdInterfaceLog);
@@ -124,49 +154,24 @@ public class TbBidPlanServiceImpl implements ITbBidPlanServiceInf {
                     TransferBuResponse thirdResp = transferBuService.post(reqData);
                     BasePlain plain = thirdResp.getPlain();
 
-                    //日志更新
+                    //富友日志更新
                     String respStr = XmlUtil.toXML(thirdResp);
-
                     thirdInterfaceLog.setTilReturnCode(plain.getResp_code());
-                    thirdInterfaceLog.setTilReqText(reqData.getSignature());
                     thirdInterfaceLog.setTilRespText(respStr);
-
                     thirdInterfaceLogDao.updateByPrimaryKeySelective(thirdInterfaceLog);
+
                     if("0000".equals(plain.getResp_code())){
                         //修改投资列表状态
+                        investInfo.setIiUpdateTime(new Date());
                         investInfo.setIiFreezeStatus(TbInvestInfo.STATUS_REPAYING);
                         investInfoDao.updateByPrimaryKeySelective(investInfo);
 
-                        //添加出账流水记录
-
-                        TbAccountsFunds outAccount = accountsFundsDao.selectByLoginId(investInfo.getIiLoginId());
-
-                        TbFundsDetails outFundsDetails = new TbFundsDetails();
-                        outFundsDetails.setFdLoginId(investInfo.getIiLoginId());
-                        outFundsDetails.setFdThirdAccount(outAccount.getAfThirdAccount());
-                        outFundsDetails.setFdSerialNumber(reqData.getMchnt_txn_ssn());
-                        outFundsDetails.setFdSerialTypeId(7);            //3投资冻结 4 借款入账  5本金还款  6付息  7投资转账
-                        outFundsDetails.setFdSerialTypeName("投资转账");
-                        outFundsDetails.setFdSerialAmount(investInfo.getIiMoney());
-                        outFundsDetails.setFdBalanceBefore(outAccount.getAfBalance());
-                        outFundsDetails.setFdBalanceAfter(outAccount.getAfBalance());
-                        outFundsDetails.setFdCommissionCharge(BigDecimal.ZERO);
-                        outFundsDetails.setFdBpId(investInfo.getIiBpId());
-                        outFundsDetails.setFdBpName(investInfo.getIiBpName());
-                        outFundsDetails.setFdCreateTime(new Date());
-                        outFundsDetails.setFdSerialTime(new Date());
-                        outFundsDetails.setFdBalanceStatus(2);           //支出
+                        //更新出账流水记录
                         outFundsDetails.setFdSerialStatus(1);
-                        outFundsDetails.setFdIsDel(1);
-                        fundsDetailsDao.insert(outFundsDetails);
-
-                        outAccount.setAfUpdateTime(new Date());
-                        accountsFundsDao.updateByPrimaryKeySelective(outAccount);
-
+                        fundsDetailsDao.updateByPrimaryKeySelective(outFundsDetails);
 
 
                         //添加入账流水记录
-
 
                         TbFundsDetails inFundsDetails = new TbFundsDetails();
                         inFundsDetails.setFdLoginId(record.getBpLoginId());
@@ -187,6 +192,7 @@ public class TbBidPlanServiceImpl implements ITbBidPlanServiceInf {
                         inFundsDetails.setFdIsDel(1);
                         fundsDetailsDao.insert(inFundsDetails);
 
+                        //更新借款人账户信息
                         tbAccountsFunds.setAfUpdateTime(new Date());
                         tbAccountsFunds.setAfBalance(tbAccountsFunds.getAfBalance().add(investInfo.getIiMoney()));
                         accountsFundsDao.updateByPrimaryKeySelective(tbAccountsFunds);
@@ -195,9 +201,15 @@ public class TbBidPlanServiceImpl implements ITbBidPlanServiceInf {
                     }else{
                         //记录异常状态
                         flag = false;
+                        if(LOGGER.isDebugEnabled()){
+                            LOGGER.debug("投资转账失败-流水号：{}, 富友错误码:{}", reqData.getMchnt_txn_ssn(),plain.getResp_code());
+                        }
                     }
                 } catch (Exception e) {
                     flag = false;
+                    if(LOGGER.isDebugEnabled()){
+                        LOGGER.debug("投资转账报错-流水号：{}", reqData.getMchnt_txn_ssn());
+                    }
                     e.printStackTrace();
                 }
             }
