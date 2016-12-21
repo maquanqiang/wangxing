@@ -88,6 +88,17 @@ public class RechargeServiceImpl implements IRechargeServiceInf {
             fundsDetails.setFdIsDel(1);
             fundsDetailsService.insert(fundsDetails);
 
+            //region 提交到富有，记录接口日志
+            TbThirdInterfaceLog thirdInterfaceLog = new TbThirdInterfaceLog();
+            thirdInterfaceLog.setTilType(23); // 接口编号
+            thirdInterfaceLog.setTilSerialNumber(reqData.getMchnt_txn_ssn());
+            String jsonText = FastJsonUtil.serialize(reqData);
+            thirdInterfaceLog.setTilReqText(jsonText);
+            thirdInterfaceLog.setTilRespText("form跳转请求，接口响应内容查看后续一条记录");
+            thirdInterfaceLog.setTilCreateTime(new Date());
+            thirdInterfaceLogDao.insert(thirdInterfaceLog);
+            //endregion
+
             return new ResultData<String>(true, html, "提交第三方");
         }
         return new ResultInfo(false, "form提交失败");
@@ -200,6 +211,18 @@ public class RechargeServiceImpl implements IRechargeServiceInf {
             fundsDetails.setFdThirdAccount(userDetails.getUdThirdAccount());
             fundsDetails.setFdIsDel(1);
             fundsDetailsService.insert(fundsDetails);
+
+            //region 提交到富有，记录接口日志
+            TbThirdInterfaceLog thirdInterfaceLog = new TbThirdInterfaceLog();
+            thirdInterfaceLog.setTilType(15); // 接口编号
+            thirdInterfaceLog.setTilSerialNumber(reqData.getMchnt_txn_ssn());
+            String jsonText = FastJsonUtil.serialize(reqData);
+            thirdInterfaceLog.setTilReqText(jsonText);
+            thirdInterfaceLog.setTilRespText("form跳转请求，接口响应内容查看后续一条记录");
+            thirdInterfaceLog.setTilCreateTime(new Date());
+            thirdInterfaceLogDao.insert(thirdInterfaceLog);
+            //endregion
+
             return new ResultData<String>(true, html, "提交第三方");
         }
         return new ResultInfo(false, "form提交失败");
@@ -315,6 +338,18 @@ public class RechargeServiceImpl implements IRechargeServiceInf {
             fundsDetails.setFdThirdAccount(userDetails.getUdThirdAccount());
             fundsDetails.setFdIsDel(1);
             fundsDetailsService.insert(fundsDetails);
+
+            //region 提交到富有，记录接口日志
+            TbThirdInterfaceLog thirdInterfaceLog = new TbThirdInterfaceLog();
+            thirdInterfaceLog.setTilType(16); // 接口编号
+            thirdInterfaceLog.setTilSerialNumber(reqData.getMchnt_txn_ssn());
+            String jsonText = FastJsonUtil.serialize(reqData);
+            thirdInterfaceLog.setTilReqText(jsonText);
+            thirdInterfaceLog.setTilRespText("form跳转请求，接口响应内容查看后续一条记录");
+            thirdInterfaceLog.setTilCreateTime(new Date());
+            thirdInterfaceLogDao.insert(thirdInterfaceLog);
+            //endregion
+
             return new ResultData<String>(true, html, "提交第三方");
         }
         return new ResultInfo(false, "form提交失败");
