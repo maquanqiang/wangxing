@@ -138,12 +138,35 @@ var vm = new Vue({
             if (!bootstrapValidator.isValid()) {
                 return false;
             }
+            var loanMoney = $("#defaultForm input[name=bpLoanMoney]").val();
+            if(loanMoney*1<=0){
+                layer.msg("放款金额为0");
+                return false;
+            }
+
             var form = $("#defaultForm").serializeObject();
             $.post("/api/bidPlan/doLoan",form,function(response){
                 if(response.success_is_ok){
                     layer.alert(response.msg, 5);
                     window.location.href = "/postLoan/index";
                 }
+
+            })
+        },
+        closeBtn:function(){
+            var money = $("#defaultForm input[name=bpLoanMoney]").val();
+            if(money*1>0){
+                alert("放款金额不为空，不能关闭");
+                return false;
+            }
+            $.post("/api/bidPlan/close",{bpId : $("#bpId").val()}, function(response){
+                if(response.success_is_ok){
+                    layer.msg(response.msg);
+                    window.location.href = "/bidplan/noLendingList";
+                }else{
+                    layer.msg(response.error);
+                }
+
 
             })
         }

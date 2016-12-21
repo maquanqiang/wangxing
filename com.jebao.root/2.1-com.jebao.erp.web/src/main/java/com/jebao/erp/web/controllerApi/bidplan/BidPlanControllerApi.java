@@ -322,4 +322,20 @@ public class BidPlanControllerApi extends _BaseController {
         }
 
     }
+
+    @RequestMapping("close")
+    @ResponseBody
+    public JsonResult close(Long bpId){
+
+        TbBidPlan tbBidPlan = new TbBidPlan();
+        tbBidPlan.setBpId(bpId);
+        tbBidPlan.setBpIsDel(2);
+
+        int count = bidPlanService.updateByBidIdSelective(tbBidPlan);
+        if(count>0){
+            return new JsonResultOk("关闭成功");
+        }else{
+            return new JsonResultError("关闭失败");
+        }
+    }
 }
