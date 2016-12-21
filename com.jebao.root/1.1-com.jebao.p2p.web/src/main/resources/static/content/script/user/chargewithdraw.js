@@ -7,7 +7,8 @@ var model = {
     //银行卡信息
     bankInfo: {},
     posStatus: false,
-    inTime:""
+    inTime:"",
+    typeId:""
 };
 
 // 创建一个 Vue 实例 (ViewModel),它连接 View 与 Model
@@ -18,10 +19,12 @@ var vm = new Vue({
         var now = new Date();
         var tomorrow = new Date(now.setDate(now.getDate() + 1));
         model.inTime = tomorrow.toFormatString('yyyy-MM-dd');
+        model.typeId = $("#typeId").val();
     },
     //初始化远程数据
     created: function () {
         this.init();
+        this.change();
     },
     mounted: function () {
         this.initValidateForm("#quickPay_form");
@@ -31,6 +34,19 @@ var vm = new Vue({
     },
     //方法，可用于绑定事件或直接调用
     methods: {
+        change: function(){
+            var index = 0;
+            if(model.typeId == 2){
+                index = 1;
+            }else{
+                index = 0;
+            }
+
+            $(".account-rex-tit h4").removeClass('active');
+            $(".account-rex-item").removeClass('active');
+            $(".account-rex-tit h4").eq(index).addClass('active');
+            $('.account-rex-item').eq(index).addClass('active');
+        },
         init: function () {
             $.get("/api/user/syncThirdAccount", function (response) {
                 if(response.msg == "1"){

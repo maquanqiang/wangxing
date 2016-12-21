@@ -12,19 +12,40 @@ import java.util.Date;
  * Created by Administrator on 2016/12/3.
  */
 public class FundsDetailsVM extends ViewModel {
-    public FundsDetailsVM(TbFundsDetails entity){
+    public FundsDetailsVM(TbFundsDetails entity) {
         this.serialNumber = entity.getFdSerialNumber();
         this.serialTime = entity.getFdSerialTime();
         this.serialTypeName = entity.getFdSerialTypeName();
-        if(entity.getFdBalanceStatus() == 1){
+        if (entity.getFdBalanceStatus() == 1) {
             this.incAmount = "+" + entity.getFdSerialAmount().toString();
             this.expAmount = "";
-        }else{
+        } else {
             this.incAmount = "";
             this.expAmount = "-" + entity.getFdSerialAmount().toString();
         }
-        this.serialStatus = entity.getFdSerialTypeName() + (entity.getFdSerialStatus() == 1 ? "成功" : "失败");
+        this.serialStatus = getStatusName(entity.getFdSerialTypeName(), entity.getFdSerialStatus());
     }
+
+    private String getStatusName(String typeName, int status) {
+        StringBuilder name = new StringBuilder();
+        name.append(typeName);
+        switch (status) {
+            case -1:
+                name.append("失败");
+                break;
+            case 0:
+                name.append("处理中");
+                break;
+            case 1:
+                name.append("成功");
+                break;
+            default:
+                name.append("失败");
+                break;
+        }
+        return name.toString();
+    }
+
     //交易流水号
     private String serialNumber;
 
