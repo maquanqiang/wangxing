@@ -15,12 +15,14 @@ import com.jebao.erp.web.responseModel.bidplan.BidPlanVM;
 import com.jebao.erp.web.responseModel.bidplan.LoanIntentVM;
 import com.jebao.erp.web.responseModel.bidplan.ProjTempNameVM;
 import com.jebao.erp.web.responseModel.bidplan.ProjectTempVM;
+import com.jebao.erp.web.utils.contract.UpCaseRMB;
 import com.jebao.erp.web.utils.toolbox.BetweenDays;
 import com.jebao.jebaodb.entity.extEntity.PageWhere;
 import com.jebao.jebaodb.entity.investment.TbInvestInfo;
 import com.jebao.jebaodb.entity.loaner.TbLoaner;
 import com.jebao.jebaodb.entity.loaner.TbRcpMaterialsTemp;
 import com.jebao.jebaodb.entity.loaner.TbRiskCtlPrjTemp;
+import com.jebao.jebaodb.entity.loanmanage.Contract.ContractCommData;
 import com.jebao.jebaodb.entity.loanmanage.TbBidPlan;
 import com.jebao.jebaodb.entity.loanmanage.TbBidRiskData;
 import com.jebao.jebaodb.entity.loanmanage.search.BidPlanSM;
@@ -36,6 +38,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -53,10 +57,6 @@ public class BidPlanControllerApi extends _BaseController {
     private ITbBidRiskDataServiceInf riskDataService;
     @Autowired
     private IInvestInfoServiceInf investInfoService;
-    @Autowired
-    private TransferBuServiceImpl transferBuService;
-    @Autowired
-    private IUserDetailsServiceInf userDetailsService;
 
     @RequestMapping("removeBidPlan")
     @ResponseBody
@@ -338,4 +338,49 @@ public class BidPlanControllerApi extends _BaseController {
             return new JsonResultError("关闭失败");
         }
     }
+
+//    @RequestMapping("createContract")
+//    @ResponseBody
+//    public JsonResult createContract(RepaymentForm form){
+//
+//        String[] cycleType = {"", "天", "个月", "季", "年"};
+//
+//
+//        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+//        DecimalFormat d1 =new DecimalFormat("#,##0.##");
+//        String loanMonayRMB = "";
+//        try {
+//            loanMonayRMB = UpCaseRMB.digitUppercase(form.getBpLoanMoney().toString());
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//        //common data
+//        ContractCommData commData = new ContractCommData();
+//        TbBidPlan tbBidPlan = bidPlanService.selectByBpId(form.getBpId());
+//        TbLoaner loaner = loanerService.findLoanerById(tbBidPlan.getBpLoanerId());
+//
+//
+//        commData.setLoanerTrueName(tbBidPlan.getBpTrueName());      //借款人姓名
+//        commData.setLoanerNumber(loaner.getlIdNumber());        //证件号码
+//        commData.setInterestSt(sdf.format(form.getBpInterestSt()));          //受让日期
+//        commData.setRepayTime(sdf.format(form.getBpRepayTime()));           //还款日期   到期日
+//        commData.setLoanMoney(d1.format(form.getBpLoanMoney()).toString());           //标的金额--实际放款金额
+//        commData.setLoanMoneyRMB(loanMonayRMB);        //标的金额人民币大写
+//        commData.setInterestPayType(tbBidPlan.getBpInterestPayType()==1?"一次性还本付息":"按期付息，到期还本");     //还款方式
+//        commData.setBidPeriods(tbBidPlan.getBpPeriods()+cycleType[tbBidPlan.getBpCycleType()]);          //标的周期
+//        commData.setLoanTime(sdf.format(form.getBpInterestSt()));            //放款日期  签字日期
+//
+//        TbInvestInfo tbInvestInfo = new TbInvestInfo();
+//        tbInvestInfo.setIiBpId(form.getBpId());
+//        tbInvestInfo.setIiIsDel(1);
+//        PageWhere pageWhere = new PageWhere(0, 10000);
+//
+//        List<TbInvestInfo> tbInvestInfos = investInfoService.selectByBpId(tbInvestInfo, pageWhere);
+//        List<TbInvestInfo> infos =
+//
+//
+//    }
+
+
 }
+
