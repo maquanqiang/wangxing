@@ -355,6 +355,18 @@ public class UserfundServiceImpl implements IUserfundServiceInf {
                     }else{
                         posStatus=0;
                     }
+                    if(item.getUser_st().equals("1") && StringUtils.isBlank(userDetailsEntity.getUdThirdAccount())){
+                        userDetailsEntity.setUdThirdAccount(item.getLogin_id());
+                        userDetailsEntity.setUdPhone(item.getMobile_no());
+                        userDetailsEntity.setUdEmail(item.getEmail());
+                        userDetailsEntity.setUdBankCardNo(item.getCapAcntNo());
+                        userDetailsEntity.setUdTrueName(item.getCust_nm());
+                        userDetailsEntity.setUdIdNumber(item.getCertif_id());
+                        userDetailsEntity.setUdBankProvincesCode(item.getCity_id());
+                        userDetailsEntity.setUdBankParentBankCode(item.getParent_bank_id());
+                        userDetailsEntity.setUdBankParentBankName(item.getBank_nm());
+                        userDetailsDao.updateByPrimaryKeySelective(userDetailsEntity);
+                    }
                 }
             }
         }
