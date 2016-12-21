@@ -14,7 +14,7 @@ $(function () {
 //Model
 var model = {
     //查询条件
-    search: {},
+    searchObj: {},
     //标的
     plan: {},
     //台账列表
@@ -33,6 +33,10 @@ var vm = new Vue({
     data: model,
     beforeCreate:function(){
         //初始化本地数据
+        //初始化本地数据
+        model.searchObj.indBpId = $("#bpId").val();
+        model.searchObj.pageIndex=0;
+        model.searchObj.pageSize=1000;
     },
     //初始化远程数据
     created:function(){
@@ -54,14 +58,22 @@ var vm = new Vue({
                 $("#bpRepayTime").val(date);
             }
         });
+        //riskDataList
         $.get("/api/bidRiskData/getRiskDataListForPage", dataVal, function (response) {
             if (response.success_is_ok) {
                 vm.riskDataList = response.data;
             }
         })
+        //investInfoList
         $.get("/api/investInfo/list", dataVal, function (response) {
             if (response.success_is_ok) {
                 vm.investInfoList = response.data;
+            }
+        })
+        //intentList
+        $.get("/api/incomeDetail/repaymentList",model.searchObj,function(response) {
+            if (response.success_is_ok) {
+                vm.intentList = response.data;
             }
         })
     },

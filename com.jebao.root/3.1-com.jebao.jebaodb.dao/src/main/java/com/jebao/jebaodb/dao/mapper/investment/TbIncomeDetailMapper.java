@@ -49,6 +49,8 @@ public interface TbIncomeDetailMapper {
 
     BigDecimal repaymoneyTotal(@Param("record") TbIncomeDetail record);
 
+    int updateByConditionSelective(TbIncomeDetail record);
+
     /*==================================================借款人相关信息==================================================*/
     BigDecimal totalMoneyByloanerId(IncomeDetailSM model);
     /*==================================================账户总览统计==================================================*/

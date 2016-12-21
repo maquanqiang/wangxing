@@ -132,6 +132,15 @@ public class TbIncomeDetailDao {
         return mapper.repaymoneyTotal(record);
     }
 
+    /**
+     * 按标的id更新数据
+     * @param record
+     * @return
+     */
+    public int updateByConditionSelective(TbIncomeDetail record){
+        return mapper.updateByConditionSelective(record);
+    }
+
     @Transactional
     public int insertForTransactional(TbIncomeDetail record) {
         return mapper.insert(record);
