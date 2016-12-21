@@ -68,7 +68,7 @@ public class ProductServiceImpl implements IProductServiceInf {
     @Autowired
     private TbFundsDetailsDao fundsDetailsDao;
 
-    private Logger LOGGER = LoggerFactory.getLogger(ProductServiceImpl.class);
+    private final static Logger LOGGER = LoggerFactory.getLogger(ProductServiceImpl.class);
 
     @Override
     public List<TbBidPlan> selectP2PList(ProductSM record, PageWhere pageWhere) {
