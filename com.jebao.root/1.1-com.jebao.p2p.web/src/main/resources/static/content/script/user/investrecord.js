@@ -40,21 +40,21 @@ var vm = new Vue({
                     if(fs == 1){
                         console.log("investings:"+response.data);
                         vm.investings=response.data;
-                        if(response.data == null || response.count == 0){
+                        if(response.data == null){
                             vm.isHasDateii = false;
                         }else{
                             vm.isHasDateii = true;
                         }
                     }else if(fs == 2){
                         vm.paymentings=response.data;
-                        if(response.data == null || response.count == 0){
+                        if(response.data == null){
                             vm.isHasDatepi = false;
                         }else{
                             vm.isHasDatepi = true;
                         }
                     }else{
                         vm.paymenteds=response.data;
-                        if(response.data == null || response.count == 0){
+                        if(response.data == null){
                             vm.isHasDatepd = false;
                         }else{
                             vm.isHasDatepd = true;

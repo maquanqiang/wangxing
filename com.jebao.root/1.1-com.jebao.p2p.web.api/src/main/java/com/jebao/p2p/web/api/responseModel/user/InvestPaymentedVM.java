@@ -1,7 +1,7 @@
 package com.jebao.p2p.web.api.responseModel.user;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.jebao.jebaodb.entity.investment.InvestPaymented;
+import com.jebao.jebaodb.entity.investment.InvestBase;
 import com.jebao.p2p.web.api.responseModel.ViewModel;
 
 import java.math.BigDecimal;
@@ -11,18 +11,31 @@ import java.util.Date;
  * Created by Administrator on 2016/12/12.
  */
 public class InvestPaymentedVM extends ViewModel {
-    public InvestPaymentedVM(InvestPaymented entity){
+    public InvestPaymentedVM(InvestBase entity){
+        this.iiId = entity.getIiId();
         this.bpId = entity.getBpId();
         this.bpName = entity.getBpName();
         this.createTime = entity.getCreateTime();
         this.money = entity.getMoney();
-        this.periods = entity.getPeriods();
+        this.periods = String.valueOf(entity.getPeriods()) + getCycleTypeName(entity.getCycleType());
         this.bpRate = entity.getBpRate();
-        this.factMoeny = entity.getFactMoeny();
-        this.makeMoney = entity.getMakeMoney();
-        this.settleDate = entity.getSettleDate();
         this.contractUrl = entity.getContractUrl();
     }
+
+    private String getCycleTypeName(int cycleType){
+        String name = "其他";
+        switch (cycleType){
+            case 1:name="日";break;
+            case 2:name="个月";break;
+            case 3:name="季";break;
+            case 4:name="年";break;
+            default:break;
+        }
+        return name;
+    }
+
+    //投资记录ID
+    private Long iiId;
 
     //标的ID
     private Long bpId;
@@ -38,7 +51,7 @@ public class InvestPaymentedVM extends ViewModel {
     private BigDecimal money;
 
     //投资期限 (标的信息表中 标的期数*周期大小 + 周期类型)
-    private int periods;
+    private String periods;
 
     //年化利率%
     private BigDecimal bpRate;
@@ -50,10 +63,19 @@ public class InvestPaymentedVM extends ViewModel {
     private BigDecimal makeMoney;
 
     //结清日期 = 实际到账日期
+    @JsonFormat(timezone = "GMT+8", pattern = "yyyy/MM/dd HH:mm:ss")
     private Date settleDate;
 
     //合同地址
     private String contractUrl;
+
+    public Long getIiId() {
+        return iiId;
+    }
+
+    public void setIiId(Long iiId) {
+        this.iiId = iiId;
+    }
 
     public Long getBpId() {
         return bpId;
@@ -87,11 +109,11 @@ public class InvestPaymentedVM extends ViewModel {
         this.money = money;
     }
 
-    public int getPeriods() {
+    public String getPeriods() {
         return periods;
     }
 
-    public void setPeriods(int periods) {
+    public void setPeriods(String periods) {
         this.periods = periods;
     }
 

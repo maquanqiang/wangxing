@@ -1,9 +1,7 @@
 package com.jebao.p2p.service.inf.user;
 
 import com.jebao.jebaodb.entity.extEntity.PageWhere;
-import com.jebao.jebaodb.entity.investment.InvestIng;
-import com.jebao.jebaodb.entity.investment.InvestPaymented;
-import com.jebao.jebaodb.entity.investment.TbIncomeDetail;
+import com.jebao.jebaodb.entity.investment.*;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -23,53 +21,30 @@ public interface IInvestServiceInf {
     Map<String, BigDecimal> getInvestStatisticsByLoginId(Long loginId);
 
     /**
-     * 投资中项目
+     * 投资项目
      *
-     * @param loginId
+     * @param record
      * @param page
      * @return
      */
-    List<InvestIng> selectInvestIngByLoginId(Long loginId, PageWhere page);
+    List<InvestBase> selectInvestBaseByLoginId(TbInvestInfo record, PageWhere page);
 
     /**
      * 投资中项目总数
      *
-     * @param loginId
+     * @param record
      * @return
      */
-    int selectInvestIngByLoginIdForPageCount(Long loginId);
+    int selectInvestBaseByLoginIdForPageCount(TbInvestInfo record);
 
     /**
-     * 还款中的项目
+     * 投资人还款项目列表
      *
-     * @param loginId
-     * @param page
+     * @param iiIds     投资记录IDs
+     * @param indStatus 还款状态 1:未还 2:已还
+     * @param fundType  资金类型 1:本金 2 : 利息
      * @return
      */
-    List<TbIncomeDetail> selectInvestPaymentIngByLoginId(Long loginId, PageWhere page);
+    List<InvestPayment> selectPaymentByIds(List<Long> iiIds, int indStatus, int fundType);
 
-    /**
-     * 还款中的项目总数
-     *
-     * @param loginId
-     * @return
-     */
-    int selectInvestPaymentIngByLoginIdForPageCount(Long loginId);
-
-    /**
-     * 已还款的项目
-     *
-     * @param loginId
-     * @param page
-     * @return
-     */
-    List<InvestPaymented> selectInvestPaymentedByLoginId(Long loginId, PageWhere page);
-
-    /**
-     * 已还款的项目总数
-     *
-     * @param loginId
-     * @return
-     */
-    int selectInvestPaymentedByLoginIdForPageCount(Long loginId);
 }
