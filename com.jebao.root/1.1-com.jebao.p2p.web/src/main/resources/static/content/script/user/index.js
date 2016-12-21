@@ -30,27 +30,30 @@ var vm = new Vue({
                 }
             }
         });
-        $.get("/api/invest/list", {freezeStatus:1}, function (response) {
-            if (response.success_is_ok) {
-                var data = response.data;
-                vm.investIngs = data;
-            }
-        });
-        $.get("/api/invest/list", {freezeStatus:2}, function (response) {
-            if (response.success_is_ok) {
-                var data = response.data;
-                vm.paymentIngs = data;
-            }
-        });
         $.get("/api/funds/list", function (response) {
             if (response.success_is_ok) {
                 var data = response.data;
                 vm.fundsDetails = data;
             }
         });
+        this.search(1);
     },
     //方法，可用于绑定事件或直接调用
     methods: {
-
+        getDetailHref: function (id) {
+            return "/product/detail/" + id;
+        },
+        search: function(fs){
+            $.get("/api/invest/list", {freezeStatus:fs}, function (response) {
+                if (response.success_is_ok) {
+                    var data = response.data;
+                    if(fs == 1){
+                        vm.investIngs = data;
+                    }else if(fs == 2){
+                        vm.paymentIngs = data;
+                    }
+                }
+            });
+        }
     }
 });
