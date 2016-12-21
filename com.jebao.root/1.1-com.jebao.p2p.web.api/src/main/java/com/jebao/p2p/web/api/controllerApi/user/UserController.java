@@ -161,7 +161,7 @@ public class UserController extends _BaseController {
         }
 
         String title = "充值失败！";
-        String backUrl = "/user/chargewithdraw"; // web页面内的回跳地址，可以是相对路径
+        String backUrl = "/user/chargewithdraw?typeId=1"; // web页面内的回跳地址，可以是相对路径
         //region 验证
         ValidationResult resultValidation = ValidationUtil.validateEntity(form);
         if (resultValidation.isHasErrors()) {
@@ -208,7 +208,7 @@ public class UserController extends _BaseController {
         if (!resultInfo.getSuccess_is_ok()) {
             String title = "充值失败！";
             String content = resultInfo.getMsg();
-            String backUrl = "/user/chargewithdraw"; // web页面内的回跳地址，可以是相对路径
+            String backUrl = "/user/chargewithdraw?typeId=1"; // web页面内的回跳地址，可以是相对路径
             goFailedPage(title, content, backUrl);
         } else {
             goSuccessPage("充值成功！", "", "/user/index", "查看我的账户");
@@ -234,7 +234,7 @@ public class UserController extends _BaseController {
         }
 
         String title = "充值失败！";
-        String backUrl = "/user/chargewithdraw"; // web页面内的回跳地址，可以是相对路径
+        String backUrl = "/user/chargewithdraw?typeId=1"; // web页面内的回跳地址，可以是相对路径
         //region 验证
         ValidationResult resultValidation = ValidationUtil.validateEntity(form);
         if (resultValidation.isHasErrors()) {
@@ -281,7 +281,7 @@ public class UserController extends _BaseController {
         if (!resultInfo.getSuccess_is_ok()) {
             String title = "充值失败！";
             String content = resultInfo.getMsg();
-            String backUrl = "/user/chargewithdraw"; // web页面内的回跳地址，可以是相对路径
+            String backUrl = "/user/chargewithdraw?typeId=1"; // web页面内的回跳地址，可以是相对路径
             goFailedPage(title, content, backUrl);
         } else {
             goSuccessPage("充值成功！", "", "/user/index", "查看我的账户");
@@ -307,7 +307,7 @@ public class UserController extends _BaseController {
         }
 
         String title = "充值失败！";
-        String backUrl = "/user/chargewithdraw"; // web页面内的回跳地址，可以是相对路径
+        String backUrl = "/user/chargewithdraw?typeId=1"; // web页面内的回跳地址，可以是相对路径
         //region 验证
         ValidationResult resultValidation = ValidationUtil.validateEntity(form);
         if (resultValidation.isHasErrors()) {
@@ -354,7 +354,7 @@ public class UserController extends _BaseController {
         if (!resultInfo.getSuccess_is_ok()) {
             String title = "充值失败！";
             String content = resultInfo.getMsg();
-            String backUrl = "/user/chargewithdraw"; // web页面内的回跳地址，可以是相对路径
+            String backUrl = "/user/chargewithdraw?typeId=1"; // web页面内的回跳地址，可以是相对路径
             goFailedPage(title, content, backUrl);
         } else {
             goSuccessPage("充值成功！", "", "/user/index", "查看我的账户");
@@ -380,7 +380,7 @@ public class UserController extends _BaseController {
         }
 
         String title = "提现失败！";
-        String backUrl = "/user/chargewithdraw"; // web页面内的回跳地址，可以是相对路径
+        String backUrl = "/user/chargewithdraw?typeId=2"; // web页面内的回跳地址，可以是相对路径
         //region 验证
         ValidationResult resultValidation = ValidationUtil.validateEntity(form);
         if (resultValidation.isHasErrors()) {
@@ -427,7 +427,7 @@ public class UserController extends _BaseController {
         if (!resultInfo.getSuccess_is_ok()) {
             String title = "提现失败！";
             String content = resultInfo.getMsg();
-            String backUrl = "/user/chargewithdraw"; // web页面内的回跳地址，可以是相对路径
+            String backUrl = "/user/chargewithdraw?typeId=2"; // web页面内的回跳地址，可以是相对路径
             goFailedPage(title, content, backUrl);
         } else {
             goSuccessPage("提现成功！", "", "/user/index", "查看我的账户");
