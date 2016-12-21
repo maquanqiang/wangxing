@@ -2,6 +2,7 @@ package com.jebao.erp.web.requestModel.employee;
 
 import com.jebao.jebaodb.entity.employee.TbRank;
 import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.Range;
 
 import java.math.BigDecimal;
 
@@ -21,6 +22,10 @@ public class RankIM {
     @NotBlank(message = "名称不能为空")
     private String name;
     private Integer parentId;
+    /**
+     * 0-1之间的小数，对应前台的百分比数
+     */
+    @Range(min = 0L,max = 1L,message = "业绩提成比例错误，必须为0-100%之间")
     private BigDecimal brokerage;
 
     public int getId() {
