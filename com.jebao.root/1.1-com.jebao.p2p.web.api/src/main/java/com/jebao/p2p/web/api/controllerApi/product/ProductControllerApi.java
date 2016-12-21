@@ -35,7 +35,6 @@ import java.util.List;
 @RequestMapping("api/product")
 public class ProductControllerApi {
 
-    private Logger LOGGER = LoggerFactory.getLogger(ProductControllerApi.class);
 
     @Autowired
     private IProductServiceInf productService;

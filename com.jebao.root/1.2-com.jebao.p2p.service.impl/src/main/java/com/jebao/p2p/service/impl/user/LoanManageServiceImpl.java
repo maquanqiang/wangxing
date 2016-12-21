@@ -50,7 +50,7 @@ public class LoanManageServiceImpl implements ILoanManageServiceInf {
     private TbInvestInfoDao investInfoDao;
 
 
-    private final static Logger LOGGER = LoggerFactory.getLogger(LoanManageServiceImpl.class);
+    private static Logger LOGGER = LoggerFactory.getLogger(LoanManageServiceImpl.class);
 
     @Override
     public String repay(Long bpId, Long loginId, Integer period, BigDecimal repayMoney) {
@@ -188,9 +188,9 @@ public class LoanManageServiceImpl implements ILoanManageServiceInf {
                         //更新入账流水记录
                         inFundsDetails.setFdSerialStatus(-1);
                         fundsDetailsDao.updateByPrimaryKeySelective(inFundsDetails);
-                        if(LOGGER.isDebugEnabled()){
-                            LOGGER.debug("还款失败，当前还款记录ID：{}, 第三方返回码：{}",detail.getIndId(), response.getPlain().getResp_code());
-                        }
+//                        if(LOGGER.isDebugEnabled()){
+//                            LOGGER.debug("还款失败，当前还款记录ID：{}, 第三方返回码：{}",detail.getIndId(), response.getPlain().getResp_code());
+//                        }
 
                     }
                 } catch (Exception e) {

@@ -49,7 +49,7 @@ public class TbBidPlanServiceImpl implements ITbBidPlanServiceInf {
     @Autowired
     private TbFundsDetailsDao fundsDetailsDao;
 
-    private static Logger LOGGER = LoggerFactory.getLogger(TbBidPlanServiceImpl.class);
+    private final static Logger LOGGER = LoggerFactory.getLogger(TbBidPlanServiceImpl.class);
 
     @Override
     public int add(TbBidPlan plan) {
