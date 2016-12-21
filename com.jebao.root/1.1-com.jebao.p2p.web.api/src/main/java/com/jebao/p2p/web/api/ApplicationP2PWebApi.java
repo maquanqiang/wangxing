@@ -3,7 +3,6 @@ package com.jebao.p2p.web.api;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.PropertySource;
 
 /**
  * Created by Administrator on 2016/10/19.
