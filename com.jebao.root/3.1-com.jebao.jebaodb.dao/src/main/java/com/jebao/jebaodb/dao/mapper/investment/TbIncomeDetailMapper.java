@@ -3,6 +3,7 @@ package com.jebao.jebaodb.dao.mapper.investment;
 
 import com.jebao.jebaodb.entity.extEntity.PageWhere;
 import com.jebao.jebaodb.entity.investment.FundDetailSM;
+import com.jebao.jebaodb.entity.investment.InvestPayment;
 import com.jebao.jebaodb.entity.investment.TbIncomeDetail;
 import com.jebao.jebaodb.entity.investment.search.IncomeDetailSM;
 import com.jebao.jebaodb.entity.postLoan.search.RepaymentDetailSM;
@@ -35,11 +36,11 @@ public interface TbIncomeDetailMapper {
 
     int selectGroupByConditionCount(@Param("record") RepaymentDetailSM record);
 
-    List<TbIncomeDetail> selectFundList(@Param("record") FundDetailSM record, @Param("pageWhere")PageWhere pageWhere);
+    List<TbIncomeDetail> selectFundList(@Param("record") FundDetailSM record, @Param("pageWhere") PageWhere pageWhere);
 
-    BigDecimal loanMoneyTotal(@Param("loginId")Long loginId);
+    BigDecimal loanMoneyTotal(@Param("loginId") Long loginId);
 
-    TbIncomeDetail overdueMoneyOther(@Param("dateTime")Date dateTime);
+    TbIncomeDetail overdueMoneyOther(@Param("dateTime") Date dateTime);
 
     int selectFundCount(@Param("record") FundDetailSM record);
 
@@ -51,10 +52,11 @@ public interface TbIncomeDetailMapper {
 
     int updateByConditionSelective(TbIncomeDetail record);
 
-    /*==================================================借款人相关信息==================================================*/
+    /*==================================================借款人相关统计==================================================*/
     BigDecimal totalMoneyByloanerId(IncomeDetailSM model);
-    /*==================================================账户总览统计==================================================*/
-    double selectDueInMoneyByLoginId(@Param("record") TbIncomeDetail record);
 
-    double selectIncomeMoneyByLoginId(long indLoginId);
+    /*==================================================投资人相关统计==================================================*/
+    BigDecimal totalMoneyByLoginId(@Param("record") TbIncomeDetail record);
+
+    List<InvestPayment> selectPaymentByIds(@Param("ids") List<Long> iiIds, @Param("record") TbIncomeDetail record);
 }

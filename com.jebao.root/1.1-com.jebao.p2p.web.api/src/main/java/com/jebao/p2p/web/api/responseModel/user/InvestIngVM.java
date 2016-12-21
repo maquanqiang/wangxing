@@ -1,7 +1,7 @@
 package com.jebao.p2p.web.api.responseModel.user;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.jebao.jebaodb.entity.investment.InvestIng;
+import com.jebao.jebaodb.entity.investment.InvestBase;
 import com.jebao.p2p.web.api.responseModel.ViewModel;
 
 import java.math.BigDecimal;
@@ -11,14 +11,26 @@ import java.util.Date;
  * Created by Administrator on 2016/12/12.
  */
 public class InvestIngVM extends ViewModel {
-    public InvestIngVM(InvestIng entity){
+    public InvestIngVM(InvestBase entity){
         this.bpId = entity.getBpId();
         this.bpName = entity.getBpName();
         this.createTime = entity.getCreateTime();
         this.money = entity.getMoney();
-        this.periods = entity.getPeriods();
+        this.periods = String.valueOf(entity.getPeriods()) + getCycleTypeName(entity.getCycleType());
         this.bpRate = entity.getBpRate();
         this.progress = entity.getProgress();
+    }
+
+    private String getCycleTypeName(int cycleType){
+        String name = "其他";
+        switch (cycleType){
+            case 1:name="日";break;
+            case 2:name="个月";break;
+            case 3:name="季";break;
+            case 4:name="年";break;
+            default:break;
+        }
+        return name;
     }
 
     //标的ID
@@ -35,7 +47,7 @@ public class InvestIngVM extends ViewModel {
     private BigDecimal money;
 
     //投资期限 (标的信息表中 标的期数*周期大小 + 周期类型)
-    private int periods;
+    private String periods;
 
     //年化利率%
     private BigDecimal bpRate;
@@ -75,11 +87,11 @@ public class InvestIngVM extends ViewModel {
         this.money = money;
     }
 
-    public int getPeriods() {
+    public String getPeriods() {
         return periods;
     }
 
-    public void setPeriods(int periods) {
+    public void setPeriods(String periods) {
         this.periods = periods;
     }
 

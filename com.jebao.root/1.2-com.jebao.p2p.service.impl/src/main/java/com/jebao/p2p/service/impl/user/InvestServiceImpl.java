@@ -37,57 +37,48 @@ public class InvestServiceImpl implements IInvestServiceInf {
     @Override
     public Map<String, BigDecimal> getInvestStatisticsByLoginId(Long loginId) {
         BigDecimal balance = tbAccountsFundsDao.selectByLoginId(loginId).getAfBalance();
-        BigDecimal freeze = tbInvestInfoDao.selectFreezeMoneyByLoginId(loginId);
-        BigDecimal income = tbIncomeDetailDao.selectIncomeMoneyByLoginId(loginId);
-        BigDecimal dueInPrincipal = tbIncomeDetailDao.selectDueInMoneyByLoginId(loginId, 1);
-        BigDecimal dueInIncome = tbIncomeDetailDao.selectDueInMoneyByLoginId(loginId, 2);
+        BigDecimal freeze = tbInvestInfoDao.totalFreezeMoneyByLoginId(loginId);
+        BigDecimal income = tbIncomeDetailDao.totalMoneyByLoginId(loginId, 2, 2);
+        BigDecimal dueInPrincipal = tbIncomeDetailDao.totalMoneyByLoginId(loginId, 1, 1);
+        BigDecimal dueInIncome = tbIncomeDetailDao.totalMoneyByLoginId(loginId, 2, 1);
         BigDecimal totalAssets = new BigDecimal(0);
         Map<String, BigDecimal> map = new HashMap<String, BigDecimal>();
         map.put("totalAssets", totalAssets.add(balance).add(freeze).add(dueInPrincipal).add(dueInIncome));
-        map.put("incomeAmount",income);
-        map.put("balance",balance);
-        map.put("freezeAmount",freeze);
-        map.put("dueInPrincipal",dueInPrincipal);
-        map.put("dueInIncome",dueInIncome);
+        map.put("incomeAmount", income);
+        map.put("balance", balance);
+        map.put("freezeAmount", freeze);
+        map.put("dueInPrincipal", dueInPrincipal);
+        map.put("dueInIncome", dueInIncome);
         return map;
     }
 
+    /**
+     * 投资项目
+     *
+     * @param record
+     * @param page
+     * @return
+     */
     @Override
-    public List<InvestIng> selectInvestIngByLoginId(Long loginId, PageWhere page) {
-        return tbInvestInfoDao.selectInvestIngByLoginId(loginId, page);
+    public List<InvestBase> selectInvestBaseByLoginId(TbInvestInfo record, PageWhere page) {
+        return tbInvestInfoDao.selectInvestBaseByLoginId(record, page);
     }
 
     @Override
-    public int selectInvestIngByLoginIdForPageCount(Long loginId) {
-        return tbInvestInfoDao.selectInvestIngByLoginIdForPageCount(loginId);
+    public int selectInvestBaseByLoginIdForPageCount(TbInvestInfo record) {
+        return tbInvestInfoDao.selectInvestBaseByLoginIdForPageCount(record);
     }
 
+    /**
+     * 投资人还款项目列表
+     *
+     * @param iiIds     投资记录IDs
+     * @param indStatus 还款状态 1:未还 2:已还
+     * @param fundType  资金类型 1:本金 2 : 利息
+     * @return
+     */
     @Override
-    public List<TbIncomeDetail>
-    selectInvestPaymentIngByLoginId(Long loginId, PageWhere page) {
-        FundDetailSM record = new FundDetailSM();
-        record.setInvestLoginId(loginId);
-        record.setDetailStatus(1);
-        record.setPlanStatus(7);
-        return tbIncomeDetailDao.selectFundList(record, page);
-    }
-
-    @Override
-    public int selectInvestPaymentIngByLoginIdForPageCount(Long loginId) {
-        FundDetailSM record = new FundDetailSM();
-        record.setInvestLoginId(loginId);
-        record.setDetailStatus(1);
-        record.setPlanStatus(7);
-        return tbIncomeDetailDao.selectFundListForPageCount(record);
-    }
-
-    @Override
-    public List<InvestPaymented> selectInvestPaymentedByLoginId(Long loginId, PageWhere page) {
-        return tbInvestInfoDao.selectInvestPaymentedByLoginId(loginId, page);
-    }
-
-    @Override
-    public int selectInvestPaymentedByLoginIdForPageCount(Long loginId) {
-        return tbInvestInfoDao.selectInvestPaymentedByLoginIdForPageCount(loginId);
+    public List<InvestPayment> selectPaymentByIds(List<Long> iiIds, int indStatus, int fundType) {
+        return tbIncomeDetailDao.selectPaymentByIds(iiIds, indStatus, fundType);
     }
 }
