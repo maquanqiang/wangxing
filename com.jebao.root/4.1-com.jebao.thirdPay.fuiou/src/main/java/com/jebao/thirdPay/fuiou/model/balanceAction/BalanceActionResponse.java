@@ -1,5 +1,6 @@
 package com.jebao.thirdPay.fuiou.model.balanceAction;
 
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -10,6 +11,7 @@ public class BalanceActionResponse {
     private ResponsePlain plain;
     private String signature;//签名数据
 
+    @XmlElement(name="plain")
     public ResponsePlain getPlain() {
         return plain;
     }

@@ -25,6 +25,7 @@ public class UserVM extends ViewModel{
         }
         this.hasFundAccount = !StringUtils.isBlank(entity.getUdThirdAccount());
         this.balance = new BigDecimal(0);
+        this.posStatus = entity.getUdPosStatus();
     }
     public UserVM(TbUserDetails entity,String inChangeBankName,String inChangeBankCardNo){
         this(entity);
@@ -61,6 +62,11 @@ public class UserVM extends ViewModel{
      * 是否开通第三方账户
      */
     private boolean hasFundAccount;
+
+    /**
+     * POS机签约状态 0未签约  1签约
+     */
+    private int posStatus;
 
     public boolean getHasFundAccount() {
         return hasFundAccount;
@@ -129,5 +135,13 @@ public class UserVM extends ViewModel{
 
     public void setNewBankName(String newBankName) {
         this.newBankName = newBankName;
+    }
+
+    public int getPosStatus() {
+        return posStatus;
+    }
+
+    public void setPosStatus(int posStatus) {
+        this.posStatus = posStatus;
     }
 }

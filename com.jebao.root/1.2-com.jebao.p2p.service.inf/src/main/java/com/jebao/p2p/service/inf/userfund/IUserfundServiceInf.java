@@ -42,4 +42,11 @@ public interface IUserfundServiceInf {
      * @return
      */
     int queryUserInfs(long userId);
+
+    /**
+     * 同步（富有）用户可用余额
+     * @param userId
+     * @return
+     */
+    ResultInfo queryUserBalance(long userId);
 }

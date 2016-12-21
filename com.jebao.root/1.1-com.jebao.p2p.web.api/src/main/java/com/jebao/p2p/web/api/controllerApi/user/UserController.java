@@ -100,6 +100,23 @@ public class UserController extends _BaseController {
         return new JsonResultOk(String.valueOf(reslut));
     }
 
+    @RequestMapping("syncUserBalance")
+    public JsonResult syncUserBalance(){
+        CurrentUser user = CurrentUserContextHolder.get();
+        if (user == null){
+            return new JsonResultError("用户未登录");
+        }
+        /*TbAccountsFunds accountsFunds = userService.getAccountsFundsInfo(user.getId());
+        ResultInfo resultInfo = userfundService.queryUserBalance(user.getId());
+        if (resultInfo.getSuccess_is_ok()) {
+
+            ResultData<TbAccountsFunds> resultData = (ResultData<TbAccountsFunds>) resultInfo;
+            accountsFunds = resultData.getData();
+        }*/
+        userfundService.queryUserBalance(user.getId());
+        return new JsonResultOk();
+    }
+
     @RequestMapping(value = "details", method = RequestMethod.GET)
     @ResponseBody
     public JsonResult details() {

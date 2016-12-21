@@ -54,7 +54,7 @@ public class WithdrawServiceImpl implements IWithdrawServiceInf {
     public ResultInfo withdrawDepositByWeb(Long loginId, BigDecimal money) {
         TbUserDetails userDetails = userService.getUserDetailsInfo(loginId);
         if (userDetails == null || StringUtils.isBlank(userDetails.getUdThirdAccount())){
-            return new ResultInfo(false,"未开户");
+            return new ResultInfo(false,"您尚未开通第三方资金账户");
         }
         String amt = money.multiply(new BigDecimal(100)).toString();
         WithdrawDepositRequest reqData = new WithdrawDepositRequest();
@@ -103,6 +103,18 @@ public class WithdrawServiceImpl implements IWithdrawServiceInf {
      */
     @Override
     public ResultInfo withdrawDepositByWebComplete(Long loginId, WithdrawDepositResponse model) {
+        //region 富有返回成功，记录接口日志
+        TbThirdInterfaceLog thirdInterfaceLog = new TbThirdInterfaceLog();
+        thirdInterfaceLog.setTilType(18); // 接口编号
+        thirdInterfaceLog.setTilSerialNumber(model.getMchnt_txn_ssn());
+        thirdInterfaceLog.setTilReturnCode(model.getResp_code());
+        String jsonText = FastJsonUtil.serialize(model);
+        thirdInterfaceLog.setTilReqText("form跳转请求，接口请求内容查看上一条记录");
+        thirdInterfaceLog.setTilRespText(jsonText);
+        thirdInterfaceLog.setTilCreateTime(new Date());
+        thirdInterfaceLogDao.insert(thirdInterfaceLog);
+        //endregion
+
         //获取变更前账户资金信息
         TbAccountsFunds afEntity = userService.getAccountsFundsInfo(loginId);
         BigDecimal balance = afEntity.getAfBalance();
@@ -134,17 +146,7 @@ public class WithdrawServiceImpl implements IWithdrawServiceInf {
             fundsDetailsService.update(fundsDetails);
             return new ResultInfo(false,"操作异常，校验失败");
         }
-        //region 富有返回成功，记录接口日志
-        TbThirdInterfaceLog thirdInterfaceLog = new TbThirdInterfaceLog();
-        thirdInterfaceLog.setTilType(18); // 接口编号
-        thirdInterfaceLog.setTilSerialNumber(model.getMchnt_txn_ssn());
-        thirdInterfaceLog.setTilReturnCode(model.getResp_code());
-        String jsonText = FastJsonUtil.serialize(model);
-        thirdInterfaceLog.setTilReqText("form跳转请求，接口请求内容查看上一条记录");
-        thirdInterfaceLog.setTilRespText(jsonText);
-        thirdInterfaceLog.setTilCreateTime(new Date());
-        thirdInterfaceLogDao.insert(thirdInterfaceLog);
-        //endregion
+
         TbUserDetails userDetails = userService.getUserDetailsInfo(loginId);
         if(userDetails == null){
             return new ResultInfo(false,"用户身份异常，请重试");

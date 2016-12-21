@@ -48,16 +48,12 @@ var vm = new Vue({
             $('.account-rex-item').eq(index).addClass('active');
         },
         init: function () {
-            $.get("/api/user/syncThirdAccount", function (response) {
-                if(response.msg == "1"){
-                    vm.posStatus = true;
-                }
-            });
             $.get("/api/user/getuser", function (response) {
                 if (response.success_is_ok) {
                     var data = response.data;
                     if (data != null) {
                         vm.bankInfo = data;
+                        vm.posStatus = data.posStatus == 1 ? true : false;
                     }
                 }
             });

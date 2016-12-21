@@ -12,8 +12,6 @@ public class BalanceActionServiceImpl_UnitTest {
     @Test
     public void Test() throws Exception {
         BalanceActionRequest reqData = new BalanceActionRequest();
-        reqData.setMchnt_cd("0002900F0041077");
-        reqData.setMchnt_txn_ssn("96f14200a794dbcc91cad69b50ef05");
         reqData.setMchnt_txn_dt("20110519");
         reqData.setCust_no("13678424821|13312324854");
         //
