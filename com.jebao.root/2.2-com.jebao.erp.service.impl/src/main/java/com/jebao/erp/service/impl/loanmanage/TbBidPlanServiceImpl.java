@@ -98,7 +98,7 @@ public class TbBidPlanServiceImpl implements ITbBidPlanServiceInf {
         //借款人账户
         TbAccountsFunds tbAccountsFunds = accountsFundsDao.selectByLoginId(record.getBpLoginId());
 
-        boolean flag = true;
+        boolean flag = false;
 
         //获取该标的投资列表
         TbInvestInfo tbInvestInfo = new TbInvestInfo();
@@ -110,7 +110,6 @@ public class TbBidPlanServiceImpl implements ITbBidPlanServiceInf {
         if(tbInvestInfos!=null && tbInvestInfos.size()>0){
             for (TbInvestInfo investInfo : tbInvestInfos){
 
-
                 TransferBuRequest reqData = new TransferBuRequest();
                 //添加出账流水记录
                 TbAccountsFunds outAccount = accountsFundsDao.selectByLoginId(investInfo.getIiLoginId());
@@ -120,7 +119,7 @@ public class TbBidPlanServiceImpl implements ITbBidPlanServiceInf {
                 outFundsDetails.setFdThirdAccount(outAccount.getAfThirdAccount());
                 outFundsDetails.setFdSerialNumber(reqData.getMchnt_txn_ssn());
                 outFundsDetails.setFdSerialTypeId(7);            //3投资冻结 4 借款入账  5本金还款  6付息  7投资转账
-                outFundsDetails.setFdSerialTypeName("投资转账");
+                outFundsDetails.setFdSerialTypeName("投资");
                 outFundsDetails.setFdSerialAmount(investInfo.getIiMoney());
                 outFundsDetails.setFdBalanceBefore(outAccount.getAfBalance());
                 outFundsDetails.setFdBalanceAfter(outAccount.getAfBalance());
@@ -133,6 +132,7 @@ public class TbBidPlanServiceImpl implements ITbBidPlanServiceInf {
                 outFundsDetails.setFdSerialStatus(0);
                 outFundsDetails.setFdIsDel(1);
                 fundsDetailsDao.insert(outFundsDetails);
+
 
                 //提交富友参数
                 String amt = investInfo.getIiMoney().multiply(new BigDecimal(100)).setScale(0).toString();
@@ -197,18 +197,21 @@ public class TbBidPlanServiceImpl implements ITbBidPlanServiceInf {
                         tbAccountsFunds.setAfBalance(tbAccountsFunds.getAfBalance().add(investInfo.getIiMoney()));
                         accountsFundsDao.updateByPrimaryKeySelective(tbAccountsFunds);
 
-
+                        flag = true;
                     }else{
-                        //记录异常状态
-                        flag = false;
+                        //更新出账流水记录
+                        outFundsDetails.setFdSerialStatus(-1);
+                        fundsDetailsDao.updateByPrimaryKeySelective(outFundsDetails);
                         if(LOGGER.isDebugEnabled()){
                             LOGGER.debug("投资转账失败-流水号：{}, 富友错误码:{}", reqData.getMchnt_txn_ssn(),plain.getResp_code());
                         }
                     }
                 } catch (Exception e) {
-                    flag = false;
+                    //更新出账流水记录
+                    outFundsDetails.setFdSerialStatus(-1);
+                    fundsDetailsDao.updateByPrimaryKeySelective(outFundsDetails);
                     if(LOGGER.isDebugEnabled()){
-                        LOGGER.debug("投资转账报错-流水号：{}", reqData.getMchnt_txn_ssn());
+                        LOGGER.debug("投资转账报错-流水号：{}，当前投资ID：{}", reqData.getMchnt_txn_ssn(), investInfo.getIiId());
                     }
                     e.printStackTrace();
                 }

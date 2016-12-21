@@ -108,7 +108,14 @@ public class ProductServiceImpl implements IProductServiceInf {
 
                 //查询标的信息
                 TbBidPlan tbBidPlan = tbBidPlanDao.selectByPrimaryKey(bpId);
+                if(tbBidPlan.getBpLoginId()==loginId){
+                    result[1] = "投资人不为能该标的借款人";
+                    return result;
+                }
+
+                //借款人详情
                 TbUserDetails inUser = tbUserDetailsDao.selectByLoginId(tbBidPlan.getBpLoginId());
+                //投资人详情
                 TbUserDetails outUser = tbUserDetailsDao.selectByLoginId(loginId);
                 //投资人账户
                 TbAccountsFunds accountsFunds = accountsFundsDao.selectByLoginId(loginId);
@@ -134,7 +141,7 @@ public class ProductServiceImpl implements IProductServiceInf {
                 tbFundsDetails.setFdThirdAccount(outUser.getUdThirdAccount());
                 tbFundsDetails.setFdSerialNumber(preAuthRequest.getMchnt_txn_ssn());
                 tbFundsDetails.setFdSerialTypeId(3);            //3投资冻结 4 借款入账
-                tbFundsDetails.setFdSerialTypeName("投资资金冻结");
+                tbFundsDetails.setFdSerialTypeName("投资冻结");
                 tbFundsDetails.setFdSerialAmount(investMoney);
                 tbFundsDetails.setFdBalanceBefore(accountsFunds.getAfBalance());
                 tbFundsDetails.setFdBalanceAfter(accountsFunds.getAfBalance().subtract(investMoney));
@@ -206,11 +213,11 @@ public class ProductServiceImpl implements IProductServiceInf {
                     tbBidPlanDao.addSurplus(map);
                 }
             } catch (Exception e) {
-                result[1] = "操作异常";
-                tbBidPlanDao.addSurplus(map);
                 if(LOGGER.isErrorEnabled()){
                     LOGGER.error("投资调用失败：流水号-{}, 异常信息：{}",preAuthRequest.getMchnt_txn_ssn(), e);
                 }
+                result[1] = "操作异常";
+                tbBidPlanDao.addSurplus(map);
             }
         }else {
             result[1] = "投资金额大于剩余金额";

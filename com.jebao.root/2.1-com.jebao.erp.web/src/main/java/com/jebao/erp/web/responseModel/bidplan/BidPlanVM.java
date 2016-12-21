@@ -54,6 +54,7 @@ public class BidPlanVM extends ViewModel {
         this.bpRepayedPeriods = entity.getBpRepayedPeriods();
         this.bpDesc = entity.getBpDesc();
         this.bpType = entity.getBpType();
+        this.bpUpRate = entity.getBpUpRate();
 
     }
 
@@ -143,6 +144,15 @@ public class BidPlanVM extends ViewModel {
 
     private Integer bpType;
 
+    private BigDecimal bpUpRate;
+
+    public BigDecimal getBpUpRate() {
+        return bpUpRate;
+    }
+
+    public void setBpUpRate(BigDecimal bpUpRate) {
+        this.bpUpRate = bpUpRate;
+    }
 
     public String getBpDesc() {
         return bpDesc;
