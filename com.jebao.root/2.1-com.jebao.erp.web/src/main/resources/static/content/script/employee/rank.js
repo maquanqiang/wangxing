@@ -147,9 +147,8 @@ var vm = new Vue({
                 area:['500px'],
                 btn1: function(){
                     var $form = $("#openForm");
-                    var $validator = $form.data('bootstrapValidator');
+                    var $validator = $form.data('bootstrapValidator').validate(); //在 validate 之后调用 isValid。先调用 isValid 会有迷之bug：在数据都对的情况下却返回false。
                     if(!$validator.isValid()){
-                        $validator.validate();
                         return false;
                     }else{
                         vm.post($form);
@@ -173,7 +172,16 @@ var vm = new Vue({
                 computed:{
                     isEdit:function(){
                         return this.formData.id>0;
-                    }
+                    },
+                },
+                watch:{
+                  "formData.brokeragePercent":function(val,oldVal){
+                      if (isNaN(val)){
+                          this.formData.brokerage = 0;
+                      }else{
+                          this.formData.brokerage = val / 100;
+                      }
+                  }
                 },
                 beforeCreate:function(){
                     var itemId =openVmModel.formData.id;
@@ -182,8 +190,10 @@ var vm = new Vue({
                         for (var i=0;i<model.dataList.length;i++){
                             var item =model.dataList[i];
                             if (item.id==itemId){
-                                openVmModel.formData = item;
-                                openVmModel.formData.id = itemId;
+                                openVmModel.formData.name = item.name;
+                                openVmModel.formData.parentId = item.parentId;
+                                openVmModel.formData.brokerage = item.brokerage;
+                                openVmModel.formData.brokeragePercent = (item.brokerage * 100);
                             }
                         }
                     }
@@ -242,6 +252,13 @@ var vm = new Vue({
                                 min: 2,
                                 max: 10,
                                 message: '名称长度必须在2到10位之间'
+                            }
+                        }
+                    },
+                    brokeragePercent: {
+                        validators: {
+                            digits: {
+                                message: '格式错误'
                             }
                         }
                     }
