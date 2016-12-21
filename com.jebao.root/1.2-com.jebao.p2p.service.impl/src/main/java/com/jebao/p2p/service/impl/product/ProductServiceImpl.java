@@ -95,7 +95,7 @@ public class ProductServiceImpl implements IProductServiceInf {
 
         String[] result = new String[2];
 
-        result[0] = "true";
+        result[0] = "false";
         //更新标的信息表
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("bpId", bpId);
@@ -197,8 +197,8 @@ public class ProductServiceImpl implements IProductServiceInf {
                     }
 
                     result[1] = "投资成功";
+                    result[0] = "true";
                 }else{
-                    result[0] = "false";
                     result[1] = "请核实您的账户信息";
                     //更新流水记录
                     tbFundsDetails.setFdSerialStatus(-1);
@@ -206,15 +206,13 @@ public class ProductServiceImpl implements IProductServiceInf {
                     tbBidPlanDao.addSurplus(map);
                 }
             } catch (Exception e) {
-                result[0] = "false";
                 result[1] = "操作异常";
                 tbBidPlanDao.addSurplus(map);
-                if(LOGGER.isDebugEnabled()){
-                    LOGGER.debug("投资调用失败：流水号-{}, 异常信息：{}",preAuthRequest.getMchnt_txn_ssn(), e);
+                if(LOGGER.isErrorEnabled()){
+                    LOGGER.error("投资调用失败：流水号-{}, 异常信息：{}",preAuthRequest.getMchnt_txn_ssn(), e);
                 }
             }
         }else {
-            result[0] = "false";
             result[1] = "投资金额大于剩余金额";
         }
 

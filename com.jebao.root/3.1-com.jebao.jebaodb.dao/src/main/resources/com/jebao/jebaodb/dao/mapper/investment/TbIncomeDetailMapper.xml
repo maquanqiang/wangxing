@@ -582,6 +582,77 @@
         </where>
     </select>
 
+    <update id="updateByConditionSelective" parameterType="com.jebao.jebaodb.entity.investment.TbIncomeDetail">
+        update tb_income_detail
+        <set >
+            <if test="indIiId != null" >
+                ind_ii_id = #{indIiId,jdbcType=BIGINT},
+            </if>
+            <if test="indLoginId != null" >
+                ind_login_id = #{indLoginId,jdbcType=BIGINT},
+            </if>
+            <if test="indTrueName != null" >
+                ind_true_name = #{indTrueName,jdbcType=VARCHAR},
+            </if>
+            <if test="indThirdAccount != null" >
+                ind_third_account = #{indThirdAccount,jdbcType=VARCHAR},
+            </if>
+            <if test="indBpNumber != null" >
+                ind_bp_number = #{indBpNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="indBpName != null" >
+                ind_bp_name = #{indBpName,jdbcType=VARCHAR},
+            </if>
+            <if test="indPeriods != null" >
+                ind_periods = #{indPeriods,jdbcType=INTEGER},
+            </if>
+            <if test="indDateTime != null" >
+                ind_date_time = #{indDateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="indFactDateTime != null" >
+                ind_fact_date_time = #{indFactDateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="indOverdueDays != null" >
+                ind_overdue_days = #{indOverdueDays,jdbcType=INTEGER},
+            </if>
+            <if test="indOverdueMoney != null" >
+                ind_overdue_money = #{indOverdueMoney,jdbcType=DECIMAL},
+            </if>
+            <if test="indFundType != null" >
+                ind_fund_type = #{indFundType,jdbcType=INTEGER},
+            </if>
+            <if test="indMoney != null" >
+                ind_money = #{indMoney,jdbcType=DECIMAL},
+            </if>
+            <if test="indFactMoeny != null" >
+                ind_fact_moeny = #{indFactMoeny,jdbcType=DECIMAL},
+            </if>
+            <if test="indInterestSt != null" >
+                ind_interest_st = #{indInterestSt,jdbcType=TIMESTAMP},
+            </if>
+            <if test="indInterestEt != null" >
+                ind_interest_et = #{indInterestEt,jdbcType=TIMESTAMP},
+            </if>
+            <if test="indStatus != null" >
+                ind_status = #{indStatus,jdbcType=INTEGER},
+            </if>
+            <if test="indCreateTime != null" >
+                ind_create_time = #{indCreateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="indUpdateTime != null" >
+                ind_update_time = #{indUpdateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="indIsDel != null" >
+                ind_is_del = #{indIsDel,jdbcType=INTEGER},
+            </if>
+            <if test="indBpId != null" >
+                ind_bp_id = #{indBpId,jdbcType=BIGINT},
+            </if>
+        </set>
+        where ind_bp_id = #{indBpId,jdbcType=BIGINT}
+    </update>
+
+
     <!--==================================================借款人相关信息==================================================-->
     <select id="totalMoneyByloanerId" resultType="java.math.BigDecimal"
             parameterType="com.jebao.jebaodb.entity.investment.search.IncomeDetailSM">

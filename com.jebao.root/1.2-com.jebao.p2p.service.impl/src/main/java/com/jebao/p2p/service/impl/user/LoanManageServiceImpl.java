@@ -56,7 +56,7 @@ public class LoanManageServiceImpl implements ILoanManageServiceInf {
     public String repay(Long bpId, Long loginId, Integer period, BigDecimal repayMoney) {
 
         String message = "还款成功";
-        boolean flag = true;
+        boolean flag = false;
 
         //查看用户本地余额
         TbAccountsFunds accountsFunds = accountsFundsDao.selectByLoginId(loginId);
@@ -179,9 +179,8 @@ public class LoanManageServiceImpl implements ILoanManageServiceInf {
                         inAccount.setAfUpdateTime(new Date());
                         inAccount.setAfBalance(accountsFunds.getAfBalance().add(detail.getIndMoney()));
                         accountsFundsDao.updateByPrimaryKeySelective(inAccount);
-
+                        flag = true;
                     }else{
-                        flag = false;
                         //更改出账流水记录
                         outFundsDetails.setFdSerialStatus(-1);
                         fundsDetailsDao.updateByPrimaryKeySelective(outFundsDetails);
@@ -195,9 +194,8 @@ public class LoanManageServiceImpl implements ILoanManageServiceInf {
 
                     }
                 } catch (Exception e) {
-                    flag = false;
-                    if(LOGGER.isDebugEnabled()){
-                        LOGGER.debug("还款失败，当前还款记录ID：{}",detail.getIndId());
+                    if(LOGGER.isErrorEnabled()){
+                        LOGGER.error("还款失败，当前还款记录ID：{}",detail.getIndId());
                     }
                     e.printStackTrace();
                 }

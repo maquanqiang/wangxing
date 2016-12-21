@@ -91,6 +91,13 @@ public class InvestInfoControllerApi {
     @ResponseBody
     public JsonResult createIncomeDetails(RepaymentForm form){
 
+        //先清空原生成数据(标记为删除)
+        TbIncomeDetail tbIncomeDetail = new TbIncomeDetail();
+        tbIncomeDetail.setIndBpId(form.getBpId());
+        tbIncomeDetail.setIndIsDel(2);
+        int count = incomeDetailService.updateByConditionSelective(tbIncomeDetail);
+
+
         TbBidPlan tbBidPlan = tbBidPlanService.selectByBpId(form.getBpId());
 
         TbInvestInfo tbInvestInfo = new TbInvestInfo();
