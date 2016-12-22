@@ -5,6 +5,7 @@ import com.jebao.jebaodb.dao.dao.investment.TbInvestInfoDao;
 import com.jebao.jebaodb.dao.dao.user.TbAccountsFundsDao;
 import com.jebao.jebaodb.entity.extEntity.PageWhere;
 import com.jebao.jebaodb.entity.investment.*;
+import com.jebao.jebaodb.entity.user.TbAccountsFunds;
 import com.jebao.p2p.service.inf.user.IInvestServiceInf;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -36,7 +37,11 @@ public class InvestServiceImpl implements IInvestServiceInf {
      */
     @Override
     public Map<String, BigDecimal> getInvestStatisticsByLoginId(Long loginId) {
-        BigDecimal balance = tbAccountsFundsDao.selectByLoginId(loginId).getAfBalance();
+        BigDecimal balance = new BigDecimal(0);
+        TbAccountsFunds accountsFunds = tbAccountsFundsDao.selectByLoginId(loginId);
+        if(accountsFunds != null){
+            balance = accountsFunds.getAfBalance();
+        }
         BigDecimal freeze = tbInvestInfoDao.totalFreezeMoneyByLoginId(loginId);
         BigDecimal income = tbIncomeDetailDao.totalMoneyByLoginId(loginId, 2, 2);
         BigDecimal dueInPrincipal = tbIncomeDetailDao.totalMoneyByLoginId(loginId, 1, 1);
