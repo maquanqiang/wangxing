@@ -45,7 +45,7 @@
                 </div>
             </div>
             <div class="changeCard">
-                <a href="javascript:;" @click="goChangeCard">
+                <a href="javascript:;" @click.prevent="goChangeCard">
                     <img src="${filePath}/images/account-changeCard.png">
                     <p v-if="newBankCardNo">更换银行卡审核中</p>
                     <p v-else>更换银行卡</p>
