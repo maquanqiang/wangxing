@@ -18,7 +18,7 @@
 <!--我的账户导航-->
 <div class="account-nav">
     <p>
-        <a href="/">首页</a><a href="javascript:;" class="red">充值提现</a>
+        <a href="/">首页</a><a href="javascript:void(0);" class="red">充值提现</a>
     </p>
 </div>
 <!--我的账户内容-->
@@ -66,7 +66,7 @@
                                         <input type="text" name="money" value="" placeholder="请输入充值金额">
                                         <span>元</span>
                                     </div>
-                                    <a href="javascript:;" class="account-btn" @click="submit('#quickPay_form')">充值</a>
+                                    <a href="javascript:void(0);" class="account-btn" @click="submit('#quickPay_form')">充值</a>
                                 </form>
                             </div>
                             <div v-if="posStatus" class="rechange-item active">
@@ -80,7 +80,7 @@
                                         <input type="text" name="money" value="" placeholder="请输入充值金额">
                                         <span>元</span>
                                     </div>
-                                    <a href="javascript:;" class="account-btn" @click="submit('#fastRecharge_form')">充值</a>
+                                    <a href="javascript:void(0);" class="account-btn" @click="submit('#fastRecharge_form')">充值</a>
                                 </form>
                             </div>
                             <div class="rechange-item">
@@ -94,7 +94,7 @@
                                         <input type="text" name="money" value="" placeholder="请输入充值金额">
                                         <span>元</span>
                                     </div>
-                                    <a href="javascript:;" class="account-btn" @click="submit('#onlineBankRecharge_form')">充值</a>
+                                    <a href="javascript:void(0);" class="account-btn" @click="submit('#onlineBankRecharge_form')">充值</a>
                                 </form>
                             </div>
                         </div>
@@ -127,7 +127,7 @@
                             <h5>手续费：</h5>
                             <span>3元</span>
                         </div>
-                        <a href="javascript:;" class="account-btn" @click="submit('#withdrawDeposit_form')">提现</a>
+                        <a href="javascript:void(0);" class="account-btn" @click="submit('#withdrawDeposit_form')">提现</a>
                     </form>
                 </div>
             </div>

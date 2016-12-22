@@ -35,4 +35,70 @@ public class EnumModel {
         }
     }
 
+    /**
+     * POS机签约状态
+     */
+    public enum PosStatus{
+        未签约(0),已签约(1);
+        private int value;
+        private PosStatus(int val){
+            this.value = val;
+        }
+        public int getValue(){
+            return this.value;
+        }
+    }
+
+    /**
+     * 资金收支状态
+     */
+    public enum FdBalanceStatus{
+        收入(1),支出(2);
+        private int value;
+        private FdBalanceStatus(int val){
+            this.value = val;
+        }
+        public int getValue(){
+            return this.value;
+        }
+    }
+
+    /**
+     * 资金交易状态
+     */
+    public enum FdSerialStatus{
+        失败(-1),处理中(0),成功(1);
+        private int value;
+        private FdSerialStatus(int val){
+            this.value = val;
+        }
+        public int getValue(){
+            return this.value;
+        }
+    }
+
+    /**
+     * 是否有效状态
+     */
+    public enum IsDel{
+        有效(1),无效(2);
+        private int value;
+        private IsDel(int val){
+            this.value = val;
+        }
+        public int getValue(){
+            return this.value;
+        }
+    }
+
+    public enum SerialType{
+        充值(1),提现(2);
+        private int value;
+        private SerialType(int val){
+            this.value = val;
+        }
+        public int getValue(){
+            return this.value;
+        }
+    }
 }

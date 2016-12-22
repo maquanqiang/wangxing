@@ -178,7 +178,7 @@ public class UserfundServiceImpl implements IUserfundServiceInf {
         userDetailsEntity.setUdBankCardNo(model.getCapAcntNo()); //银行卡号
         userDetailsEntity.setUdBankCardNoChangeStatus(EnumModel.BankCardChangeStatus.正常.getValue());
         userDetailsEntity.setUdThirdAccount(model.getMobile_no()); //手机号做为第三方资金托管帐号
-        userDetailsEntity.setUdPosStatus(0);
+        userDetailsEntity.setUdPosStatus(EnumModel.PosStatus.未签约.getValue());
         userDetailsEntity.setUdUpdateTime(new Date());
         int reval = userDetailsDao.updateByPrimaryKey(userDetailsEntity);
         if (reval == 0) {
@@ -195,7 +195,7 @@ public class UserfundServiceImpl implements IUserfundServiceInf {
         tbAccountsFundsModel.setAfBalance(new BigDecimal(0));
         tbAccountsFundsModel.setAfCreateTime(new Date());
         tbAccountsFundsModel.setAfUpdateTime(new Date());
-        tbAccountsFundsModel.setAfIsDel(1);
+        tbAccountsFundsModel.setAfIsDel(EnumModel.IsDel.有效.getValue());
         accountsFundsService.insert(tbAccountsFundsModel);
         //endregion
 
@@ -333,22 +333,24 @@ public class UserfundServiceImpl implements IUserfundServiceInf {
     }
 
     /**
-     * 同步（富有）用户信息，并返回POS机签约状态
+     * 同步（富有）用户信息
      *
      * @param userId
      * @return
      */
     @Override
-    public int queryUserInfs(long userId) {
+    public ResultInfo queryUserInfs(long userId) {
         TbUserDetails userDetailsEntity = userDetailsDao.selectByLoginId(userId);
         if (userDetailsEntity == null) {
-            return 0;
+            return new ResultInfo(false, "不存在的用户");
         }
 
         int posStatus = userDetailsEntity.getUdPosStatus() == null ? 0 : userDetailsEntity.getUdPosStatus();
         if (posStatus == 1 && StringUtils.isNotBlank(userDetailsEntity.getUdThirdAccount())) {
-            return 1;
+            return new ResultInfo(false, "已签约，不需要同步信息");
         }
+
+        boolean flat = false;//是否同步数据标识
 
         QueryUserInfsRequest reqData = new QueryUserInfsRequest();
         if (StringUtils.isBlank(userDetailsEntity.getUdThirdAccount())) {
@@ -380,6 +382,7 @@ public class UserfundServiceImpl implements IUserfundServiceInf {
                     if (StringUtils.isNotBlank(item.getCard_pwd_verify_st())) {
                         posStatus = Integer.parseInt(item.getCard_pwd_verify_st());
                         if (userDetailsEntity.getUdPosStatus() != posStatus) {
+                            flat = true;
                             userDetailsEntity.setUdPosStatus(posStatus);
                             userDetailsEntity.setUdUpdateTime(new Date());
                             userDetailsDao.updateByPrimaryKeySelective(userDetailsEntity);
@@ -393,20 +396,23 @@ public class UserfundServiceImpl implements IUserfundServiceInf {
                             //endregion
                         }
                     } else {
-                        posStatus = 0;
-                        userDetailsEntity.setUdPosStatus(posStatus);
-                        userDetailsEntity.setUdUpdateTime(new Date());
-                        userDetailsDao.updateByPrimaryKeySelective(userDetailsEntity);
-                        //region 用户日志
-                        TbUserLog logModel = new TbUserLog();
-                        logModel.setUlUserId(userId);
-                        logModel.setUlCreateUserId(0L);
-                        logModel.setUlCreateUserTime(new Date());
-                        logModel.setUlContent("POS签约状态同步，流水号:" + plain.getMchnt_txn_ssn());
-                        userLogDao.insert(logModel);
-                        //endregion
+                        if(userDetailsEntity.getUdPosStatus() == null){
+                            flat = true;
+                            userDetailsEntity.setUdPosStatus(EnumModel.PosStatus.未签约.getValue());
+                            userDetailsEntity.setUdUpdateTime(new Date());
+                            userDetailsDao.updateByPrimaryKeySelective(userDetailsEntity);
+                            //region 用户日志
+                            TbUserLog logModel = new TbUserLog();
+                            logModel.setUlUserId(userId);
+                            logModel.setUlCreateUserId(0L);
+                            logModel.setUlCreateUserTime(new Date());
+                            logModel.setUlContent("POS签约状态同步，流水号:" + plain.getMchnt_txn_ssn());
+                            userLogDao.insert(logModel);
+                            //endregion
+                        }
                     }
                     if (item.getUser_st().equals("1") && StringUtils.isBlank(userDetailsEntity.getUdThirdAccount())) {
+                        flat = true;
                         //region 同步用户信息
                         userDetailsEntity.setUdThirdAccount(item.getLogin_id());
                         userDetailsEntity.setUdPhone(item.getMobile_no());
@@ -455,7 +461,12 @@ public class UserfundServiceImpl implements IUserfundServiceInf {
             thirdInterfaceLogDao.insert(thirdLog);
             //endregion
         }
-        return posStatus;
+
+        if(flat){
+            return new ResultInfo(true, "用户信息已同步");
+        }else{
+            return new ResultInfo(false, "用户信息未同步");
+        }
     }
 
     /**
@@ -484,7 +495,7 @@ public class UserfundServiceImpl implements IUserfundServiceInf {
             tbAccountsFundsModel.setAfBalance(new BigDecimal(0));
             tbAccountsFundsModel.setAfCreateTime(new Date());
             tbAccountsFundsModel.setAfUpdateTime(new Date());
-            tbAccountsFundsModel.setAfIsDel(1);
+            tbAccountsFundsModel.setAfIsDel(EnumModel.IsDel.有效.getValue());
             accountsFundsService.insert(tbAccountsFundsModel);
             //endregion
         }

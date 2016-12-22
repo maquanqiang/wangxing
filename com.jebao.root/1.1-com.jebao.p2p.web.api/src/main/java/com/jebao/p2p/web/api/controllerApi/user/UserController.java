@@ -94,10 +94,10 @@ public class UserController extends _BaseController {
     public JsonResult syncThirdAccount() {
         CurrentUser currentUser = CurrentUserContextHolder.get();
         if (currentUser == null) {
-            return new JsonResultError("0");
+            return new JsonResultError();
         }
-        int reslut = userfundService.queryUserInfs(currentUser.getId());
-        return new JsonResultOk(String.valueOf(reslut));
+        userfundService.queryUserInfs(currentUser.getId());
+        return new JsonResultOk();
     }
 
     @RequestMapping("syncUserBalance")

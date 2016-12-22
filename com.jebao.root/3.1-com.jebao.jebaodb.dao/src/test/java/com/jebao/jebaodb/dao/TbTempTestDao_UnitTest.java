@@ -3,6 +3,7 @@ package com.jebao.jebaodb.dao;
 import com.jebao.jebaodb.dao.base._BaseUnitTest;
 import com.jebao.jebaodb.dao.dao.TbTempTestDao;
 import com.jebao.jebaodb.entity.TbTempTest;
+import com.jebao.jebaodb.entity.extEntity.EnumModel;
 import com.jebao.jebaodb.entity.extEntity.PageWhere;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class TbTempTestDao_UnitTest extends _BaseUnitTest {
     @Autowired
     private TbTempTestDao tbTempTestDao;
+
+    @Test
+    public void testExample(){
+        int type = EnumModel.SerialType.提现.getValue();
+        System.out.println("type:"+type);
+        String typeName = EnumModel.SerialType.提现.name();
+        System.out.println("typeName:"+typeName);
+    }
 
     @Test
     public void insertExample()

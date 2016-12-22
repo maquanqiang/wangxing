@@ -2,6 +2,7 @@ package com.jebao.p2p.service.impl.user;
 
 import com.jebao.common.utils.fastjson.FastJsonUtil;
 import com.jebao.jebaodb.dao.dao.loanmanage.TbThirdInterfaceLogDao;
+import com.jebao.jebaodb.entity.extEntity.EnumModel;
 import com.jebao.jebaodb.entity.extEntity.ResultData;
 import com.jebao.jebaodb.entity.extEntity.ResultInfo;
 import com.jebao.jebaodb.entity.loanmanage.TbThirdInterfaceLog;
@@ -76,16 +77,16 @@ public class RechargeServiceImpl implements IRechargeServiceInf {
             //todo 添加资金收支明细
             TbFundsDetails fundsDetails = new TbFundsDetails();
             fundsDetails.setFdLoginId(loginId);
-            fundsDetails.setFdSerialStatus(0);
-            fundsDetails.setFdBalanceStatus(1);
+            fundsDetails.setFdSerialStatus(EnumModel.FdSerialStatus.处理中.getValue());
+            fundsDetails.setFdBalanceStatus(EnumModel.FdBalanceStatus.收入.getValue());
             fundsDetails.setFdCommissionCharge(new BigDecimal(0));//手续费
             fundsDetails.setFdSerialAmount(money);
             fundsDetails.setFdSerialNumber(reqData.getMchnt_txn_ssn());//流水号
             fundsDetails.setFdCreateTime(new Date());
-            fundsDetails.setFdSerialTypeId(1);
-            fundsDetails.setFdSerialTypeName("充值");
+            fundsDetails.setFdSerialTypeId(EnumModel.SerialType.充值.getValue());
+            fundsDetails.setFdSerialTypeName(EnumModel.SerialType.充值.name());
             fundsDetails.setFdThirdAccount(userDetails.getUdThirdAccount());
-            fundsDetails.setFdIsDel(1);
+            fundsDetails.setFdIsDel(EnumModel.IsDel.有效.getValue());
             fundsDetailsService.insert(fundsDetails);
 
             //region 提交到富有，记录接口日志
@@ -142,7 +143,7 @@ public class RechargeServiceImpl implements IRechargeServiceInf {
                 responseMessage = "第三方返回异常";
             }
             //更新资金收支明细状态为失败
-            fundsDetails.setFdSerialStatus(-1);
+            fundsDetails.setFdSerialStatus(EnumModel.FdSerialStatus.失败.getValue());
             fundsDetails.setFdSerialTime(new Date());
             fundsDetailsService.update(fundsDetails);
             return new ResultInfo(false, responseMessage);
@@ -151,7 +152,7 @@ public class RechargeServiceImpl implements IRechargeServiceInf {
         boolean isValid = SecurityUtils.verifySign(signature, model.getSignature());
         if (!isValid){
             //更新资金收支明细状态为失败
-            fundsDetails.setFdSerialStatus(-1);
+            fundsDetails.setFdSerialStatus(EnumModel.FdSerialStatus.失败.getValue());
             fundsDetails.setFdSerialTime(new Date());
             fundsDetailsService.update(fundsDetails);
             return new ResultInfo(false,"操作异常，校验失败");
@@ -169,7 +170,7 @@ public class RechargeServiceImpl implements IRechargeServiceInf {
 
         //更新资金收支明细状态为成功
         fundsDetails.setFdBalanceAfter(balance_new);
-        fundsDetails.setFdSerialStatus(1);
+        fundsDetails.setFdSerialStatus(EnumModel.FdSerialStatus.成功.getValue());
         fundsDetails.setFdSerialTime(new Date());
         fundsDetailsService.update(fundsDetails);
 
@@ -202,16 +203,16 @@ public class RechargeServiceImpl implements IRechargeServiceInf {
             //todo 添加资金收支明细
             TbFundsDetails fundsDetails = new TbFundsDetails();
             fundsDetails.setFdLoginId(loginId);
-            fundsDetails.setFdSerialStatus(0);
-            fundsDetails.setFdBalanceStatus(1);//收支状态 1收入  2支出
+            fundsDetails.setFdSerialStatus(EnumModel.FdSerialStatus.处理中.getValue());
+            fundsDetails.setFdBalanceStatus(EnumModel.FdBalanceStatus.收入.getValue());
             fundsDetails.setFdCommissionCharge(new BigDecimal(0));//手续费
             fundsDetails.setFdSerialAmount(money);
             fundsDetails.setFdSerialNumber(reqData.getMchnt_txn_ssn());//流水号
             fundsDetails.setFdCreateTime(new Date());
-            fundsDetails.setFdSerialTypeId(1);
-            fundsDetails.setFdSerialTypeName("充值");
+            fundsDetails.setFdSerialTypeId(EnumModel.SerialType.充值.getValue());
+            fundsDetails.setFdSerialTypeName(EnumModel.SerialType.充值.name());
             fundsDetails.setFdThirdAccount(userDetails.getUdThirdAccount());
-            fundsDetails.setFdIsDel(1);
+            fundsDetails.setFdIsDel(EnumModel.IsDel.有效.getValue());
             fundsDetailsService.insert(fundsDetails);
 
             //region 提交到富有，记录接口日志
@@ -267,7 +268,7 @@ public class RechargeServiceImpl implements IRechargeServiceInf {
                 responseMessage = "第三方返回异常";
             }
             //更新资金收支明细状态为失败
-            fundsDetails.setFdSerialStatus(-1);
+            fundsDetails.setFdSerialStatus(EnumModel.FdSerialStatus.失败.getValue());
             fundsDetails.setFdSerialTime(new Date());
             fundsDetailsService.update(fundsDetails);
             return new ResultInfo(false, responseMessage);
@@ -276,7 +277,7 @@ public class RechargeServiceImpl implements IRechargeServiceInf {
         boolean isValid = SecurityUtils.verifySign(signature, model.getSignature());
         if (!isValid){
             //更新资金收支明细状态为失败
-            fundsDetails.setFdSerialStatus(-1);
+            fundsDetails.setFdSerialStatus(EnumModel.FdSerialStatus.失败.getValue());
             fundsDetails.setFdSerialTime(new Date());
             fundsDetailsService.update(fundsDetails);
             return new ResultInfo(false,"操作异常，校验失败");
@@ -294,7 +295,7 @@ public class RechargeServiceImpl implements IRechargeServiceInf {
 
         //更新资金收支明细状态为成功
         fundsDetails.setFdBalanceAfter(balance_new);
-        fundsDetails.setFdSerialStatus(1);
+        fundsDetails.setFdSerialStatus(EnumModel.FdSerialStatus.成功.getValue());
         fundsDetails.setFdSerialTime(new Date());
         fundsDetailsService.update(fundsDetails);
 
@@ -331,16 +332,16 @@ public class RechargeServiceImpl implements IRechargeServiceInf {
             //todo 添加资金收支明细
             TbFundsDetails fundsDetails = new TbFundsDetails();
             fundsDetails.setFdLoginId(loginId);
-            fundsDetails.setFdSerialStatus(0);
-            fundsDetails.setFdBalanceStatus(1);
+            fundsDetails.setFdSerialStatus(EnumModel.FdSerialStatus.处理中.getValue());
+            fundsDetails.setFdBalanceStatus(EnumModel.FdBalanceStatus.收入.getValue());
             fundsDetails.setFdCommissionCharge(new BigDecimal(0));//手续费
             fundsDetails.setFdSerialAmount(money);
             fundsDetails.setFdSerialNumber(reqData.getMchnt_txn_ssn());//流水号
             fundsDetails.setFdCreateTime(new Date());
-            fundsDetails.setFdSerialTypeId(1);
-            fundsDetails.setFdSerialTypeName("充值");
+            fundsDetails.setFdSerialTypeId(EnumModel.SerialType.充值.getValue());
+            fundsDetails.setFdSerialTypeName(EnumModel.SerialType.充值.name());
             fundsDetails.setFdThirdAccount(userDetails.getUdThirdAccount());
-            fundsDetails.setFdIsDel(1);
+            fundsDetails.setFdIsDel(EnumModel.IsDel.有效.getValue());
             fundsDetailsService.insert(fundsDetails);
 
             //region 提交到富有，记录接口日志
@@ -396,7 +397,7 @@ public class RechargeServiceImpl implements IRechargeServiceInf {
                 responseMessage = "第三方返回异常";
             }
             //更新资金收支明细状态为失败
-            fundsDetails.setFdSerialStatus(-1);
+            fundsDetails.setFdSerialStatus(EnumModel.FdSerialStatus.失败.getValue());
             fundsDetails.setFdSerialTime(new Date());
             fundsDetailsService.update(fundsDetails);
             return new ResultInfo(false, responseMessage);
@@ -405,7 +406,7 @@ public class RechargeServiceImpl implements IRechargeServiceInf {
         boolean isValid = SecurityUtils.verifySign(signature, model.getSignature());
         if (!isValid){
             //更新资金收支明细状态为失败
-            fundsDetails.setFdSerialStatus(-1);
+            fundsDetails.setFdSerialStatus(EnumModel.FdSerialStatus.失败.getValue());
             fundsDetails.setFdSerialTime(new Date());
             fundsDetailsService.update(fundsDetails);
             return new ResultInfo(false,"操作异常，校验失败");
@@ -423,7 +424,7 @@ public class RechargeServiceImpl implements IRechargeServiceInf {
 
         //更新资金收支明细状态为成功
         fundsDetails.setFdBalanceAfter(balance_new);
-        fundsDetails.setFdSerialStatus(1);
+        fundsDetails.setFdSerialStatus(EnumModel.FdSerialStatus.成功.getValue());
         fundsDetails.setFdSerialTime(new Date());
         fundsDetailsService.update(fundsDetails);
 
