@@ -54,7 +54,8 @@
     var sidebarNodes = document.querySelectorAll(".sidebar-menu a");
     for (var i=0;i<sidebarNodes.length;i++){
         var node = sidebarNodes[i];
-        if(node.getAttribute("href") == theLocationPath){
+        var href = node.getAttribute("href");
+        if(href.split('?')[0] == theLocationPath){
             node.setAttribute("class","on");
         }else{
             node.setAttribute("class","");
