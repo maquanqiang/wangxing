@@ -33,9 +33,9 @@
         <!--投资中的项目-->
         <div class="project">
             <div class="project-menu clearfix">
-                <h4 class="active" @click="search(1)">投资中的项目</h4>
-                <h4 @click="search(2)">还款中的项目</h4>
-                <h4 @click="search(3)">已还款的项目</h4>
+                <h4 class="active" @click.prevent="search(1)">投资中的项目</h4>
+                <h4 @click.prevent="search(2)">还款中的项目</h4>
+                <h4 @click.prevent="search(3)">已还款的项目</h4>
             </div>
             <div class="project-list">
                 <div class="project-item active">

@@ -82,7 +82,7 @@
                             <td>{{data.repayMoney+data.dueMoney}}</td>
                             <!--<td></td>-->
                             <td>
-                                <a href="javascript:void(0);" class="table-btn" @click="repay(data.bpPeriod, data.bpId, data.repayMoney+data.dueMoney)">还款</a>
+                                <a href="javascript:void(0);" class="table-btn" @click.prevent="repay(data.bpPeriod, data.bpId, data.repayMoney+data.dueMoney)">还款</a>
                             </td>
                         </tr>
                         </tbody>
