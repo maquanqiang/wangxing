@@ -344,7 +344,8 @@ public class UserfundServiceImpl implements IUserfundServiceInf {
         if (userDetailsEntity == null) {
             return 0;
         }
-        int posStatus = userDetailsEntity.getUdPosStatus();
+
+        int posStatus = userDetailsEntity.getUdPosStatus() == null ? 0 : userDetailsEntity.getUdPosStatus();
         if (posStatus == 1 && StringUtils.isNotBlank(userDetailsEntity.getUdThirdAccount())) {
             return 1;
         }
@@ -422,24 +423,24 @@ public class UserfundServiceImpl implements IUserfundServiceInf {
             }
             //region 富有返回，记录接口日志
             TbThirdInterfaceLog thirdLog = new TbThirdInterfaceLog();
-            thirdInterfaceLog.setTilType(40); // 接口编号
-            thirdInterfaceLog.setTilSerialNumber(plain.getMchnt_txn_ssn());
-            thirdInterfaceLog.setTilReturnCode(plain.getResp_code());
+            thirdLog.setTilType(40); // 接口编号
+            thirdLog.setTilSerialNumber(plain.getMchnt_txn_ssn());
+            thirdLog.setTilReturnCode(plain.getResp_code());
             String jsonTexts = FastJsonUtil.serialize(response);
-            thirdInterfaceLog.setTilReqText("接口请求内容查看上一条记录");
-            thirdInterfaceLog.setTilRespText(jsonTexts);
-            thirdInterfaceLog.setTilCreateTime(new Date());
+            thirdLog.setTilReqText("接口请求内容查看上一条记录");
+            thirdLog.setTilRespText(jsonTexts);
+            thirdLog.setTilCreateTime(new Date());
             thirdInterfaceLogDao.insert(thirdLog);
             //endregion
         } else {
             //region 富有返回数据，记录接口日志
             TbThirdInterfaceLog thirdLog = new TbThirdInterfaceLog();
-            thirdInterfaceLog.setTilType(40); // 接口编号
-            thirdInterfaceLog.setTilSerialNumber(reqData.getMchnt_txn_ssn());
-            thirdInterfaceLog.setTilReturnCode("");
-            thirdInterfaceLog.setTilReqText("接口请求内容查看上一条记录");
-            thirdInterfaceLog.setTilRespText("接口调用失败");
-            thirdInterfaceLog.setTilCreateTime(new Date());
+            thirdLog.setTilType(40); // 接口编号
+            thirdLog.setTilSerialNumber(reqData.getMchnt_txn_ssn());
+            thirdLog.setTilReturnCode("");
+            thirdLog.setTilReqText("接口请求内容查看上一条记录");
+            thirdLog.setTilRespText("接口调用失败");
+            thirdLog.setTilCreateTime(new Date());
             thirdInterfaceLogDao.insert(thirdLog);
             //endregion
         }
@@ -499,13 +500,13 @@ public class UserfundServiceImpl implements IUserfundServiceInf {
 
             //region 富有返回成功，记录接口日志
             TbThirdInterfaceLog thirdLog = new TbThirdInterfaceLog();
-            thirdInterfaceLog.setTilType(36); // 接口编号
-            thirdInterfaceLog.setTilSerialNumber(plain.getMchnt_txn_ssn());
-            thirdInterfaceLog.setTilReturnCode(plain.getResp_code());
+            thirdLog.setTilType(36); // 接口编号
+            thirdLog.setTilSerialNumber(plain.getMchnt_txn_ssn());
+            thirdLog.setTilReturnCode(plain.getResp_code());
             String jsonTexts = FastJsonUtil.serialize(response);
-            thirdInterfaceLog.setTilReqText("接口请求内容查看上一条记录");
-            thirdInterfaceLog.setTilRespText(jsonTexts);
-            thirdInterfaceLog.setTilCreateTime(new Date());
+            thirdLog.setTilReqText("接口请求内容查看上一条记录");
+            thirdLog.setTilRespText(jsonTexts);
+            thirdLog.setTilCreateTime(new Date());
             thirdInterfaceLogDao.insert(thirdLog);
             //endregion
 
@@ -540,12 +541,12 @@ public class UserfundServiceImpl implements IUserfundServiceInf {
         } else {
             //region 富有返回数据，记录接口日志
             TbThirdInterfaceLog thirdLog = new TbThirdInterfaceLog();
-            thirdInterfaceLog.setTilType(36); // 接口编号
-            thirdInterfaceLog.setTilSerialNumber(reqData.getMchnt_txn_ssn());
-            thirdInterfaceLog.setTilReturnCode("");
-            thirdInterfaceLog.setTilReqText("接口请求内容查看上一条记录");
-            thirdInterfaceLog.setTilRespText("接口调用失败");
-            thirdInterfaceLog.setTilCreateTime(new Date());
+            thirdLog.setTilType(36); // 接口编号
+            thirdLog.setTilSerialNumber(reqData.getMchnt_txn_ssn());
+            thirdLog.setTilReturnCode("");
+            thirdLog.setTilReqText("接口请求内容查看上一条记录");
+            thirdLog.setTilRespText("接口调用失败");
+            thirdLog.setTilCreateTime(new Date());
             thirdInterfaceLogDao.insert(thirdLog);
             //endregion
         }
