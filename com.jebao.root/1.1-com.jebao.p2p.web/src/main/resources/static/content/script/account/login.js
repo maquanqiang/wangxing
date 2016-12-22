@@ -61,7 +61,8 @@ $(document).ready(function () {
     }
 
     initValidateForm();
-    $(".login-in-btn").click(function () {
+    $(".login-in-btn").click(function (event) {
+        event.preventDefault();
         $('#loginForm').submit();
     });
 });
