@@ -78,7 +78,7 @@
                 </a>
             </li>
             <li>
-                <a href="html/product">
+                <a href="/html/product">
                     <img src="${filePath}/images/account-expressive.png">
                     <p>我要投资</p>
                 </a>
@@ -138,7 +138,7 @@
                         <template v-for="item in paymentIngs">
                         <tr>
                             <td>
-                                <a href="#">{{ item.bpName }}</a>
+                                <a :href="getDetailHref(item.bpId)">{{ item.bpName }}</a>
                             </td>
                             <td>{{ item.createTime }}</td>
                             <td>{{ item.money }}</td>

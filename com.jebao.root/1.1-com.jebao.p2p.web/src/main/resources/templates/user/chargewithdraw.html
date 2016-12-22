@@ -32,7 +32,7 @@
             <h2>充值提现</h2>
         </div>
         <!--充值提现-->
-        <div class="account-rex">
+        <div class="account-rex" v-if="hasFundAccount">
             <input type="hidden" id="typeId" value="${typeId}">
             <div class="account-rex-tit clearfix">
                 <h4 class="active">我要充值</h4>
@@ -129,6 +129,16 @@
                         </div>
                         <a href="javascript:;" class="account-btn" @click="submit('#withdrawDeposit_form')">提现</a>
                     </form>
+                </div>
+            </div>
+        </div>
+        <div class="my-account" v-else>
+            <div class="account-install-list">
+                <div class="account-install-item clearfix">
+                    <img src="${filePath}/images/account-error.png">
+                    <h5>资金托管账户</h5>
+                    <p class="pt5">由第三方（富友）提供资金托管服务，保障资金独立与安全</p>
+                    <a href="/userfund/register" class="account-open open-btn">开通</a>
                 </div>
             </div>
         </div>

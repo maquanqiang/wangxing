@@ -10,29 +10,30 @@ import java.math.BigDecimal;
 /**
  * Created by Jack on 2016/12/16.
  */
-public class UserVM extends ViewModel{
+public class UserVM extends ViewModel {
 
-    public UserVM(TbUserDetails entity){
+    public UserVM(TbUserDetails entity) {
         this.mobile = entity.getUdPhone();
         this.nickName = entity.getUdNickName();
-        if (entity.getUdBankParentBankName() != null){
+        if (entity.getUdBankParentBankName() != null) {
             //正则提取，从字符串开头一直到 “银行”
-            this.bankName = RegexUtil.getFirstMatch(entity.getUdBankParentBankName(),"^[\\u4e00-\\u9fa5]+银行");
+            this.bankName = RegexUtil.getFirstMatch(entity.getUdBankParentBankName(), "^[\\u4e00-\\u9fa5]+银行");
         }
         String theBankCardNo = entity.getUdBankCardNo();
-        if (theBankCardNo != null){
-            this.bankCardNo = theBankCardNo.replaceAll("(?<=\\d{4})\\d+(?=\\d{4})"," **** **** "); //银行卡号 中间替换 *
+        if (theBankCardNo != null) {
+            this.bankCardNo = theBankCardNo.replaceAll("(?<=\\d{4})\\d+(?=\\d{4})", " **** **** "); //银行卡号 中间替换 *
         }
         this.hasFundAccount = !StringUtils.isBlank(entity.getUdThirdAccount());
         this.balance = new BigDecimal(0);
-        this.posStatus = entity.getUdPosStatus();
+        this.posStatus = entity.getUdPosStatus() == null ? 0 : entity.getUdPosStatus();
     }
-    public UserVM(TbUserDetails entity,String inChangeBankName,String inChangeBankCardNo){
+
+    public UserVM(TbUserDetails entity, String inChangeBankName, String inChangeBankCardNo) {
         this(entity);
-        if (inChangeBankName!=null){
-            this.newBankName = RegexUtil.getFirstMatch(inChangeBankName,"^[\\u4e00-\\u9fa5]+银行");
+        if (inChangeBankName != null) {
+            this.newBankName = RegexUtil.getFirstMatch(inChangeBankName, "^[\\u4e00-\\u9fa5]+银行");
         }
-        if (inChangeBankCardNo!=null) {
+        if (inChangeBankCardNo != null) {
             this.newBankCardNo = inChangeBankCardNo.replaceAll("(?<=\\d{4})\\d+(?=\\d{4})", " **** **** ");
         }
     }

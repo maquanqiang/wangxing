@@ -49,49 +49,49 @@ public class UserController extends _BaseController {
 
     @Autowired
     private IRechargeServiceInf rechargeService;
-    
+
     @Autowired
     private IUserfundServiceInf userfundService;
 
     @RequestMapping("getUser")
-    public JsonResult getUser(){
+    public JsonResult getUser() {
         CurrentUser user = CurrentUserContextHolder.get();
-        if (user == null){
+        if (user == null) {
             return new JsonResultError("用户未登录");
         }
         TbUserDetails userDetailsEntity = userService.getUserDetailsInfo(user.getId());
+
         String newBankName = null; //更换中的银行卡
         String newBankCardNo = null;
-        if (userDetailsEntity.getUdBankCardNoChangeStatus() !=null && userDetailsEntity.getUdBankCardNoChangeStatus() == EnumModel.BankCardChangeStatus.更换审核中.getValue()){
+        if (userDetailsEntity.getUdBankCardNoChangeStatus() != null && userDetailsEntity.getUdBankCardNoChangeStatus() == EnumModel.BankCardChangeStatus.更换审核中.getValue()) {
             //去富友查询银行卡更换结果
             ResultInfo resultInfo = userfundService.queryChangeCardResult(user.getId());
-            if (resultInfo.getSuccess_is_ok()){
+            if (resultInfo.getSuccess_is_ok()) {
                 ResultData<TbUserDetails> resultData = (ResultData<TbUserDetails>) resultInfo;
                 userDetailsEntity = resultData.getData();
-            }else if(resultInfo.getCode() == 1){
+            } else if (resultInfo.getCode() == 1) {
                 //更换的卡在审核中..
                 String[] newBankArrays = resultInfo.getMsg().split(",");
                 newBankName = newBankArrays[0];
-                newBankCardNo = newBankArrays.length>0?newBankArrays[1]:"";
+                newBankCardNo = newBankArrays.length > 0 ? newBankArrays[1] : "";
             }
         }
-        UserVM userVM = new UserVM(userDetailsEntity,newBankName,newBankCardNo);
+        UserVM userVM = new UserVM(userDetailsEntity, newBankName, newBankCardNo);
         //region 账户余额
-        if (userVM.getHasFundAccount()){
+        if (userVM.getHasFundAccount()) {
             TbAccountsFunds accountsFunds = userService.getAccountsFundsInfo(user.getId());
             if (accountsFunds == null) {
                 userVM.setBalance(new BigDecimal(0));
-            }else{
+            } else {
                 userVM.setBalance(accountsFunds.getAfBalance());
             }
         }
-
         //endregion
         return new JsonResultData<>(userVM);
     }
 
     @RequestMapping("syncThirdAccount")
-    public JsonResult syncThirdAccount(){
+    public JsonResult syncThirdAccount() {
         CurrentUser currentUser = CurrentUserContextHolder.get();
         if (currentUser == null) {
             return new JsonResultError("0");
@@ -101,9 +101,9 @@ public class UserController extends _BaseController {
     }
 
     @RequestMapping("syncUserBalance")
-    public JsonResult syncUserBalance(){
+    public JsonResult syncUserBalance() {
         CurrentUser user = CurrentUserContextHolder.get();
-        if (user == null){
+        if (user == null) {
             return new JsonResultError("用户未登录");
         }
         /*TbAccountsFunds accountsFunds = userService.getAccountsFundsInfo(user.getId());
@@ -145,6 +145,7 @@ public class UserController extends _BaseController {
     }
 
     //region 快捷充值
+
     /**
      * 快捷充值
      *
@@ -218,6 +219,7 @@ public class UserController extends _BaseController {
     //endregion
 
     //region 快速充值
+
     /**
      * 快速充值
      *
@@ -291,6 +293,7 @@ public class UserController extends _BaseController {
     //endregion
 
     //region 网银充值
+
     /**
      * 网银充值
      *
@@ -364,6 +367,7 @@ public class UserController extends _BaseController {
     //endregion
 
     //region 提现
+
     /**
      * 提现
      *

@@ -394,6 +394,17 @@ public class UserfundServiceImpl implements IUserfundServiceInf {
                         }
                     } else {
                         posStatus = 0;
+                        userDetailsEntity.setUdPosStatus(posStatus);
+                        userDetailsEntity.setUdUpdateTime(new Date());
+                        userDetailsDao.updateByPrimaryKeySelective(userDetailsEntity);
+                        //region 用户日志
+                        TbUserLog logModel = new TbUserLog();
+                        logModel.setUlUserId(userId);
+                        logModel.setUlCreateUserId(0L);
+                        logModel.setUlCreateUserTime(new Date());
+                        logModel.setUlContent("POS签约状态同步，流水号:" + plain.getMchnt_txn_ssn());
+                        userLogDao.insert(logModel);
+                        //endregion
                     }
                     if (item.getUser_st().equals("1") && StringUtils.isBlank(userDetailsEntity.getUdThirdAccount())) {
                         //region 同步用户信息

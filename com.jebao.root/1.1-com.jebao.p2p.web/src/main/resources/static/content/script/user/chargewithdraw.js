@@ -7,8 +7,9 @@ var model = {
     //银行卡信息
     bankInfo: {},
     posStatus: false,
-    inTime:"",
-    typeId:""
+    inTime: "",
+    typeId: "",
+    hasFundAccount: false
 };
 
 // 创建一个 Vue 实例 (ViewModel),它连接 View 与 Model
@@ -34,11 +35,11 @@ var vm = new Vue({
     },
     //方法，可用于绑定事件或直接调用
     methods: {
-        change: function(){
+        change: function () {
             var index = 0;
-            if(model.typeId == 2){
+            if (model.typeId == 2) {
                 index = 1;
-            }else{
+            } else {
                 index = 0;
             }
 
@@ -54,11 +55,12 @@ var vm = new Vue({
                     if (data != null) {
                         vm.bankInfo = data;
                         vm.posStatus = data.posStatus == 1 ? true : false;
+                        vm.hasFundAccount = data.hasFundAccount;
                     }
                 }
             });
         },
-        initValidateForm: function(form){
+        initValidateForm: function (form) {
             return $(form).bootstrapValidator({
                 fields: {
                     money: {
@@ -72,13 +74,13 @@ var vm = new Vue({
                         }
                     }
                 }
-            }).on('success.form.bv',function(e){
+            }).on('success.form.bv', function (e) {
                 var $form = $(e.target);
-                $form.attr("action",common.apiOrigin + $form.attr("action"));
+                $form.attr("action", common.apiOrigin + $form.attr("action"));
                 $form[0].submit();
             })
         },
-        submit: function(form){
+        submit: function (form) {
             $(form).submit();
         }
     }
