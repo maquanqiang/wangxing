@@ -1,18 +1,23 @@
 $(function () {
     var mySwiper = new Swiper ('.swiper-container', {
-        pagination: '.swiper-pagination',
-        effect : 'fade',
+        loop: true,
+        autoplay: 2500,
+        pagination : '.pagination',
+//            pagination: '.swiper-pagination',
+//            effect : 'fade',
         fade: {
             crossFade: true
         },
-        paginationClickable: true,
-        autoplay:3500,
-        autoplayDisableOnInteraction:false,
-        loop:true,
-        // 如果需要前进后退按钮
-        nextButton: '.swiper-button-next',
-        prevButton: '.swiper-button-prev'
-    })
+        paginationClickable: true
+    });
+    $('.button-prev').on('click', function(e){
+        e.preventDefault()
+        mySwiper.swipePrev()
+    });
+    $('.button-next').on('click', function(e){
+        e.preventDefault()
+        mySwiper.swipeNext()
+    });
 
 });
 
