@@ -47,15 +47,20 @@ public class WithdrawServiceImpl implements IWithdrawServiceInf {
 
     /**
      * 提现接口 form表单提交 跳转
+     *
      * @param loginId
      * @param money
      * @return
      */
     @Override
-    public ResultInfo withdrawDepositByWeb(Long loginId, BigDecimal money) {
+    public ResultInfo withdrawDepositByWeb(Long loginId, BigDecimal money, BigDecimal fee) {
         TbUserDetails userDetails = userService.getUserDetailsInfo(loginId);
-        if (userDetails == null || StringUtils.isBlank(userDetails.getUdThirdAccount())){
-            return new ResultInfo(false,"您尚未开通第三方资金账户");
+        if (userDetails == null || StringUtils.isBlank(userDetails.getUdThirdAccount())) {
+            return new ResultInfo(false, "您尚未开通第三方资金账户");
+        }
+        TbAccountsFunds accountsFunds = userService.getAccountsFundsInfo(loginId);
+        if(accountsFunds == null || money.compareTo(accountsFunds.getAfBalance()) == 1){
+            return new ResultInfo(false, "提现金额大于您的账户余额，请核对您的余额");
         }
         String amt = money.multiply(new BigDecimal(100)).toString();
         WithdrawDepositRequest reqData = new WithdrawDepositRequest();
@@ -64,13 +69,13 @@ public class WithdrawServiceImpl implements IWithdrawServiceInf {
         reqData.setBack_notify_url("");
 
         String html = withdrawDepositService.post(reqData);
-        if (html != null && html.length()>0){
+        if (html != null && html.length() > 0) {
             //todo 添加资金收支明细
             TbFundsDetails fundsDetails = new TbFundsDetails();
             fundsDetails.setFdLoginId(loginId);
             fundsDetails.setFdSerialStatus(EnumModel.FdSerialStatus.处理中.getValue());
             fundsDetails.setFdBalanceStatus(EnumModel.FdBalanceStatus.支出.getValue());
-            fundsDetails.setFdCommissionCharge(new BigDecimal(0));//手续费
+            fundsDetails.setFdCommissionCharge(fee);//手续费
             fundsDetails.setFdSerialAmount(money);
             fundsDetails.setFdSerialNumber(reqData.getMchnt_txn_ssn());//流水号
             fundsDetails.setFdCreateTime(new Date());
@@ -91,13 +96,14 @@ public class WithdrawServiceImpl implements IWithdrawServiceInf {
             thirdInterfaceLogDao.insert(thirdInterfaceLog);
             //endregion
 
-            return new ResultData<String>(true,html,"提交第三方");
+            return new ResultData<String>(true, html, "提交第三方");
         }
-        return new ResultInfo(false,"form提交失败");
+        return new ResultInfo(false, "form提交失败");
     }
 
     /**
      * 提现接口 返回结果处理
+     *
      * @param loginId
      * @param model
      * @return
@@ -140,20 +146,20 @@ public class WithdrawServiceImpl implements IWithdrawServiceInf {
         }
         String signature = model.requestSignPlain();
         boolean isValid = SecurityUtils.verifySign(signature, model.getSignature());
-        if (!isValid){
+        if (!isValid) {
             //更新资金收支明细状态为失败
             fundsDetails.setFdSerialStatus(EnumModel.FdSerialStatus.失败.getValue());
             fundsDetails.setFdSerialTime(new Date());
             fundsDetailsService.update(fundsDetails);
-            return new ResultInfo(false,"操作异常，校验失败");
+            return new ResultInfo(false, "操作异常，校验失败");
         }
 
         TbUserDetails userDetails = userService.getUserDetailsInfo(loginId);
-        if(userDetails == null){
-            return new ResultInfo(false,"用户身份异常，请重试");
+        if (userDetails == null) {
+            return new ResultInfo(false, "用户身份异常，请重试");
         }
-        if (!userDetails.getUdThirdAccount().equals(model.getLogin_id())){
-            return new ResultInfo(false,"资金托管帐号错误，请联系客服");
+        if (!userDetails.getUdThirdAccount().equals(model.getLogin_id())) {
+            return new ResultInfo(false, "资金托管帐号错误，请联系客服");
         }
 
         BigDecimal balance_new = balance.subtract(new BigDecimal(model.getAmt()).divide(new BigDecimal(100))).setScale(2, BigDecimal.ROUND_HALF_UP);
@@ -171,6 +177,6 @@ public class WithdrawServiceImpl implements IWithdrawServiceInf {
         accountsFunds.setAfUpdateTime(new Date());
         accountsFundsService.update(accountsFunds);
 
-        return new ResultInfo(true,"提现成功");
+        return new ResultInfo(true, "提现成功");
     }
 }
