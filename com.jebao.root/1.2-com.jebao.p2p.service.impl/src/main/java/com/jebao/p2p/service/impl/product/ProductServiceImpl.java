@@ -255,4 +255,10 @@ public class ProductServiceImpl implements IProductServiceInf {
     public int selectGroupByConditionCount(RepaymentDetailSM record) {
         return tbIncomeDetailDao.selectGroupByConditionCount(record);
     }
+
+    @Override
+    public List<TbInvestInfo> recentInvestment(TbInvestInfo tbInvestInfo, PageWhere pageWhere) {
+
+        return tbInvestInfoDao.selectByConditionForPage(tbInvestInfo, pageWhere);
+    }
 }

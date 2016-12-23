@@ -8,7 +8,7 @@ var model = {
     searchObj: {},
     //收支明细列表
     fundsDetails:[],
-    isHasDate:false
+    isHasDate:true
 };
 
 // 创建一个 Vue 实例 (ViewModel),它连接 View 与 Model
@@ -29,6 +29,7 @@ var vm = new Vue({
         search:function() {
             $.get("/api/funds/details",model.searchObj,function(response){
                 if (response.success_is_ok){
+                    console.log(response.data);
                     vm.fundsDetails=response.data;
                     if(response.data == null){
                         vm.isHasDate = false;

@@ -27,6 +27,7 @@ public class ProductForm {
         }
         productSM.setBpStatus(form.getBpStatus());
         productSM.setBpInterestPayType(form.getBpInterestPayType());
+        productSM.setBpType(form.getBpType());
 
         return productSM;
     }
@@ -35,6 +36,15 @@ public class ProductForm {
     private Integer bpStatus;
     private String searchMoneyStr;
     private String bpPeriodStr;
+    private Integer bpType;
+
+    public Integer getBpType() {
+        return bpType;
+    }
+
+    public void setBpType(Integer bpType) {
+        this.bpType = bpType;
+    }
 
     public Integer getBpInterestPayType() {
         return bpInterestPayType;

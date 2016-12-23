@@ -36,4 +36,6 @@ public interface IProductServiceInf {
     List<TbIncomeDetail> selectGroupByConditionForPage(RepaymentDetailSM record, PageWhere pageWhere);
 
     int selectGroupByConditionCount(RepaymentDetailSM record);
+
+    List<TbInvestInfo> recentInvestment(TbInvestInfo tbInvestInfo, PageWhere pageWhere);
 }

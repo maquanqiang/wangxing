@@ -93,49 +93,241 @@
 <div class="advertisement">
     <a href="#"></a>
 </div>
-<!--投标内容-->
+<!--首页主要内容-->
 <div class="index-main">
+    <!--推荐项目-->
     <div class="index-main-title clearfix">
-        <h4>推荐项目</h4>
+        <h2>推荐项目</h2>
         <p>精选项目，资深金融人士层层甄选，最靠谱的投资项目呈现给您</p>
-        <div class="index-more fr">
-            <a href="/html/product">更多<i></i></a>
-        </div>
+        <a href="项目列表.html">更多<i></i></a>
     </div>
     <div class="project-list">
-        <div class="project-content"  v-for="data in products" @click="openDetail(data.bpId)">
-            <div class="project-name">
-                <p>{{data.bpName}}<span>{{data.bpNumber}}</span></p>
+        <!--新手专区-->
+        <div class="project-detail clearfix">
+            <div class="project-title item-new fl">
+                <p>新手专区</p>
             </div>
-            <div class="project-item clearfix">
-                <div class="project-info text-left">
-                    <div>{{data.bpRate}}%</div>
-                    <p>年化收益率</p>
+            <div class="project-content-new fl" v-for="data in products2">
+                <div class="project-name">
+                    <a href="javascript:;" @click="openDetail(data.bpId)">
+                        <p>{{data.bpName}}<span>{{data.bpNumber}}</span></p>
+                    </a>
                 </div>
-                <div class="project-info">
-                    <div>{{data.bpPeriodsDisplay}}{{cycleType[data.bpCycleType]}}</div>
-                    <p>项目期限</p>
-                </div>
-                <div class="project-info">
-                    <div>{{data.bpBidMoney}}</div>
-                    <p>项目总额</p>
-                </div>
-                <div class="project-progress fl">
-                    <div class="project-progress-box">
-                       <span class="progress-line">
-                            <span :style="'width: '+data.progress+'%'" class="progress-bar progress-bar-info"></span>
-                       </span>
-                        <span class="num">{{data.progress}}%</span>
+                <div class="project-new clearfix">
+                    <div class="project-income fl">
+                        <div>{{data.bpRate}}%</div>
+                        <p>年化收益率</p>
                     </div>
-                    <p>投资进度</p>
-                </div>
-                <div class="project-btn fr">
-                    <a href="javascript:;">{{status[data.bpStatus]}}</a>
+                    <ul class="project-new-list fl">
+                        <li>
+                            <strong>项目总额</strong>
+                            <span>{{data.bpBidMoney}}</span>
+                        </li>
+                        <li>
+                            <strong>项目期限</strong>
+                            <span>{{data.bpPeriodsDisplay}}{{cycleType[data.bpCycleType]}}</span>
+                        </li>
+                        <li>
+                            <strong>投资进度</strong>
+                            <div class="project-progress-box inline">
+                               <span class="progress-line">
+                                    <span :style="'width: '+data.progress+'%'" class="progress-bar progress-bar-info"></span>
+                               </span>
+                                <span class="num">{{data.progress}}%</span>
+                            </div>
+                        </li>
+                    </ul>
+                    <a href="javascript:;" class="project-btn fl new-btn">{{status[data.bpStatus]}}</a>
                 </div>
             </div>
-            <img src="${filePath}/images/new-project.png" class="new-project" v-show="data.bpType==2">
         </div>
-        <a href="/html/product" class="project-more"></a>
+        <!--涨额专区-->
+        <div class="project-detail clearfix">
+            <div class="project-title item-disperse fl">
+                <p>涨额专区</p>
+            </div>
+            <div class="project-content-disperse fl">
+                <div class="project-content" v-for="data in products1" @click="openDetail(data.bpId)">
+                    <div class="project-name">
+                        <a href="javascript:;" @click="openDetail(data.bpId)">
+                            <p>{{data.bpName}}<span>{{data.bpNumber}}</span></p>
+                        </a>
+                    </div>
+                    <div class="project-item clearfix">
+                        <div class="project-info text-left">
+                            <div class="dis-number">{{data.bpRate}}%</div>
+                            <p>年化收益率</p>
+                        </div>
+                        <div class="project-info">
+                            <div>{{data.bpPeriodsDisplay}}{{cycleType[data.bpCycleType]}}</div>
+                            <p>项目期限</p>
+                        </div>
+                        <div class="project-info">
+                            <div>{{data.bpBidMoney}}</div>
+                            <p>项目总额</p>
+                        </div>
+                        <div class="project-progress fl">
+                            <div class="project-progress-box">
+                                <span class="progress-line">
+                                    <span :style="'width: '+data.progress+'%'" class="progress-bar progress-bar-info"></span>
+                                </span>
+                                <span class="num">{{data.progress}}%</span>
+                            </div>
+                            <p>投资进度</p>
+                        </div>
+                        <a href="javascript:;" class="project-btn fr disperse-btn" @click="openDetail(data.bpId)">{{status[data.bpStatus]}}</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--散标专区-->
+        <div class="project-detail clearfix">
+            <div class="project-title item-gain fl">
+                <p>散标专区</p>
+            </div>
+            <div class="project-content-gain fl">
+                <div class="project-content">
+                    <div class="project-item clearfix">
+                        <div class="project-info text-left">
+                            <div class="dis-number">9.50%</div>
+                            <p>年化收益率</p>
+                        </div>
+                        <div class="project-info">
+                            <div>3个月</div>
+                            <p>项目期限</p>
+                        </div>
+                        <div class="project-info">
+                            <div>1000万</div>
+                            <p>项目总额</p>
+                        </div>
+                        <div class="project-info ml10">
+                            <div>
+                                <img src="${filePath}/images/security-icon.png">
+                                <img src="${filePath}/images/security-icon.png">
+                            </div>
+                            <p>风险等级</p>
+                        </div>
+                        <div class="project-info">
+                            <div>0%</div>
+                            <p>投资进度</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="project-content">
+                    <div class="project-item clearfix">
+                        <div class="project-info text-left">
+                            <div class="dis-number">9.50%</div>
+                            <p>年化收益率</p>
+                        </div>
+                        <div class="project-info">
+                            <div>3个月</div>
+                            <p>项目期限</p>
+                        </div>
+                        <div class="project-info">
+                            <div>1000万</div>
+                            <p>项目总额</p>
+                        </div>
+                        <div class="project-info ml10">
+                            <div>
+                                <img src="${filePath}/images/security-icon.png">
+                                <img src="${filePath}/images/security-icon.png">
+                            </div>
+                            <p>风险等级</p>
+                        </div>
+                        <div class="project-info">
+                            <div>0%</div>
+                            <p>投资进度</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--最新排行-->
+    <div class="index-main-title clearfix">
+        <h2>最新排行</h2>
+    </div>
+    <div class="rank-list clearfix">
+        <div class="rank fl">
+            <h4>投资排行</h4>
+            <div class="rank-content">
+                <div class="rank-title rank-list-title clearfix">
+                    <p>排行</p>
+                    <p>用户</p>
+                    <p>投资金额</p>
+                </div>
+                <ul class="rank-info" id="rank">
+                    <li v-for="(item, index) in items">
+                        <span>{{ index+1 }}</span>
+                        <span>{{item.name}}</span>
+                        <strong>¥{{item.money}}</strong>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="investment fr">
+            <h4>最新投标</h4>
+            <div class="rank-content">
+                <div class="investment-title rank-list-title clearfix">
+                    <p>用户</p>
+                    <p>投资金额</p>
+                    <p>日期</p>
+                </div>
+                <div class="dowebok">
+                    <ul class="rank-info">
+                        <li v-for="data in recentInvest">
+                            <span>{{data.trueName}}</span>
+                            <strong>¥{{data.investMoney}}</strong>
+                            <span>{{data.investDate}}</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--合作机构-->
+    <div class="index-main-title clearfix">
+        <h2>合作机构</h2>
+    </div>
+    <div class="cooperation">
+        <ul class="clearfix">
+            <li>
+                <a class="cooperation-item partner1" href="http://www.icbc.com.cn/icbc/" title="工商银行" target="_blank"></a>
+            </li>
+            <li>
+                <a class="cooperation-item partner2" href="http://www.abchina.com/cn/" title="农业银行" target="_blank"></a>
+            </li>
+            <li>
+                <a class="cooperation-item partner3" href="http://www.ccb.com/" title="建设银行" target="_blank"></a>
+            </li>
+            <li>
+                <a class="cooperation-item partner4" href="https://www.citibank.com.cn/" title="花旗银行" target="_blank"></a>
+            </li>
+            <li>
+                <a class="cooperation-item partner5" href="http://www.cmbc.com.cn/" title="民生银行" target="_blank"></a>
+            </li>
+            <li>
+                <a class="cooperation-item partner6" href="http://www.boc.cn/" title="中国银行" target="_blank"></a>
+            </li>
+            <li>
+                <a class="cooperation-item partner7" href="http://www.brxt.net/" title="百瑞信托" target="_blank"></a>
+            </li>
+            <li>
+                <a class="cooperation-item partner8" href="http://www.bjitic.com/" title="北京国际信托" target="_blank"></a>
+            </li>
+            <li>
+                <a class="cooperation-item partner9" href="http://trust.ecitic.com/" title="中信信托" target="_blank"></a>
+            </li>
+            <li>
+                <a class="cooperation-item partner10" href="http://www.hctrust.cn/" title="华宸信托" target="_blank"></a>
+            </li>
+            <li>
+                <a class="cooperation-item partner11" href="http://www.cctic.com.cn/" title="中诚信托" target="_blank"></a>
+            </li>
+            <li>
+                <a class="cooperation-item partner12" href="http://www.anxintrust.com/" title="安信信托" target="_blank"></a>
+            </li>
+        </ul>
     </div>
 </div>
 #parse("common/footer.html")

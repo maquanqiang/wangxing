@@ -8,6 +8,7 @@ import com.jebao.jebaodb.entity.extEntity.PageWhere;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -23,10 +24,17 @@ public class TbTempTestDao_UnitTest extends _BaseUnitTest {
 
     @Test
     public void testExample(){
-        int type = EnumModel.SerialType.提现.getValue();
+    /*    int type = EnumModel.SerialType.提现.getValue();
         System.out.println("type:"+type);
         String typeName = EnumModel.SerialType.提现.name();
-        System.out.println("typeName:"+typeName);
+        System.out.println("typeName:"+typeName);*/
+        BigDecimal a = new BigDecimal(500);
+        BigDecimal b = new BigDecimal(100);
+        int result = a.compareTo(b);
+        if(result!=1){
+            System.out.println(result);
+        }
+        System.out.println(result);
     }
 
     @Test
