@@ -5,29 +5,33 @@
 //Model
 var model = {
     //资金汇总
-    fundSum:{incomeAmount:0,totalAssets:0,balance:0,freezeAmount:0,dueInPrincipal:0,dueInIncome:0},
+    fundSum: {incomeAmount: 0, totalAssets: 0, balance: 0, freezeAmount: 0, dueInPrincipal: 0, dueInIncome: 0},
     //投资中项目
-    investIngs:[],
+    investIngs: [],
     //还款中项目
-    paymentIngs:[],
+    paymentIngs: [],
     //收支明细列表
-    fundsDetails:[]
+    fundsDetails: []
 };
 
 // 创建一个 Vue 实例 (ViewModel),它连接 View 与 Model
 var vm = new Vue({
     el: ".account-content",
     data: model,
-    beforeCreate:function(){
+    beforeCreate: function () {
     },
     //初始化远程数据
-    created:function(){
-        $.get("/api/invest/statistics",function(response){
-            if (response.success_is_ok){
-                var data=response.data;
-                if(data!=null) {
-                    vm.fundSum = data;
-                }
+    created: function () {
+        $.get("/api/user/syncUserBalance", function (response) {
+            if (response.success_is_ok) {
+                $.get("/api/invest/statistics", function (response) {
+                    if (response.success_is_ok) {
+                        var data = response.data;
+                        if (data != null) {
+                            vm.fundSum = data;
+                        }
+                    }
+                });
             }
         });
         $.get("/api/funds/list", function (response) {
@@ -43,13 +47,13 @@ var vm = new Vue({
         getDetailHref: function (id) {
             return "/product/detail/" + id;
         },
-        search: function(fs){
-            $.get("/api/invest/list", {freezeStatus:fs}, function (response) {
+        search: function (fs) {
+            $.get("/api/invest/list", {freezeStatus: fs}, function (response) {
                 if (response.success_is_ok) {
                     var data = response.data;
-                    if(fs == 1){
+                    if (fs == 1) {
                         vm.investIngs = data;
-                    }else if(fs == 2){
+                    } else if (fs == 2) {
                         vm.paymentIngs = data;
                     }
                 }

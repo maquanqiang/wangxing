@@ -1,5 +1,6 @@
 package com.jebao.thirdPay.fuiou.impl;
 
+import com.jebao.thirdPay.fuiou.constants.FuiouConfig;
 import com.jebao.thirdPay.fuiou.http.WebUtils;
 import com.jebao.thirdPay.fuiou.model.balanceAction.BalanceActionRequest;
 import com.jebao.thirdPay.fuiou.model.balanceAction.BalanceActionResponse;
@@ -15,17 +16,25 @@ import com.jebao.thirdPay.fuiou.util.XmlUtil;
  */
 @Service
 public class BalanceActionServiceImpl {
+    public BalanceActionResponse post(BalanceActionRequest reqData) {
+        String httpUrl = FuiouConfig.url + "BalanceAction.action";
+        try {
+            return post(httpUrl, reqData);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
     public BalanceActionResponse post(String httpUrl, BalanceActionRequest reqData) throws Exception {
         String signatureStr = SecurityUtils.sign(reqData.requestSignPlain());
         reqData.setSignature(signatureStr);
         String xmlData = WebUtils.sendHttp(httpUrl, reqData);
         PrintUtil.printLn(xmlData);
-        BalanceActionResponse regResponse= XmlUtil.fromXML(xmlData, BalanceActionResponse.class);
+        BalanceActionResponse regResponse = XmlUtil.fromXML(xmlData, BalanceActionResponse.class);
         PrintUtil.printLn(regResponse.getSignature());
-        String verifyPlain= RegexUtil.getFirstMatch(xmlData, "<plain>[\\s\\S]+</plain>");
-        boolean isOk = SecurityUtils.verifySign(verifyPlain,regResponse.getSignature());
-        if(!isOk)
-        {
+        String verifyPlain = RegexUtil.getFirstMatch(xmlData, "<plain>[\\s\\S]+</plain>");
+        boolean isOk = SecurityUtils.verifySign(verifyPlain, regResponse.getSignature());
+        if (!isOk) {
             throw new Exception("[余额查询]-富友返回报文签名验证失败-验签时数据与富友返回报文的signature不一致！");
         }
         return regResponse;

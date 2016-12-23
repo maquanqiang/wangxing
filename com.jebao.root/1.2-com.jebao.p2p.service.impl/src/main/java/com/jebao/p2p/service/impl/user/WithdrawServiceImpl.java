@@ -2,6 +2,7 @@ package com.jebao.p2p.service.impl.user;
 
 import com.jebao.common.utils.fastjson.FastJsonUtil;
 import com.jebao.jebaodb.dao.dao.loanmanage.TbThirdInterfaceLogDao;
+import com.jebao.jebaodb.entity.extEntity.EnumModel;
 import com.jebao.jebaodb.entity.extEntity.ResultData;
 import com.jebao.jebaodb.entity.extEntity.ResultInfo;
 import com.jebao.jebaodb.entity.loanmanage.TbThirdInterfaceLog;
@@ -54,7 +55,7 @@ public class WithdrawServiceImpl implements IWithdrawServiceInf {
     public ResultInfo withdrawDepositByWeb(Long loginId, BigDecimal money) {
         TbUserDetails userDetails = userService.getUserDetailsInfo(loginId);
         if (userDetails == null || StringUtils.isBlank(userDetails.getUdThirdAccount())){
-            return new ResultInfo(false,"未开户");
+            return new ResultInfo(false,"您尚未开通第三方资金账户");
         }
         String amt = money.multiply(new BigDecimal(100)).toString();
         WithdrawDepositRequest reqData = new WithdrawDepositRequest();
@@ -67,16 +68,16 @@ public class WithdrawServiceImpl implements IWithdrawServiceInf {
             //todo 添加资金收支明细
             TbFundsDetails fundsDetails = new TbFundsDetails();
             fundsDetails.setFdLoginId(loginId);
-            fundsDetails.setFdSerialStatus(0);
-            fundsDetails.setFdBalanceStatus(2);//收支状态 1收入  2支出
+            fundsDetails.setFdSerialStatus(EnumModel.FdSerialStatus.处理中.getValue());
+            fundsDetails.setFdBalanceStatus(EnumModel.FdBalanceStatus.支出.getValue());
             fundsDetails.setFdCommissionCharge(new BigDecimal(0));//手续费
             fundsDetails.setFdSerialAmount(money);
             fundsDetails.setFdSerialNumber(reqData.getMchnt_txn_ssn());//流水号
             fundsDetails.setFdCreateTime(new Date());
-            fundsDetails.setFdSerialTypeId(2);
-            fundsDetails.setFdSerialTypeName("提现");
+            fundsDetails.setFdSerialTypeId(EnumModel.SerialType.提现.getValue());
+            fundsDetails.setFdSerialTypeName(EnumModel.SerialType.提现.name());
             fundsDetails.setFdThirdAccount(userDetails.getUdThirdAccount());
-            fundsDetails.setFdIsDel(1);
+            fundsDetails.setFdIsDel(EnumModel.IsDel.有效.getValue());
             fundsDetailsService.insert(fundsDetails);
 
             //region 提交到富有，记录接口日志
@@ -103,6 +104,18 @@ public class WithdrawServiceImpl implements IWithdrawServiceInf {
      */
     @Override
     public ResultInfo withdrawDepositByWebComplete(Long loginId, WithdrawDepositResponse model) {
+        //region 富有返回成功，记录接口日志
+        TbThirdInterfaceLog thirdInterfaceLog = new TbThirdInterfaceLog();
+        thirdInterfaceLog.setTilType(18); // 接口编号
+        thirdInterfaceLog.setTilSerialNumber(model.getMchnt_txn_ssn());
+        thirdInterfaceLog.setTilReturnCode(model.getResp_code());
+        String jsonText = FastJsonUtil.serialize(model);
+        thirdInterfaceLog.setTilReqText("form跳转请求，接口请求内容查看上一条记录");
+        thirdInterfaceLog.setTilRespText(jsonText);
+        thirdInterfaceLog.setTilCreateTime(new Date());
+        thirdInterfaceLogDao.insert(thirdInterfaceLog);
+        //endregion
+
         //获取变更前账户资金信息
         TbAccountsFunds afEntity = userService.getAccountsFundsInfo(loginId);
         BigDecimal balance = afEntity.getAfBalance();
@@ -120,7 +133,7 @@ public class WithdrawServiceImpl implements IWithdrawServiceInf {
                 responseMessage = "第三方返回异常";
             }
             //更新资金收支明细状态为失败
-            fundsDetails.setFdSerialStatus(-1);
+            fundsDetails.setFdSerialStatus(EnumModel.FdSerialStatus.失败.getValue());
             fundsDetails.setFdSerialTime(new Date());
             fundsDetailsService.update(fundsDetails);
             return new ResultInfo(false, responseMessage);
@@ -129,22 +142,12 @@ public class WithdrawServiceImpl implements IWithdrawServiceInf {
         boolean isValid = SecurityUtils.verifySign(signature, model.getSignature());
         if (!isValid){
             //更新资金收支明细状态为失败
-            fundsDetails.setFdSerialStatus(-1);
+            fundsDetails.setFdSerialStatus(EnumModel.FdSerialStatus.失败.getValue());
             fundsDetails.setFdSerialTime(new Date());
             fundsDetailsService.update(fundsDetails);
             return new ResultInfo(false,"操作异常，校验失败");
         }
-        //region 富有返回成功，记录接口日志
-        TbThirdInterfaceLog thirdInterfaceLog = new TbThirdInterfaceLog();
-        thirdInterfaceLog.setTilType(18); // 接口编号
-        thirdInterfaceLog.setTilSerialNumber(model.getMchnt_txn_ssn());
-        thirdInterfaceLog.setTilReturnCode(model.getResp_code());
-        String jsonText = FastJsonUtil.serialize(model);
-        thirdInterfaceLog.setTilReqText("form跳转请求，接口请求内容查看上一条记录");
-        thirdInterfaceLog.setTilRespText(jsonText);
-        thirdInterfaceLog.setTilCreateTime(new Date());
-        thirdInterfaceLogDao.insert(thirdInterfaceLog);
-        //endregion
+
         TbUserDetails userDetails = userService.getUserDetailsInfo(loginId);
         if(userDetails == null){
             return new ResultInfo(false,"用户身份异常，请重试");
@@ -157,7 +160,7 @@ public class WithdrawServiceImpl implements IWithdrawServiceInf {
 
         //更新资金收支明细状态为成功
         fundsDetails.setFdBalanceAfter(balance_new);
-        fundsDetails.setFdSerialStatus(1);
+        fundsDetails.setFdSerialStatus(EnumModel.FdSerialStatus.成功.getValue());
         fundsDetails.setFdSerialTime(new Date());
         fundsDetailsService.update(fundsDetails);
 

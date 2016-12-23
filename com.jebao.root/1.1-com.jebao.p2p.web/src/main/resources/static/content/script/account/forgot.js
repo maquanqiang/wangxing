@@ -104,7 +104,7 @@ var vm = new Vue({
                         model.form3.show=true;
 
                         var $timer = $("#complete .time");
-                        var leftSeconds = parseInt($timer.val());
+                        var leftSeconds = parseInt($timer.html());
                         var timerInterval = setInterval(function () {
                             leftSeconds--;
                             if (leftSeconds === 0) {
@@ -122,9 +122,11 @@ var vm = new Vue({
         },
         submitStep1:function(){
             $("#form1").submit();
+            return false;
         },
         submitStep2:function(){
             $("#form2").submit();
+            return false;
         },
         backToStep1:function(){
             model.form1.show = true;

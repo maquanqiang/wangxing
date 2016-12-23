@@ -45,6 +45,10 @@ $(document).ready(function () {
                     if(submitData.remember === "1"){
                         $.cookie("jebao_lgn",submitData.jebUsername,{ expires: 3 });
                     }
+
+                    //同步第三方用户信息
+                    $.get("/api/user/syncThirdAccount");
+
                     var redirectUrl = common.getUrlParam("redirectUrl") || "/";
                     window.location.href=redirectUrl;
                     return;
@@ -57,7 +61,8 @@ $(document).ready(function () {
     }
 
     initValidateForm();
-    $(".login-in-btn").click(function () {
+    $(".login-in-btn").click(function (event) {
+        event.preventDefault();
         $('#loginForm').submit();
     });
 });

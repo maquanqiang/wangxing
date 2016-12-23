@@ -33,6 +33,9 @@ var vm = new Vue({
     },
     //方法，可用于绑定事件或直接调用
     methods: {
+        getDetailHref: function (id) {
+            return "/product/detail/" + id;
+        },
         search:function(fs) {
             model.searchObj.freezeStatus = fs;
             $.get("/api/invest/record",model.searchObj,function(response){

@@ -49,55 +49,72 @@ public class UserController extends _BaseController {
 
     @Autowired
     private IRechargeServiceInf rechargeService;
-    
+
     @Autowired
     private IUserfundServiceInf userfundService;
 
     @RequestMapping("getUser")
-    public JsonResult getUser(){
+    public JsonResult getUser() {
         CurrentUser user = CurrentUserContextHolder.get();
-        if (user == null){
+        if (user == null) {
             return new JsonResultError("用户未登录");
         }
         TbUserDetails userDetailsEntity = userService.getUserDetailsInfo(user.getId());
+
         String newBankName = null; //更换中的银行卡
         String newBankCardNo = null;
-        if (userDetailsEntity.getUdBankCardNoChangeStatus() !=null && userDetailsEntity.getUdBankCardNoChangeStatus() == EnumModel.BankCardChangeStatus.更换审核中.getValue()){
+        if (userDetailsEntity.getUdBankCardNoChangeStatus() != null && userDetailsEntity.getUdBankCardNoChangeStatus() == EnumModel.BankCardChangeStatus.更换审核中.getValue()) {
             //去富友查询银行卡更换结果
             ResultInfo resultInfo = userfundService.queryChangeCardResult(user.getId());
-            if (resultInfo.getSuccess_is_ok()){
+            if (resultInfo.getSuccess_is_ok()) {
                 ResultData<TbUserDetails> resultData = (ResultData<TbUserDetails>) resultInfo;
                 userDetailsEntity = resultData.getData();
-            }else if(resultInfo.getCode() == 1){
+            } else if (resultInfo.getCode() == 1) {
                 //更换的卡在审核中..
                 String[] newBankArrays = resultInfo.getMsg().split(",");
                 newBankName = newBankArrays[0];
-                newBankCardNo = newBankArrays.length>0?newBankArrays[1]:"";
+                newBankCardNo = newBankArrays.length > 0 ? newBankArrays[1] : "";
             }
         }
-        UserVM userVM = new UserVM(userDetailsEntity,newBankName,newBankCardNo);
+        UserVM userVM = new UserVM(userDetailsEntity, newBankName, newBankCardNo);
         //region 账户余额
-        if (userVM.getHasFundAccount()){
+        if (userVM.getHasFundAccount()) {
             TbAccountsFunds accountsFunds = userService.getAccountsFundsInfo(user.getId());
             if (accountsFunds == null) {
                 userVM.setBalance(new BigDecimal(0));
-            }else{
+            } else {
                 userVM.setBalance(accountsFunds.getAfBalance());
             }
         }
-
         //endregion
         return new JsonResultData<>(userVM);
     }
 
     @RequestMapping("syncThirdAccount")
-    public JsonResult syncThirdAccount(){
+    public JsonResult syncThirdAccount() {
         CurrentUser currentUser = CurrentUserContextHolder.get();
         if (currentUser == null) {
-            return new JsonResultError("0");
+            return new JsonResultError();
         }
-        int reslut = userfundService.queryUserInfs(currentUser.getId());
-        return new JsonResultOk(String.valueOf(reslut));
+        userfundService.queryUserInfs(currentUser.getId());
+        return new JsonResultOk();
+    }
+
+    @RequestMapping("syncUserBalance")
+    public JsonResult syncUserBalance() {
+        CurrentUser user = CurrentUserContextHolder.get();
+        if (user == null) {
+            return new JsonResultError("用户未登录");
+        }
+        /*TbAccountsFunds accountsFunds = userService.getAccountsFundsInfo(user.getId());
+        ResultInfo resultInfo = userfundService.queryUserBalance(user.getId());
+        if (resultInfo.getSuccess_is_ok()) {
+
+            ResultData<TbAccountsFunds> resultData = (ResultData<TbAccountsFunds>) resultInfo;
+            accountsFunds = resultData.getData();
+        }*/
+        userfundService.queryUserBalance(user.getId());
+        return new JsonResultOk();
     }
 
     @RequestMapping(value = "details", method = RequestMethod.GET)
@@ -128,6 +145,7 @@ public class UserController extends _BaseController {
     }
 
     //region 快捷充值
+
     /**
      * 快捷充值
      *
@@ -144,7 +162,7 @@ public class UserController extends _BaseController {
         }
 
         String title = "充值失败！";
-        String backUrl = "/user/chargewithdraw"; // web页面内的回跳地址，可以是相对路径
+        String backUrl = "/user/chargewithdraw?typeId=1"; // web页面内的回跳地址，可以是相对路径
         //region 验证
         ValidationResult resultValidation = ValidationUtil.validateEntity(form);
         if (resultValidation.isHasErrors()) {
@@ -191,7 +209,7 @@ public class UserController extends _BaseController {
         if (!resultInfo.getSuccess_is_ok()) {
             String title = "充值失败！";
             String content = resultInfo.getMsg();
-            String backUrl = "/user/chargewithdraw"; // web页面内的回跳地址，可以是相对路径
+            String backUrl = "/user/chargewithdraw?typeId=1"; // web页面内的回跳地址，可以是相对路径
             goFailedPage(title, content, backUrl);
         } else {
             goSuccessPage("充值成功！", "", "/user/index", "查看我的账户");
@@ -201,6 +219,7 @@ public class UserController extends _BaseController {
     //endregion
 
     //region 快速充值
+
     /**
      * 快速充值
      *
@@ -217,7 +236,7 @@ public class UserController extends _BaseController {
         }
 
         String title = "充值失败！";
-        String backUrl = "/user/chargewithdraw"; // web页面内的回跳地址，可以是相对路径
+        String backUrl = "/user/chargewithdraw?typeId=1"; // web页面内的回跳地址，可以是相对路径
         //region 验证
         ValidationResult resultValidation = ValidationUtil.validateEntity(form);
         if (resultValidation.isHasErrors()) {
@@ -264,7 +283,7 @@ public class UserController extends _BaseController {
         if (!resultInfo.getSuccess_is_ok()) {
             String title = "充值失败！";
             String content = resultInfo.getMsg();
-            String backUrl = "/user/chargewithdraw"; // web页面内的回跳地址，可以是相对路径
+            String backUrl = "/user/chargewithdraw?typeId=1"; // web页面内的回跳地址，可以是相对路径
             goFailedPage(title, content, backUrl);
         } else {
             goSuccessPage("充值成功！", "", "/user/index", "查看我的账户");
@@ -274,6 +293,7 @@ public class UserController extends _BaseController {
     //endregion
 
     //region 网银充值
+
     /**
      * 网银充值
      *
@@ -290,7 +310,7 @@ public class UserController extends _BaseController {
         }
 
         String title = "充值失败！";
-        String backUrl = "/user/chargewithdraw"; // web页面内的回跳地址，可以是相对路径
+        String backUrl = "/user/chargewithdraw?typeId=1"; // web页面内的回跳地址，可以是相对路径
         //region 验证
         ValidationResult resultValidation = ValidationUtil.validateEntity(form);
         if (resultValidation.isHasErrors()) {
@@ -337,7 +357,7 @@ public class UserController extends _BaseController {
         if (!resultInfo.getSuccess_is_ok()) {
             String title = "充值失败！";
             String content = resultInfo.getMsg();
-            String backUrl = "/user/chargewithdraw"; // web页面内的回跳地址，可以是相对路径
+            String backUrl = "/user/chargewithdraw?typeId=1"; // web页面内的回跳地址，可以是相对路径
             goFailedPage(title, content, backUrl);
         } else {
             goSuccessPage("充值成功！", "", "/user/index", "查看我的账户");
@@ -347,6 +367,7 @@ public class UserController extends _BaseController {
     //endregion
 
     //region 提现
+
     /**
      * 提现
      *
@@ -363,7 +384,7 @@ public class UserController extends _BaseController {
         }
 
         String title = "提现失败！";
-        String backUrl = "/user/chargewithdraw"; // web页面内的回跳地址，可以是相对路径
+        String backUrl = "/user/chargewithdraw?typeId=2"; // web页面内的回跳地址，可以是相对路径
         //region 验证
         ValidationResult resultValidation = ValidationUtil.validateEntity(form);
         if (resultValidation.isHasErrors()) {
@@ -410,7 +431,7 @@ public class UserController extends _BaseController {
         if (!resultInfo.getSuccess_is_ok()) {
             String title = "提现失败！";
             String content = resultInfo.getMsg();
-            String backUrl = "/user/chargewithdraw"; // web页面内的回跳地址，可以是相对路径
+            String backUrl = "/user/chargewithdraw?typeId=2"; // web页面内的回跳地址，可以是相对路径
             goFailedPage(title, content, backUrl);
         } else {
             goSuccessPage("提现成功！", "", "/user/index", "查看我的账户");

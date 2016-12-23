@@ -37,9 +37,16 @@ public interface IUserfundServiceInf {
     ResultInfo queryChangeCardResult(long userId);
 
     /**
-     * 同步（富有）用户信息，并返回POS机签约状态
+     * 同步（富有）用户信息
      * @param userId
      * @return
      */
-    int queryUserInfs(long userId);
+    ResultInfo queryUserInfs(long userId);
+
+    /**
+     * 同步（富有）用户可用余额
+     * @param userId
+     * @return
+     */
+    ResultInfo queryUserBalance(long userId);
 }

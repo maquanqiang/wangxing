@@ -45,12 +45,12 @@
             </div>
             <div class="imgCode form-group clearfix">
                 <div class="fl">
-                    <em></em><input type="password" placeholder="请输入图形验证码" name="imgCode" v-model="form1.imgCode">
+                    <em></em><input type="text" placeholder="请输入图形验证码" name="imgCode" v-model="form1.imgCode">
                 </div>
                 <img src="/captcha/getCode" class="verification fr" @click="refreshCaptcha">
                 <p class="help-block" :class="{none:!form1.error.hasError}" v-cloak><i class="icon"></i>{{form1.error.message}}</p>
             </div>
-            <a href="javascirpt:;" class="next-btn" @click="submitStep1">下一步</a>
+            <a href="javascirpt:;" class="next-btn" @click.prevent="submitStep1">下一步</a>
         </form>
 
         <form action="/api/account/forgotStep2" method="post" id="form2" class="bv-form"  :class="{none:!form2.show}">
@@ -58,7 +58,7 @@
                 <div class="fl">
                     <em></em><input type="text" placeholder="请输入短信验证码" name="messageCode" v-model="form2.messageCode">
                 </div>
-                <input type="button" value="获取验证码" class="get_code_btn color fr" @click="sendMessage">
+                <input type="button" value="获取验证码" class="get_code_btn color fr btn" @click="sendMessage">
                 <p class="help-block" :class="{none:!form2.message.hasError}" v-cloak><i class="icon"></i>{{form2.message.message}}</p>
             </div>
             <div class="userPassword form-group clearfix">
@@ -71,8 +71,8 @@
                 <p class="help-block" :class="{none:!form2.error.hasError}" v-cloak><i class="icon"></i>{{form2.error.message}}</p>
             </div>
             <p class="result-btn clearfix" style="width: 360px;margin: 0 auto">
-                <a href="javascript:;" class="next-btn fl" style="width: 160px;" @click="backToStep1">上一步</a>
-                <a href="javascript:;" class="next-btn fr" style="width: 160px;" @click="submitStep2">下一步</a>
+                <a href="javascript:;" class="next-btn fl" style="width: 160px;" @click.prevent="backToStep1">上一步</a>
+                <a href="javascript:;" class="next-btn fr" style="width: 160px;" @click.prevent="submitStep2">下一步</a>
             </p>
         </form>
 
