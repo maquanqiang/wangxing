@@ -1,16 +1,22 @@
 $(function () {
 
+    //文件轮播图
     var mySwiper = new Swiper ('.swiper-container', {
-        effect : 'fade',
+        loop: true,
+        slidesPerView : 3,
         fade: {
             crossFade: true
         },
-        paginationClickable: true,
-        loop:true,
-        // 如果需要前进后退按钮
-        nextButton: '.swiper-button-next',
-        prevButton: '.swiper-button-prev'
-    })
+        paginationClickable: true
+    });
+    $('.button-prev').on('click', function(e){
+        e.preventDefault();
+        mySwiper.swipePrev()
+    });
+    $('.button-next').on('click', function(e){
+        e.preventDefault();
+        mySwiper.swipeNext()
+    });
     //输入金额实时
     $('.entry-num').bind('input propertychange', function() {
         $('.money-num').html(parseInt($(this).val()*1));
@@ -149,7 +155,7 @@ var vm = new Vue({
                     $.post("/api/product/investBid", form, function (response) {
                         if (response.success_is_ok) {
                             var data = response.data;
-                            if(data.flag){
+                            if(data.flag=="true"){
                                 window.location.href="/product/productSuccess?investMoney="+form.investMoney;
                             }else{
                                 window.location.href="/product/productFail?msg="+data.msg;

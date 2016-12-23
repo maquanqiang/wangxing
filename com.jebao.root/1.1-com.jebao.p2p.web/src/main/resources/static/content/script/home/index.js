@@ -1,18 +1,68 @@
 $(function () {
-    var mySwiper = new Swiper ('.swiper-container', {
-        pagination: '.swiper-pagination',
-        effect : 'fade',
-        fade: {
-            crossFade: true
-        },
-        paginationClickable: true,
-        autoplay:3500,
-        autoplayDisableOnInteraction:false,
-        loop:true,
-        // 如果需要前进后退按钮
-        nextButton: '.swiper-button-next',
-        prevButton: '.swiper-button-prev'
-    })
+//    var mySwiper = new Swiper ('.swiper-container', {
+//        loop: true,
+//        autoplay: 2500,
+//        pagination : '.pagination',
+////            pagination: '.swiper-pagination',
+////            effect : 'fade',
+//        fade: {
+//            crossFade: true
+//        },
+//        paginationClickable: true
+//    });
+//    $('.button-prev').on('click', function(e){
+//        e.preventDefault()
+//        mySwiper.swipePrev()
+//    });
+//    $('.button-next').on('click', function(e){
+//        e.preventDefault()
+//        mySwiper.swipeNext()
+//    });
+//    //无缝滚动
+//    $('.dowebok').liMarquee({
+//        direction: 'up'
+//    });
+    //排行榜
+    //var myVue = new Vue({
+    //    el: "#rank",
+    //    data: {
+    //        items:[
+    //            {
+    //                name:"司**",
+    //                money:'4350000'
+    //            },
+    //            {
+    //                name:"王**",
+    //                money:'3000000'
+    //            },
+    //            {
+    //                name:"高**",
+    //                money:'670000'
+    //            },
+    //            {
+    //                name:"吴**",
+    //                money:'670000'
+    //            },
+    //            {
+    //                name:"王**",
+    //                money:'625000'
+    //            },
+    //            {
+    //                name:"杨**",
+    //                money:'600000'
+    //            },
+    //            {
+    //                name:"谢**",
+    //                money:'580000'
+    //            }
+    //        ]
+    //    },
+    //    filters:{
+    //        currency:function (val) {
+    //            return '$' + val;
+    //        }
+    //    }
+    //})
 
 });
 
@@ -23,7 +73,8 @@ var model = {
     //查询条件
     searchObj: {},
     //列表
-    products: [],
+    products1: [],
+    products2: [],
     cycleType:["","天","个月","季","年"],
     status:["","","立即投资","满标","募集结束","","","还款中","","","已还款"]
 };
@@ -36,7 +87,7 @@ var vm = new Vue({
         //初始化本地数据
 
         model.searchObj.pageIndex = 0;
-        model.searchObj.pageSize = 7;
+        model.searchObj.pageSize = 2;
     },
     //初始化远程数据
     created: function () {
@@ -45,9 +96,17 @@ var vm = new Vue({
     //方法，可用于绑定事件或直接调用
     methods: {
         search: function (event) {
-            $.post(common.apiOrigin+"/api/product/list", model.searchObj, function (response) {
+            model.searchObj.bpType = 1;
+            $.post("/api/product/list", model.searchObj, function (response) {
                 if (response.success_is_ok) {
-                    vm.products = response.data;
+                    vm.products1 = response.data;
+                }
+            });
+            model.searchObj.pageSize = 1;
+            model.searchObj.bpType = 2;  //新手标
+            $.post("/api/product/list", model.searchObj, function (response) {
+                if (response.success_is_ok) {
+                    vm.products2 = response.data;
                 }
             });
         },
