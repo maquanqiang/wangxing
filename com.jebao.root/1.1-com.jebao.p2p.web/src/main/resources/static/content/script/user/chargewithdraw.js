@@ -9,8 +9,7 @@ var model = {
     posStatus: true,
     inTime: "",
     typeId: "",
-    hasFundAccount: true,
-    fee:0
+    hasFundAccount: true
 };
 
 // 创建一个 Vue 实例 (ViewModel),它连接 View 与 Model
@@ -29,6 +28,7 @@ var vm = new Vue({
         this.change();
     },
     mounted: function () {
+        //console.log($("#quickPay_form").length)
         this.initValidateForm("#quickPay_form");
         this.initValidateForm("#fastRecharge_form");
         this.initValidateForm("#onlineBankRecharge_form");
@@ -78,6 +78,7 @@ var vm = new Vue({
             }).on('success.form.bv', function (e) {
                 var $form = $(e.target);
                 $form.attr("action", common.apiOrigin + $form.attr("action"));
+                //console.log($form[0].action)
                 $form[0].submit();
             })
         },

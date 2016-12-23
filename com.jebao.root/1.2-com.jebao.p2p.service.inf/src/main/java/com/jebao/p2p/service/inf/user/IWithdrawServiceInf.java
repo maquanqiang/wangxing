@@ -26,5 +26,5 @@ public interface IWithdrawServiceInf {
      * @param model
      * @return
      */
-    ResultInfo withdrawDepositByWebComplete(Long loginId, WithdrawDepositResponse model);
+    ResultInfo withdrawDepositByWebComplete(Long loginId, WithdrawDepositResponse model, BigDecimal fee);
 }
