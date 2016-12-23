@@ -1,5 +1,7 @@
 package com.jebao.p2p.web.api.utils.constants;
 
+import java.math.BigDecimal;
+
 /**
  * Created by Administrator on 2016/10/24.
  */
@@ -24,4 +26,6 @@ public class Constants {
     public static final String JEBAO_WEB_ORIGIN = ProjectSetting.getConfigProperty("project.web.origin");
     //测试代码
     public static final boolean IsTest = ProjectSetting.getConfigProperty("project.isTest").equalsIgnoreCase("true");
+    //手续费
+    public static String COMMISSION_CHARGE = ProjectSetting.getConfigProperty("project.commission_charge") == null ? "0" : ProjectSetting.getConfigProperty("project.commission_charge");
 }

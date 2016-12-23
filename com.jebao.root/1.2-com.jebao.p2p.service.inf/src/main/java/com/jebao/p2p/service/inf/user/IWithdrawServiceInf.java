@@ -17,10 +17,11 @@ public interface IWithdrawServiceInf {
      * @param money
      * @return
      */
-    ResultInfo withdrawDepositByWeb(Long loginId, BigDecimal money);
+    ResultInfo withdrawDepositByWeb(Long loginId, BigDecimal money, BigDecimal fee);
 
     /**
      * 提现接口 返回结果处理
+     *
      * @param loginId
      * @param model
      * @return
