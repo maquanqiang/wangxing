@@ -1,22 +1,5 @@
 $(function () {
 
-    //文件轮播图
-    var mySwiper = new Swiper ('.swiper-container', {
-        loop: true,
-        slidesPerView : 2,
-        fade: {
-            crossFade: true
-        },
-        paginationClickable: true
-    });
-    $('.button-prev').on('click', function(e){
-        e.preventDefault();
-        mySwiper.swipePrev()
-    });
-    $('.button-next').on('click', function(e){
-        e.preventDefault();
-        mySwiper.swipeNext()
-    });
     //输入金额实时
     $('.entry-num').bind('input propertychange', function() {
         $('.money-num').html(parseInt($(this).val()*1));
@@ -27,6 +10,7 @@ $(function () {
         var interest = parseInt(($(this).val())*time*(model.product.bpRate)/100/365);
         $('.money-income').html(interest);
     });
+
 
 });
 
@@ -47,7 +31,8 @@ var model = {
     riskDataList : [],
     investInfoList : [],
     incomeDetailList : [],
-    flag : false
+    flag : false,
+    mySwiper:null
 };
 
 // 创建一个 Vue 实例 (ViewModel),它连接 View 与 Model
@@ -60,6 +45,28 @@ var vm = new Vue({
     //初始化远程数据
     created: function () {
         this.search();
+    },
+    updated:function(){
+        if(this.mySwiper == null){
+            //文件轮播图
+            mySwiper = new Swiper ('.swiper-container', {
+                loop: true,
+                slidesPerView : 2,
+                fade: {
+                    crossFade: true
+                },
+                paginationClickable: true
+            });
+            $('.button-prev').on('click', function(e){
+                e.preventDefault();
+                mySwiper.swipePrev()
+            });
+            $('.button-next').on('click', function(e){
+                e.preventDefault();
+                mySwiper.swipeNext()
+            });
+        }
+
     },
     //方法，可用于绑定事件或直接调用
     methods: {
@@ -96,6 +103,7 @@ var vm = new Vue({
             $.post("/api/product/riskListByBpId", form, function (response) {
                 if (response.success_is_ok) {
                     vm.riskDataList = response.data;
+
                 }
             });
             //investInfoList
@@ -126,8 +134,13 @@ var vm = new Vue({
                     $("#investMoney").focus();
                     return;
                 }
+                if(investMoney > vm.product.bpSurplusMoney){
+                    layer.msg("投资金额大于标的剩余金额"+vm.product.bpSurplusMoney+"元");
+                    $("#investMoney").focus();
+                    return;
+                }
                 if(investMoney > vm.statistics.balance){
-                    layer.msg("投资金额大于您的剩余金额"+vm.statistics.balance+"元");
+                    layer.msg("投资金额大于您账户的剩余金额"+vm.statistics.balance+"元");
                     $("#investMoney").focus();
                     return;
                 }
@@ -175,6 +188,9 @@ var vm = new Vue({
                     layer.closeAll();
                 }
             })
+        },
+        test1:function(){
+            console.log("test1")
         }
     }
 });
@@ -207,3 +223,5 @@ function tick(endTime) {
     //console.log(d+'天'+h+'时'+m+'分'+s+'秒');
     $('#span1').html(d+'天'+h+'时'+m+'分'+s+'秒');
 }
+
+
