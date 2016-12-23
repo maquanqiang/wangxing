@@ -376,7 +376,8 @@ public class BidPlanControllerApi extends _BaseController {
 //        PageWhere pageWhere = new PageWhere(0, 10000);
 //
 //        List<TbInvestInfo> tbInvestInfos = investInfoService.selectByBpId(tbInvestInfo, pageWhere);
-//        List<TbInvestInfo> infos =
+//        commData.setInfos(tbInvestInfos);
+//
 //
 //
 //    }

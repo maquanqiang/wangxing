@@ -1,7 +1,5 @@
 package com.jebao.p2p.web.utils.constants;
 
-import java.math.BigDecimal;
-
 /**
  * Created by Administrator on 2016/10/24.
  */

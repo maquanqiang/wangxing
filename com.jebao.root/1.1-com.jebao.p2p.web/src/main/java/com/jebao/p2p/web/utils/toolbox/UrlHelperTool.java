@@ -61,7 +61,11 @@ public class UrlHelperTool {
     }
 
     public String getApiOrigin() {
-        return Constants.WebApiOrgin;
+        String apiOrgin = Constants.WebApiOrgin;
+        if (apiOrgin.charAt(apiOrgin.length() - 1) == '/'){
+            apiOrgin = apiOrgin.substring(0,apiOrgin.length() - 1);
+        }
+        return apiOrgin;
     }
 
     /**

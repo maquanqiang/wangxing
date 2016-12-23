@@ -146,4 +146,21 @@ public class ProductControllerApi {
         productResultVM.setMsg(result[1]);
         return new JsonResultData<>(productResultVM);
     }
+
+
+    @RequestMapping("recentInvestment")
+    @ResponseBody
+    public JsonResult recentInvestment(){
+
+        TbInvestInfo tbInvestInfo = new TbInvestInfo();
+        tbInvestInfo.setIiIsDel(1);
+        PageWhere pageWhere = new PageWhere(0,10);
+        pageWhere.setOrderBy("ii_id DESC");
+
+        List<TbInvestInfo> tbInvestInfos = productService.recentInvestment(tbInvestInfo, pageWhere);
+        List<RecentInvestVM> invests = new ArrayList<>();
+
+        tbInvestInfos.forEach(o -> invests.add(new RecentInvestVM(o)));
+        return new JsonResultList<>(invests);
+    }
 }
