@@ -18,7 +18,7 @@
 <!--我的账户导航-->
 <div class="account-nav">
     <p>
-        <a href="/">首页</a><a href="javascript:;" class="red">充值提现</a>
+        <a href="/">首页</a><a href="javascript:void(0);" class="red">充值提现</a>
     </p>
 </div>
 <!--我的账户内容-->
@@ -32,7 +32,7 @@
             <h2>充值提现</h2>
         </div>
         <!--充值提现-->
-        <div class="account-rex">
+        <div class="account-rex" v-if="hasFundAccount">
             <input type="hidden" id="typeId" value="${typeId}">
             <div class="account-rex-tit clearfix">
                 <h4 class="active">我要充值</h4>
@@ -66,7 +66,7 @@
                                         <input type="text" name="money" value="" placeholder="请输入充值金额">
                                         <span>元</span>
                                     </div>
-                                    <a href="javascript:;" class="account-btn" @click="submit('#quickPay_form')">充值</a>
+                                    <a href="javascript:void(0);" class="account-btn" @click.prevent="submit('#quickPay_form')">充值</a>
                                 </form>
                             </div>
                             <div v-if="posStatus" class="rechange-item active">
@@ -80,7 +80,7 @@
                                         <input type="text" name="money" value="" placeholder="请输入充值金额">
                                         <span>元</span>
                                     </div>
-                                    <a href="javascript:;" class="account-btn" @click="submit('#fastRecharge_form')">充值</a>
+                                    <a href="javascript:void(0);" class="account-btn" @click.prevent="submit('#fastRecharge_form')">充值</a>
                                 </form>
                             </div>
                             <div class="rechange-item">
@@ -94,7 +94,7 @@
                                         <input type="text" name="money" value="" placeholder="请输入充值金额">
                                         <span>元</span>
                                     </div>
-                                    <a href="javascript:;" class="account-btn" @click="submit('#onlineBankRecharge_form')">充值</a>
+                                    <a href="javascript:void(0);" class="account-btn" @click.prevent="submit('#onlineBankRecharge_form')">充值</a>
                                 </form>
                             </div>
                         </div>
@@ -127,8 +127,18 @@
                             <h5>手续费：</h5>
                             <span>3元</span>
                         </div>
-                        <a href="javascript:;" class="account-btn" @click="submit('#withdrawDeposit_form')">提现</a>
+                        <a href="javascript:void(0);" class="account-btn" @click.prevent="submit('#withdrawDeposit_form')">提现</a>
                     </form>
+                </div>
+            </div>
+        </div>
+        <div class="my-account" v-else>
+            <div class="account-install-list">
+                <div class="account-install-item clearfix">
+                    <img src="${filePath}/images/account-error.png">
+                    <h5>资金托管账户</h5>
+                    <p class="pt5">由第三方（富友）提供资金托管服务，保障资金独立与安全</p>
+                    <a href="/userfund/register" class="account-open open-btn">开通</a>
                 </div>
             </div>
         </div>

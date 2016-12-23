@@ -22,51 +22,51 @@ $(function () {
 //    $('.dowebok').liMarquee({
 //        direction: 'up'
 //    });
-    //排行榜
-    //var myVue = new Vue({
-    //    el: "#rank",
-    //    data: {
-    //        items:[
-    //            {
-    //                name:"司**",
-    //                money:'4350000'
-    //            },
-    //            {
-    //                name:"王**",
-    //                money:'3000000'
-    //            },
-    //            {
-    //                name:"高**",
-    //                money:'670000'
-    //            },
-    //            {
-    //                name:"吴**",
-    //                money:'670000'
-    //            },
-    //            {
-    //                name:"王**",
-    //                money:'625000'
-    //            },
-    //            {
-    //                name:"杨**",
-    //                money:'600000'
-    //            },
-    //            {
-    //                name:"谢**",
-    //                money:'580000'
-    //            }
-    //        ]
-    //    },
-    //    filters:{
-    //        currency:function (val) {
-    //            return '$' + val;
-    //        }
-    //    }
-    //})
+
 
 });
 
-
+//    排行榜
+var myVue = new Vue({
+    el: "#rank",
+    data: {
+        items:[
+            {
+                name:"司**",
+                money:'4350000'
+            },
+            {
+                name:"王**",
+                money:'3000000'
+            },
+            {
+                name:"高**",
+                money:'670000'
+            },
+            {
+                name:"吴**",
+                money:'670000'
+            },
+            {
+                name:"王**",
+                money:'625000'
+            },
+            {
+                name:"杨**",
+                money:'600000'
+            },
+            {
+                name:"谢**",
+                money:'580000'
+            }
+        ]
+    },
+    filters:{
+        currency:function (val) {
+            return '$' + val;
+        }
+    }
+})
 //Vue实例
 //Model
 var model = {
@@ -75,6 +75,7 @@ var model = {
     //列表
     products1: [],
     products2: [],
+    recentInvest : [],
     cycleType:["","天","个月","季","年"],
     status:["","","立即投资","满标","募集结束","","","还款中","","","已还款"]
 };
@@ -109,6 +110,12 @@ var vm = new Vue({
                     vm.products2 = response.data;
                 }
             });
+
+            $.post("/api/product/recentInvestment",function(response){
+                if(response.success_is_ok){
+                    vm.recentInvest = response.data;
+                }
+            })
         },
         openDetail: function (id) {
             window.location.href = "/product/detail/" + id;

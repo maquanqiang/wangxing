@@ -17,7 +17,7 @@
 <!--我的账户导航-->
 <div class="account-nav">
     <p>
-        <a href="/">首页</a><a href="javascript:;" class="red">投资记录</a>
+        <a href="/">首页</a><a href="javascript:void(0);" class="red">投资记录</a>
     </p>
 </div>
 <!--我的账户内容-->
@@ -33,9 +33,9 @@
         <!--投资中的项目-->
         <div class="project">
             <div class="project-menu clearfix">
-                <h4 class="active" @click="search(1)">投资中的项目</h4>
-                <h4 @click="search(2)">还款中的项目</h4>
-                <h4 @click="search(3)">已还款的项目</h4>
+                <h4 class="active" @click.prevent="search(1)">投资中的项目</h4>
+                <h4 @click.prevent="search(2)">还款中的项目</h4>
+                <h4 @click.prevent="search(3)">已还款的项目</h4>
             </div>
             <div class="project-list">
                 <div class="project-item active">
@@ -53,7 +53,7 @@
                         <tbody v-if="isHasDateii">
                         <template v-for="item in investings">
                             <tr>
-                                <td><a href="#">{{ item.bpName }}</a></td>
+                                <td><a :href="getDetailHref(item.bpId)">{{ item.bpName }}</a></td>
                                 <td>{{ item.createTime }}</td>
                                 <td>{{ item.money }}</td>
                                 <td>{{ item.periods }}</td>
@@ -66,7 +66,7 @@
                     <!--无投资项目-->
                     <div v-if="!isHasDateii" class="noProject">
                         <p>
-                            暂无投资中项目<a href="项目列表.html">去投资</a>
+                            暂无投资中项目<a href="/html/product">去投资</a>
                         </p>
                     </div>
                     <div class="page">
@@ -92,7 +92,7 @@
                         <tbody v-if="isHasDatepi">
                         <template v-for="item in paymentings">
                             <tr>
-                                <td><a href="#">{{ item.bpName }}</a></td>
+                                <td><a :href="getDetailHref(item.bpId)">{{ item.bpName }}</a></td>
                                 <td>{{ item.createTime }}</td>
                                 <td>{{ item.money }}</td>
                                 <td>{{ item.periods }}</td>
@@ -134,7 +134,7 @@
                         <tbody v-if="isHasDatepd">
                         <template v-for="item in paymenteds">
                             <tr>
-                                <td><a href="#">{{ item.bpName }}</a></td>
+                                <td><a :href="getDetailHref(item.bpId)">{{ item.bpName }}</a></td>
                                 <td>{{ item.createTime }}</td>
                                 <td>{{ item.money }}</td>
                                 <td>{{ item.periods }}</td>

@@ -3,7 +3,7 @@ $(function () {
     //文件轮播图
     var mySwiper = new Swiper ('.swiper-container', {
         loop: true,
-        slidesPerView : 3,
+        slidesPerView : 2,
         fade: {
             crossFade: true
         },
@@ -123,6 +123,11 @@ var vm = new Vue({
             if(investMoney > 0){
                 if(investMoney > vm.product.bpTopMoney){
                     layer.msg("投资金额大于投资上限"+vm.product.bpTopMoney+"元");
+                    $("#investMoney").focus();
+                    return;
+                }
+                if(investMoney > vm.statistics.balance){
+                    layer.msg("投资金额大于您的剩余金额"+vm.statistics.balance+"元");
                     $("#investMoney").focus();
                     return;
                 }

@@ -75,6 +75,7 @@ public class AccountServiceImpl implements IAccountServiceInf {
             detailsModel.setUdPlatform(platform.getValue());//注册平台
             detailsModel.setUdCreateTime(new Date());//创建时间
             detailsModel.setUdIsDel(1);//是否有效，1有效
+            detailsModel.setUdPosStatus(0);//POS机签约状态 0未签约  1签约
             //region 检查邀请码
             if (RegexUtil.matches(invitationCode,"^1(3|4|5|7|8)\\d{9}$")){
                 EmployeeInfo employeeInfoEntity = employeeDao.selectEmployeeByMobile(invitationCode);

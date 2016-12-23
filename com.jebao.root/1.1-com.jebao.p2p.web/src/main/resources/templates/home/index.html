@@ -26,10 +26,10 @@
             </div>
         </div>
         <!-- 如果需要分页器 -->
-        <div class="swiper-pagination"></div>
+        <div class="pagination"></div>
         <!-- 如果需要导航按钮 -->
-        <div class="swiper-button-prev"></div>
-        <div class="swiper-button-next"></div>
+        <div class="button-prev"></div>
+        <div class="button-next"></div>
     </div>
 </div>
 <!--官方公告---start-->
@@ -260,7 +260,7 @@
                     <li v-for="(item, index) in items">
                         <span>{{ index+1 }}</span>
                         <span>{{item.name}}</span>
-                        <strong>{{item.money | currency}}</strong>
+                        <strong>¥{{item.money}}</strong>
                     </li>
                 </ul>
             </div>
@@ -275,40 +275,10 @@
                 </div>
                 <div class="dowebok">
                     <ul class="rank-info">
-                        <li>
-                            <span>司**</span>
-                            <strong>¥4350000</strong>
-                            <span>2016-12-19</span>
-                        </li>
-                        <li>
-                            <span>123</span>
-                            <strong>¥4350000</strong>
-                            <span>2016-12-19</span>
-                        </li>
-                        <li>
-                            <span>456</span>
-                            <strong>¥4350000</strong>
-                            <span>2016-12-19</span>
-                        </li>
-                        <li>
-                            <span>789</span>
-                            <strong>¥4350000</strong>
-                            <span>2016-12-19</span>
-                        </li>
-                        <li>
-                            <span>大幅答复</span>
-                            <strong>¥4350000</strong>
-                            <span>2016-12-19</span>
-                        </li>
-                        <li>
-                            <span>司胜多负少</span>
-                            <strong>¥4350000</strong>
-                            <span>2016-12-19</span>
-                        </li>
-                        <li>
-                            <span>嗡嗡嗡**</span>
-                            <strong>¥4350000</strong>
-                            <span>2016-12-19</span>
+                        <li v-for="data in recentInvest">
+                            <span>{{data.trueName}}</span>
+                            <strong>¥{{data.investMoney}}</strong>
+                            <span>{{data.investDate}}</span>
                         </li>
                     </ul>
                 </div>

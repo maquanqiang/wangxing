@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  * Created by Administrator on 2016/9/21.
@@ -88,8 +89,8 @@ public class UserController extends _BaseController {
      *
      * @return
      */
-    @RequestMapping(value = "chargewithdraw/{typeId}", method = RequestMethod.GET)
-    public String chargewithdraw(@PathVariable int typeId, Model model) {
+    @RequestMapping(value = "chargewithdraw", method = RequestMethod.GET)
+    public String chargewithdraw(@RequestParam("typeId") int typeId, Model model) {
         model.addAttribute("typeId", typeId);
         return "user/chargewithdraw";
     }
