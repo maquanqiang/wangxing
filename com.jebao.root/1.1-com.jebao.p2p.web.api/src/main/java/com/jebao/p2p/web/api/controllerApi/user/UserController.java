@@ -398,7 +398,8 @@ public class UserController extends _BaseController {
             return null;
         }
 
-        ResultInfo resultInfo = withdrawService.withdrawDepositByWeb(currentUser.getId(), form.getMoney());
+        BigDecimal fee =new BigDecimal(Constants.COMMISSION_CHARGE);
+        ResultInfo resultInfo = withdrawService.withdrawDepositByWeb(currentUser.getId(), form.getMoney(),fee);
         if (!resultInfo.getSuccess_is_ok()) {
             String content = resultInfo.getMsg();
             goFailedPage(title, content, backUrl);

@@ -8,13 +8,13 @@ var model = {
     searchObj: {},
     //投资中项目列表
     investings:[],
-    isHasDateii:false,
+    isHasDateii:true,
     //还款中项目列表
     paymentings:[],
-    isHasDatepi:false,
+    isHasDatepi:true,
     //已还款项目列表
     paymenteds:[],
-    isHasDatepd:false
+    isHasDatepd:true
 };
 
 // 创建一个 Vue 实例 (ViewModel),它连接 View 与 Model

@@ -48,7 +48,7 @@ var vm = new Vue({
                                 message: '请输入正确的身份证号'
                             }
                         }
-                    },
+                    }
                 }
             }).on('success.form.bv', function (e) {
                 var $form = $(e.target);

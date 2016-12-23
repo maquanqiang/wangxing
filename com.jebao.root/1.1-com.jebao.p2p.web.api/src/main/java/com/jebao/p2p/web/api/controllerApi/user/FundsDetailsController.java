@@ -66,6 +66,10 @@ public class FundsDetailsController extends _BaseController {
 
         PageWhere page = new PageWhere(model.getPageIndex(), model.getPageSize());
         List<TbFundsDetails> fdList = fundsDetailsService.selectFundsDetailsByLoginIdForPage(currentUser.getId(), page);
+        if(fdList == null || fdList.size() == 0){
+            return new JsonResultList<>(null);
+        }
+
         List<FundsDetailsVM> viewModelList = new ArrayList<>();
         fdList.forEach(o -> viewModelList.add(new FundsDetailsVM(o)));
 

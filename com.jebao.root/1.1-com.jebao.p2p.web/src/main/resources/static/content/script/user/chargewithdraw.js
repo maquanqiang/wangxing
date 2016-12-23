@@ -6,10 +6,11 @@
 var model = {
     //银行卡信息
     bankInfo: {},
-    posStatus: false,
+    posStatus: true,
     inTime: "",
     typeId: "",
-    hasFundAccount: false
+    hasFundAccount: true,
+    fee:0
 };
 
 // 创建一个 Vue 实例 (ViewModel),它连接 View 与 Model
