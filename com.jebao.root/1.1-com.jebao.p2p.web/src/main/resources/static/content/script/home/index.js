@@ -1,34 +1,34 @@
 $(function () {
-//    var mySwiper = new Swiper ('.swiper-container', {
-//        loop: true,
-//        autoplay: 2500,
-//        pagination : '.pagination',
-////            pagination: '.swiper-pagination',
-////            effect : 'fade',
-//        fade: {
-//            crossFade: true
-//        },
-//        paginationClickable: true
-//    });
-//    $('.button-prev').on('click', function(e){
-//        e.preventDefault()
-//        mySwiper.swipePrev()
-//    });
-//    $('.button-next').on('click', function(e){
-//        e.preventDefault()
-//        mySwiper.swipeNext()
-//    });
-//    //无缝滚动
-//    $('.dowebok').liMarquee({
-//        direction: 'up'
-//    });
+    var mySwiper = new Swiper ('.swiper-container', {
+        loop: true,
+        autoplay: 2500,
+        pagination : '.pagination',
+//            pagination: '.swiper-pagination',
+//            effect : 'fade',
+        fade: {
+            crossFade: true
+        },
+        paginationClickable: true
+    });
+    $('.button-prev').on('click', function(e){
+        e.preventDefault()
+        mySwiper.swipePrev()
+    });
+    $('.button-next').on('click', function(e){
+        e.preventDefault()
+        mySwiper.swipeNext()
+    });
+    //无缝滚动
+    $('.dowebok').liMarquee({
+        direction: 'up'
+    });
 
 
 });
 
 //    排行榜
 var myVue = new Vue({
-    el: "#rank",
+    el: ".rank-list",
     data: {
         items:[
             {
@@ -59,7 +59,15 @@ var myVue = new Vue({
                 name:"谢**",
                 money:'580000'
             }
-        ]
+        ],
+        recentInvest :[]
+    },
+    created: function () {
+        $.post("/api/product/recentInvestment",function(response){
+            if(response.success_is_ok){
+                myVue.recentInvest = response.data;
+            }
+        })
     },
     filters:{
         currency:function (val) {
@@ -110,12 +118,6 @@ var vm = new Vue({
                     vm.products2 = response.data;
                 }
             });
-
-            $.post("/api/product/recentInvestment",function(response){
-                if(response.success_is_ok){
-                    vm.recentInvest = response.data;
-                }
-            })
         },
         openDetail: function (id) {
             window.location.href = "/product/detail/" + id;
