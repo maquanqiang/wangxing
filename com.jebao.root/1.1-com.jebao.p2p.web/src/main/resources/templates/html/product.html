@@ -58,7 +58,7 @@
         <p>精选项目，资深金融人士层层甄选，最靠谱的投资项目呈现给您</p>
     </div>
     <div class="project-list">
-        <div class="project-content"  v-for="data in products" @click="openDetail(data.bpId)">
+        <div class="project-content"  v-for="data in products" @click.prevent="openDetail(data.bpId)">
             <div class="project-name">
                 <p>{{data.bpName}}<span>{{data.bpNumber}}</span></p>
             </div>
@@ -85,7 +85,7 @@
                     <p>投资进度</p>
                 </div>
                 <div class="project-btn fr">
-                    <a href="javascript:;">{{status[data.bpStatus]}}</a>
+                    <a href="javascript:void(0);">{{status[data.bpStatus]}}</a>
                 </div>
             </div>
             <img src="${filePath}/images/new-project.png" class="new-project" v-show="data.bpType==2">
