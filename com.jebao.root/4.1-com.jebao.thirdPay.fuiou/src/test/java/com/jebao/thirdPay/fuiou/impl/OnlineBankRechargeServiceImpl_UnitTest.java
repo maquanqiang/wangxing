@@ -11,8 +11,6 @@ public class OnlineBankRechargeServiceImpl_UnitTest {
     @Test
     public void Test() throws Exception {
         OnlineBankRechargeRequest reqData = new OnlineBankRechargeRequest();
-        reqData.setMchnt_cd("0002900F0041270");
-        reqData.setMchnt_txn_ssn("11032302065863805738");
         reqData.setLogin_id("13678424821");
         reqData.setAmt("10000");
         reqData.setPage_notify_url("http://www.jebao.net/html/companySingle.do");

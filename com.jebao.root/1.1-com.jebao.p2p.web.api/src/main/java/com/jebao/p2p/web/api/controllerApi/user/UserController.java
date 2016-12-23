@@ -32,6 +32,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.PrintWriter;
 import java.math.BigDecimal;
 import java.net.URLEncoder;
 
@@ -185,8 +186,9 @@ public class UserController extends _BaseController {
         try {
             ResultData<String> resultData = (ResultData<String>) resultInfo;
             String responseHtml = resultData.getData();
-            System.out.println(responseHtml);
-            return responseHtml;
+            //System.out.println(responseHtml);
+            response.getWriter().write(responseHtml);
+            return null;
         } catch (Exception e) {
 
         }
@@ -259,8 +261,9 @@ public class UserController extends _BaseController {
         try {
             ResultData<String> resultData = (ResultData<String>) resultInfo;
             String responseHtml = resultData.getData();
-            System.out.println(responseHtml);
-            return responseHtml;
+            //System.out.println(responseHtml);
+            response.getWriter().write(responseHtml);
+            return null;
         } catch (Exception e) {
 
         }
@@ -333,8 +336,9 @@ public class UserController extends _BaseController {
         try {
             ResultData<String> resultData = (ResultData<String>) resultInfo;
             String responseHtml = resultData.getData();
-            System.out.println(responseHtml);
-            return responseHtml;
+           // System.out.println(responseHtml);
+            response.getWriter().write(responseHtml);
+            return null;
         } catch (Exception e) {
 
         }
@@ -408,8 +412,9 @@ public class UserController extends _BaseController {
         try {
             ResultData<String> resultData = (ResultData<String>) resultInfo;
             String responseHtml = resultData.getData();
-            System.out.println(responseHtml);
-            return responseHtml;
+            //System.out.println(responseHtml);
+            response.getWriter().write(responseHtml);
+            return null;
         } catch (Exception e) {
 
         }
@@ -428,7 +433,10 @@ public class UserController extends _BaseController {
         if (currentUser == null) {
             return null;
         }
-        ResultInfo resultInfo = withdrawService.withdrawDepositByWebComplete(currentUser.getId(), model);
+
+        BigDecimal fee =new BigDecimal(Constants.COMMISSION_CHARGE);
+
+        ResultInfo resultInfo = withdrawService.withdrawDepositByWebComplete(currentUser.getId(), model, fee);
         if (!resultInfo.getSuccess_is_ok()) {
             String title = "提现失败！";
             String content = resultInfo.getMsg();

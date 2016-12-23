@@ -38,22 +38,16 @@ import java.util.Date;
 public class RechargeServiceImpl implements IRechargeServiceInf {
     @Autowired
     private IUserServiceInf userService;
-
     @Autowired
     private IAccountsFundsServiceInf accountsFundsService;
-
     @Autowired
     private IFundsDetailsServiceInf fundsDetailsService;
-
     @Autowired
     private TbThirdInterfaceLogDao thirdInterfaceLogDao;
-
     @Autowired
     private PersonQuickPayServiceImpl personQuickPayService;
-
     @Autowired
     private FastRechargeServiceImpl fastRechargeService;
-
     @Autowired
     private OnlineBankRechargeServiceImpl onlineBankRechargeService;
 
@@ -74,7 +68,7 @@ public class RechargeServiceImpl implements IRechargeServiceInf {
 
         String html = personQuickPayService.post(reqData);
         if (html != null && html.length() > 0) {
-            //todo 添加资金收支明细
+  /*          //todo 添加资金收支明细
             TbFundsDetails fundsDetails = new TbFundsDetails();
             fundsDetails.setFdLoginId(loginId);
             fundsDetails.setFdSerialStatus(EnumModel.FdSerialStatus.处理中.getValue());
@@ -87,7 +81,7 @@ public class RechargeServiceImpl implements IRechargeServiceInf {
             fundsDetails.setFdSerialTypeName(EnumModel.SerialType.充值.name());
             fundsDetails.setFdThirdAccount(userDetails.getUdThirdAccount());
             fundsDetails.setFdIsDel(EnumModel.IsDel.有效.getValue());
-            fundsDetailsService.insert(fundsDetails);
+            fundsDetailsService.insert(fundsDetails);*/
 
             //region 提交到富有，记录接口日志
             TbThirdInterfaceLog thirdInterfaceLog = new TbThirdInterfaceLog();
@@ -130,49 +124,60 @@ public class RechargeServiceImpl implements IRechargeServiceInf {
         TbAccountsFunds afEntity = userService.getAccountsFundsInfo(loginId);
         BigDecimal balance = afEntity.getAfBalance();
 
-        //资金收支明细
+        //todo 添加资金收支明细
         TbFundsDetails fundsDetails = new TbFundsDetails();
-        fundsDetails.setFdSerialNumber(model.getMchnt_txn_ssn());//流水号
-        fundsDetails.setFdThirdAccount(model.getLogin_id());
         fundsDetails.setFdBalanceBefore(balance);
         fundsDetails.setFdBalanceAfter(balance);
+        fundsDetails.setFdLoginId(loginId);
+        fundsDetails.setFdBalanceStatus(EnumModel.FdBalanceStatus.收入.getValue());
+        fundsDetails.setFdCommissionCharge(new BigDecimal(0));//手续费
+        fundsDetails.setFdCreateTime(new Date());
+        fundsDetails.setFdSerialTypeId(EnumModel.SerialType.充值.getValue());
+        fundsDetails.setFdSerialTypeName(EnumModel.SerialType.充值.name());
+        fundsDetails.setFdThirdAccount(afEntity.getAfThirdAccount());
+        fundsDetails.setFdIsDel(EnumModel.IsDel.有效.getValue());
 
-        if (model == null || !FuiouConfig.Success_Code.equals(model.getResp_code())) {
+        if (model == null) {
+            //更新资金收支明细状态为失败
+            fundsDetails.setFdSerialStatus(EnumModel.FdSerialStatus.失败.getValue());
+            fundsDetails.setFdSerialTime(new Date());
+            fundsDetailsService.insert(fundsDetails);
+            return new ResultInfo(false, "第三方返回异常");
+        }
+
+        BigDecimal money = new BigDecimal(model.getAmt()).divide(new BigDecimal(100));
+        fundsDetails.setFdSerialAmount(money);
+        fundsDetails.setFdSerialNumber(model.getMchnt_txn_ssn());//流水号
+        fundsDetails.setFdThirdAccount(model.getLogin_id());
+
+        if(!FuiouConfig.Success_Code.equals(model.getResp_code())){
             String responseMessage = model.getResp_desc();
             if (StringUtils.isBlank(responseMessage)) {
                 responseMessage = "第三方返回异常";
             }
-            //更新资金收支明细状态为失败
             fundsDetails.setFdSerialStatus(EnumModel.FdSerialStatus.失败.getValue());
             fundsDetails.setFdSerialTime(new Date());
-            fundsDetailsService.update(fundsDetails);
+            fundsDetailsService.insert(fundsDetails);
             return new ResultInfo(false, responseMessage);
         }
+
         String signature = model.requestSignPlain();
         boolean isValid = SecurityUtils.verifySign(signature, model.getSignature());
         if (!isValid){
             //更新资金收支明细状态为失败
             fundsDetails.setFdSerialStatus(EnumModel.FdSerialStatus.失败.getValue());
             fundsDetails.setFdSerialTime(new Date());
-            fundsDetailsService.update(fundsDetails);
+            fundsDetailsService.insert(fundsDetails);
             return new ResultInfo(false,"操作异常，校验失败");
         }
 
-        TbUserDetails userDetails = userService.getUserDetailsInfo(loginId);
-        if(userDetails == null){
-            return new ResultInfo(false,"用户身份异常，请重试");
-        }
-        if (!userDetails.getUdThirdAccount().equals(model.getLogin_id())){
-            return new ResultInfo(false,"资金托管帐号错误，请联系客服");
-        }
-
-        BigDecimal balance_new = balance.add(new BigDecimal(model.getAmt()).divide(new BigDecimal(100))).setScale(2, BigDecimal.ROUND_HALF_UP);
+        BigDecimal balance_new = balance.add(new BigDecimal(model.getAmt()).divide(new BigDecimal(100)));
 
         //更新资金收支明细状态为成功
         fundsDetails.setFdBalanceAfter(balance_new);
         fundsDetails.setFdSerialStatus(EnumModel.FdSerialStatus.成功.getValue());
         fundsDetails.setFdSerialTime(new Date());
-        fundsDetailsService.update(fundsDetails);
+        fundsDetailsService.insert(fundsDetails);
 
         //todo 修改账户资金信息
         TbAccountsFunds accountsFunds = new TbAccountsFunds();
@@ -200,7 +205,7 @@ public class RechargeServiceImpl implements IRechargeServiceInf {
         reqData.setBack_notify_url("");
         String html = fastRechargeService.post(reqData);
         if (html != null && html.length() > 0) {
-            //todo 添加资金收支明细
+ /*           //todo 添加资金收支明细
             TbFundsDetails fundsDetails = new TbFundsDetails();
             fundsDetails.setFdLoginId(loginId);
             fundsDetails.setFdSerialStatus(EnumModel.FdSerialStatus.处理中.getValue());
@@ -213,7 +218,7 @@ public class RechargeServiceImpl implements IRechargeServiceInf {
             fundsDetails.setFdSerialTypeName(EnumModel.SerialType.充值.name());
             fundsDetails.setFdThirdAccount(userDetails.getUdThirdAccount());
             fundsDetails.setFdIsDel(EnumModel.IsDel.有效.getValue());
-            fundsDetailsService.insert(fundsDetails);
+            fundsDetailsService.insert(fundsDetails);*/
 
             //region 提交到富有，记录接口日志
             TbThirdInterfaceLog thirdInterfaceLog = new TbThirdInterfaceLog();
@@ -256,48 +261,60 @@ public class RechargeServiceImpl implements IRechargeServiceInf {
         TbAccountsFunds afEntity = userService.getAccountsFundsInfo(loginId);
         BigDecimal balance = afEntity.getAfBalance();
 
-        //资金收支明细
+        //todo 添加资金收支明细
         TbFundsDetails fundsDetails = new TbFundsDetails();
-        fundsDetails.setFdSerialNumber(model.getMchnt_txn_ssn());//流水号
-        fundsDetails.setFdThirdAccount(model.getLogin_id());
         fundsDetails.setFdBalanceBefore(balance);
         fundsDetails.setFdBalanceAfter(balance);
-        if (model == null || !FuiouConfig.Success_Code.equals(model.getResp_code())) {
+        fundsDetails.setFdLoginId(loginId);
+        fundsDetails.setFdBalanceStatus(EnumModel.FdBalanceStatus.收入.getValue());
+        fundsDetails.setFdCommissionCharge(new BigDecimal(0));//手续费
+        fundsDetails.setFdCreateTime(new Date());
+        fundsDetails.setFdSerialTypeId(EnumModel.SerialType.充值.getValue());
+        fundsDetails.setFdSerialTypeName(EnumModel.SerialType.充值.name());
+        fundsDetails.setFdThirdAccount(afEntity.getAfThirdAccount());
+        fundsDetails.setFdIsDel(EnumModel.IsDel.有效.getValue());
+
+        if (model == null) {
+            //更新资金收支明细状态为失败
+            fundsDetails.setFdSerialStatus(EnumModel.FdSerialStatus.失败.getValue());
+            fundsDetails.setFdSerialTime(new Date());
+            fundsDetailsService.insert(fundsDetails);
+            return new ResultInfo(false, "第三方返回异常");
+        }
+
+        BigDecimal money = new BigDecimal(model.getAmt()).divide(new BigDecimal(100));
+        fundsDetails.setFdSerialAmount(money);
+        fundsDetails.setFdSerialNumber(model.getMchnt_txn_ssn());//流水号
+        fundsDetails.setFdThirdAccount(model.getLogin_id());
+
+        if(!FuiouConfig.Success_Code.equals(model.getResp_code())){
             String responseMessage = model.getResp_desc();
             if (StringUtils.isBlank(responseMessage)) {
                 responseMessage = "第三方返回异常";
             }
-            //更新资金收支明细状态为失败
             fundsDetails.setFdSerialStatus(EnumModel.FdSerialStatus.失败.getValue());
             fundsDetails.setFdSerialTime(new Date());
-            fundsDetailsService.update(fundsDetails);
+            fundsDetailsService.insert(fundsDetails);
             return new ResultInfo(false, responseMessage);
         }
+
         String signature = model.requestSignPlain();
         boolean isValid = SecurityUtils.verifySign(signature, model.getSignature());
         if (!isValid){
             //更新资金收支明细状态为失败
             fundsDetails.setFdSerialStatus(EnumModel.FdSerialStatus.失败.getValue());
             fundsDetails.setFdSerialTime(new Date());
-            fundsDetailsService.update(fundsDetails);
+            fundsDetailsService.insert(fundsDetails);
             return new ResultInfo(false,"操作异常，校验失败");
         }
 
-        TbUserDetails userDetails = userService.getUserDetailsInfo(loginId);
-        if(userDetails == null){
-            return new ResultInfo(false,"用户身份异常，请重试");
-        }
-        if (!userDetails.getUdThirdAccount().equals(model.getLogin_id())){
-            return new ResultInfo(false,"资金托管帐号错误，请联系客服");
-        }
-
-        BigDecimal balance_new = balance.add(new BigDecimal(model.getAmt()).divide(new BigDecimal(100))).setScale(2, BigDecimal.ROUND_HALF_UP);
+        BigDecimal balance_new = balance.add(new BigDecimal(model.getAmt()).divide(new BigDecimal(100)));
 
         //更新资金收支明细状态为成功
         fundsDetails.setFdBalanceAfter(balance_new);
         fundsDetails.setFdSerialStatus(EnumModel.FdSerialStatus.成功.getValue());
         fundsDetails.setFdSerialTime(new Date());
-        fundsDetailsService.update(fundsDetails);
+        fundsDetailsService.insert(fundsDetails);
 
         //todo 修改账户资金信息
         TbAccountsFunds accountsFunds = new TbAccountsFunds();
@@ -329,7 +346,7 @@ public class RechargeServiceImpl implements IRechargeServiceInf {
 
         String html = onlineBankRechargeService.post(reqData);
         if (html != null && html.length() > 0) {
-            //todo 添加资金收支明细
+/*            //todo 添加资金收支明细
             TbFundsDetails fundsDetails = new TbFundsDetails();
             fundsDetails.setFdLoginId(loginId);
             fundsDetails.setFdSerialStatus(EnumModel.FdSerialStatus.处理中.getValue());
@@ -342,7 +359,7 @@ public class RechargeServiceImpl implements IRechargeServiceInf {
             fundsDetails.setFdSerialTypeName(EnumModel.SerialType.充值.name());
             fundsDetails.setFdThirdAccount(userDetails.getUdThirdAccount());
             fundsDetails.setFdIsDel(EnumModel.IsDel.有效.getValue());
-            fundsDetailsService.insert(fundsDetails);
+            fundsDetailsService.insert(fundsDetails);*/
 
             //region 提交到富有，记录接口日志
             TbThirdInterfaceLog thirdInterfaceLog = new TbThirdInterfaceLog();
@@ -384,24 +401,43 @@ public class RechargeServiceImpl implements IRechargeServiceInf {
         TbAccountsFunds afEntity = userService.getAccountsFundsInfo(loginId);
         BigDecimal balance = afEntity.getAfBalance();
 
-        //资金收支明细
+        //todo 添加资金收支明细
         TbFundsDetails fundsDetails = new TbFundsDetails();
-        fundsDetails.setFdSerialNumber(model.getMchnt_txn_ssn());//流水号
-        fundsDetails.setFdThirdAccount(model.getLogin_id());
         fundsDetails.setFdBalanceBefore(balance);
         fundsDetails.setFdBalanceAfter(balance);
+        fundsDetails.setFdLoginId(loginId);
+        fundsDetails.setFdBalanceStatus(EnumModel.FdBalanceStatus.收入.getValue());
+        fundsDetails.setFdCommissionCharge(new BigDecimal(0));//手续费
+        fundsDetails.setFdCreateTime(new Date());
+        fundsDetails.setFdSerialTypeId(EnumModel.SerialType.充值.getValue());
+        fundsDetails.setFdSerialTypeName(EnumModel.SerialType.充值.name());
+        fundsDetails.setFdThirdAccount(afEntity.getAfThirdAccount());
+        fundsDetails.setFdIsDel(EnumModel.IsDel.有效.getValue());
 
-        if (model == null || !FuiouConfig.Success_Code.equals(model.getResp_code())) {
+        if (model == null) {
+            //更新资金收支明细状态为失败
+            fundsDetails.setFdSerialStatus(EnumModel.FdSerialStatus.失败.getValue());
+            fundsDetails.setFdSerialTime(new Date());
+            fundsDetailsService.insert(fundsDetails);
+            return new ResultInfo(false, "第三方返回异常");
+        }
+
+        BigDecimal money = new BigDecimal(model.getAmt()).divide(new BigDecimal(100));
+        fundsDetails.setFdSerialAmount(money);
+        fundsDetails.setFdSerialNumber(model.getMchnt_txn_ssn());//流水号
+        fundsDetails.setFdThirdAccount(model.getLogin_id());
+
+        if(!FuiouConfig.Success_Code.equals(model.getResp_code())){
             String responseMessage = model.getRem();
             if (StringUtils.isBlank(responseMessage)) {
                 responseMessage = "第三方返回异常";
             }
-            //更新资金收支明细状态为失败
             fundsDetails.setFdSerialStatus(EnumModel.FdSerialStatus.失败.getValue());
             fundsDetails.setFdSerialTime(new Date());
-            fundsDetailsService.update(fundsDetails);
+            fundsDetailsService.insert(fundsDetails);
             return new ResultInfo(false, responseMessage);
         }
+
         String signature = model.requestSignPlain();
         boolean isValid = SecurityUtils.verifySign(signature, model.getSignature());
         if (!isValid){
@@ -412,21 +448,13 @@ public class RechargeServiceImpl implements IRechargeServiceInf {
             return new ResultInfo(false,"操作异常，校验失败");
         }
 
-        TbUserDetails userDetails = userService.getUserDetailsInfo(loginId);
-        if(userDetails == null){
-            return new ResultInfo(false,"用户身份异常，请重试");
-        }
-        if (!userDetails.getUdThirdAccount().equals(model.getLogin_id())){
-            return new ResultInfo(false,"资金托管帐号错误，请联系客服");
-        }
-
-        BigDecimal balance_new = balance.add(new BigDecimal(model.getAmt()).divide(new BigDecimal(100))).setScale(2, BigDecimal.ROUND_HALF_UP);
+        BigDecimal balance_new = balance.add(new BigDecimal(model.getAmt()).divide(new BigDecimal(100)));
 
         //更新资金收支明细状态为成功
         fundsDetails.setFdBalanceAfter(balance_new);
         fundsDetails.setFdSerialStatus(EnumModel.FdSerialStatus.成功.getValue());
         fundsDetails.setFdSerialTime(new Date());
-        fundsDetailsService.update(fundsDetails);
+        fundsDetailsService.insert(fundsDetails);
 
         //todo 修改账户资金信息
         TbAccountsFunds accountsFunds = new TbAccountsFunds();

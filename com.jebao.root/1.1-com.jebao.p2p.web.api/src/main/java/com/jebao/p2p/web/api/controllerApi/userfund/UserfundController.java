@@ -59,7 +59,8 @@ public class UserfundController extends _BaseController {
         }
         ResultData<String> resultData = (ResultData<String>) resultInfo;
         String responseHtml = resultData.getData();
-        return responseHtml;
+        response.getWriter().write(responseHtml);
+        return null;
     }
 
     /**

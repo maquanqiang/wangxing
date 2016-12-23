@@ -42,12 +42,12 @@
                 <div class="account-rex-item  active">
                     <div class="recharge-type">
                         <div class="rechange-type-title clearfix">
-                            <h5 v-if="!posStatus" class="active">快捷充值</h5>
-                            <h5 v-if="posStatus" class="active">快速充值</h5>
+                            <h5 v-show="!posStatus" class="active">快捷充值</h5>
+                            <h5 v-show="posStatus" class="active">快速充值</h5>
                             <h5>网银充值</h5>
                         </div>
                         <div class="rechange-list">
-                            <div v-if="!posStatus" class="rechange-item active">
+                            <div v-show="!posStatus" class="rechange-item active">
                                 <form id="quickPay_form" action="/api/user/quickpay" method="post" autocomplete="off">
                                     <div class="account-bankImg clearfix">
                                         <img src="${filePath}/images/account-bank.png" class="fl">
@@ -69,7 +69,7 @@
                                     <a href="javascript:void(0);" class="account-btn" @click.prevent="submit('#quickPay_form')">充值</a>
                                 </form>
                             </div>
-                            <div v-if="posStatus" class="rechange-item active">
+                            <div v-show="posStatus" class="rechange-item active">
                                 <form id="fastRecharge_form" action="/api/user/fastRecharge" method="post" autocomplete="off">
                                     <div class="account-banktext clearfix">
                                         <h5>可用金额：</h5>
