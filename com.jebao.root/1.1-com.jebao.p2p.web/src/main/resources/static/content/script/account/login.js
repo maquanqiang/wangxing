@@ -48,6 +48,8 @@ $(document).ready(function () {
 
                     //同步第三方用户信息
                     $.get("/api/user/syncThirdAccount");
+                    //同步第三方余额信息
+                    $.get("/api/user/syncUserBalance");
 
                     var redirectUrl = common.getUrlParam("redirectUrl") || "/";
                     window.location.href=redirectUrl;

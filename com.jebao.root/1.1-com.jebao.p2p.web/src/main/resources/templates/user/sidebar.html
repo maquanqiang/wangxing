@@ -16,7 +16,7 @@
                 <em class="account-pen"></em>投资记录
             </a>
         </li>
-        <li>
+        <li id="loner_sidebar_li" value="$_loginUser_sidebar_.isLoaner">
             <a href="/user/loanmanage">
                 <em class="account-money"></em>借款管理
             </a>
@@ -50,6 +50,13 @@
 </div>
 
 <script>
+    var loanerId = document.getElementById("loner_sidebar_li").value;
+    if(loanerId == 0){
+        document.getElementById("loner_sidebar_li").style.display ='none';
+    }else{
+        document.getElementById("loner_sidebar_li").style.display ='block';
+    }
+
     var theLocationPath = location.pathname;
     var sidebarNodes = document.querySelectorAll(".sidebar-menu a");
     for (var i=0;i<sidebarNodes.length;i++){

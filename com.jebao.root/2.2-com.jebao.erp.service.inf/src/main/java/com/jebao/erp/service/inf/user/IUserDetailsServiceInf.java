@@ -7,4 +7,11 @@ import com.jebao.jebaodb.entity.user.TbUserDetails;
  */
 public interface IUserDetailsServiceInf {
     TbUserDetails selectByLoginId(Long loginId);
+
+    /**
+     * 修改用户详细资料
+     * @param entity
+     * @return
+     */
+    int updateUserDetails(TbUserDetails entity);
 }

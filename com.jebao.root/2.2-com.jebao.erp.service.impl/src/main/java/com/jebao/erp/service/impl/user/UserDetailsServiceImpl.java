@@ -19,4 +19,14 @@ public class UserDetailsServiceImpl implements IUserDetailsServiceInf {
     public TbUserDetails selectByLoginId(Long loginId){
         return tbUserDetailsDao.selectByLoginId(loginId);
     }
+
+    /**
+     * 修改用户详细资料
+     * @param entity
+     * @return
+     */
+    @Override
+    public int updateUserDetails(TbUserDetails entity) {
+        return tbUserDetailsDao.updateByPrimaryKeySelective(entity);
+    }
 }

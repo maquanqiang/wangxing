@@ -2,6 +2,7 @@ package com.jebao.erp.service.impl.loaner;
 
 import com.jebao.common.utils.idcard.IdCardUtil;
 import com.jebao.erp.service.inf.loaner.ILoanerServiceInf;
+import com.jebao.erp.service.inf.user.IUserDetailsServiceInf;
 import com.jebao.jebaodb.dao.dao.user.TbLoginInfoDao;
 import com.jebao.jebaodb.dao.dao.user.TbUserDetailsDao;
 import com.jebao.jebaodb.dao.dao.loaner.TbLoanerDao;
@@ -13,6 +14,7 @@ import com.jebao.jebaodb.entity.extEntity.PageWhere;
 import com.jebao.jebaodb.entity.loaner.TbLoaner;
 import com.jebao.jebaodb.entity.loaner.TbRcpMaterialsTemp;
 import com.jebao.jebaodb.entity.loaner.TbRiskCtlPrjTemp;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.Date;
@@ -33,6 +35,8 @@ public class LoanerServiceImpl implements ILoanerServiceInf {
     private TbRiskCtlPrjTempDao tbRiskCtlPrjTempDao;
     @Autowired
     private TbRcpMaterialsTempDao tbRcpMaterialsTempDao;
+    @Autowired
+    private IUserDetailsServiceInf userDetailsService;
 
     @Override
     public int saveLoaner(TbLoaner entity){
@@ -46,35 +50,48 @@ public class LoanerServiceImpl implements ILoanerServiceInf {
             lId = entity.getlId();
         }
         if(lId == 0){
-            return addLoaner(entity);
+            lId = addLoaner(entity);
+            if(lId > 0){
+                TbUserDetails userDetails = userDetailsService.selectByLoginId(entity.getlLoginId());
+                if(userDetails.getUdLoanerId() == null) {
+                    userDetails.setUdUpdateTime(new Date());
+                    userDetails.setUdLoanerId(lId);
+                    userDetailsService.updateUserDetails(userDetails);
+                }
+            }
+            return 1;
         }else{
             return updateLoaner(entity);
         }
     }
 
     @Override
-    public int addLoaner(TbLoaner entity) {
+    public Long addLoaner(TbLoaner entity) {
         if(entity == null){
-            return 0;
+            return 0l;
         }
 
         TbLoaner record = new TbLoaner();
         record.setlPhone(entity.getlPhone());
         int result = tbLoanerDao.selectByParamsForPageCount(record);
         if(result > 0 ){
-            return 0;
+            return 0l;
         }
 
         TbLoginInfo loginInfo = tbLoginInfoDao.selectByLoginName(entity.getlPhone());
         if (loginInfo == null) {
-            return 0;
+            return 0l;
         }
         TbUserDetails userDetails = tbUserDetailsDao.selectByLoginId(loginInfo.getLiId());
-        if (userDetails == null) {
-            return 0;
+        if (userDetails == null || StringUtils.isBlank(userDetails.getUdThirdAccount())) {
+            return 0l;
         }
         entity.setlLoginId(loginInfo.getLiId());
-        entity.setlNickName(userDetails.getUdNickName());
+        if(StringUtils.isBlank(userDetails.getUdNickName())){
+            entity.setlNickName(userDetails.getUdTrueName());
+        }else{
+            entity.setlNickName(userDetails.getUdNickName());
+        }
         entity.setlTrueName(userDetails.getUdTrueName());
         entity.setlRegisterTime(loginInfo.getLiCreateTime());
         entity.setlLastLoginTime(loginInfo.getLiLastLoginTime());
@@ -115,12 +132,16 @@ public class LoanerServiceImpl implements ILoanerServiceInf {
             return null;
         }
         TbUserDetails userDetails = tbUserDetailsDao.selectByLoginId(loginInfo.getLiId());
-        if (userDetails == null) {
+        if (userDetails == null || StringUtils.isBlank(userDetails.getUdThirdAccount())) {
             return null;
         }
         TbLoaner entity = new TbLoaner();
         entity.setlLoginId(loginInfo.getLiId());
-        entity.setlNickName(userDetails.getUdNickName());
+        if(StringUtils.isBlank(userDetails.getUdNickName())){
+            entity.setlNickName(userDetails.getUdTrueName());
+        }else{
+            entity.setlNickName(userDetails.getUdNickName());
+        }
         entity.setlTrueName(userDetails.getUdTrueName());
         entity.setlRegisterTime(loginInfo.getLiCreateTime());
         entity.setlLastLoginTime(loginInfo.getLiLastLoginTime());

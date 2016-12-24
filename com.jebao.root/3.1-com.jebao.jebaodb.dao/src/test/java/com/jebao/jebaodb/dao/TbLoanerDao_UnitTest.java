@@ -86,7 +86,7 @@ public class TbLoanerDao_UnitTest extends _BaseUnitTest {
         record.setlThirdPayPassword("");
         record.setlTrueName("王伟");
         record.setlWorkCity("");
-        int result= tbLoanerDao.insert(record);
+        long result= tbLoanerDao.insert(record);
         assertThat(result).isEqualTo(1);
         System.out.println(record.getlId());
     }
