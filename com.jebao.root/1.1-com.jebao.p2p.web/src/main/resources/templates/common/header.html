@@ -31,9 +31,12 @@
         #else
         <ul class="header_login fr">
             <li class="fore">
-                <a href="/account/login">
+                <a href="/account/login" id="header_login_link">
                     <em class="header-user"></em>登录
                 </a>
+                <script>
+                    document.getElementById("header_login_link").href += "?redirect="+window.location.pathname;
+                </script>
             </li>
             <li class="spacer"></li>
             <li class="fore">
