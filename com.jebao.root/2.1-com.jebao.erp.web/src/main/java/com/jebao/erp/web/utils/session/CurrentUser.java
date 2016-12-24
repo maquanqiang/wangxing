@@ -8,6 +8,7 @@ public class CurrentUser {
     private String Name;
     private String UUID;
     private String FundAccount;
+    private long LoanerId;
 
     public int getId() {
         return Id;
@@ -39,5 +40,13 @@ public class CurrentUser {
 
     public void setFundAccount(String fundAccount) {
         FundAccount = fundAccount;
+    }
+
+    public long getLoanerId() {
+        return LoanerId;
+    }
+
+    public void setLoanerId(long loanerId) {
+        LoanerId = loanerId;
     }
 }

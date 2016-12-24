@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.PrintWriter;
 import java.net.URLEncoder;
 
 /**
@@ -59,7 +60,11 @@ public class UserfundController extends _BaseController {
         }
         ResultData<String> resultData = (ResultData<String>) resultInfo;
         String responseHtml = resultData.getData();
-        response.getWriter().write(responseHtml);
+
+        response.setHeader("Content-type", "text/html;charset=UTF-8");
+        PrintWriter printWriter = response.getWriter();
+        printWriter.write(responseHtml);
+
         return null;
     }
 
@@ -104,7 +109,11 @@ public class UserfundController extends _BaseController {
         }
         ResultData<String> resultData = (ResultData<String>) resultInfo;
         String responseHtml = resultData.getData();
-        response.getWriter().print(responseHtml);
+
+        response.setHeader("Content-type", "text/html;charset=UTF-8");
+        PrintWriter printWriter = response.getWriter();
+        printWriter.write(responseHtml);
+
         return null;
     }
     @RequestMapping(value = "changeCardNotify",method = RequestMethod.POST)

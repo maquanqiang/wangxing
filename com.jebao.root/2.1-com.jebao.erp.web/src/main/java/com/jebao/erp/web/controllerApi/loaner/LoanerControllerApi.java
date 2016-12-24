@@ -2,6 +2,7 @@ package com.jebao.erp.web.controllerApi.loaner;
 
 import com.jebao.erp.service.inf.loaner.ILoanerServiceInf;
 import com.jebao.erp.service.inf.loanmanage.ITbBidPlanServiceInf;
+import com.jebao.erp.service.inf.user.IUserDetailsServiceInf;
 import com.jebao.erp.web.controller._BaseController;
 import com.jebao.erp.web.requestModel.loaner.LoanerIM;
 import com.jebao.erp.web.requestModel.loaner.LoanerSM;
@@ -13,6 +14,7 @@ import com.jebao.erp.web.utils.validation.ValidationUtil;
 import com.jebao.jebaodb.entity.extEntity.PageWhere;
 import com.jebao.jebaodb.entity.loaner.LoanTotal;
 import com.jebao.jebaodb.entity.loaner.TbLoaner;
+import com.jebao.jebaodb.entity.user.TbUserDetails;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,6 +23,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -59,7 +62,6 @@ public class LoanerControllerApi extends _BaseController {
         entity.setlWorkCity(model.getWorkCity());
         entity.setlId(model.getId());
         int result = loanerService.saveLoaner(entity);
-        //
         if (result > 0) {
             return new JsonResultOk("保存成功");
         } else {
@@ -133,7 +135,7 @@ public class LoanerControllerApi extends _BaseController {
         phone = StringUtils.trim(phone);
         TbLoaner loaner = loanerService.getLoanerByPhone(phone);
         if (loaner == null) {
-            return new JsonResultError("查无此号");
+            return new JsonResultError("未开通第三方账户或该借款人信息已存在");
         }
         UserInfoVM viewModel = new UserInfoVM(loaner);
         return new JsonResultData<>(viewModel);

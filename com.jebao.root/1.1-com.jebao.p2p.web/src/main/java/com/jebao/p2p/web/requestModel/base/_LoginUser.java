@@ -12,15 +12,16 @@ public class _LoginUser {
     private long userId;
     private String userName;
     private boolean isFundAccount = false;
+    private long loanerId;
 
-    public  _LoginUser()
-    {
+    public _LoginUser() {
         CurrentUser currentUser = CurrentUserContextHolder.get();
         if (currentUser != null) {
-            userId=currentUser.getId();
-            userName=currentUser.getName();
-            isLogin=true;
+            userId = currentUser.getId();
+            userName = currentUser.getName();
+            isLogin = true;
             isFundAccount = !StringUtils.isBlank(currentUser.getFundAccount());
+            loanerId = currentUser.getLoanerId();
         }
     }
 
@@ -31,11 +32,16 @@ public class _LoginUser {
     public String getUserName() {
         return userName;
     }
+
     public boolean getIsLogin() {
         return isLogin;
     }
 
     public boolean getIsFundAccount() {
         return isFundAccount;
+    }
+
+    public long getLoanerId() {
+        return loanerId;
     }
 }

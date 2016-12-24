@@ -3,8 +3,8 @@ package com.jebao.p2p.web.api.controllerApi;
 import com.jebao.common.utils.validation.ValidatorUtil;
 import com.jebao.jebaodb.entity.extEntity.ResultData;
 import com.jebao.jebaodb.entity.extEntity.ResultInfo;
-import com.jebao.jebaodb.entity.user.TbAccountsFunds;
 import com.jebao.jebaodb.entity.user.TbLoginInfo;
+import com.jebao.jebaodb.entity.user.TbUserDetails;
 import com.jebao.p2p.service.inf.user.IAccountServiceInf;
 import com.jebao.p2p.service.inf.user.IUserServiceInf;
 import com.jebao.p2p.web.api.requestModel.account.LoginForm;
@@ -57,16 +57,18 @@ public class AccountController extends _BaseController {
         //todo 实际的业务逻辑
         ResultData<Long> resultInfo = accountService.login(loginForm.getJebUsername(), loginForm.getPassword(), ipAddress);
         if (resultInfo.getSuccess_is_ok()) {
-            TbAccountsFunds accountsFunds = userService.getAccountsFundsInfo(resultInfo.getData());
+            TbUserDetails userDetails = userService.getUserDetailsInfo(resultInfo.getData());
 
             CurrentUser currentUser = new CurrentUser();
             currentUser.setId(resultInfo.getData());
             currentUser.setName(loginForm.getJebUsername());
 
-            if(accountsFunds == null){
+            if(userDetails == null){
                 currentUser.setFundAccount(null);
+                currentUser.setLoanerId(0);
             }else{
-                currentUser.setFundAccount(accountsFunds.getAfThirdAccount());
+                currentUser.setFundAccount(userDetails.getUdThirdAccount());
+                currentUser.setLoanerId(userDetails.getUdLoanerId() == null ? 0 : userDetails.getUdLoanerId());
             }
 
             //String code = LoginSessionUtil.setAuthCode(currentUser);

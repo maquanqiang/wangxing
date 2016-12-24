@@ -8,10 +8,13 @@ var model = {
     fundSum: {incomeAmount: 0, totalAssets: 0, balance: 0, freezeAmount: 0, dueInPrincipal: 0, dueInIncome: 0},
     //投资中项目
     investIngs: [],
+    isHasDateii:true,
     //还款中项目
     paymentIngs: [],
+    isHasDatepi:true,
     //收支明细列表
-    fundsDetails: []
+    fundsDetails: [],
+    isHasDatefd:true
 };
 
 // 创建一个 Vue 实例 (ViewModel),它连接 View 与 Model
@@ -22,7 +25,7 @@ var vm = new Vue({
     },
     //初始化远程数据
     created: function () {
-        $.get("/api/user/syncUserBalance", function (response) {
+/*        $.get("/api/user/syncUserBalance", function (response) {
             if (response.success_is_ok) {
                 $.get("/api/invest/statistics", function (response) {
                     if (response.success_is_ok) {
@@ -33,11 +36,24 @@ var vm = new Vue({
                     }
                 });
             }
+        });*/
+        $.get("/api/invest/statistics", function (response) {
+            if (response.success_is_ok) {
+                var data = response.data;
+                if (data != null) {
+                    vm.fundSum = data;
+                }
+            }
         });
         $.get("/api/funds/list", function (response) {
             if (response.success_is_ok) {
                 var data = response.data;
                 vm.fundsDetails = data;
+                if(data == null){
+                    vm.isHasDatefd = false;
+                }else{
+                    vm.isHasDatefd = true;
+                }
             }
         });
         this.search(1);
@@ -53,8 +69,18 @@ var vm = new Vue({
                     var data = response.data;
                     if (fs == 1) {
                         vm.investIngs = data;
+                        if(data == null){
+                            vm.isHasDateii = false;
+                        }else{
+                            vm.isHasDateii = true;
+                        }
                     } else if (fs == 2) {
                         vm.paymentIngs = data;
+                        if(data == null){
+                            vm.isHasDatepi = false;
+                        }else{
+                            vm.isHasDatepi = true;
+                        }
                     }
                 }
             });

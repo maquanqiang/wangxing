@@ -60,7 +60,11 @@
         <!--开通资金账户-->
         <ul class="user-function clearfix">
             <li>
-                <a href="/userfund/register">
+                <a v-if="!$_loginUser_sidebar_.isFundAccount" href="/userfund/register">
+                    <img src="${filePath}/images/account-open.png">
+                    <p>开通资金账户</p>
+                </a>
+                <a v-else href="javascript:void(0);">
                     <img src="${filePath}/images/account-open.png">
                     <p>开通资金账户</p>
                 </a>
@@ -119,6 +123,12 @@
                         </template>
                         </tbody>
                     </table>
+                    <!--无投资项目-->
+                    <div v-show="!isHasDateii" class="noProject">
+                        <p>
+                            暂无投资中项目<a href="/html/product">去投资</a>
+                        </p>
+                    </div>
                 </div>
                 <div class="project-item">
                     <table class="repayment">
@@ -151,6 +161,12 @@
                         </template>
                         </tbody>
                     </table>
+                    <!--无数据-->
+                    <div v-show="!isHasDatepi" class="noProject">
+                        <p>
+                            暂无还款中项目
+                        </p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -187,6 +203,12 @@
                     </template>
                     </tbody>
                 </table>
+                <!--无数据-->
+                <div v-show="!isHasDatefd" class="noProject">
+                    <p>
+                        暂无收支明细
+                    </p>
+                </div>
             </div>
         </div>
     </div>
