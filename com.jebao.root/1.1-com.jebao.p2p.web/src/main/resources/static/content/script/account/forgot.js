@@ -55,6 +55,7 @@ var vm = new Vue({
                     if (response.success_is_ok) {
                         model.form1.show = false;
                         model.form2.show = true;
+                        $("#form2 .get_code_btn").click();
                     } else {
                         model.form1.error = {hasError:true,message:response.error};
                     }

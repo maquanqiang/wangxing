@@ -1,14 +1,12 @@
 package com.jebao.p2p.web.controller;
 
-import com.jebao.common.utils.date.DateUtil;
 import com.jebao.p2p.web.requestModel.account.LoginForm;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.servlet.http.Cookie;
-import java.util.Date;
+import java.io.PrintWriter;
 
 /**
  * Created by Administrator on 2016/10/21.
@@ -29,14 +27,13 @@ public class _TempTestController extends _BaseController {
     }
     @RequestMapping("test")
     @ResponseBody
-    public String test(String domain){
-        String val = DateUtil.dateToString(new Date(),"HHmmss");
-        Cookie cookie = new Cookie("test1","value:"+val);
-        cookie.setPath("/");
-        cookie.setDomain(domain);
-        response.addCookie(cookie);
+    public String test() throws  Exception{
+        //response.setCharacterEncoding("UTF-8");
+        response.setHeader("Content-type", "text/html;charset=UTF-8");
+        PrintWriter printWriter = response.getWriter();
+        printWriter.write("<h1>你好</h1>");
 
-        return val;
+        return null;
     }
 
 }
