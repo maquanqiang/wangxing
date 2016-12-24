@@ -145,30 +145,42 @@ var vm = new Vue({
             });
         },
         doLoanBtn:function(){
-            vm.myInitValidateForm($('#defaultForm'));
-            var bootstrapValidator = $("#defaultForm").data('bootstrapValidator').validate();
-            if (!bootstrapValidator.isValid()) {
+            if(vm.intentList.length == 0){
+                layer.alert("请先生成还款明细");
                 return false;
             }
-            var loanMoney = $("#defaultForm input[name=bpLoanMoney]").val();
-            if(loanMoney*1<=0){
-                layer.msg("放款金额为0");
-                return false;
-            }
-
-            var form = $("#defaultForm").serializeObject();
-            $.post("/api/bidPlan/doLoan",form,function(response){
-                if(response.success_is_ok){
-                    layer.alert(response.msg, 5);
-                    window.location.href = "/postLoan/index";
+            //else if(vm.investInfoList[0].contractUrl == null){
+            //    layer.alert("请先制作合同");
+            //    return false;
+            //}
+            else{
+                //加载层-风格2
+                layer.load(1);
+                vm.myInitValidateForm($('#defaultForm'));
+                var bootstrapValidator = $("#defaultForm").data('bootstrapValidator').validate();
+                if (!bootstrapValidator.isValid()) {
+                    return false;
+                }
+                var loanMoney = $("#defaultForm input[name=bpLoanMoney]").val();
+                if(loanMoney*1<=0){
+                    layer.alert("放款金额为0");
+                    return false;
                 }
 
-            })
+                var form = $("#defaultForm").serializeObject();
+                $.post("/api/bidPlan/doLoan",form,function(response){
+                    if(response.success_is_ok){
+                        layer.closeAll('loading');
+                        layer.alert(response.msg, 5);
+                        window.location.href = "/postLoan/index";
+                    }
+                })
+            }
         },
         closeBtn:function(){
             var money = $("#defaultForm input[name=bpLoanMoney]").val();
             if(money*1>0){
-                alert("放款金额不为空，不能关闭");
+                layer.alert("放款金额不为空，不能关闭");
                 return false;
             }
             $.post("/api/bidPlan/close",{bpId : $("#bpId").val()}, function(response){
