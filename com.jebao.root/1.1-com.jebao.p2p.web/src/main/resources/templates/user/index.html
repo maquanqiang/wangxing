@@ -60,14 +60,17 @@
         <!--开通资金账户-->
         <ul class="user-function clearfix">
             <li>
-                <a v-if="!$_loginUser_sidebar_.isFundAccount" href="/userfund/register">
+                #if($_loginUser_header_.isFundAccount)
+                <a href="javascript:void(0);">
                     <img src="${filePath}/images/account-open.png">
                     <p>开通资金账户</p>
                 </a>
-                <a v-else href="javascript:void(0);">
+                #else
+                <a href="/userfund/register">
                     <img src="${filePath}/images/account-open.png">
                     <p>开通资金账户</p>
                 </a>
+                #end
             </li>
             <li>
                 <a href="/user/chargewithdraw?typeId=1">
@@ -110,7 +113,7 @@
                             <th>年化利率</th>
                         </tr>
                         </thead>
-                        <tbody>
+                        <tbody v-show="isHasDateii">
                         <template v-for="item in investIngs">
                             <tr>
                                 <td><a :href="getDetailHref(item.bpId)">{{ item.bpName }}</a></td>
@@ -144,7 +147,7 @@
                             <th>查看</th>
                         </tr>
                         </thead>
-                        <tbody>
+                        <tbody v-show="isHasDatepi">
                         <template v-for="item in paymentIngs">
                         <tr>
                             <td>
@@ -190,7 +193,7 @@
                         <th>交易状态</th>
                     </tr>
                     </thead>
-                    <tbody>
+                    <tbody v-show="isHasDatefd">
                     <template v-for="item in fundsDetails">
                     <tr>
                         <td>{{ item.serialNumber }}</td>

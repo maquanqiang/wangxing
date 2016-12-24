@@ -29,19 +29,21 @@ var vm = new Vue({
         search:function() {
             $.get("/api/funds/details",model.searchObj,function(response){
                 if (response.success_is_ok){
-                    console.log(response.data);
-                    vm.fundsDetails=response.data;
-                    if(response.data == null){
-                        vm.isHasDate = false;
-                    }else{
+                    var data = response.data;
+                    vm.fundsDetails= data;
+                    if(data!=null && data.length > 0){
+                        console.log(data.length);
                         vm.isHasDate = true;
+                    }else{
+                        vm.isHasDate = false;
+                        console.log(0);
                     }
-                    console.log(response.data);
+                    console.log(vm.isHasDate);
                     var pageCount = Math.ceil(response.count / model.searchObj.pageSize);
                     if (pageCount > 0){
                         //调用分页
                         laypage({
-                            cont: $('#pageNum'), //容器。值支持id名、原生dom对象，jquery对象,
+                            cont: $('.page'), //容器。值支持id名、原生dom对象，jquery对象,
                             pages: pageCount, //总页数
                             groups: 7, //连续显示分页数
                             jump: function(obj, first){ //触发分页后的回调
