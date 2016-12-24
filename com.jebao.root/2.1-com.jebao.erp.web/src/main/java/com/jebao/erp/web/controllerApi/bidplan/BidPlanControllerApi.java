@@ -272,9 +272,9 @@ public class BidPlanControllerApi extends _BaseController {
         }
         int result = bidPlanService.updateByBidIdSelective(tbBidPlan);
         if(result>0){
-            return new JsonResultOk("开标成功");
+            return new JsonResultOk();
         }else {
-            return new JsonResultError("已打回");
+            return new JsonResultError("操作异常");
         }
     }
 

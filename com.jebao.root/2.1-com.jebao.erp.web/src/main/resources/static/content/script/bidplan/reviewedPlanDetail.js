@@ -93,18 +93,32 @@ var vm = new Vue({
             formValue.bpId = val;
             formValue.status = state;
             if(state==1){
-                var remark  = prompt("请写明拒绝原因","")
-                formValue.remark = remark;
+                layer.prompt({
+                    formType: 2,
+                    value: '',
+                    title: "请写明拒绝原因",
+                    area: ['300px', '170px'] //自定义文本域宽高
+                }, function(value, index, elem){
+                    formValue.remark = value;
+                    layer.close(index);
+                    $.post("/api/bidPlan/reviewedPlan",formValue,function(response){
+                        if (response.success_is_ok){
+                            layer.msg("已打回",5);
+                        }else{
+                            layer.alert(response.error);
+                        }
+                    });
+                });
+            }else{
+                $.post("/api/bidPlan/reviewedPlan",formValue,function(response){
+                    if (response.success_is_ok){
+                        layer.msg("开标成功",5);
+                        vm.reviewedPlanList();
+                    }else{
+                        layer.alert(response.error);
+                    }
+                });
             }
-
-            $.post("/api/bidPlan/reviewedPlan",formValue,function(response){
-                if (response.success_is_ok){
-                    layer.msg(response.msg);
-                    vm.reviewedPlanList();
-                }else{
-                    layer.alert(response.msg);
-                }
-            });
         },
         reviewedPlanList : function(){
             window.location.href="/bidplan/reviewedPlanList";
