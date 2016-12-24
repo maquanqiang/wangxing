@@ -7,6 +7,7 @@ public class CurrentUser {
     private long Id;
     private String Name;
     private String UUID;
+    private String FundAccount;
 
     public long getId() {
         return Id;
@@ -32,5 +33,11 @@ public class CurrentUser {
         this.UUID = UUID;
     }
 
+    public String getFundAccount() {
+        return FundAccount;
+    }
 
+    public void setFundAccount(String fundAccount) {
+        FundAccount = fundAccount;
+    }
 }

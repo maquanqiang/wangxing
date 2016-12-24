@@ -2,6 +2,7 @@ package com.jebao.p2p.web.requestModel.base;
 
 import com.jebao.p2p.web.utils.session.CurrentUser;
 import com.jebao.p2p.web.utils.session.CurrentUserContextHolder;
+import org.apache.commons.lang.StringUtils;
 
 /**
  * Created by Administrator on 2016/12/12.
@@ -10,6 +11,8 @@ public class _LoginUser {
     private boolean isLogin = false;
     private long userId;
     private String userName;
+    private boolean isFundAccount = false;
+
     public  _LoginUser()
     {
         CurrentUser currentUser = CurrentUserContextHolder.get();
@@ -17,6 +20,7 @@ public class _LoginUser {
             userId=currentUser.getId();
             userName=currentUser.getName();
             isLogin=true;
+            isFundAccount = !StringUtils.isBlank(currentUser.getFundAccount());
         }
     }
 
@@ -29,5 +33,9 @@ public class _LoginUser {
     }
     public boolean getIsLogin() {
         return isLogin;
+    }
+
+    public boolean getIsFundAccount() {
+        return isFundAccount;
     }
 }
