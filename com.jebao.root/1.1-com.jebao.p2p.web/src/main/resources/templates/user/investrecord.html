@@ -50,7 +50,7 @@
                             <th>年化利率</th>
                         </tr>
                         </thead>
-                        <tbody v-if="isHasDateii">
+                        <tbody v-show="isHasDateii">
                         <template v-for="item in investings">
                             <tr>
                                 <td><a :href="getDetailHref(item.bpId)">{{ item.bpName }}</a></td>
@@ -64,15 +64,12 @@
                         </tbody>
                     </table>
                     <!--无投资项目-->
-                    <div v-if="!isHasDateii" class="noProject">
+                    <div v-show="!isHasDateii" class="noProject">
                         <p>
                             暂无投资中项目<a href="/html/product">去投资</a>
                         </p>
                     </div>
-                    <div class="page">
-                        <div class="col-sm-12 pagination">
-                            <div id="pageNum1"></div>
-                        </div>
+                    <div class="page" id="pageNum1">
                     </div>
                 </div>
                 <div class="project-item">
@@ -89,7 +86,7 @@
                             <th>查看</th>
                         </tr>
                         </thead>
-                        <tbody v-if="isHasDatepi">
+                        <tbody v-show="isHasDatepi">
                         <template v-for="item in paymentings">
                             <tr>
                                 <td><a :href="getDetailHref(item.bpId)">{{ item.bpName }}</a></td>
@@ -105,15 +102,12 @@
                         </tbody>
                     </table>
                     <!--无数据-->
-                    <div v-if="!isHasDatepi" class="noProject">
+                    <div v-show="!isHasDatepi" class="noProject">
                         <p>
                             暂无还款中项目
                         </p>
                     </div>
-                    <div class="page">
-                        <div class="col-sm-12 pagination">
-                            <div id="pageNum2"></div>
-                        </div>
+                    <div class="page" id="pageNum2">
                     </div>
                 </div>
                 <div class="project-item">
@@ -131,7 +125,7 @@
                             <th>查看</th>
                         </tr>
                         </thead>
-                        <tbody v-if="isHasDatepd">
+                        <tbody v-show="isHasDatepd">
                         <template v-for="item in paymenteds">
                             <tr>
                                 <td><a :href="getDetailHref(item.bpId)">{{ item.bpName }}</a></td>
@@ -148,15 +142,12 @@
                         </tbody>
                     </table>
                     <!--无数据-->
-                    <div v-if="!isHasDatepd" class="noProject">
+                    <div v-show="!isHasDatepd" class="noProject">
                         <p>
                             暂无还款中项目
                         </p>
                     </div>
-                    <div class="page">
-                        <div class="col-sm-12 pagination">
-                            <div id="pageNum3"></div>
-                        </div>
+                    <div class="page" id="pageNum3">
                     </div>
                 </div>
             </div>
