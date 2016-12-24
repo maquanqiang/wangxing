@@ -100,6 +100,7 @@ var vm = new Vue({
         },
         initValidateForm: function () {
             $('#registerForm').bootstrapValidator({
+                trigger: 'keyup blur',
                 fields: {
                     mobile: {
                         threshold: 11,
