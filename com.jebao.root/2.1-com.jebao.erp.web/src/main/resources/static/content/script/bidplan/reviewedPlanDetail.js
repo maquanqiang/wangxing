@@ -103,7 +103,7 @@ var vm = new Vue({
                     layer.close(index);
                     $.post("/api/bidPlan/reviewedPlan",formValue,function(response){
                         if (response.success_is_ok){
-                            layer.msg("已打回",5);
+                            layer.msg("已打回");
                         }else{
                             layer.alert(response.error);
                         }
@@ -112,7 +112,7 @@ var vm = new Vue({
             }else{
                 $.post("/api/bidPlan/reviewedPlan",formValue,function(response){
                     if (response.success_is_ok){
-                        layer.msg("开标成功",5);
+                        layer.msg("开标成功");
                         vm.reviewedPlanList();
                     }else{
                         layer.alert(response.error);

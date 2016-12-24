@@ -179,7 +179,9 @@ var vm = new Vue({
                     area: ['340px', '180px'],
                     yes: function() {
                         layer.closeAll();
+                        layer.load();
                         $.post("/api/product/investBid", form, function (response) {
+                            layer.closeAll();
                             if (response.success_is_ok) {
                                 var data = response.data;
                                 if(data.flag=="true"){

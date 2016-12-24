@@ -98,14 +98,15 @@ var vm = new Vue({
                 area: ['340px', '180px'],
                 yes: function(){
                     layer.closeAll();
+                    var index = layer.load();
                     $.post("/api/loanManage/repay",{period:period, bpId:bpId, repayMoney:repayMoney}, function (response) {
+                        layer.closeAll();
                         if(response.success_is_ok){
                             layer.alert(response.msg);
                             window.location.reload();
                         }else{
                             layer.alert(response.error);
                         }
-
                     })
                 },
                 btn2: function(){
