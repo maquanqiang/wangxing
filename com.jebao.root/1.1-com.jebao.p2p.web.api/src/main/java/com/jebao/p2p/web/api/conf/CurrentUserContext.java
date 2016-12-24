@@ -1,6 +1,5 @@
 package com.jebao.p2p.web.api.conf;
 
-
 import com.jebao.p2p.web.api.utils.session.CurrentUser;
 import com.jebao.p2p.web.api.utils.session.CurrentUserContextHolder;
 import com.jebao.p2p.web.api.utils.session.LoginSessionUtil;

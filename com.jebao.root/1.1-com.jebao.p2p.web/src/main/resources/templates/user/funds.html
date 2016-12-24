@@ -48,7 +48,7 @@
                             <th>交易状态</th>
                         </tr>
                         </thead>
-                        <tbody v-if="isHasDate">
+                        <tbody v-show="isHasDate">
                         <template v-for="item in fundsDetails">
                             <tr>
                                 <td>{{ item.serialNumber }}</td>
@@ -62,7 +62,7 @@
                         </tbody>
                     </table>
                     <!--无投资项目-->
-                    <div  v-if="!isHasDate" class="noProject">
+                    <div  v-show="!isHasDate" class="noProject">
                         <p>
                             暂无信息
                         </p>

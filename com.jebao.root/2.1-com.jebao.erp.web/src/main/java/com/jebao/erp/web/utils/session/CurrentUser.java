@@ -7,6 +7,7 @@ public class CurrentUser {
     private int Id;
     private String Name;
     private String UUID;
+    private String FundAccount;
 
     public int getId() {
         return Id;
@@ -15,6 +16,7 @@ public class CurrentUser {
     public void setId(int id) {
         Id = id;
     }
+
     public String getName() {
         return Name;
     }
@@ -31,5 +33,11 @@ public class CurrentUser {
         this.UUID = UUID;
     }
 
+    public String getFundAccount() {
+        return FundAccount;
+    }
 
+    public void setFundAccount(String fundAccount) {
+        FundAccount = fundAccount;
+    }
 }

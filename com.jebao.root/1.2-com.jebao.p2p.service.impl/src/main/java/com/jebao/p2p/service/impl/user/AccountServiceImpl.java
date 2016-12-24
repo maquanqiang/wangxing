@@ -45,6 +45,7 @@ public class AccountServiceImpl implements IAccountServiceInf {
         if(!loginEntity.getLiPassword().equalsIgnoreCase(md5Password)){
             return new ResultData(false,null,"登录密码错误");
         }
+
         //登录成功，更新最近登录时间
         loginEntity.setLiLastLoginTime(new Date());
         loginInfoDao.updateByPrimaryKey(loginEntity);
