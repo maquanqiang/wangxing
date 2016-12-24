@@ -18,10 +18,7 @@ $(function () {
         e.preventDefault()
         mySwiper.swipeNext()
     });
-    //无缝滚动
-    $('.dowebok').liMarquee({
-        direction: 'up'
-    });
+
 
 
 });
@@ -60,7 +57,17 @@ var myVue = new Vue({
                 money:'580000'
             }
         ],
-        recentInvest :[]
+        recentInvest :[],
+        limarqueeObj:null
+    },
+    updated : function(){
+        //无缝滚动
+        if(this.limarqueeObj == null && this.recentInvest.length > 0){
+            this.limarqueeObj = $('.dowebok').liMarquee({
+                direction: 'up'
+            });
+        }
+
     },
     created: function () {
         $.post("/api/product/recentInvestment",function(response){
