@@ -82,7 +82,7 @@ public class UserfundController extends _BaseController {
     }
 
     @RequestMapping(value = "goChangeCard")
-    public String goChangeCard() {
+    public String goChangeCard() throws Exception{
         //拒绝ajax请求 //如果是ajax请求响应头会有x-requested-with
         String requestType = request.getHeader("x-requested-with");
         if (requestType != null && requestType.equalsIgnoreCase("XMLHttpRequest")) {
@@ -104,7 +104,8 @@ public class UserfundController extends _BaseController {
         }
         ResultData<String> resultData = (ResultData<String>) resultInfo;
         String responseHtml = resultData.getData();
-        return responseHtml;
+        response.getWriter().print(responseHtml);
+        return null;
     }
     @RequestMapping(value = "changeCardNotify",method = RequestMethod.POST)
     public String changeCardNotify(ChangeCardResponse model){

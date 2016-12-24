@@ -24,6 +24,7 @@ var vm = new Vue({
     methods:{
         initForm:function(){
             $('#form1').bootstrapValidator({
+                trigger: 'keyup blur',
                 fields: {
                     mobile: {
                         validators: {
@@ -61,6 +62,7 @@ var vm = new Vue({
             });
 
             $('#form2').bootstrapValidator({
+                trigger: 'keyup blur',
                 fields: {
                     messageCode: {
                         validators: {
