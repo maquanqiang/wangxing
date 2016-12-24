@@ -27,7 +27,7 @@ var model = {
     bpStatusArr : ["待审核",'审核未通过',"立即投资","已满标",'已过期','','起息中','还款中','','','已结清'],
     sex:['','男','女'],
     fundType : ['','本金','利息'],
-    repayStatus : ['未还款','已还款'],
+    repayStatus : ['','未还款','已还款'],
     riskDataList : [],
     investInfoList : [],
     incomeDetailList : [],
