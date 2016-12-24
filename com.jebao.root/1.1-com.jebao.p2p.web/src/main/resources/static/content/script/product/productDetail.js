@@ -51,7 +51,7 @@ var vm = new Vue({
             //文件轮播图
             mySwiper = new Swiper ('.swiper-container', {
                 loop: true,
-                slidesPerView : 2,
+                slidesPerView : 3,
                 fade: {
                     crossFade: true
                 },

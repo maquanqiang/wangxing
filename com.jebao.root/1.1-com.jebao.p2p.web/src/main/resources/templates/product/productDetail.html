@@ -60,9 +60,9 @@
 
                 <p>剩余期限：<span id="span1">0天0时0分0秒</span></p>
             </div>
-            <div class="plan-value clearfix" v-show="product.bpType == 3">
-                <p>加息利率：<span>{{product.bpUpRate}}</span></p>
-            </div>
+            <!--<div class="plan-value clearfix" v-show="product.bpType == 3">-->
+                <!--<p>加息利率：<span>{{product.bpUpRate}}</span></p>-->
+            <!--</div>-->
         </div>
         <!--项目头部右侧-->
         <div class="plan-investment fr">
@@ -78,9 +78,9 @@
                     <a href="/account/login" class="fr" style="margin-top: 14px;">登录<span style="font-size: 16px;margin-left: 5px;">查看</span></a>
                 </div>
                 #end
-                <div class="plan-tip">{{product.bpStartMoney}}元起投，{{product.bpRiseMoney}}元递增</div>
+                <div class="plan-tip">{{product.bpStartMoney}}元起投，{{product.bpRiseMoney}}元递增，{{product.bpTopMoney}}元上限</div>
                 <div class="spinner">
-                    <input type="text" id="investMoney" name="investMoney" :placeholder="product.bpStartMoney+'元起投，'+product.bpRiseMoney+'元递增'"
+                    <input type="text" id="investMoney" name="investMoney" :placeholder="product.bpStartMoney+'元起投，'+product.bpRiseMoney+'元递增，'+product.bpTopMoney+'元上限'"
                            class="entry-num">
 
                     <div class="plan-unit">元</div>

@@ -8,6 +8,7 @@ import com.jebao.jebaodb.entity.loanmanage.TbBidPlan;
 import com.jebao.jebaodb.entity.loanmanage.TbBidRiskData;
 import com.jebao.jebaodb.entity.postLoan.search.RepaymentDetailSM;
 import com.jebao.jebaodb.entity.product.ProductSM;
+import com.jebao.jebaodb.entity.user.TbUserDetails;
 import com.jebao.p2p.service.inf.product.IProductServiceInf;
 import com.jebao.p2p.web.api.requestModel.product.InvestInfoForm;
 import com.jebao.p2p.web.api.requestModel.product.ProductForm;
@@ -132,6 +133,7 @@ public class ProductControllerApi {
         if(currentUser == null){            //未登录 重定向登录页
             return new JsonResultError("尚未登录");
         }
+
         //校验
         ValidationResult resultValidation = ValidationUtil.validateEntity(form);
         if (resultValidation.isHasErrors()) {
