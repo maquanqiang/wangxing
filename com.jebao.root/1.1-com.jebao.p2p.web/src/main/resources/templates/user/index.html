@@ -114,8 +114,7 @@
                         </tr>
                         </thead>
                         <tbody v-show="isHasDateii">
-                        <template v-for="item in investIngs">
-                            <tr>
+                            <tr v-for="item in investIngs">
                                 <td><a :href="getDetailHref(item.bpId)">{{ item.bpName }}</a></td>
                                 <td>{{ item.createTime }}</td>
                                 <td>{{ item.money }}</td>
@@ -123,7 +122,6 @@
                                 <td>{{ item.progress }}%</td>
                                 <td>{{ item.bpRate }}%</td>
                             </tr>
-                        </template>
                         </tbody>
                     </table>
                     <!--无投资项目-->
@@ -148,8 +146,7 @@
                         </tr>
                         </thead>
                         <tbody v-show="isHasDatepi">
-                        <template v-for="item in paymentIngs">
-                        <tr>
+                        <tr v-for="item in paymentIngs">
                             <td>
                                 <a :href="getDetailHref(item.bpId)">{{ item.bpName }}</a>
                             </td>
@@ -161,7 +158,6 @@
                             <td>{{ item.dueMoney }}</td>
                             <td><a :href="item.contractUrl">合同</a></td>
                         </tr>
-                        </template>
                         </tbody>
                     </table>
                     <!--无数据-->
@@ -194,8 +190,7 @@
                     </tr>
                     </thead>
                     <tbody v-show="isHasDatefd">
-                    <template v-for="item in fundsDetails">
-                    <tr>
+                    <tr v-for="item in fundsDetails">
                         <td>{{ item.serialNumber }}</td>
                         <td>{{ item.serialTime }}</td>
                         <td>{{ item.serialTypeName }}</td>
@@ -203,7 +198,6 @@
                         <td>{{ item.expAmount }}</td>
                         <td>{{ item.serialStatus }}</td>
                     </tr>
-                    </template>
                     </tbody>
                 </table>
                 <!--无数据-->

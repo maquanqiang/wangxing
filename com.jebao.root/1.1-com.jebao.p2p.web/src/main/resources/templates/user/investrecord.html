@@ -51,16 +51,14 @@
                         </tr>
                         </thead>
                         <tbody v-show="isHasDateii">
-                        <template v-for="item in investings">
-                            <tr>
-                                <td><a :href="getDetailHref(item.bpId)">{{ item.bpName }}</a></td>
-                                <td>{{ item.createTime }}</td>
-                                <td>{{ item.money }}</td>
-                                <td>{{ item.periods }}</td>
-                                <td>{{ item.progress }}%</td>
-                                <td>{{ item.bpRate }}%</td>
-                            </tr>
-                        </template>
+                        <tr v-for="item in investings">
+                            <td><a :href="getDetailHref(item.bpId)">{{ item.bpName }}</a></td>
+                            <td>{{ item.createTime }}</td>
+                            <td>{{ item.money }}</td>
+                            <td>{{ item.periods }}</td>
+                            <td>{{ item.progress }}%</td>
+                            <td>{{ item.bpRate }}%</td>
+                        </tr>
                         </tbody>
                     </table>
                     <!--无投资项目-->
@@ -87,18 +85,16 @@
                         </tr>
                         </thead>
                         <tbody v-show="isHasDatepi">
-                        <template v-for="item in paymentings">
-                            <tr>
-                                <td><a :href="getDetailHref(item.bpId)">{{ item.bpName }}</a></td>
-                                <td>{{ item.createTime }}</td>
-                                <td>{{ item.money }}</td>
-                                <td>{{ item.periods }}</td>
-                                <td>{{ item.bpRate }}%</td>
-                                <td>{{ item.nextDueDate }}</td>
-                                <td>{{ item.dueMoney }}</td>
-                                <td><a :href="item.contractUrl">合同</a></td>
-                            </tr>
-                        </template>
+                        <tr v-for="item in paymentings">
+                            <td><a :href="getDetailHref(item.bpId)">{{ item.bpName }}</a></td>
+                            <td>{{ item.createTime }}</td>
+                            <td>{{ item.money }}</td>
+                            <td>{{ item.periods }}</td>
+                            <td>{{ item.bpRate }}%</td>
+                            <td>{{ item.nextDueDate }}</td>
+                            <td>{{ item.dueMoney }}</td>
+                            <td><a :href="item.contractUrl">合同</a></td>
+                        </tr>
                         </tbody>
                     </table>
                     <!--无数据-->
@@ -126,19 +122,17 @@
                         </tr>
                         </thead>
                         <tbody v-show="isHasDatepd">
-                        <template v-for="item in paymenteds">
-                            <tr>
-                                <td><a :href="getDetailHref(item.bpId)">{{ item.bpName }}</a></td>
-                                <td>{{ item.createTime }}</td>
-                                <td>{{ item.money }}</td>
-                                <td>{{ item.periods }}</td>
-                                <td>{{ item.bpRate }}%</td>
-                                <td>{{ item.factMoeny }}</td>
-                                <td>{{ item.makeMoney }}</td>
-                                <td>{{ item.settleDate }}</td>
-                                <td><a :href="item.contractUrl">合同</a></td>
-                            </tr>
-                        </template>
+                        <tr v-for="item in paymenteds">
+                            <td><a :href="getDetailHref(item.bpId)">{{ item.bpName }}</a></td>
+                            <td>{{ item.createTime }}</td>
+                            <td>{{ item.money }}</td>
+                            <td>{{ item.periods }}</td>
+                            <td>{{ item.bpRate }}%</td>
+                            <td>{{ item.factMoeny }}</td>
+                            <td>{{ item.makeMoney }}</td>
+                            <td>{{ item.settleDate }}</td>
+                            <td><a :href="item.contractUrl">合同</a></td>
+                        </tr>
                         </tbody>
                     </table>
                     <!--无数据-->

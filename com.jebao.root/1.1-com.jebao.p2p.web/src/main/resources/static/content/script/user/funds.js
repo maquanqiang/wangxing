@@ -32,13 +32,10 @@ var vm = new Vue({
                     var data = response.data;
                     vm.fundsDetails= data;
                     if(data!=null && data.length > 0){
-                        console.log(data.length);
                         vm.isHasDate = true;
                     }else{
                         vm.isHasDate = false;
-                        console.log(0);
                     }
-                    console.log(vm.isHasDate);
                     var pageCount = Math.ceil(response.count / model.searchObj.pageSize);
                     if (pageCount > 0){
                         //调用分页
