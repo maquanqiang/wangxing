@@ -26,6 +26,7 @@ var vm = new Vue({
     methods:{
         initValidateForm: function () {
             return $('#defaultForm').bootstrapValidator({
+                live:"submitted",
                 fields: {
                     realName: {
                         threshold:2,

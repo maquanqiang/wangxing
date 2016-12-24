@@ -88,9 +88,13 @@
                 <div class="plan-explain clearfix">
                     <p>投资<i class="money-num">0</i>元，预期收益<span><i class="money-income">0</i>元</span></p>
                     #if($_loginUser_header_.isLogin)
-                    <a href="/user/chargewithdraw">充值</a>
+                        #if($_loginUser_header_.isFundAccount)
+                            <a href="/user/chargewithdraw?typeId=1">充值</a>
+                        #else
+                            <a href="javascript:;" @click="validAccount">充值</a>
+                        #end
                     #else
-                    <a href="/account/login">充值</a>
+                        <a href="/account/login">充值</a>
                     #end
                 </div>
                 <div v-if="product.bpStatus != 2">
@@ -99,7 +103,11 @@
                 <div v-else>
                     <div v-if="flag">
                         #if($_loginUser_header_.isLogin)
-                        <a href="javascript:;" class="plan-btn" @click="investBtn">立即投资</a>
+                            #if($_loginUser_header_.isFundAccount)
+                                <a href="javascript:;" class="plan-btn" @click="investBtn">立即投资</a>
+                            #else
+                                <a href="javascript:;" class="plan-btn" @click="validAccount">立即投资</a>
+                            #end
                         #else
                         <a href="/account/login" class="plan-btn">立即投资</a>
                         #end

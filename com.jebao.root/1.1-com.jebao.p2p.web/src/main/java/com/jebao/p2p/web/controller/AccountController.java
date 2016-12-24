@@ -15,11 +15,11 @@ public class AccountController extends _BaseController {
      * 登录
      */
     @RequestMapping("login")
-    public String login(@RequestParam(defaultValue = "/") String redirectUrl) {
+    public String login(@RequestParam(defaultValue = "/") String redirect) {
         //检测是否已登录
         boolean isLogin = LoginSessionUtil.isLogin(request, response);
         if (isLogin) {
-            return "redirect:"+redirectUrl;
+            return "redirect:"+redirect;
         }
         return "account/login";
     }

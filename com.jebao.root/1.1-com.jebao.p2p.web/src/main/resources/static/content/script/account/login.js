@@ -33,39 +33,43 @@ $(document).ready(function () {
                 }
             }
         }).on('success.form.bv', function (e) {
-            // Prevent form submission
             e.preventDefault();
-            var $errorPlace = $("#login_message").addClass("none");
-            // Get the form instance
-            var $form = $(e.target);
-            var submitData = $form.serializeObject();
-            // Use Ajax to submit form data
-            $.post($form.attr('action'), submitData, function (response) {
-                if (response.success_is_ok) {
-                    if(submitData.remember === "1"){
-                        $.cookie("jebao_lgn",submitData.jebUsername,{ expires: 3 });
-                    }
-
-                    //同步第三方用户信息
-                    $.get("/api/user/syncThirdAccount");
-                    //同步第三方余额信息
-                    $.get("/api/user/syncUserBalance");
-
-                    var redirectUrl = common.getUrlParam("redirectUrl") || "/";
-                    window.location.href=redirectUrl;
-                    return;
-                } else {
-                    $errorPlace.removeClass("none").find("span").html(response.error);
-                }
-            });
-
         });
     }
-
     initValidateForm();
     $(".login-in-btn").click(function (event) {
         event.preventDefault();
-        $('#loginForm').submit();
+        var $errorPlace = $("#login_message").addClass("none");
+        // Get the form instance
+        var $form = $("#loginForm");
+        var $validator = $form.data("bootstrapValidator").validate();
+        if (!$validator.isValid()){
+            return false;
+        }
+        var submitData = $form.serializeObject();
+        // Use Ajax to submit form data
+        $.post($form.attr('action'), submitData, function (response) {
+            if (response.success_is_ok) {
+                if(submitData.remember === "1"){
+                    $.cookie("jebao_lgn",submitData.jebUsername,{ expires: 3 });
+                }
+                
+                $.get("/api/user/syncThirdAccount");
+                $.get("/api/user/syncUserBalance");
+
+                var redirectUrl = common.getUrlParam("redirect") || "/";
+                window.location.href=redirectUrl;
+                return;
+            } else {
+                $errorPlace.removeClass("none").find("span").html(response.error);
+            }
+        });
+        return false;
+    });
+    $(document).keyup(function(event) {
+        if(event.which==13){
+            $(".login-in-btn").click();
+        }
     });
 });
 

@@ -94,8 +94,29 @@ public class ProductServiceImpl implements IProductServiceInf {
     public String[] investBid(Long bpId, Long loginId, BigDecimal investMoney) {
 
         String[] result = new String[2];
-
         result[0] = "false";
+
+        //查询标的信息
+        TbBidPlan tbBidPlan = tbBidPlanDao.selectByPrimaryKey(bpId);
+        if(tbBidPlan.getBpLoginId()==loginId){
+            result[1] = "投资人不为能该标的借款人";
+            return result;
+        }
+        //投资人详情
+        TbUserDetails outUser = tbUserDetailsDao.selectByLoginId(loginId);
+        if(outUser!=null){
+            if(outUser.getUdThirdAccount()==null){
+                result[1] = "您尚未开通第三方";
+                return result;
+            }
+        }
+        //投资人账户
+        TbAccountsFunds accountsFunds = accountsFundsDao.selectByLoginId(loginId);
+        if(accountsFunds==null || accountsFunds.getAfBalance().compareTo(investMoney) <0){
+            result[1] = "账户余额不足";
+            return result;
+        }
+
         //更新标的信息表
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("bpId", bpId);
@@ -105,20 +126,9 @@ public class ProductServiceImpl implements IProductServiceInf {
         if(count>0){
 
                 String amt = investMoney.multiply(new BigDecimal(100)).setScale(0, BigDecimal.ROUND_DOWN).toString();
-
-                //查询标的信息
-                TbBidPlan tbBidPlan = tbBidPlanDao.selectByPrimaryKey(bpId);
-                if(tbBidPlan.getBpLoginId()==loginId){
-                    result[1] = "投资人不为能该标的借款人";
-                    return result;
-                }
-
                 //借款人详情
                 TbUserDetails inUser = tbUserDetailsDao.selectByLoginId(tbBidPlan.getBpLoginId());
-                //投资人详情
-                TbUserDetails outUser = tbUserDetailsDao.selectByLoginId(loginId);
-                //投资人账户
-                TbAccountsFunds accountsFunds = accountsFundsDao.selectByLoginId(loginId);
+
                 //投资人登录信息
                 TbLoginInfo tbLoginInfo = tbLoginInfoDao.selectByPrimaryKey(loginId);
 
@@ -203,8 +213,8 @@ public class ProductServiceImpl implements IProductServiceInf {
                         tbBidPlanDao.fullBid(fullMap);
                     }
 
-                    result[1] = "投资成功";
                     result[0] = "true";
+                    result[1] = "投资成功";
                 }else{
                     result[1] = "请核实您的账户信息";
                     //更新流水记录

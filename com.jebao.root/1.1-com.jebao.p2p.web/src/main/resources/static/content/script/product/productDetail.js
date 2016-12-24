@@ -127,70 +127,94 @@ var vm = new Vue({
             });
         },
         investBtn: function () {
+            var flag = true;
             var investMoney = $("#investMoney").val().trim() * 1;
             if(investMoney > 0){
                 if(investMoney > vm.product.bpTopMoney){
-                    layer.msg("投资金额大于投资上限"+vm.product.bpTopMoney+"元");
-                    $("#investMoney").focus();
-                    return;
-                }
-                if(investMoney > vm.product.bpSurplusMoney){
-                    layer.msg("投资金额大于标的剩余金额"+vm.product.bpSurplusMoney+"元");
-                    $("#investMoney").focus();
-                    return;
-                }
-                if(investMoney > vm.statistics.balance){
-                    layer.msg("投资金额大于您账户的剩余金额"+vm.statistics.balance+"元");
-                    $("#investMoney").focus();
-                    return;
+                    layer.tips("投资金额大于投资上限"+vm.product.bpTopMoney+"元", '#investMoney', {
+                        tips: [1, '#0FA6D8'] //还可配置颜色
+                    });
+                    flag = false;
+                }else if(investMoney > vm.product.bpSurplusMoney){
+                    layer.tips("投资金额大于标的剩余金额"+vm.product.bpSurplusMoney+"元", '#investMoney', {
+                        tips: [1, '#0FA6D8'] //还可配置颜色
+                    });
+                    flag = false;
+                }else if(investMoney > vm.statistics.balance){
+                    layer.tips("投资金额大于您账户的剩余金额"+vm.statistics.balance+"元，请先进行充值", '#investMoney', {
+                        tips: [1, '#0FA6D8'] //还可配置颜色
+                    });
+                    flag = false;
                 }
                 if((investMoney-vm.product.bpStartMoney)>=0){
                     if((investMoney-vm.product.bpStartMoney) % vm.product.bpRiseMoney !=0){
-                        layer.msg("投资金额不符合递增规则");
-                        $("#investMoney").focus();
-                        return;
+                        layer.tips("投资金额不符合递增规则", '#investMoney', {
+                            tips: [1, '#0FA6D8'] //还可配置颜色
+                        });
+                        flag = false;
                     }
                 }else{
-                    layer.msg("投资金额小于起投金额"+vm.product.bpStartMoney+"元")
-                    $("#investMoney").focus();
-                    return;
+                    layer.tips("投资金额小于起投金额"+vm.product.bpStartMoney+"元", '#investMoney', {
+                        tips: [1, '#0FA6D8'] //还可配置颜色
+                    });
+                    flag = false;
                 }
             }else{
-                layer.msg("投资金额输入有误");
-                $("#investMoney").focus();
-                return;
+                layer.tips("投资金额输入有误", '#investMoney', {
+                    tips: [1, '#0FA6D8'] //还可配置颜色
+                });
+                flag = false;
             }
 
-            var form = {bpId:$("#bpId").val(), investMoney:$("#investMoney").val().trim()}
+            if(!flag){
+                $("#investMoney").focus();
+                return;
+            }else{
+                var form = {bpId:$("#bpId").val(), investMoney:$("#investMoney").val().trim()}
+                //投资弹出框
+                layer.open({
+                    title:'投资提示',
+                    content:'确认投资：金额为'+form.investMoney,
+                    btn: ['确认', '稍后'],
+                    area: ['340px', '180px'],
+                    yes: function() {
+                        layer.closeAll();
+                        $.post("/api/product/investBid", form, function (response) {
+                            if (response.success_is_ok) {
+                                var data = response.data;
+                                if(data.flag=="true"){
+                                    window.location.href="/product/productSuccess?investMoney="+form.investMoney;
+                                }else{
+                                    window.location.href="/product/productFail?msg="+data.msg;
+                                }
+                            }else{
+                                layer.alert(response.error);
+                                setTximeout(function(){window.location.reload();},5000)
+                            }
+                        });
+                    },
+                    btn2: function(){
+                        layer.closeAll();
+                    }
+                })
+            }
+        },
+        validAccount:function(){
             //投资弹出框
             layer.open({
-                title:'投资提示',
-                content:'确认投资：金额为'+form.investMoney,
+                title:'提示',
+                content:"你尚未开通第三方，是否马上开通",
                 btn: ['确认', '稍后'],
                 area: ['340px', '180px'],
+                icon:3,
                 yes: function() {
                     layer.closeAll();
-                    $.post("/api/product/investBid", form, function (response) {
-                        if (response.success_is_ok) {
-                            var data = response.data;
-                            if(data.flag=="true"){
-                                window.location.href="/product/productSuccess?investMoney="+form.investMoney;
-                            }else{
-                                window.location.href="/product/productFail?msg="+data.msg;
-                            }
-                        }else{
-                            layer.alert(response.error);
-                            setTximeout(function(){window.location.reload();},5000)
-                        }
-                    });
+                    window.location.href="/userfund/register";
                 },
                 btn2: function(){
                     layer.closeAll();
                 }
             })
-        },
-        test1:function(){
-            console.log("test1")
         }
     }
 });

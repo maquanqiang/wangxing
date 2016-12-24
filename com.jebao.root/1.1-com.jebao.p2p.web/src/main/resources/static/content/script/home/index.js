@@ -18,45 +18,15 @@ $(function () {
         e.preventDefault()
         mySwiper.swipeNext()
     });
-
-
-
 });
 
 //    排行榜
 var myVue = new Vue({
     el: ".rank-list",
     data: {
-        items:[
-            {
-                name:"司**",
-                money:'4350000'
-            },
-            {
-                name:"王**",
-                money:'3000000'
-            },
-            {
-                name:"高**",
-                money:'670000'
-            },
-            {
-                name:"吴**",
-                money:'670000'
-            },
-            {
-                name:"王**",
-                money:'625000'
-            },
-            {
-                name:"杨**",
-                money:'600000'
-            },
-            {
-                name:"谢**",
-                money:'580000'
-            }
-        ],
+        //排行
+        items:[],
+        //最近投资
         recentInvest :[],
         limarqueeObj:null
     },
@@ -70,15 +40,23 @@ var myVue = new Vue({
 
     },
     created: function () {
+        //recentInvest
         $.post("/api/product/recentInvestment",function(response){
             if(response.success_is_ok){
                 myVue.recentInvest = response.data;
             }
+        }),
+            //items
+        $.post("/api/product/investmentTop",function(response){
+            if(response.success_is_ok){
+                myVue.items = response.data;
+            }
         })
+
     },
     filters:{
         currency:function (val) {
-            return '$' + val;
+            return '¥' + val;
         }
     }
 })

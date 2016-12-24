@@ -48,6 +48,7 @@ public class ProductControllerApi {
     public JsonResult list(ProductForm form, PageWhere pageWhere){
 
         ProductSM productSM = ProductForm.toEntity(form);
+        pageWhere.setOrderBy("bp_status ASC, bp_bid_money DESC, bp_rate DESC, bp_start_time DESC");
         List<TbBidPlan> tbBidPlans = productService.selectP2PList(productSM, pageWhere);
         List<ProductVm> productVms = new ArrayList<>();
         tbBidPlans.forEach(o -> productVms.add(new ProductVm(o)));
@@ -164,5 +165,22 @@ public class ProductControllerApi {
 
         tbInvestInfos.forEach(o -> invests.add(new RecentInvestVM(o)));
         return new JsonResultList<>(invests);
+    }
+
+    @RequestMapping("investmentTop")
+    @ResponseBody
+    public JsonResult investmentTop(){
+
+        List<InvestmentTopVM> vms = new ArrayList<>();
+
+        vms.add(new InvestmentTopVM("司**","4350000"));
+        vms.add(new InvestmentTopVM("王**","3000000"));
+        vms.add(new InvestmentTopVM("高**","670000"));
+        vms.add(new InvestmentTopVM("吴**","670000"));
+        vms.add(new InvestmentTopVM("王**","625000"));
+        vms.add(new InvestmentTopVM("杨**","600000"));
+        vms.add(new InvestmentTopVM("谢**","580000"));
+
+        return new JsonResultList<>(vms);
     }
 }
