@@ -127,31 +127,42 @@ var vm = new Vue({
             });
         },
         investBtn: function () {
+
             var investMoney = $("#investMoney").val().trim() * 1;
             if(investMoney > 0){
                 if(investMoney > vm.product.bpTopMoney){
-                    layer.msg("投资金额大于投资上限"+vm.product.bpTopMoney+"元");
+                    layer.tips("投资金额大于投资上限"+vm.product.bpTopMoney+"元", '#investMoney', {
+                        tips: [1, '#0FA6D8'] //还可配置颜色
+                    });
                     $("#investMoney").focus();
                     return;
                 }
                 if(investMoney > vm.product.bpSurplusMoney){
-                    layer.msg("投资金额大于标的剩余金额"+vm.product.bpSurplusMoney+"元");
+                    layer.tips("投资金额大于标的剩余金额"+vm.product.bpSurplusMoney+"元", '#investMoney', {
+                        tips: [1, '#0FA6D8'] //还可配置颜色
+                    });
                     $("#investMoney").focus();
                     return;
                 }
                 if(investMoney > vm.statistics.balance){
-                    layer.msg("投资金额大于您账户的剩余金额"+vm.statistics.balance+"元");
+                    layer.tips("投资金额大于您账户的剩余金额"+vm.statistics.balance+"元", '#investMoney', {
+                        tips: [1, '#0FA6D8'] //还可配置颜色
+                    });
                     $("#investMoney").focus();
                     return;
                 }
                 if((investMoney-vm.product.bpStartMoney)>=0){
                     if((investMoney-vm.product.bpStartMoney) % vm.product.bpRiseMoney !=0){
-                        layer.msg("投资金额不符合递增规则");
+                        layer.tips("投资金额不符合递增规则", '#investMoney', {
+                            tips: [1, '#0FA6D8'] //还可配置颜色
+                        });
                         $("#investMoney").focus();
                         return;
                     }
                 }else{
-                    layer.msg("投资金额小于起投金额"+vm.product.bpStartMoney+"元")
+                    layer.tips("投资金额小于起投金额"+vm.product.bpStartMoney+"元", '#investMoney', {
+                        tips: [1, '#0FA6D8'] //还可配置颜色
+                    });
                     $("#investMoney").focus();
                     return;
                 }
