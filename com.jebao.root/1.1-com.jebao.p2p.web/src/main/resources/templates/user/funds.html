@@ -49,20 +49,18 @@
                         </tr>
                         </thead>
                         <tbody v-show="isHasDate">
-                        <template v-for="item in fundsDetails">
-                            <tr>
-                                <td>{{ item.serialNumber }}</td>
-                                <td>{{ item.serialTime }}</td>
-                                <td>{{ item.serialTypeName }}</td>
-                                <td class="red">{{ item.incAmount }}</td>
-                                <td class="green">{{ item.expAmount }}</td>
-                                <td>{{ item.serialStatus }}</td>
-                            </tr>
-                        </template>
+                        <tr v-for="item in fundsDetails">
+                            <td>{{ item.serialNumber }}</td>
+                            <td>{{ item.serialTime }}</td>
+                            <td>{{ item.serialTypeName }}</td>
+                            <td class="red">{{ item.incAmount }}</td>
+                            <td class="green">{{ item.expAmount }}</td>
+                            <td>{{ item.serialStatus }}</td>
+                        </tr>
                         </tbody>
                     </table>
                     <!--无投资项目-->
-                    <div  v-show="!isHasDate" class="noProject">
+                    <div v-show="!isHasDate" class="noProject">
                         <p>
                             暂无收支明细
                         </p>
