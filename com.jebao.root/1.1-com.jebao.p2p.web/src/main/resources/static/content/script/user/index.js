@@ -49,10 +49,10 @@ var vm = new Vue({
             if (response.success_is_ok) {
                 var data = response.data;
                 vm.fundsDetails = data;
-                if(data == null){
-                    vm.isHasDatefd = false;
-                }else{
+                if(data != null && data.length > 0){
                     vm.isHasDatefd = true;
+                }else{
+                    vm.isHasDatefd = false;
                 }
             }
         });
@@ -69,17 +69,17 @@ var vm = new Vue({
                     var data = response.data;
                     if (fs == 1) {
                         vm.investIngs = data;
-                        if(data == null){
-                            vm.isHasDateii = false;
-                        }else{
+                        if(data != null && data.length > 0){
                             vm.isHasDateii = true;
+                        }else{
+                            vm.isHasDateii = false;
                         }
                     } else if (fs == 2) {
                         vm.paymentIngs = data;
-                        if(data == null){
-                            vm.isHasDatepi = false;
-                        }else{
+                        if(data != null && data.length > 0){
                             vm.isHasDatepi = true;
+                        }else{
+                            vm.isHasDatepi = false;
                         }
                     }
                 }
