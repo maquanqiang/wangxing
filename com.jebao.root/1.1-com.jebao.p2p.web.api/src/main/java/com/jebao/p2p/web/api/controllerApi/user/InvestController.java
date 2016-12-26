@@ -1,5 +1,6 @@
 package com.jebao.p2p.web.api.controllerApi.user;
 
+import com.jebao.jebaodb.entity.extEntity.EnumModel;
 import com.jebao.jebaodb.entity.extEntity.PageWhere;
 import com.jebao.jebaodb.entity.investment.*;
 import com.jebao.p2p.service.inf.user.IInvestServiceInf;
@@ -86,19 +87,24 @@ public class InvestController extends _BaseController {
             if (baseList == null || baseList.size() == 0) {
                 return new JsonResultList<>(null);
             }
-
             List<Long> iiIds = new ArrayList<>();
             baseList.forEach(o -> iiIds.add(o.getIiId()));
-
             List<InvestPaymentIngVM> vmList = new ArrayList<>();
-            List<InvestPayment> paymentIngList = investService.selectPaymentByIds(iiIds, 1, 1);
-
+            List<InvestPayment> factList = investService.selectPaymentByIds(iiIds, EnumModel.IncomeStatus.未还.getValue(), EnumModel.FundType.本金.getValue());
+            List<InvestPayment> makeList = investService.selectPaymentByIds(iiIds, EnumModel.IncomeStatus.未还.getValue(), EnumModel.FundType.利息.getValue());
             for (int i = 0; i < baseList.size(); i++) {
                 InvestPaymentIngVM vm = new InvestPaymentIngVM(baseList.get(i));
-                for (int j = 0; j < paymentIngList.size(); j++) {
-                    if (paymentIngList.get(j).getIiId() == vm.getIiId()) {
-                        vm.setDueMoney(paymentIngList.get(j).getTotalMoney());
-                        vm.setNextDueDate(paymentIngList.get(j).getDateTime());
+                BigDecimal dueMoney = new BigDecimal(0);
+                for (int j = 0; j < makeList.size(); j++) {
+                    if (makeList.get(j).getIiId() == vm.getIiId()) {
+                        dueMoney = factList.get(j).getTotalMoney();
+                        break;
+                    }
+                }
+                for (int j = 0; j < factList.size(); j++) {
+                    if (factList.get(j).getIiId() == vm.getIiId()) {
+                        vm.setDueMoney(dueMoney.add(makeList.get(j).getTotalMoney()));
+                        vm.setNextDueDate(factList.get(j).getDateTime());
                         break;
                     }
                 }
@@ -152,14 +158,21 @@ public class InvestController extends _BaseController {
 
             List<InvestPaymentIngVM> vmList = new ArrayList<>();
 
-            List<InvestPayment> paymentIngList = investService.selectPaymentByIds(iiIds, 1, 1);
-
+            List<InvestPayment> factList = investService.selectPaymentByIds(iiIds, EnumModel.IncomeStatus.未还.getValue(), EnumModel.FundType.本金.getValue());
+            List<InvestPayment> makeList = investService.selectPaymentByIds(iiIds, EnumModel.IncomeStatus.未还.getValue(), EnumModel.FundType.利息.getValue());
             for (int i = 0; i < baseList.size(); i++) {
                 InvestPaymentIngVM vm = new InvestPaymentIngVM(baseList.get(i));
-                for (int j = 0; j < paymentIngList.size(); j++) {
-                    if (paymentIngList.get(j).getIiId() == vm.getIiId()) {
-                        vm.setDueMoney(paymentIngList.get(j).getTotalMoney());
-                        vm.setNextDueDate(paymentIngList.get(j).getDateTime());
+                BigDecimal dueMoney = new BigDecimal(0);
+                for (int j = 0; j < makeList.size(); j++) {
+                    if (makeList.get(j).getIiId() == vm.getIiId()) {
+                        dueMoney = factList.get(j).getTotalMoney();
+                        break;
+                    }
+                }
+                for (int j = 0; j < factList.size(); j++) {
+                    if (factList.get(j).getIiId() == vm.getIiId()) {
+                        vm.setDueMoney(dueMoney.add(makeList.get(j).getTotalMoney()));
+                        vm.setNextDueDate(factList.get(j).getDateTime());
                         break;
                     }
                 }
@@ -182,8 +195,8 @@ public class InvestController extends _BaseController {
 
             List<InvestPaymentedVM> vmList = new ArrayList<>();
 
-            List<InvestPayment> factList = investService.selectPaymentByIds(iiIds, 2, 1);
-            List<InvestPayment> makeList = investService.selectPaymentByIds(iiIds, 2, 2);
+            List<InvestPayment> factList = investService.selectPaymentByIds(iiIds, EnumModel.IncomeStatus.已还.getValue(), EnumModel.FundType.本金.getValue());
+            List<InvestPayment> makeList = investService.selectPaymentByIds(iiIds, EnumModel.IncomeStatus.已还.getValue(), EnumModel.FundType.利息.getValue());
 
             for (int i = 0; i < baseList.size(); i++) {
                 InvestPaymentedVM vm = new InvestPaymentedVM(baseList.get(i));
@@ -191,14 +204,14 @@ public class InvestController extends _BaseController {
                     if (factList.get(j).getIiId() == vm.getIiId()) {
                         vm.setFactMoeny(factList.get(j).getTotalMoney());
                         vm.setSettleDate(factList.get(j).getDateTime());
+                        break;
                     }
-                    break;
                 }
                 for (int j = 0; j < makeList.size(); j++) {
                     if (makeList.get(j).getIiId() == vm.getIiId()) {
                         vm.setMakeMoney(makeList.get(j).getTotalMoney());
+                        break;
                     }
-                    break;
                 }
                 vmList.add(vm);
             }

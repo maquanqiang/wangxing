@@ -12,8 +12,8 @@ import com.jebao.erp.web.responseModel.base.JsonResultList;
 import com.jebao.erp.web.responseModel.loaner.FundsDetailsVM;
 import com.jebao.erp.web.responseModel.loaner.FundsSumVM;
 import com.jebao.erp.web.responseModel.loaner.FundsVM;
+import com.jebao.jebaodb.entity.extEntity.EnumModel;
 import com.jebao.jebaodb.entity.extEntity.PageWhere;
-import com.jebao.jebaodb.entity.investment.search.IncomeDetailSM;
 import com.jebao.jebaodb.entity.loaner.LoanTotal;
 import com.jebao.jebaodb.entity.loaner.TbLoaner;
 import com.jebao.jebaodb.entity.user.FundsStatistics;
@@ -115,11 +115,11 @@ public class FundsControllerApi {
             viewModel.setBalance(new BigDecimal(0));
         }
         viewModel.setBalance(accountsFunds.getAfBalance());
-        viewModel.setJkAmounts(loanTotal.getTotalAmounts().setScale(2, BigDecimal.ROUND_HALF_UP));
-        viewModel.setJkInterests(loanTotal.getInterests().setScale(2, BigDecimal.ROUND_HALF_UP));
-        viewModel.setServiceCharge(loanTotal.getServiceCharge().setScale(2, BigDecimal.ROUND_HALF_UP));
-        viewModel.setDhAmounts(incomeDetailService.totalMoneyByloanerId(loaner.getlId(), 1, 1).setScale(2, BigDecimal.ROUND_HALF_UP));
-        viewModel.setDhInterests(incomeDetailService.totalMoneyByloanerId(loaner.getlId(), 2, 1).setScale(2, BigDecimal.ROUND_HALF_UP));
+        viewModel.setJkAmounts(loanTotal.getTotalAmounts());
+        viewModel.setJkInterests(loanTotal.getInterests());
+        viewModel.setServiceCharge(loanTotal.getServiceCharge());
+        viewModel.setDhAmounts(incomeDetailService.totalMoneyByloanerId(loaner.getlId(), EnumModel.FundType.本金.getValue(), EnumModel.IncomeStatus.未还.getValue()));
+        viewModel.setDhInterests(incomeDetailService.totalMoneyByloanerId(loaner.getlId(), EnumModel.FundType.利息.getValue(), EnumModel.IncomeStatus.未还.getValue()));
         return new JsonResultData<>(viewModel);
     }
 }

@@ -107,4 +107,32 @@ public class EnumModel {
             return this.value;
         }
     }
+
+    /**
+     * 资金类型
+     */
+    public enum FundType{
+        本金(1),利息(2);
+        private int value;
+        private FundType(int val){
+            this.value = val;
+        }
+        public int getValue(){
+            return this.value;
+        }
+    }
+
+    /**
+     * 收款状态(还款状态)
+     */
+    public enum IncomeStatus{
+        未还(1),已还(2);
+        private int value;
+        private IncomeStatus(int val){
+            this.value = val;
+        }
+        public int getValue(){
+            return this.value;
+        }
+    }
 }

@@ -25,18 +25,6 @@ var vm = new Vue({
     },
     //初始化远程数据
     created: function () {
-/*        $.get("/api/user/syncUserBalance", function (response) {
-            if (response.success_is_ok) {
-                $.get("/api/invest/statistics", function (response) {
-                    if (response.success_is_ok) {
-                        var data = response.data;
-                        if (data != null) {
-                            vm.fundSum = data;
-                        }
-                    }
-                });
-            }
-        });*/
         $.get("/api/invest/statistics", function (response) {
             if (response.success_is_ok) {
                 var data = response.data;

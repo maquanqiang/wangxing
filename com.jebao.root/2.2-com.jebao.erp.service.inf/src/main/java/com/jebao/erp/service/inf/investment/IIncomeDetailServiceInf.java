@@ -33,7 +33,9 @@ public interface IIncomeDetailServiceInf {
 
     /**
      * 统计借款人待还(已还)金额（本金、利息）
-     *
+     * @param loanerId 借款人ID
+     * @param fundType 资金类型 1:本金 2 : 利息
+     * @param status 还款状态 1:未还 2:已还
      * @return
      */
     BigDecimal totalMoneyByloanerId(Long loanerId, int fundType, int status);
