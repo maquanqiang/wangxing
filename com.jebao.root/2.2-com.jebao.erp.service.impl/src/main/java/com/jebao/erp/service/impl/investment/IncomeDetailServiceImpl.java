@@ -77,6 +77,11 @@ public class IncomeDetailServiceImpl implements IIncomeDetailServiceInf {
         return incomeDetailDao.updateByConditionSelective(record);
     }
 
+    @Override
+    public BigDecimal investerTotalMoney(TbIncomeDetail record) {
+        return incomeDetailDao.investerTotalMoney(record);
+    }
+
     public int updateByBidIdSelective(TbIncomeDetail record) {
         int result = incomeDetailDao.updateByPrimaryKeySelective(record);
         return result;

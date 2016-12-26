@@ -120,8 +120,8 @@ public class TbIncomeDetailDao {
      * @param dateTime
      * @return
      */
-    public TbIncomeDetail overdueMoneyOther(@Param("dateTime") Date dateTime) {
-        return mapper.overdueMoneyOther(dateTime);
+    public TbIncomeDetail overdueMoneyOther(@Param("bpLoginId")Long loginId,@Param("dateTime") Date dateTime) {
+        return mapper.overdueMoneyOther(loginId,dateTime);
     }
 
     public int selectFundCount(@Param("record") FundDetailSM record) {
@@ -144,6 +144,16 @@ public class TbIncomeDetailDao {
     public int updateByConditionSelective(TbIncomeDetail record){
         return mapper.updateByConditionSelective(record);
     }
+
+    /**
+     * 投资人该笔投应回收本息
+     * @param record
+     * @return
+     */
+    public BigDecimal investerTotalMoney(TbIncomeDetail record){
+        return mapper.investerTotalMoney(record);
+    }
+
 
     @Transactional
     public int insertForTransactional(TbIncomeDetail record) {

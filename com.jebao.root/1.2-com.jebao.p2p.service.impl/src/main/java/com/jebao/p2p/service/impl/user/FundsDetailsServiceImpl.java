@@ -55,8 +55,8 @@ public class FundsDetailsServiceImpl implements IFundsDetailsServiceInf {
     public Map<String, BigDecimal> loanManageInfo(Long loginId) {
 
         BigDecimal loanMoneyTotal = incomeDetailDao.loanMoneyTotal(loginId);
-        TbIncomeDetail repaymentTotal = incomeDetailDao.overdueMoneyOther(new Date());
-        TbIncomeDetail overdueMoneyOther = incomeDetailDao.overdueMoneyOther(null);
+        TbIncomeDetail repaymentTotal = incomeDetailDao.overdueMoneyOther(loginId,new Date());
+        TbIncomeDetail overdueMoneyOther = incomeDetailDao.overdueMoneyOther(loginId, null);
 
         Map<String, BigDecimal> map = new HashMap<String, BigDecimal>();
         map.put("loanMoneyTotal", loanMoneyTotal);
