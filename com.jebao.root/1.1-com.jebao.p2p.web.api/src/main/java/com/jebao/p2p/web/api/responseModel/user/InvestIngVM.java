@@ -18,7 +18,7 @@ public class InvestIngVM extends ViewModel {
         this.money = entity.getMoney();
         this.periods = String.valueOf(entity.getPeriods()) + getCycleTypeName(entity.getCycleType());
         this.bpRate = entity.getBpRate();
-        this.progress = entity.getProgress();
+        this.progress = entity.getProgress().setScale(2, BigDecimal.ROUND_HALF_UP);
     }
 
     private String getCycleTypeName(int cycleType){

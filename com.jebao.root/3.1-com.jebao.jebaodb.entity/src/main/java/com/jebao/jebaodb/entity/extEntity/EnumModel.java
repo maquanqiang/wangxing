@@ -91,8 +91,14 @@ public class EnumModel {
         }
     }
 
+    /**
+     * 交易类型
+     */
     public enum SerialType{
-        充值(1),提现(2);
+        充值(1),
+        提现(2),
+        投资(3),
+        借款(4);
         private int value;
         private SerialType(int val){
             this.value = val;

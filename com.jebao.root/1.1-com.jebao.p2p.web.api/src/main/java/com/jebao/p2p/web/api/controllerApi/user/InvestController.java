@@ -47,15 +47,8 @@ public class InvestController extends _BaseController {
         if (currentUser == null) {
             return new JsonResultData<>(null);
         }
-
         Map<String, BigDecimal> map = investService.getInvestStatisticsByLoginId(currentUser.getId());
-        InvestStatisticsVM viewModel = new InvestStatisticsVM();
-        viewModel.setBalance(map.get("balance"));
-        viewModel.setDueInIncome(map.get("dueInIncome"));
-        viewModel.setDueInPrincipal(map.get("dueInPrincipal"));
-        viewModel.setFreezeAmount(map.get("freezeAmount"));
-        viewModel.setIncomeAmount(map.get("incomeAmount"));
-        viewModel.setTotalAssets(map.get("totalAssets"));
+        InvestStatisticsVM viewModel = new InvestStatisticsVM(map);
         return new JsonResultData<>(viewModel);
     }
 

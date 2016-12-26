@@ -5,7 +5,6 @@ import com.jebao.jebaodb.dao.dao.user.TbFundsDetailsDao;
 import com.jebao.jebaodb.entity.extEntity.PageWhere;
 import com.jebao.jebaodb.entity.investment.FundDetailSM;
 import com.jebao.jebaodb.entity.investment.TbIncomeDetail;
-import com.jebao.jebaodb.entity.loaner.LoanMovementTotal;
 import com.jebao.jebaodb.entity.user.TbFundsDetails;
 import com.jebao.p2p.service.inf.user.IFundsDetailsServiceInf;
 import org.springframework.beans.factory.annotation.Autowired;

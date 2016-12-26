@@ -3,12 +3,22 @@ package com.jebao.p2p.web.api.responseModel.user;
 import com.jebao.p2p.web.api.responseModel.ViewModel;
 
 import java.math.BigDecimal;
+import java.util.Map;
 
 /**
  * 投资人账户收益总览数据展示类
  * Created by Administrator on 2016/12/12.
  */
 public class InvestStatisticsVM extends ViewModel {
+    public InvestStatisticsVM(Map<String, BigDecimal> map) {
+        this.incomeAmount = map.get("incomeAmount").setScale(2, BigDecimal.ROUND_HALF_UP);
+        this.totalAssets = map.get("totalAssets").setScale(2, BigDecimal.ROUND_HALF_UP);
+        this.balance = map.get("balance");
+        this.freezeAmount = map.get("freezeAmount").setScale(2, BigDecimal.ROUND_HALF_UP);
+        this.dueInPrincipal = map.get("dueInPrincipal").setScale(2, BigDecimal.ROUND_HALF_UP);
+        this.dueInIncome = map.get("dueInIncome").setScale(2, BigDecimal.ROUND_HALF_UP);
+    }
+
     //累计收益
     private BigDecimal incomeAmount;
 
