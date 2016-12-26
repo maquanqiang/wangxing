@@ -18,10 +18,10 @@ public class TbLoanerDao {
     @Autowired
     private TbLoanerMapper tbLoanerMapper;
 
-    public Long insert(TbLoaner record) {
+    public int insert(TbLoaner record) {
         return tbLoanerMapper.insert(record);
     }
-    public Long insertSelective(TbLoaner record) {
+    public int insertSelective(TbLoaner record) {
         return tbLoanerMapper.insertSelective(record);
     }
     public TbLoaner selectByPrimaryKey(Long lId)

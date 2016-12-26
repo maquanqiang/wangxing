@@ -24,7 +24,7 @@ public interface ILoanerServiceInf {
      * @param entity
      * @return
      */
-    Long addLoaner(TbLoaner entity);
+    int addLoaner(TbLoaner entity);
 
     /**
      * 根据手机号查询借款人基本信息

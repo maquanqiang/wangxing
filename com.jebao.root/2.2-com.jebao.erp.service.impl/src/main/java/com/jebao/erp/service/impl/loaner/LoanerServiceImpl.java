@@ -50,12 +50,12 @@ public class LoanerServiceImpl implements ILoanerServiceInf {
             lId = entity.getlId();
         }
         if(lId == 0){
-            lId = addLoaner(entity);
-            if(lId > 0){
+            int result = addLoaner(entity);
+            if(result > 0){
                 TbUserDetails userDetails = userDetailsService.selectByLoginId(entity.getlLoginId());
                 if(userDetails.getUdLoanerId() == null) {
                     userDetails.setUdUpdateTime(new Date());
-                    userDetails.setUdLoanerId(lId);
+                    userDetails.setUdLoanerId(entity.getlId());
                     userDetailsService.updateUserDetails(userDetails);
                 }
             }
@@ -66,25 +66,25 @@ public class LoanerServiceImpl implements ILoanerServiceInf {
     }
 
     @Override
-    public Long addLoaner(TbLoaner entity) {
+    public int addLoaner(TbLoaner entity) {
         if(entity == null){
-            return 0l;
+            return 0;
         }
 
         TbLoaner record = new TbLoaner();
         record.setlPhone(entity.getlPhone());
         int result = tbLoanerDao.selectByParamsForPageCount(record);
         if(result > 0 ){
-            return 0l;
+            return 0;
         }
 
         TbLoginInfo loginInfo = tbLoginInfoDao.selectByLoginName(entity.getlPhone());
         if (loginInfo == null) {
-            return 0l;
+            return 0;
         }
         TbUserDetails userDetails = tbUserDetailsDao.selectByLoginId(loginInfo.getLiId());
         if (userDetails == null || StringUtils.isBlank(userDetails.getUdThirdAccount())) {
-            return 0l;
+            return 0;
         }
         entity.setlLoginId(loginInfo.getLiId());
         if(StringUtils.isBlank(userDetails.getUdNickName())){
