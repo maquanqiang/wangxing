@@ -54,7 +54,7 @@ public class FundsControllerApi {
         }
         TbFundsDetails record = new TbFundsDetails();
         record.setFdLoginId(model.getLoginId());
-        record.setFdSerialStatus(1);
+        record.setFdSerialStatus(EnumModel.FdSerialStatus.成功.getValue());
         PageWhere page = new PageWhere(model.getPageIndex(), model.getPageSize());
         List<TbFundsDetails> fdList = fundsDetailsService.selectByParamsForPage(record, page);
         List<FundsDetailsVM> viewModelList = new ArrayList<>();
@@ -81,10 +81,10 @@ public class FundsControllerApi {
         }
         FundsSumVM viewModel = new FundsSumVM();
         for (FundsStatistics fs : fsList) {
-            if (fs.getSerialTypeId() == 1) {
+            if (fs.getSerialTypeId() == EnumModel.SerialType.充值.getValue()) {
                 viewModel.setCzCount(fs.getTotalTrades());
                 viewModel.setCzAmounts(fs.getTotalAmounts());
-            } else if (fs.getSerialTypeId() == 2) {
+            } else if (fs.getSerialTypeId() == EnumModel.SerialType.提现.getValue()) {
                 viewModel.setTxCount(fs.getTotalTrades());
                 viewModel.setTxAmounts(fs.getTotalAmounts());
             }

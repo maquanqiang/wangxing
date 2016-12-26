@@ -71,8 +71,8 @@ public class InvestController extends _BaseController {
         TbInvestInfo record = new TbInvestInfo();
         record.setIiLoginId(currentUser.getId());
 
-        if (freezeStatus == 1) {//投资中
-            record.setIiFreezeStatus(1);
+        if (freezeStatus == EnumModel.FreezeStatus.冻结中.getValue()) {//投资中
+            record.setIiFreezeStatus(EnumModel.FreezeStatus.冻结中.getValue());
             List<InvestBase> investIngList = investService.selectInvestBaseByLoginId(record, page);
             if (investIngList == null || investIngList.size() == 0) {
                 return new JsonResultList<>(null);
@@ -82,7 +82,7 @@ public class InvestController extends _BaseController {
             investIngList.forEach(o -> viewModelList.add(new InvestIngVM(o)));
             return new JsonResultList<>(viewModelList);
         } else {//还款中
-            record.setIiFreezeStatus(2);
+            record.setIiFreezeStatus(EnumModel.FreezeStatus.还款中.getValue());
             List<InvestBase> baseList = investService.selectInvestBaseByLoginId(record, page);
             if (baseList == null || baseList.size() == 0) {
                 return new JsonResultList<>(null);
@@ -133,8 +133,8 @@ public class InvestController extends _BaseController {
         record.setIiLoginId(currentUser.getId());
         PageWhere page = new PageWhere(model.getPageIndex(), model.getPageSize());
 
-        if (model.getFreezeStatus() == 1) {//投资中
-            record.setIiFreezeStatus(1);
+        if (model.getFreezeStatus() == EnumModel.FreezeStatus.冻结中.getValue()) {//投资中
+            record.setIiFreezeStatus(EnumModel.FreezeStatus.冻结中.getValue());
             List<InvestBase> investIngList = investService.selectInvestBaseByLoginId(record, page);
             if (investIngList == null || investIngList.size() == 0) {
                 return new JsonResultList<>(null);
@@ -147,8 +147,8 @@ public class InvestController extends _BaseController {
                 count = investService.selectInvestBaseByLoginIdForPageCount(record);
             }
             return new JsonResultList<>(viewModelList, count);
-        } else if (model.getFreezeStatus() == 2) {//还款中
-            record.setIiFreezeStatus(2);
+        } else if (model.getFreezeStatus() == EnumModel.FreezeStatus.还款中.getValue()) {//还款中
+            record.setIiFreezeStatus(EnumModel.FreezeStatus.还款中.getValue());
             List<InvestBase> baseList = investService.selectInvestBaseByLoginId(record, page);
             if (baseList == null || baseList.size() == 0) {
                 return new JsonResultList<>(null);
@@ -185,7 +185,7 @@ public class InvestController extends _BaseController {
             }
             return new JsonResultList<>(vmList, count);
         } else {//已还款
-            record.setIiFreezeStatus(3);
+            record.setIiFreezeStatus(EnumModel.FreezeStatus.已还款.getValue());
             List<InvestBase> baseList = investService.selectInvestBaseByLoginId(record, page);
             if (baseList == null || baseList.size() == 0) {
                 return new JsonResultList<>(null);

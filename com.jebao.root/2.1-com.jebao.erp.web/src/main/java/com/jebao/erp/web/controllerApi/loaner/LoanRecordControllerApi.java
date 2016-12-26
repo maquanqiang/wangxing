@@ -37,7 +37,7 @@ public class LoanRecordControllerApi {
         if (model == null) {
             return new JsonResultList<>(null);
         }
-        model.setBpStatus(7);
+        model.setBpStatus(EnumModel.BidStatus.还款中.getValue());
         List<TbBidPlan> planList = tbBidPlanService.selectByLoanerIdForPage(model);
         List<LoanRecordVM> viewModelList = new ArrayList<>();
         planList.forEach(o -> viewModelList.add(new LoanRecordVM(o)));

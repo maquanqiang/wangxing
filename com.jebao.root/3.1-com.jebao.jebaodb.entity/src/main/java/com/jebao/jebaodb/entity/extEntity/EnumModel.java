@@ -5,6 +5,20 @@ package com.jebao.jebaodb.entity.extEntity;
  */
 public class EnumModel {
     /**
+     * 是否有效状态
+     */
+    public enum IsDel{
+        有效(1),无效(2);
+        private int value;
+        private IsDel(int val){
+            this.value = val;
+        }
+        public int getValue(){
+            return this.value;
+        }
+    }
+
+    /**
      * 注册平台
      */
     public enum Platform{
@@ -78,21 +92,7 @@ public class EnumModel {
     }
 
     /**
-     * 是否有效状态
-     */
-    public enum IsDel{
-        有效(1),无效(2);
-        private int value;
-        private IsDel(int val){
-            this.value = val;
-        }
-        public int getValue(){
-            return this.value;
-        }
-    }
-
-    /**
-     * 交易类型
+     * 资金交易类型
      */
     public enum SerialType{
         充值(1),
@@ -129,6 +129,44 @@ public class EnumModel {
         未还(1),已还(2);
         private int value;
         private IncomeStatus(int val){
+            this.value = val;
+        }
+        public int getValue(){
+            return this.value;
+        }
+    }
+
+    /**
+     * 标的状态
+     */
+    public enum BidStatus{
+        初始待审核(0),
+        审核被拒(1),
+        招标中(2),
+        满标(3),
+        过期(4),
+        起息中(6),
+        还款中(7),
+        完成(10);
+        private int value;
+        private BidStatus(int val){
+            this.value = val;
+        }
+        public int getValue(){
+            return this.value;
+        }
+    }
+
+    /**
+     * 投资状态
+     */
+    public enum FreezeStatus{
+        冻结中(1),
+        还款中(2),
+        已还款(3),
+        流标(4);
+        private int value;
+        private FreezeStatus(int val){
             this.value = val;
         }
         public int getValue(){
