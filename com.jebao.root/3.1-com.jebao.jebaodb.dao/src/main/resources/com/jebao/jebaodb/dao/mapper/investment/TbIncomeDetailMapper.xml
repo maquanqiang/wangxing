@@ -398,7 +398,7 @@
     </sql>
 
     <sql id="loanInfoCountWhere">
-        plan.bp_login_id = 1
+        plan.bp_login_id = #{bpLoginId}
         AND detail.ind_status = 1
         <if test="dateTime != null">
             <![CDATA[
@@ -539,10 +539,10 @@
         FROM
             tb_bid_plan
         WHERE
-            bp_login_id = #{loginId}
+            bp_login_id = #{loginId} and bp_status IN (7, 10)
     </select>
 
-    <select id="overdueMoneyOther" parameterType="java.util.Date" resultMap="BaseResultMap">
+    <select id="overdueMoneyOther" resultMap="BaseResultMap">
         SELECT
         IFNULL(SUM(detail.ind_overdue_money),0) AS ind_overdue_money,
         IFNULL(SUM(detail.ind_money + ind_overdue_money),0) AS ind_money
@@ -652,6 +652,14 @@
         where ind_bp_id = #{indBpId,jdbcType=BIGINT}
     </update>
 
+    <select id="investerTotalMoney" parameterType="com.jebao.jebaodb.entity.investment.TbIncomeDetail" resultType="java.math.BigDecimal">
+        SELECT
+            SUM(detail.ind_money)
+        FROM
+            tb_income_detail detail
+        WHERE
+        detail.ind_login_id = #{indLoginId} and detail.ind_ii_id = #{indIiId}
+    </select>
 
     <!--==================================================借款人相关信息==================================================-->
     <select id="totalMoneyByloanerId" resultType="java.math.BigDecimal"

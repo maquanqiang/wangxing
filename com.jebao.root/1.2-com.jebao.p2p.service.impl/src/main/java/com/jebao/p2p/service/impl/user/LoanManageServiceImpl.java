@@ -198,7 +198,7 @@ public class LoanManageServiceImpl implements ILoanManageServiceInf {
         if(flag){
 
             plan.setBpUpdateTime(new Date());
-            if(period == (plan.getBpRepayedPeriods()+1)){      //说明已到最后一期  修改标的为完成
+            if(period == plan.getBpPeriods()){      //说明已到最后一期  修改标的为完成
                 plan.setBpStatus(10);
             }
             plan.setBpRepayedPeriods(period);

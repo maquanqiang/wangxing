@@ -27,6 +27,8 @@ public interface IIncomeDetailServiceInf {
 
     int updateByConditionSelective(TbIncomeDetail record);
 
+    BigDecimal investerTotalMoney(TbIncomeDetail record);
+
     /*==================================================借款人相关信息==================================================*/
 
     /**

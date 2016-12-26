@@ -16,6 +16,7 @@ import com.jebao.jebaodb.entity.product.ProductSM;
 import org.apache.ibatis.annotations.Param;
 import org.hibernate.validator.internal.constraintvalidators.bv.past.PastValidatorForReadableInstant;
 import org.junit.Test;
+import org.omg.CORBA.PUBLIC_MEMBER;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.math.BigDecimal;
@@ -65,6 +66,7 @@ public class TbBidPlanDao_UnitTest extends _BaseUnitTest {
         System.out.println(i);
 
     }
+
 
     @Test
     public void select(){

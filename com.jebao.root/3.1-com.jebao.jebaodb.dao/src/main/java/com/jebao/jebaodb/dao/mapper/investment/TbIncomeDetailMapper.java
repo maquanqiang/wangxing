@@ -37,7 +37,7 @@ public interface TbIncomeDetailMapper {
 
     BigDecimal loanMoneyTotal(@Param("loginId") Long loginId);
 
-    TbIncomeDetail overdueMoneyOther(@Param("dateTime") Date dateTime);
+    TbIncomeDetail overdueMoneyOther(@Param("bpLoginId")Long loginId, @Param("dateTime") Date dateTime);
 
     int selectFundCount(@Param("record") FundDetailSM record);
 
@@ -48,6 +48,8 @@ public interface TbIncomeDetailMapper {
     BigDecimal repaymoneyTotal(@Param("record") TbIncomeDetail record);
 
     int updateByConditionSelective(TbIncomeDetail record);
+
+    BigDecimal investerTotalMoney(TbIncomeDetail record);
 
     /*==================================================借款人相关统计==================================================*/
     BigDecimal totalMoneyByloanerId(IncomeDetailSM model);
