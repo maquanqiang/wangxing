@@ -51,7 +51,7 @@
                                 <form id="quickPay_form" action="/api/user/quickpay" method="post" autocomplete="off">
                                     <div class="account-bankImg clearfix">
                                         <img src="${filePath}/images/account-bank.png" class="fl">
-                                        <div class="account-bankDetail fl">
+                                        <div v-cloak class="account-bankDetail fl">
                                             <h5>{{ bankInfo.bankName }}</h5>
                                             <p class="card-type">储蓄卡</p>
                                             <p class="card-num">{{ bankInfo.bankCardNo }}</p>
@@ -59,7 +59,7 @@
                                     </div>
                                     <div class="account-banktext clearfix">
                                         <h5>可用金额：</h5>
-                                        <span class="red">{{ bankInfo.balance }}</span><i>元</i>
+                                        <span class="red" v-cloak>{{ bankInfo.balance }}</span><i>元</i>
                                     </div>
                                     <div class="form-group account-banktext clearfix">
                                         <h5>充值金额：</h5>
@@ -73,7 +73,7 @@
                                 <form id="fastRecharge_form" action="/api/user/fastRecharge" method="post" autocomplete="off">
                                     <div class="account-banktext clearfix">
                                         <h5>可用金额：</h5>
-                                        <span class="red">{{ bankInfo.balance }}</span><i>元</i>
+                                        <span class="red" v-cloak>{{ bankInfo.balance }}</span><i>元</i>
                                     </div>
                                     <div class="form-group account-banktext clearfix">
                                         <h5>充值金额：</h5>
@@ -87,7 +87,7 @@
                                 <form id="onlineBankRecharge_form" action="/api/user/onlineBankRecharge" method="post" autocomplete="off">
                                     <div class="account-banktext clearfix">
                                         <h5>可用金额：</h5>
-                                        <span class="red">{{ bankInfo.balance }}</span><i>元</i>
+                                        <span class="red" v-cloak>{{ bankInfo.balance }}</span><i>元</i>
                                     </div>
                                     <div class="form-group account-banktext clearfix">
                                         <h5>充值金额：</h5>
@@ -104,7 +104,7 @@
                     <form id="withdrawDeposit_form" action="/api/user/withdrawDeposit" method="post" autocomplete="off">
                         <div class="account-bankImg clearfix">
                             <img src="${filePath}/images/account-bank.png" class="fl">
-                            <div class="account-bankDetail fl">
+                            <div class="account-bankDetail fl" v-cloak>
                                 <h5>{{ bankInfo.bankName }}</h5>
                                 <p class="card-type">储蓄卡</p>
                                 <p class="card-num">{{ bankInfo.bankCardNo }}</p>
@@ -112,7 +112,7 @@
                         </div>
                         <div class="account-banktext clearfix">
                             <h5>可用金额：</h5>
-                            <span class="red">{{ bankInfo.balance }}</span><i>元</i>
+                            <span class="red" v-cloak>{{ bankInfo.balance }}</span><i>元</i>
                         </div>
                         <div class="form-group account-banktext clearfix">
                             <h5>提现金额：</h5>
@@ -128,6 +128,12 @@
                             <span>$UrlHelperTool.getFee()元</span>
                         </div>
                         <a href="javascript:void(0);" class="account-btn" @click.prevent="submit('#withdrawDeposit_form')">提现</a>
+                        <div class="postal-reminder reminder">
+                            <h4>温馨提示</h4>
+                            <p>1.提现在富友系统确认完成。</p>
+                            <p>2.提现未完成，请勿关闭浏览器窗口，操作完成后，浏览器会自动跳转返回到网站界面。</p>
+                            <p>3.如果您在充值过程中遇到任何问题，可以直接致电010-65006966或咨询在线客服寻求帮助。</p>
+                        </div>
                     </form>
                 </div>
             </div>

@@ -43,21 +43,21 @@ var vm = new Vue({
                     var data = response.data;
                     if (fs == 1) {
                         vm.investings = data;
-                        if (data == null && data.length > 0) {
+                        if (data != null && data.length > 0) {
                             vm.isHasDateii = true;
                         } else {
                             vm.isHasDateii = false;
                         }
                     } else if (fs == 2) {
                         vm.paymentings = data;
-                        if (data == null && data.length > 0) {
+                        if (data != null && data.length > 0) {
                             vm.isHasDatepi = true;
                         } else {
                             vm.isHasDatepi = false;
                         }
                     } else {
                         vm.paymenteds = data;
-                        if (data == null && data.length > 0) {
+                        if (data != null && data.length > 0) {
                             vm.isHasDatepd = true;
                         } else {
                             vm.isHasDatepd = false;

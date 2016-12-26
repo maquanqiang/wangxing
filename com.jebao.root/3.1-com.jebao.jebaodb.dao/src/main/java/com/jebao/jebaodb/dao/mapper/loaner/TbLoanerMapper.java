@@ -7,9 +7,9 @@ import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
 public interface TbLoanerMapper {
-    Long insert(TbLoaner record);
+    int insert(TbLoaner record);
 
-    Long insertSelective(TbLoaner record);
+    int insertSelective(TbLoaner record);
 
     TbLoaner selectByPrimaryKey(Long lId);
 
