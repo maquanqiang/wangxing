@@ -2,8 +2,10 @@ package com.jebao.erp.web.utils.contract;
 
 import com.jebao.erp.service.inf.investment.IInvestInfoServiceInf;
 import com.jebao.erp.web.utils.constants.Constants;
+import com.jebao.jebaodb.dao.dao.investment.TbInvestInfoDao;
 import com.jebao.jebaodb.entity.investment.TbInvestInfo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -16,10 +18,11 @@ import java.util.concurrent.Executors;
 /**
  * Created by Administrator on 2016/12/19.
  */
+@Component
 public class PdfCustom {
 
     @Autowired
-    private IInvestInfoServiceInf investInfoService;
+    private TbInvestInfoDao investInfoDao;
     //文件下载服务器的地址
     private static final String FILE_UPLOAD_SERVICE_URL = Constants.FILE_UPLOAD_SERVICE_URL;
     private static final String PHANTONJS_EXE_PATH = Constants.CONTRACT_PDF_PHANTONJS_EXE_PATH;
@@ -55,7 +58,7 @@ public class PdfCustom {
                         TbInvestInfo tbInvestInfo = new TbInvestInfo();
                         tbInvestInfo.setIiContractUrl(fileDownloadUrl);
                         tbInvestInfo.setIiId(pdfInfo.getIiId());
-                        int count = investInfoService.save(tbInvestInfo);
+                        int count = investInfoDao.updateByPrimaryKeySelective(tbInvestInfo);
                         System.out.println("合同生成保存个数："+count);
                     }else{
                         System.out.println("PDF合同生成-失败："+result);

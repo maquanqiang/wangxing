@@ -148,7 +148,7 @@ public class ContractController {
         if(tbInvestInfos!=null && tbInvestInfos.size()>0){
             for(TbInvestInfo info : tbInvestInfos){
                 form.setInvestId(info.getIiId());
-                form.setContractName(form.getBidNumber()+"_"+info.getIiLoginName());
+                form.setContractName(form.getBidNumber()+"_"+info.getIiLoginName()+"_"+info.getIiId());
                 String httpParam = form.toString();
                 String templateUrl = String.format("http://localhost:%d/contract/template/t1?"+httpParam
                         , EmbeddedServletInstance.getServerPort());
