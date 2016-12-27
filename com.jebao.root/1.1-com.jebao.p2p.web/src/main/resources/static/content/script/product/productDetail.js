@@ -32,7 +32,8 @@ var model = {
     investInfoList : [],
     incomeDetailList : [],
     flag : false,
-    mySwiper:null
+    mySwiper:null,
+    bpMortgageInfo:''
 };
 
 // 创建一个 Vue 实例 (ViewModel),它连接 View 与 Model
@@ -78,6 +79,13 @@ var vm = new Vue({
             $.post($("#defaultForm").attr("action"), form, function (response) {
                 if (response.success_is_ok) {
                     vm.product = response.data;
+                    $("#bpMortgageInfohtml").html(toChangeLine(vm.product.bpMortgageInfo));
+                    $("#bpRepayingSource").html(toChangeLine(vm.product.bpRepayingSource));
+                    $("#bpRiskOpinion").html(toChangeLine(vm.product.bpRiskOpinion));
+                    $("#bpFundsPurpose").html(toChangeLine(vm.product.bpFundsPurpose));
+                    $("#bpPersonalCredit").html(toChangeLine(vm.product.bpPersonalCredit));
+                    //alert(toChangeLine(vm.product.bpRepayingSource))
+
                     sta_str=(vm.product.bpStartTime).replace(/-/g,"/");
                     end_str=(vm.product.bpEndTime).replace(/-/g,"/");//得到的时间的格式都是：yyyy-MM-dd hh24:mi:ss。
                     var end_str=new Date(end_str);//将字符串转化为时间
@@ -185,9 +193,9 @@ var vm = new Vue({
                             if (response.success_is_ok) {
                                 var data = response.data;
                                 if(data.flag=="true"){
-                                    window.location.href="/product/productSuccess?investMoney="+form.investMoney;
+                                    window.location.href="/product/productSuccess/"+form.investMoney;
                                 }else{
-                                    window.location.href="/product/productFail?msg="+data.msg;
+                                    window.location.href="/product/productFail/"+data.msg;
                                 }
                             }else{
                                 layer.alert(response.error);
@@ -239,15 +247,24 @@ function tick(endTime) {
     var  end_str= endTime;
     var oNow=new Date();
     var  total=parseInt((end_str.getTime()-oNow.getTime())/1000);
-    var  d=parseInt(total/86400);
-    total%=86400;
-    var  h=parseInt(total/3600);
-    total%=3600;
-    var  m=parseInt(total/60);
-    total%=60;
-    var  s=total;
-    //console.log(d+'天'+h+'时'+m+'分'+s+'秒');
-    $('#span1').html(d+'天'+h+'时'+m+'分'+s+'秒');
+    if(total>0){
+        var  d=parseInt(total/86400);
+        total%=86400;
+        var  h=parseInt(total/3600);
+        total%=3600;
+        var  m=parseInt(total/60);
+        total%=60;
+        var  s=total;
+        //console.log(d+'天'+h+'时'+m+'分'+s+'秒');
+        $('#span1').html(d+'天'+h+'时'+m+'分'+s+'秒');
+    }else{
+        $('#span1').html(0+'天'+0+'时'+0+'分'+0+'秒');
+    }
+
+}
+
+function  toChangeLine(str) {
+    return str.replace(/&lt;br\/&gt;/g,"<br />")
 }
 
 

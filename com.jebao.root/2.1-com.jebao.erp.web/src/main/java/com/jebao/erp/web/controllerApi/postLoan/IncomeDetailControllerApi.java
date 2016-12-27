@@ -4,6 +4,7 @@ import com.jebao.erp.service.inf.investment.IIncomeDetailServiceInf;
 import com.jebao.erp.service.inf.investment.IInvestInfoServiceInf;
 import com.jebao.erp.service.inf.investment.ILoanerRepaymentDetailServiceInf;
 import com.jebao.erp.service.inf.user.ILoginInfoServiceInf;
+import com.jebao.erp.web.requestModel.bidplan.BidPlanForm;
 import com.jebao.erp.web.responseModel.base.JsonResult;
 import com.jebao.erp.web.responseModel.base.JsonResultError;
 import com.jebao.erp.web.responseModel.base.JsonResultList;
@@ -11,6 +12,8 @@ import com.jebao.erp.web.responseModel.postLoan.IncomeDetailsVM;
 import com.jebao.jebaodb.entity.extEntity.PageWhere;
 import com.jebao.jebaodb.entity.investment.TbIncomeDetail;
 import com.jebao.jebaodb.entity.investment.TbInvestInfo;
+import com.jebao.jebaodb.entity.loanmanage.TbBidPlan;
+import com.jebao.jebaodb.entity.loanmanage.search.BidPlanSM;
 import com.jebao.jebaodb.entity.postLoan.search.RepaymentDetailSM;
 import com.jebao.jebaodb.entity.user.TbLoginInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -72,4 +75,28 @@ public class IncomeDetailControllerApi {
 
         return new JsonResultList<>(detailsVMs);
     }
+
+    /**
+     * 贷后管理  还款明细
+     * @param form
+     * @param pageIndex
+     * @param pageSize
+     * @return
+     */
+    @RequestMapping("postLoanIncomeDetail")
+    @ResponseBody
+    public JsonResult postLoanIncomeDetail(BidPlanForm form, @RequestParam(value = "pageIndex", defaultValue = "0") Integer pageIndex,
+                                    @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize){
+
+        List<IncomeDetailsVM> incomeDetailsVM = new ArrayList<>();
+        BidPlanSM bidPlanSM = BidPlanForm.toEntity(form);
+        PageWhere pageWhere = new PageWhere(pageIndex, pageSize);
+        List<TbIncomeDetail> incomeDetails = incomeDetailService.selectPostLoanDetail(bidPlanSM, pageWhere);
+        incomeDetails.forEach(o -> incomeDetailsVM.add(new IncomeDetailsVM(o)));
+        int count = incomeDetailService.selectPostLoanDetailCount(bidPlanSM);
+
+        return new JsonResultList<>(incomeDetailsVM, count);
+    }
+
+
 }

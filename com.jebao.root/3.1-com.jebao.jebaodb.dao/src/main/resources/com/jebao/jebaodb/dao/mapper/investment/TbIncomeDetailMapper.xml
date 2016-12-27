@@ -394,7 +394,7 @@
         <if test="record.period != null">
             AND detail.ind_periods = plan.bp_repayed_periods + #{record.period,jdbcType=INTEGER}
         </if>
-
+        AND detail.ind_is_del = 1
     </sql>
 
     <sql id="loanInfoCountWhere">
@@ -408,10 +408,79 @@
 
     </sql>
 
+    <sql id="postLoanDetailWhere">
+        <if test="record.bpName != null">
+            AND bp_name = #{record.bpName,jdbcType=VARCHAR}
+        </if>
+        <if test="record.bpNumber != null" >
+            AND bp_number = #{record.bpNumber,jdbcType=VARCHAR}
+        </if>
+        <if test="record.bpTrueName != null" >
+            AND bp_true_name = #{record.bpTrueName,jdbcType=VARCHAR}
+        </if>
+        <if test="record.bpStatus != null">
+            AND bp_status = #{record.bpStatus,jdbcType=INTEGER}
+        </if>
+        <if test="record.searchDateSt != null" >
+            <![CDATA[
+              AND ${record.searchDateType}  >=  #{record.searchDateSt,jdbcType=VARCHAR}
+            ]]>
+        </if>
+        <if test="record.searchDateEnd != null" >
+            <![CDATA[
+              AND ${record.searchDateType}  <=  #{record.searchDateEnd,jdbcType=VARCHAR}
+            ]]>
+        </if>
+        AND bp_is_del = 1
+    </sql>
+
+    <select id="selectPostLoanDetail" resultMap="myResultMap">
+        SELECT
+        ind_bp_id,
+        ind_bp_number,
+        ind_bp_name,
+        ind_true_name,
+        ind_periods,
+        ind_date_time,
+        ind_fact_date_time,
+        ind_overdue_days,
+        sum(ind_overdue_money) AS ind_overdue_money,
+        ind_fund_type,
+        sum(ind_money) AS ind_money,
+        sum(ind_fact_moeny) AS ind_fact_moeny,
+        ind_status,
+        bp_true_name
+        FROM
+        tb_income_detail LEFT JOIN tb_bid_plan ON ind_bp_id = bp_id
+        <where>
+            <include refid="postLoanDetailWhere"/>
+        </where>
+        GROUP BY
+        ind_bp_id, ind_periods , ind_fund_type
+        <if test="pageWhere.orderBy!=null">
+            ORDER BY ${pageWhere.orderBy}
+        </if>
+        LIMIT #{pageWhere.begin},#{pageWhere.pageSize}
+    </select>
+
+    <select id="selectPostLoanDetailCount" resultType="java.lang.Integer">
+        select count(*) from (
+        select *
+        from tb_income_detail LEFT JOIN tb_bid_plan ON ind_bp_id = bp_id
+        <where>
+            <include refid="postLoanDetailWhere"/>
+        </where>
+        GROUP BY
+        ind_bp_id, ind_periods ,ind_fund_type
+        ) a
+    </select>
+
+
+
     <select id="selectForPage" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
-        from tb_income_detail
+        from tb_income_detail where ind_is_del = 1
         <if test="pageWhere.orderBy!=null">
             ORDER BY ${pageWhere.orderBy}
         </if>
@@ -450,7 +519,7 @@
         sum(ind_overdue_money) AS ind_overdue_money,
         ind_fund_type,
         sum(ind_money) AS ind_money,
-        sum(ind_fact_moeny) AS ind_fact_money,
+        sum(ind_fact_moeny) AS ind_fact_moeny,
         ind_status,
         bp_true_name
         FROM
@@ -459,18 +528,22 @@
             <include refid="selectByCondition_Where_Clause"/>
         </where>
         GROUP BY
-        ind_bp_id, ind_fund_type DESC, ind_periods
+        ind_bp_id, ind_periods , ind_fund_type
         <if test="pageWhere.orderBy!=null">
             ORDER BY ${pageWhere.orderBy}
         </if>
         LIMIT #{pageWhere.begin},#{pageWhere.pageSize}
     </select>
     <select id="selectGroupByConditionCount" resultType="java.lang.Integer">
-        select count(*)
+        select count(*) from (
+        select *
         from tb_income_detail
         <where>
             <include refid="selectByCondition_Where_Clause"/>
         </where>
+        GROUP BY
+        ind_bp_id, ind_periods ,ind_fund_type
+        ) a
     </select>
     <select id="selectFundList" resultMap="fundResultMap">
         SELECT
@@ -657,7 +730,7 @@
             SUM(detail.ind_money)
         FROM
             tb_income_detail detail
-        WHERE
+        WHERE detail.ind_is_del = 1 AND
         detail.ind_login_id = #{indLoginId} and detail.ind_ii_id = #{indIiId}
     </select>
 

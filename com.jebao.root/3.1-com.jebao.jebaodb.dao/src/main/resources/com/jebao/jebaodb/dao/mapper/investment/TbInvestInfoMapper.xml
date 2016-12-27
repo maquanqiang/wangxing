@@ -368,7 +368,9 @@
         SELECT COUNT(1)
         FROM tb_invest_info
         WHERE ii_login_id = #{record.iiLoginId,jdbcType=BIGINT}
-        AND ii_freeze_status = #{record.iiFreezeStatus,jdbcType=INTEGER}
+        <if test="record.iiFreezeStatus != null">
+            AND ii_freeze_status = #{record.iiFreezeStatus,jdbcType=INTEGER}
+        </if>
         AND ii_is_del = 1
     </select>
     <select id="totalFreezeMoneyByLoginId" resultType="java.math.BigDecimal" parameterType="java.lang.Long">

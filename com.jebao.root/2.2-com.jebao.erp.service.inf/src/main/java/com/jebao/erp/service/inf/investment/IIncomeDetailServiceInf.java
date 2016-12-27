@@ -3,6 +3,8 @@ package com.jebao.erp.service.inf.investment;
 import com.jebao.jebaodb.entity.extEntity.PageWhere;
 import com.jebao.jebaodb.entity.investment.TbIncomeDetail;
 import com.jebao.jebaodb.entity.investment.search.IncomeDetailSM;
+import com.jebao.jebaodb.entity.loanmanage.TbBidPlan;
+import com.jebao.jebaodb.entity.loanmanage.search.BidPlanSM;
 import com.jebao.jebaodb.entity.postLoan.search.RepaymentDetailSM;
 
 import java.math.BigDecimal;
@@ -28,6 +30,11 @@ public interface IIncomeDetailServiceInf {
     int updateByConditionSelective(TbIncomeDetail record);
 
     BigDecimal investerTotalMoney(TbIncomeDetail record);
+
+    List<TbIncomeDetail> selectPostLoanDetail(BidPlanSM record, PageWhere pageWhere);
+
+    int selectPostLoanDetailCount(BidPlanSM record);
+
 
     /*==================================================借款人相关信息==================================================*/
 

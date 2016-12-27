@@ -10,6 +10,7 @@ import com.jebao.jebaodb.entity.postLoan.search.RepaymentDetailSM;
 import com.jebao.jebaodb.entity.product.ProductSM;
 import com.jebao.jebaodb.entity.user.TbUserDetails;
 import com.jebao.p2p.service.inf.product.IProductServiceInf;
+import com.jebao.p2p.service.inf.user.IInvestServiceInf;
 import com.jebao.p2p.web.api.requestModel.product.InvestInfoForm;
 import com.jebao.p2p.web.api.requestModel.product.ProductForm;
 import com.jebao.p2p.web.api.responseModel.base.*;
@@ -40,7 +41,7 @@ public class ProductControllerApi {
     @Autowired
     private IProductServiceInf productService;
     @Autowired
-    private PreAuthServiceImpl preAuthService;
+    private IInvestServiceInf investService;
 
 
     @RequestMapping("list")
@@ -141,6 +142,17 @@ public class ProductControllerApi {
             return new JsonResultError(resultValidation.getErrorMsg().toString());
         }
 
+        //判断是否为新手标
+        TbBidPlan tbBidPlan = productService.selectByBpId(form.getBpId());
+        if(tbBidPlan.getBpType()==2){
+            TbInvestInfo tbInvestInfo = new TbInvestInfo();
+            tbInvestInfo.setIiLoginId(currentUser.getId());
+
+            int count = investService.selectInvestBaseByLoginIdForPageCount(tbInvestInfo);
+            if(count>0){
+                return new JsonResultError("新手专享");
+            }
+        }
 
         String[] result = productService.investBid(form.getBpId(), currentUser.getId(), form.getInvestMoney());
 

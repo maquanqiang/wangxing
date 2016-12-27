@@ -76,4 +76,36 @@ $.fn.bootstrapValidator.validators.idCard = {
         return true;
     }
 };
+$.fn.bootstrapValidator.validators.bankCard = {
+    validate:function(validator, $field, options){
+        var value = $field.val();
+        if (value === '') {
+            return true;
+        }
+        if(value.length !=16 && value.length != 19){
+            return false;
+        }
+
+        // 1.将未带校验位的 15（或18）位卡号从右依次编号 1 到 15（18），位于奇数位号上的数字乘以 2。
+// 2.将奇位乘积的个十位全部相加，再加上所有偶数位上的数字。
+// 3.将加法和加上校验位能被 10 整除。
+        var verifyCode = value.substr(value.length-1);
+        var baseCode = value.substr(0,value.length-1);
+        var sum = 0;
+        for (var i=baseCode.length -1;i>=0;i--){
+            var currentNumber = +baseCode[i]; //循环的当前数值
+            if (i % 2 == 0){
+                sum+=currentNumber;
+            }else{
+                currentNumber = currentNumber * 2;
+                sum+= currentNumber % 10 + parseInt(currentNumber/10);
+            }
+        }
+        sum += +verifyCode;
+        if (sum % 10 != 0){
+            return false;
+        }
+        return true;
+    }
+}
 

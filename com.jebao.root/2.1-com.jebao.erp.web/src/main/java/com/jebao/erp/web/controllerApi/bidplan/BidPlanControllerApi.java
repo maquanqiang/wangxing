@@ -223,7 +223,8 @@ public class BidPlanControllerApi extends _BaseController {
             Date loanDate = form.getBpExpectLoanDate();
             Date nextRepayDate = form.getBpExpectLoanDate();
             Integer bpCycleType = form.getBpCycleType();
-
+            calendar.setTime(loanDate);
+            int dd = calendar.get(GregorianCalendar.DAY_OF_MONTH);
 
             for (int i = 1; i <= form.getBpPeriodsDisplay(); i++) {
                 LoanIntentVM loanIntent = new LoanIntentVM();
@@ -238,13 +239,12 @@ public class BidPlanControllerApi extends _BaseController {
                 } else if (bpCycleType == 4) {   //年
                     now.add(Calendar.YEAR, i);
                 }
-                int days = BetweenDays.differentDays(nextRepayDate, now.getTime());
-                if (i == form.getBpPeriodsDisplay()) {
-                    if (now.get(GregorianCalendar.DAY_OF_MONTH) != calendar.get(GregorianCalendar.DAY_OF_MONTH)) {
-                        days += 1;
-                    }
+                if (now.get(GregorianCalendar.DAY_OF_MONTH) != dd) {
+                    now.add(Calendar.DATE, 1);
                 }
-//                System.out.println("实际时间"+days);
+                int days = BetweenDays.differentDays(nextRepayDate, now.getTime());
+
+                System.out.println("实际时间"+days);
                 nextRepayDate = now.getTime();
                 BigDecimal interest = principal.multiply(form.getBpRate()).multiply(new BigDecimal(days))
                         .divide(new BigDecimal(100 * 365), 2, BigDecimal.ROUND_HALF_UP);
@@ -295,7 +295,8 @@ public class BidPlanControllerApi extends _BaseController {
         List<TbBidPlan> tbBidPlans = bidPlanService.selectBySelfConditionForPage(bidPlanSM, pageWhere);
         List<BidPlanVM> viewModelList = new ArrayList<BidPlanVM>();
         tbBidPlans.forEach(o -> viewModelList.add(new BidPlanVM(o)));
-        return new JsonResultList<>(viewModelList);
+        int count = bidPlanService.selectBySelfConditionCount(bidPlanSM);
+        return new JsonResultList<>(viewModelList, count);
     }
 
     /**
@@ -348,78 +349,78 @@ public class BidPlanControllerApi extends _BaseController {
         }
     }
 
-    @RequestMapping("createContract")
-    @ResponseBody
-    public JsonResult createContract(RepaymentForm form) {
-
-        boolean flag = true;
-
-        String[] cycleType = {"", "天", "个月", "季", "年"};
-
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        DecimalFormat d1 = new DecimalFormat("#,##0.##");
-        String loanMonayRMB = UpCaseRMB.number2CNMontrayUnit(form.getBpLoanMoney());
-
-        //common data
-        ContractCommData commData = new ContractCommData();
-        TbBidPlan tbBidPlan = bidPlanService.selectByBpId(form.getBpId());
-        TbLoaner loaner = loanerService.findLoanerById(tbBidPlan.getBpLoanerId());
-
-
-        commData.setLoanerTrueName(tbBidPlan.getBpTrueName());              //借款人姓名
-        commData.setLoanerNumber(loaner.getlIdNumber());                    //证件号码
-        commData.setInterestSt(sdf.format(form.getBpInterestSt()));         //受让日期
-        commData.setRepayTime(sdf.format(form.getBpRepayTime()));           //还款日期   到期日
-        commData.setLoanMoney(d1.format(form.getBpLoanMoney())); //标的金额--实际放款金额
-        commData.setLoanMoneyRMB(loanMonayRMB);                             //标的金额人民币大写
-        commData.setInterestPayType(tbBidPlan.getBpInterestPayType() == 1 ? "一次性还本付息" : "按期付息，到期还本");     //还款方式
-        commData.setBidPeriods(tbBidPlan.getBpPeriods() + cycleType[tbBidPlan.getBpCycleType()]);          //标的周期
-        commData.setLoanTime(sdf.format(form.getBpInterestSt()));            //放款日期  签字日期
-
-        TbInvestInfo tbInvestInfo = new TbInvestInfo();
-        tbInvestInfo.setIiBpId(form.getBpId());
-        tbInvestInfo.setIiIsDel(1);
-        PageWhere pageWhere = new PageWhere(0, 10000);
-
-        List<TbInvestInfo> tbInvestInfos = investInfoService.selectByBpId(tbInvestInfo, pageWhere);
-        commData.setInfos(tbInvestInfos);
-
-        //循环每个投资人
-        for (TbInvestInfo info : tbInvestInfos) {
-
-            TbUserDetails userDetails = userDetailsService.selectByLoginId(info.getIiLoginId());
-            String idNumber = userDetails.getUdIdNumber();
-
-            if (StringUtils.isNotBlank(idNumber)) {
-                String subs = idNumber.substring(4, 13);
-                idNumber = idNumber.replace(subs, "**********");
-            }
-            String investMoneyRMB = UpCaseRMB.number2CNMontrayUnit(info.getIiMoney());
-            //查询应收本息
-            TbIncomeDetail tbIncomeDetail = new TbIncomeDetail();
-            tbIncomeDetail.setIndIsDel(1);
-            tbIncomeDetail.setIndIiId(info.getIiId());
-            tbIncomeDetail.setIndLoginId(info.getIiLoginId());
-            BigDecimal totalMoney = incomeDetailService.investerTotalMoney(tbIncomeDetail);
-
-            String totalMoneyRMB = UpCaseRMB.number2CNMontrayUnit(totalMoney);
-
-            InvesterData data = new InvesterData();
-            data.setInvesterNumber(idNumber);
-            data.setInvestMoney(d1.format(info.getIiMoney()));
-            data.setInvestMoneyRMB(investMoneyRMB);
-            data.setName(info.getIiTrueName());
-            data.setTotalMoney(d1.format(totalMoney));
-            data.setTotalMoneyRMB(totalMoneyRMB);
-
-        }
-
-        if(flag){
-            return new JsonResultOk("合同生成成功");
-        }else {
-            return new JsonResultError("合同生成失败");
-        }
-    }
+//    @RequestMapping("createContract")
+//    @ResponseBody
+//    public JsonResult createContract(RepaymentForm form) {
+//
+//        boolean flag = true;
+//
+//        String[] cycleType = {"", "天", "个月", "季", "年"};
+//
+//        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+//        DecimalFormat d1 = new DecimalFormat("#,##0.##");
+//        String loanMonayRMB = UpCaseRMB.number2CNMontrayUnit(form.getBpLoanMoney());
+//
+//        //common data
+//        ContractCommData commData = new ContractCommData();
+//        TbBidPlan tbBidPlan = bidPlanService.selectByBpId(form.getBpId());
+//        TbLoaner loaner = loanerService.findLoanerById(tbBidPlan.getBpLoanerId());
+//
+//
+//        commData.setLoanerTrueName(tbBidPlan.getBpTrueName());              //借款人姓名
+//        commData.setLoanerNumber(loaner.getlIdNumber());                    //证件号码
+//        commData.setInterestSt(sdf.format(form.getBpInterestSt()));         //受让日期
+//        commData.setRepayTime(sdf.format(form.getBpRepayTime()));           //还款日期   到期日
+//        commData.setLoanMoney(d1.format(form.getBpLoanMoney())); //标的金额--实际放款金额
+//        commData.setLoanMoneyRMB(loanMonayRMB);                             //标的金额人民币大写
+//        commData.setInterestPayType(tbBidPlan.getBpInterestPayType() == 1 ? "一次性还本付息" : "按期付息，到期还本");     //还款方式
+//        commData.setBidPeriods(tbBidPlan.getBpPeriods() + cycleType[tbBidPlan.getBpCycleType()]);          //标的周期
+//        commData.setLoanTime(sdf.format(form.getBpInterestSt()));            //放款日期  签字日期
+//
+//        TbInvestInfo tbInvestInfo = new TbInvestInfo();
+//        tbInvestInfo.setIiBpId(form.getBpId());
+//        tbInvestInfo.setIiIsDel(1);
+//        PageWhere pageWhere = new PageWhere(0, 10000);
+//
+//        List<TbInvestInfo> tbInvestInfos = investInfoService.selectByBpId(tbInvestInfo, pageWhere);
+//        commData.setInfos(tbInvestInfos);
+//
+//        //循环每个投资人
+//        for (TbInvestInfo info : tbInvestInfos) {
+//
+//            TbUserDetails userDetails = userDetailsService.selectByLoginId(info.getIiLoginId());
+//            String idNumber = userDetails.getUdIdNumber();
+//
+//            if (StringUtils.isNotBlank(idNumber)) {
+//                String subs = idNumber.substring(4, 13);
+//                idNumber = idNumber.replace(subs, "**********");
+//            }
+//            String investMoneyRMB = UpCaseRMB.number2CNMontrayUnit(info.getIiMoney());
+//            //查询应收本息
+//            TbIncomeDetail tbIncomeDetail = new TbIncomeDetail();
+//            tbIncomeDetail.setIndIsDel(1);
+//            tbIncomeDetail.setIndIiId(info.getIiId());
+//            tbIncomeDetail.setIndLoginId(info.getIiLoginId());
+//            BigDecimal totalMoney = incomeDetailService.investerTotalMoney(tbIncomeDetail);
+//
+//            String totalMoneyRMB = UpCaseRMB.number2CNMontrayUnit(totalMoney);
+//
+//            InvesterData data = new InvesterData();
+//            data.setInvesterNumber(idNumber);
+//            data.setInvestMoney(d1.format(info.getIiMoney()));
+//            data.setInvestMoneyRMB(investMoneyRMB);
+//            data.setName(info.getIiTrueName());
+//            data.setTotalMoney(d1.format(totalMoney));
+//            data.setTotalMoneyRMB(totalMoneyRMB);
+//
+//        }
+//
+//        if(flag){
+//            return new JsonResultOk("合同生成成功");
+//        }else {
+//            return new JsonResultError("合同生成失败");
+//        }
+//    }
 
 }
 

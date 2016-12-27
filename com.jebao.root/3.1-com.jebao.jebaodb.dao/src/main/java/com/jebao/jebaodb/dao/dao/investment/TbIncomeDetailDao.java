@@ -6,6 +6,8 @@ import com.jebao.jebaodb.entity.investment.FundDetailSM;
 import com.jebao.jebaodb.entity.investment.InvestPayment;
 import com.jebao.jebaodb.entity.investment.TbIncomeDetail;
 import com.jebao.jebaodb.entity.investment.search.IncomeDetailSM;
+import com.jebao.jebaodb.entity.loanmanage.TbBidPlan;
+import com.jebao.jebaodb.entity.loanmanage.search.BidPlanSM;
 import com.jebao.jebaodb.entity.postLoan.search.RepaymentDetailSM;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -154,6 +156,23 @@ public class TbIncomeDetailDao {
         return mapper.investerTotalMoney(record);
     }
 
+    /**
+     * 贷后管理 明细查询
+     * @param record
+     * @return
+     */
+    public List<TbIncomeDetail> selectPostLoanDetail(BidPlanSM record, PageWhere pageWhere){
+        return mapper.selectPostLoanDetail(record, pageWhere);
+    }
+
+    /**
+     * 贷后管理 明细查询
+     * @param record
+     * @return
+     */
+    public int selectPostLoanDetailCount(BidPlanSM record){
+        return mapper.selectPostLoanDetailCount(record);
+    }
 
     @Transactional
     public int insertForTransactional(TbIncomeDetail record) {

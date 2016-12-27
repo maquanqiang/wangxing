@@ -42,7 +42,7 @@ var vm = new Vue({
         model.searchObj = $("#defaultForm").serializeObject(); //初始化 model.search 对象
         model.searchObj.bpStatus = 7;
         model.searchObj.pageIndex=0;
-        model.searchObj.pageSize=10;
+        model.searchObj.pageSize=15;
     },
     //初始化远程数据
     created:function(){
@@ -66,7 +66,7 @@ var vm = new Vue({
                 if (response.success_is_ok){
                     vm.planlist=response.data;
                     if (response.count>0){
-                        var pageCount = Math.ceil(response.count / model.pageSize);
+                        var pageCount = Math.ceil(response.count / model.searchObj.pageSize);
                         //调用分页
                         laypage({
                             cont: $('#pageNum'), //容器。值支持id名、原生dom对象，jquery对象,

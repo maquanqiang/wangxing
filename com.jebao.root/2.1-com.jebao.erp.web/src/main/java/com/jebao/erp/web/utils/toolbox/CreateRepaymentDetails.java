@@ -50,24 +50,27 @@ public class CreateRepaymentDetails {
                 loanIntent.setInterestSt(nextRepayDate);
                 Date repayDate = repayDate(bpCycleType, interestSt, i);
                 now.setTime(repayDate);
-                if(i==periods){
-                    if(now.get(GregorianCalendar.DAY_OF_MONTH)!=calendar.get(GregorianCalendar.DAY_OF_MONTH)){
-                        now.add(Calendar.DATE, 1);
-                    }
+                if(now.get(GregorianCalendar.DAY_OF_MONTH)!=calendar.get(GregorianCalendar.DAY_OF_MONTH)){
+                    now.add(Calendar.DATE, 1);
                 }
                 int days = BetweenDays.differentDays(nextRepayDate, now.getTime());
                 nextRepayDate = now.getTime();
-                interestEt = nextRepayDate;
+                //计算结束日比还款日晚一天
+                now.add(Calendar.DATE, -1);
+                interestEt = now.getTime();
                 BigDecimal interest = money.multiply(bpRate).multiply(new BigDecimal(days))
                         .divide(new BigDecimal(100 * 365), 2, BigDecimal.ROUND_HALF_UP);
 
                 loanIntent.setIntentPeriod(i);
                 loanIntent.setInterestEt(interestEt);
                 loanIntent.setFundType(2);
-                loanIntent.setRepayDate(now.getTime());
+                loanIntent.setRepayDate(nextRepayDate);
                 loanIntent.setMoney(interest);
 
                 loanFundIntents.add(loanIntent);
+
+                System.out.println("每个周期时间"+days);
+
             }
         }
 
@@ -81,7 +84,7 @@ public class CreateRepaymentDetails {
         }else {
             pLoanIntent.setIntentPeriod(periods);
         }
-        pLoanIntent.setRepayDate(now.getTime());
+        pLoanIntent.setRepayDate(nextRepayDate);
 
         loanFundIntents.add(pLoanIntent);
 

@@ -58,6 +58,12 @@
         <p>精选项目，资深金融人士层层甄选，最靠谱的投资项目呈现给您</p>
     </div>
     <div class="project-list">
+        <!--无投资项目-->
+        <div v-if="products.length==0" class="noProject">
+            <p style="width: 100%;height: 300px;text-align: center;font-size: 24px;color: #666;line-height: 300px;">
+                暂无项目
+            </p>
+        </div>
         <div class="project-content"  v-for="data in products" @click.prevent="openDetail(data.bpId)">
             <div class="project-name">
                 <p>{{data.bpName}}<span>{{data.bpNumber}}</span></p>

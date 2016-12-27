@@ -210,7 +210,7 @@ public class LoanManageServiceImpl implements ILoanManageServiceInf {
             tbInvestInfo.setIiIsDel(1);
             PageWhere pageWhere = new PageWhere(0, 10000);
             List<TbInvestInfo> tbInvestInfos = investInfoDao.selectByConditionForPage(tbInvestInfo, pageWhere);
-
+            //更新投资列表状态
             if(tbInvestInfos!=null && tbInvestInfos.size()>0){
                 for(TbInvestInfo info : tbInvestInfos){
                     info.setIiBpRepayedPeriods(period);

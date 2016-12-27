@@ -39,7 +39,7 @@ $(function () {
                 }
             }
         });
-
+        $("#pageNum").html("");
         vm.search()
     });
 
@@ -93,8 +93,7 @@ var vm = new Vue({
                                     vm.searchObj.pageIndex = obj.curr - 1;
                                     vm.search();
                                 }
-                            },
-                            skin: '#e88a6e'
+                            }
                         });
                     }
                 }

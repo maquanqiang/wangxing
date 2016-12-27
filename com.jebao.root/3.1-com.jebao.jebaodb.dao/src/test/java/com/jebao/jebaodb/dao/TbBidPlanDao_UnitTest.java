@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.registerCustomDateFormat;
 
 /**
  * Created by Lee on 2016/11/15.
@@ -70,11 +71,10 @@ public class TbBidPlanDao_UnitTest extends _BaseUnitTest {
 
     @Test
     public void select(){
-        FundDetailSM fundDetailSM = new FundDetailSM();
-        fundDetailSM.setInvestLoginId(1l);
-        fundDetailSM.setDetailStatus(1);
-        PageWhere pageWhere = new PageWhere(0,2);
-        List<TbIncomeDetail> incomeDetails = incomeDetailDao.selectFundList(fundDetailSM,pageWhere);
+        TbInvestInfo tbInvestInfo = new TbInvestInfo();
+        tbInvestInfo.setIiId(37l);
+        tbInvestInfo.setIiContractUrl("http://");
+        investInfoDao.updateByPrimaryKeySelective(tbInvestInfo);
         System.out.println();
     }
 
