@@ -5,6 +5,8 @@ import com.jebao.jebaodb.entity.investment.FundDetailSM;
 import com.jebao.jebaodb.entity.investment.InvestPayment;
 import com.jebao.jebaodb.entity.investment.TbIncomeDetail;
 import com.jebao.jebaodb.entity.investment.search.IncomeDetailSM;
+import com.jebao.jebaodb.entity.loanmanage.TbBidPlan;
+import com.jebao.jebaodb.entity.loanmanage.search.BidPlanSM;
 import com.jebao.jebaodb.entity.postLoan.search.RepaymentDetailSM;
 import org.apache.ibatis.annotations.Param;
 
@@ -50,6 +52,10 @@ public interface TbIncomeDetailMapper {
     int updateByConditionSelective(TbIncomeDetail record);
 
     BigDecimal investerTotalMoney(TbIncomeDetail record);
+
+    List<TbIncomeDetail> selectPostLoanDetail(@Param("record")BidPlanSM record, @Param("pageWhere") PageWhere pageWhere);
+
+    int selectPostLoanDetailCount(@Param("record") BidPlanSM record);
 
     /*==================================================借款人相关统计==================================================*/
     BigDecimal totalMoneyByloanerId(IncomeDetailSM model);

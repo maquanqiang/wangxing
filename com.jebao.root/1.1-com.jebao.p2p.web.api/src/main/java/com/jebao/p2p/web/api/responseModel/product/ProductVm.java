@@ -22,7 +22,7 @@ public class ProductVm extends ViewModel {
         this.bpStartTime=plan.getBpStartTime();
         this.bpName=plan.getBpName();
         this.bpNumber=plan.getBpNumber();
-        this.bpStatus=plan.getBpStatus();
+        this.bpStatus=(plan.getBpEndTime().before(new Date()))?4:plan.getBpStatus();
         this.bpPeriodsDisplay=plan.getBpPeriodsDisplay();
         this.bpRate=plan.getBpRate();
         this.bpSurplusMoney=plan.getBpSurplusMoney();

@@ -153,13 +153,14 @@ public class ProductDetailVM extends ViewModel {
 
     private String progress;
 
-    private BigDecimal bpUpRate;
+    private String bpUpRate;
 
-    public BigDecimal getBpUpRate() {
+
+    public String getBpUpRate() {
         return bpUpRate;
     }
 
-    public void setBpUpRate(BigDecimal bpUpRate) {
+    public void setBpUpRate(String bpUpRate) {
         this.bpUpRate = bpUpRate;
     }
 

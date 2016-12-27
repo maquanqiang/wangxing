@@ -64,6 +64,13 @@ public class InvestInfoControllerApi {
     @ResponseBody
     public JsonResult createRepaymentDetails(RepaymentForm form){
 
+        //先清空原生成数据(标记为删除)
+        TbLoanerRepaymentDetail tbLoanerRepaymentDetail = new TbLoanerRepaymentDetail();
+        tbLoanerRepaymentDetail.setLrdBpId(form.getBpId());
+        tbLoanerRepaymentDetail.setLrdIsDel(2);
+        int count = loanerRepaymentDetailService.save(tbLoanerRepaymentDetail);
+
+
         TbBidPlan tbBidPlan = tbBidPlanService.selectByBpId(form.getBpId());
 
         BigDecimal principal = form.getBpLoanMoney();

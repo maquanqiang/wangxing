@@ -45,7 +45,7 @@
         <result column="bp_repayed_periods" property="bpRepayedPeriods" jdbcType="INTEGER" />
         <result column="bp_is_del" property="bpIsDel" jdbcType="INTEGER" />
         <result column="bp_type" property="bpType" jdbcType="INTEGER" />
-        <result column="bp_up_rate" property="bpUpRate" jdbcType="DECIMAL" />
+        <result column="bp_up_rate" property="bpUpRate" jdbcType="VARCHAR" />
 
     </resultMap>
     <resultMap id="ResultMapWithBLOBs" type="com.jebao.jebaodb.entity.loanmanage.TbBidPlan" extends="BaseResultMap" >
@@ -105,7 +105,7 @@
         #{bpServiceChargeRate,jdbcType=DECIMAL}, #{bpLateRate,jdbcType=DECIMAL}, #{bpBorrowDesc,jdbcType=VARCHAR},
         #{bpFundsPurpose,jdbcType=VARCHAR}, #{bpRepayingSource,jdbcType=VARCHAR}, #{bpPersonalCredit,jdbcType=VARCHAR},
         #{bpMortgageInfo,jdbcType=VARCHAR}, #{bpRiskOpinion,jdbcType=VARCHAR}, #{bpRepayedPeriods,jdbcType=INTEGER},
-        #{bpIsDel,jdbcType=INTEGER}, #{bpDesc,jdbcType=LONGVARCHAR}, #{bpType,jdbcType=INTEGER},  #{bpUpRate,jdbcType=DECIMAL})
+        #{bpIsDel,jdbcType=INTEGER}, #{bpDesc,jdbcType=LONGVARCHAR}, #{bpType,jdbcType=INTEGER},  #{bpUpRate,jdbcType=VARCHAR})
     </insert>
     <insert id="insertSelective" parameterType="com.jebao.jebaodb.entity.loanmanage.TbBidPlan" >
         insert into tb_bid_plan
@@ -380,7 +380,7 @@
                 #{bpType,jdbcType=INTEGER},
             </if>
             <if test="bpUpRate != null" >
-                #{bpUpRate,jdbcType=DECIMAL},
+                #{bpUpRate,jdbcType=VARCHAR},
             </if>
         </trim>
     </insert>
@@ -517,7 +517,7 @@
                 bp_type = #{bpType,jdbcType=INTEGER},
             </if>
             <if test="bpUpRate != null" >
-                bp_up_rate = #{bpUpRate,jdbcType=DECIMAL},
+                bp_up_rate = #{bpUpRate,jdbcType=VARCHAR},
             </if>
         </set>
         where bp_id = #{bpId,jdbcType=BIGINT}
@@ -567,7 +567,7 @@
         bp_is_del = #{bpIsDel,jdbcType=INTEGER},
         bp_desc = #{bpDesc,jdbcType=LONGVARCHAR},
         bp_type = #{bpType,jdbcType=INTEGER},
-        bp_up_rate = #{bpUpRate,jdbcType=DECIMAL}
+        bp_up_rate = #{bpUpRate,jdbcType=VARCHAR}
         where bp_id = #{bpId,jdbcType=BIGINT}
     </update>
     <update id="updateByPrimaryKey" parameterType="com.jebao.jebaodb.entity.loanmanage.TbBidPlan" >
@@ -613,7 +613,7 @@
       bp_repayed_periods = #{bpRepayedPeriods,jdbcType=INTEGER},
       bp_is_del = #{bpIsDel,jdbcType=INTEGER},
       bp_type = #{bpType,jdbcType=INTEGER},
-      bp_up_rate = #{bpUpRate,jdbcType=DECIMAL}
+      bp_up_rate = #{bpUpRate,jdbcType=VARCHAR}
     where bp_id = #{bpId,jdbcType=BIGINT}
   </update>
 
@@ -746,7 +746,7 @@
             AND bp_type = #{record.bpType,jdbcType=INTEGER}
         </if>
         <if test="record.bpUpRate != null" >
-            AND bp_up_rate = #{record.bpUpRate,jdbcType=DECIMAL}
+            AND bp_up_rate = #{record.bpUpRate,jdbcType=VARCHAR}
         </if>
         AND bp_is_del = 1
     </sql>
@@ -934,6 +934,7 @@
             bp_update_time = #{nowTime}
             WHERE
                 bp_start_time <= #{nowTime}
+                AND bp_end_time >=#{nowTime}
                 AND bp_surplus_money >= #{investMoney}
                 AND bp_top_money >= #{investMoney}
                 AND bp_id = #{bpId}

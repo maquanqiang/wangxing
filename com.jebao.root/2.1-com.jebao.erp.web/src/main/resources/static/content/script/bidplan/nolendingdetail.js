@@ -71,11 +71,11 @@ var vm = new Vue({
             }
         })
         //intentList
-        $.get("/api/incomeDetail/repaymentList",model.searchObj,function(response) {
-            if (response.success_is_ok) {
-                vm.intentList = response.data;
-            }
-        })
+        //$.get("/api/incomeDetail/repaymentList",model.searchObj,function(response) {
+        //    if (response.success_is_ok) {
+        //        vm.intentList = response.data;
+        //    }
+        //})
     },
     //watch可以监视数据变动，针对相应的数据设置监视函数即可
     watch: {
@@ -127,6 +127,8 @@ var vm = new Vue({
             if (!bootstrapValidator.isValid()) {
                 return false;
             }
+            vm.intentList = [];
+            vm.total = 0;
             var form = $("#defaultForm").serializeObject();
             $.post("/api/investInfo/createRepaymentDetails",form,function(response){
                 if (response.success_is_ok){
@@ -190,9 +192,26 @@ var vm = new Vue({
                 }else{
                     layer.msg(response.error);
                 }
-
-
             })
+        },
+        createContract:function() {
+            if (vm.investInfoList.length > 0) {
+                var form = $("#defaultForm").serializeObject();
+                form.bidNumber = vm.plan.bpNumber;
+                $.post("/contract/createDemo", form, function (response) {
+                    if(response.success_is_ok){
+                        layer.msg(response.msg);
+                        //investInfoList
+                        $.get("/api/investInfo/list", {bpId : form.bpId}, function (response) {
+                            if (response.success_is_ok) {
+                                vm.investInfoList = response.data;
+                            }
+                        })
+                    }else{
+                        layer.msg(response.error);
+                    }
+                })
+            }
         }
     }
 });

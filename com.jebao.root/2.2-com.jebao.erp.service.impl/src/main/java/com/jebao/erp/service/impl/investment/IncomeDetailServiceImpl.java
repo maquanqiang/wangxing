@@ -7,7 +7,10 @@ import com.jebao.jebaodb.dao.dao.investment.TbIncomeDetailDao;
 import com.jebao.jebaodb.entity.extEntity.PageWhere;
 import com.jebao.jebaodb.entity.investment.TbIncomeDetail;
 import com.jebao.jebaodb.entity.investment.search.IncomeDetailSM;
+import com.jebao.jebaodb.entity.loanmanage.TbBidPlan;
+import com.jebao.jebaodb.entity.loanmanage.search.BidPlanSM;
 import com.jebao.jebaodb.entity.postLoan.search.RepaymentDetailSM;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -80,6 +83,16 @@ public class IncomeDetailServiceImpl implements IIncomeDetailServiceInf {
     @Override
     public BigDecimal investerTotalMoney(TbIncomeDetail record) {
         return incomeDetailDao.investerTotalMoney(record);
+    }
+
+    @Override
+    public List<TbIncomeDetail> selectPostLoanDetail(BidPlanSM record, PageWhere pageWhere) {
+        return incomeDetailDao.selectPostLoanDetail(record, pageWhere);
+    }
+
+    @Override
+    public int selectPostLoanDetailCount(BidPlanSM record) {
+        return incomeDetailDao.selectPostLoanDetailCount(record);
     }
 
     public int updateByBidIdSelective(TbIncomeDetail record) {

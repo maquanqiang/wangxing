@@ -1,5 +1,7 @@
 package com.jebao.p2p.web.controller;
 
+import com.jebao.p2p.web.utils.session.CurrentUser;
+import com.jebao.p2p.web.utils.session.CurrentUserContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,14 +23,22 @@ public class ProductController {
         return "product/productDetail";
     }
 
-    @RequestMapping("productFail")
-    public String productFail(String msg, Model model){
+    @RequestMapping("productFail/{msg}")
+    public String productFail(@PathVariable("msg")String msg, Model model){
+        CurrentUser currentUser = CurrentUserContextHolder.get();
+        if(currentUser == null){            //未登录 重定向登录页
+            return "/";
+        }
         model.addAttribute("msg",msg);
         return "product/productFail";
     }
 
-    @RequestMapping("productSuccess")
-    public String productSuccess(BigDecimal investMoney, Model model){
+    @RequestMapping("productSuccess/{investMoney}")
+    public String productSuccess(@PathVariable("investMoney")BigDecimal investMoney, Model model){
+        CurrentUser currentUser = CurrentUserContextHolder.get();
+        if(currentUser == null){            //未登录 重定向登录页
+            return "/";
+        }
         model.addAttribute("investMoney", investMoney);
         return "product/productSuccess";
     }

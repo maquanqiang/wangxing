@@ -181,38 +181,26 @@
                 </div>
                 <div class="funds">
                     <h5>资金用途</h5>
-                    <input type="text" :value="product.bpFundsPurpose" readonly="readonly">
+                    <div id="bpFundsPurpose" class="product-text"></div>
                 </div>
                 <div class="personal-credit">
                     <h5>个人征信</h5>
-                    <input type="text" :value="product.bpPersonalCredit" readonly="readonly">
+                    <div id="bpPersonalCredit" class="product-text"></div>
                 </div>
             </div>
             <!--风险控制-->
             <div class="project-detail-info">
                 <div class="mortgage">
                     <h5 class="mb20">抵押信息</h5>
-                    <ul>
-                        <li class="clearfix">
-                            {{product.bpMortgageInfo}}
-                        </li>
-                    </ul>
+                    <div id="bpMortgageInfohtml" class="product-text"></div>
                 </div>
                 <div class="mortgage">
                     <h5 class="mb20">还款来源</h5>
-                    <ul>
-                        <li class="clearfix">
-                            {{product.bpRepayingSource}}
-                        </li>
-                    </ul>
+                    <div id="bpRepayingSource" class="product-text"></div>
                 </div>
                 <div class="mortgage">
                     <h5 class="mb20">风控意见</h5>
-                    <ul>
-                        <li class="clearfix">
-                            <p>{{product.bpRiskOpinion}}</p>
-                        </li>
-                    </ul>
+                    <div id="bpRiskOpinion" class="product-text"></div>
                 </div>
             </div>
             <!--还款计划-->

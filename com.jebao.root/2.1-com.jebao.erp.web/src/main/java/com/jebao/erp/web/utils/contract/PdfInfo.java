@@ -4,8 +4,18 @@ package com.jebao.erp.web.utils.contract;
  * Created by Administrator on 2016/12/19.
  */
 public class PdfInfo {
+
+    private Long iiId;
     private String url;
     private String fileName;
+
+    public Long getIiId() {
+        return iiId;
+    }
+
+    public void setIiId(Long iiId) {
+        this.iiId = iiId;
+    }
 
     public String getUrl() {
         return url;
