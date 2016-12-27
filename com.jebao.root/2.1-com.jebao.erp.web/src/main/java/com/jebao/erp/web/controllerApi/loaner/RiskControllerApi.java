@@ -11,6 +11,7 @@ import com.jebao.erp.web.responseModel.loaner.RiskCtlPrjTempListVM;
 import com.jebao.erp.web.responseModel.loaner.RiskCtlPrjTempVM;
 import com.jebao.erp.web.utils.validation.ValidationResult;
 import com.jebao.erp.web.utils.validation.ValidationUtil;
+import com.jebao.jebaodb.entity.extEntity.EnumModel;
 import com.jebao.jebaodb.entity.loaner.TbRcpMaterialsTemp;
 import com.jebao.jebaodb.entity.loaner.TbRiskCtlPrjTemp;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -119,7 +120,7 @@ public class RiskControllerApi extends _BaseController {
         if(form.getId() == 0) {
             entity.setRcptCreateTime(new Date());
             entity.setRcptUpdateTime(new Date());
-            entity.setRcptIsDel(1);
+            entity.setRcptIsDel(EnumModel.IsDel.有效.getValue());
             result = loanerService.addRiskCtlPrjTemp(entity);
         }else{
             entity.setRcptId(form.getId());
@@ -188,7 +189,7 @@ public class RiskControllerApi extends _BaseController {
         entity.setRcpmtPath(form.getPath());
         entity.setRcpmtRemark(form.getRemark());
         entity.setRcpmtUrl(form.getUrl());
-        entity.setRcpmtIsDel(1);
+        entity.setRcpmtIsDel(EnumModel.IsDel.有效.getValue());
         entity.setRcpmtCreateTime(new Date());
         int result = loanerService.addRcpMaterialsTemp(entity);
         //

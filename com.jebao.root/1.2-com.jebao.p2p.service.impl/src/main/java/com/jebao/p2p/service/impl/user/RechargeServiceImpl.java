@@ -68,21 +68,6 @@ public class RechargeServiceImpl implements IRechargeServiceInf {
 
         String html = personQuickPayService.post(reqData);
         if (html != null && html.length() > 0) {
-  /*          //todo 添加资金收支明细
-            TbFundsDetails fundsDetails = new TbFundsDetails();
-            fundsDetails.setFdLoginId(loginId);
-            fundsDetails.setFdSerialStatus(EnumModel.FdSerialStatus.处理中.getValue());
-            fundsDetails.setFdBalanceStatus(EnumModel.FdBalanceStatus.收入.getValue());
-            fundsDetails.setFdCommissionCharge(new BigDecimal(0));//手续费
-            fundsDetails.setFdSerialAmount(money);
-            fundsDetails.setFdSerialNumber(reqData.getMchnt_txn_ssn());//流水号
-            fundsDetails.setFdCreateTime(new Date());
-            fundsDetails.setFdSerialTypeId(EnumModel.SerialType.充值.getValue());
-            fundsDetails.setFdSerialTypeName(EnumModel.SerialType.充值.name());
-            fundsDetails.setFdThirdAccount(userDetails.getUdThirdAccount());
-            fundsDetails.setFdIsDel(EnumModel.IsDel.有效.getValue());
-            fundsDetailsService.insert(fundsDetails);*/
-
             //region 提交到富有，记录接口日志
             TbThirdInterfaceLog thirdInterfaceLog = new TbThirdInterfaceLog();
             thirdInterfaceLog.setTilType(23); // 接口编号
@@ -205,21 +190,6 @@ public class RechargeServiceImpl implements IRechargeServiceInf {
         reqData.setBack_notify_url("");
         String html = fastRechargeService.post(reqData);
         if (html != null && html.length() > 0) {
- /*           //todo 添加资金收支明细
-            TbFundsDetails fundsDetails = new TbFundsDetails();
-            fundsDetails.setFdLoginId(loginId);
-            fundsDetails.setFdSerialStatus(EnumModel.FdSerialStatus.处理中.getValue());
-            fundsDetails.setFdBalanceStatus(EnumModel.FdBalanceStatus.收入.getValue());
-            fundsDetails.setFdCommissionCharge(new BigDecimal(0));//手续费
-            fundsDetails.setFdSerialAmount(money);
-            fundsDetails.setFdSerialNumber(reqData.getMchnt_txn_ssn());//流水号
-            fundsDetails.setFdCreateTime(new Date());
-            fundsDetails.setFdSerialTypeId(EnumModel.SerialType.充值.getValue());
-            fundsDetails.setFdSerialTypeName(EnumModel.SerialType.充值.name());
-            fundsDetails.setFdThirdAccount(userDetails.getUdThirdAccount());
-            fundsDetails.setFdIsDel(EnumModel.IsDel.有效.getValue());
-            fundsDetailsService.insert(fundsDetails);*/
-
             //region 提交到富有，记录接口日志
             TbThirdInterfaceLog thirdInterfaceLog = new TbThirdInterfaceLog();
             thirdInterfaceLog.setTilType(15); // 接口编号
@@ -346,21 +316,6 @@ public class RechargeServiceImpl implements IRechargeServiceInf {
 
         String html = onlineBankRechargeService.post(reqData);
         if (html != null && html.length() > 0) {
-/*            //todo 添加资金收支明细
-            TbFundsDetails fundsDetails = new TbFundsDetails();
-            fundsDetails.setFdLoginId(loginId);
-            fundsDetails.setFdSerialStatus(EnumModel.FdSerialStatus.处理中.getValue());
-            fundsDetails.setFdBalanceStatus(EnumModel.FdBalanceStatus.收入.getValue());
-            fundsDetails.setFdCommissionCharge(new BigDecimal(0));//手续费
-            fundsDetails.setFdSerialAmount(money);
-            fundsDetails.setFdSerialNumber(reqData.getMchnt_txn_ssn());//流水号
-            fundsDetails.setFdCreateTime(new Date());
-            fundsDetails.setFdSerialTypeId(EnumModel.SerialType.充值.getValue());
-            fundsDetails.setFdSerialTypeName(EnumModel.SerialType.充值.name());
-            fundsDetails.setFdThirdAccount(userDetails.getUdThirdAccount());
-            fundsDetails.setFdIsDel(EnumModel.IsDel.有效.getValue());
-            fundsDetailsService.insert(fundsDetails);*/
-
             //region 提交到富有，记录接口日志
             TbThirdInterfaceLog thirdInterfaceLog = new TbThirdInterfaceLog();
             thirdInterfaceLog.setTilType(16); // 接口编号

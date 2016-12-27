@@ -67,6 +67,12 @@
                                         <span>元</span>
                                     </div>
                                     <a href="javascript:void(0);" class="account-btn" @click.prevent="submit('#quickPay_form')">充值</a>
+                                    <div class="postal-reminder reminder">
+                                        <h4>温馨提示</h4>
+                                        <p>1.充值在富友系统确认完成。</p>
+                                        <p>2.充值未完成，请勿关闭浏览器窗口，操作完成后，浏览器会自动跳转返回到网站界面。</p>
+                                        <p>3.如果您在充值过程中遇到任何问题，可以直接致电010-65006966或咨询在线客服寻求帮助。</p>
+                                    </div>
                                 </form>
                             </div>
                             <div v-show="posStatus" class="rechange-item">
@@ -81,6 +87,12 @@
                                         <span>元</span>
                                     </div>
                                     <a href="javascript:void(0);" class="account-btn" @click.prevent="submit('#fastRecharge_form')">充值</a>
+                                    <div class="postal-reminder reminder">
+                                        <h4>温馨提示</h4>
+                                        <p>1.充值在富友系统确认完成。</p>
+                                        <p>2.充值未完成，请勿关闭浏览器窗口，操作完成后，浏览器会自动跳转返回到网站界面。</p>
+                                        <p>3.如果您在充值过程中遇到任何问题，可以直接致电010-65006966或咨询在线客服寻求帮助。</p>
+                                    </div>
                                 </form>
                             </div>
                             <div v-show="!posStatus" class="rechange-item">
@@ -95,6 +107,12 @@
                                         <span>元</span>
                                     </div>
                                     <a href="javascript:void(0);" class="account-btn" @click.prevent="submit('#onlineBankRecharge_form')">充值</a>
+                                    <div class="postal-reminder reminder">
+                                        <h4>温馨提示</h4>
+                                        <p>1.充值在富友系统确认完成。</p>
+                                        <p>2.充值未完成，请勿关闭浏览器窗口，操作完成后，浏览器会自动跳转返回到网站界面。</p>
+                                        <p>3.如果您在充值过程中遇到任何问题，可以直接致电010-65006966或咨询在线客服寻求帮助。</p>
+                                    </div>
                                 </form>
                             </div>
                         </div>
@@ -132,7 +150,7 @@
                             <h4>温馨提示</h4>
                             <p>1.提现在富友系统确认完成。</p>
                             <p>2.提现未完成，请勿关闭浏览器窗口，操作完成后，浏览器会自动跳转返回到网站界面。</p>
-                            <p>3.如果您在充值过程中遇到任何问题，可以直接致电010-65006966或咨询在线客服寻求帮助。</p>
+                            <p>3.如果您在提现过程中遇到任何问题，可以直接致电010-65006966或咨询在线客服寻求帮助。</p>
                         </div>
                     </form>
                 </div>
@@ -154,6 +172,6 @@
 #parse("common/footer.html")
 <script src="/content/js/lib/bootstrapValidator.js"></script>
 <script src="/content/js/lib/bootstrapValidator.ext.js"></script>
-<script src="/content/script/user/chargewithdraw.js"></script>
+<script src=$UrlHelperTool.href("/content/script/user/chargewithdraw.js")></script>
 </body>
 </html>

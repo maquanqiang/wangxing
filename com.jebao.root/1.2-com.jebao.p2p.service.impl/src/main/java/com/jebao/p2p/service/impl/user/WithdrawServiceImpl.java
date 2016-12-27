@@ -70,21 +70,6 @@ public class WithdrawServiceImpl implements IWithdrawServiceInf {
 
         String html = withdrawDepositService.post(reqData);
         if (html != null && html.length() > 0) {
-/*            //todo 添加资金收支明细
-            TbFundsDetails fundsDetails = new TbFundsDetails();
-            fundsDetails.setFdLoginId(loginId);
-            fundsDetails.setFdSerialStatus(EnumModel.FdSerialStatus.处理中.getValue());
-            fundsDetails.setFdBalanceStatus(EnumModel.FdBalanceStatus.支出.getValue());
-            fundsDetails.setFdCommissionCharge(fee);//手续费
-            fundsDetails.setFdSerialAmount(money);
-            fundsDetails.setFdSerialNumber(reqData.getMchnt_txn_ssn());//流水号
-            fundsDetails.setFdCreateTime(new Date());
-            fundsDetails.setFdSerialTypeId(EnumModel.SerialType.提现.getValue());
-            fundsDetails.setFdSerialTypeName(EnumModel.SerialType.提现.name());
-            fundsDetails.setFdThirdAccount(userDetails.getUdThirdAccount());
-            fundsDetails.setFdIsDel(EnumModel.IsDel.有效.getValue());
-            fundsDetailsService.insert(fundsDetails);*/
-
             //region 提交到富有，记录接口日志
             TbThirdInterfaceLog thirdInterfaceLog = new TbThirdInterfaceLog();
             thirdInterfaceLog.setTilType(18); // 接口编号

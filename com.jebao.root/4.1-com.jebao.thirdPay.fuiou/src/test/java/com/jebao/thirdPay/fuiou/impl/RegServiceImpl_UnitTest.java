@@ -12,19 +12,17 @@ public class RegServiceImpl_UnitTest {
     @Test
     public void Test() throws Exception {
         RegRequest reqData = new RegRequest();
-        reqData.setMchnt_cd("0002900F0041077");
-        reqData.setMchnt_txn_ssn("96f14200a794dbcc91cad69b50ef05");
-        reqData.setCust_nm("猪");
-        reqData.setCertif_id("330382111111010110");
-        reqData.setMobile_no("11111111111");
+        reqData.setCust_nm("张三");
+        reqData.setCertif_id("130102198001015356");
+        reqData.setMobile_no("18600000001");
         reqData.setEmail("");
-        reqData.setCity_id("3333");
-        reqData.setParent_bank_id("0103");
-        reqData.setBank_nm("中国农业银行");
+        reqData.setCity_id("1000");
+        reqData.setParent_bank_id("0102");
+        reqData.setBank_nm("");
         reqData.setCapAcntNm("");
-        reqData.setCapAcntNo("62284803111111111111");
-        reqData.setPassword("97b149a269795ef98a7e31b66d1f105e");
-        reqData.setLpassword("97b149a269795ef98a7e31b66d1f105e");
+        reqData.setCapAcntNo("6212250200008619199");
+        reqData.setPassword("");
+        reqData.setLpassword("");
         reqData.setRem("");
         //
         String httpUrl = "https://jzh-test.fuiou.com/jzh/reg.action";

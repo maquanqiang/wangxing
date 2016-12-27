@@ -8,6 +8,7 @@ import com.jebao.jebaodb.dao.dao.user.TbUserDetailsDao;
 import com.jebao.jebaodb.dao.dao.loaner.TbLoanerDao;
 import com.jebao.jebaodb.dao.dao.loaner.TbRcpMaterialsTempDao;
 import com.jebao.jebaodb.dao.dao.loaner.TbRiskCtlPrjTempDao;
+import com.jebao.jebaodb.entity.extEntity.EnumModel;
 import com.jebao.jebaodb.entity.user.TbLoginInfo;
 import com.jebao.jebaodb.entity.user.TbUserDetails;
 import com.jebao.jebaodb.entity.extEntity.PageWhere;
@@ -110,7 +111,7 @@ public class LoanerServiceImpl implements ILoanerServiceInf {
         entity.setlBankParentBankName(userDetails.getUdBankParentBankName());
         entity.setlCreateTime(new Date());
         entity.setlUpdateTime(new Date());
-        entity.setlIsDel(1);
+        entity.setlIsDel(EnumModel.IsDel.有效.getValue());
         return tbLoanerDao.insertSelective(entity);
     }
 

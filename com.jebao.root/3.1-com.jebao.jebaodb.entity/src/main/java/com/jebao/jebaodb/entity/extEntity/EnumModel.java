@@ -5,6 +5,20 @@ package com.jebao.jebaodb.entity.extEntity;
  */
 public class EnumModel {
     /**
+     * 是否有效状态
+     */
+    public enum IsDel{
+        有效(1),无效(2);
+        private int value;
+        private IsDel(int val){
+            this.value = val;
+        }
+        public int getValue(){
+            return this.value;
+        }
+    }
+
+    /**
      * 注册平台
      */
     public enum Platform{
@@ -78,12 +92,15 @@ public class EnumModel {
     }
 
     /**
-     * 是否有效状态
+     * 资金交易类型
      */
-    public enum IsDel{
-        有效(1),无效(2);
+    public enum SerialType{
+        充值(1),
+        提现(2),
+        投资(3),
+        借款(4);
         private int value;
-        private IsDel(int val){
+        private SerialType(int val){
             this.value = val;
         }
         public int getValue(){
@@ -91,10 +108,65 @@ public class EnumModel {
         }
     }
 
-    public enum SerialType{
-        充值(1),提现(2);
+    /**
+     * 资金类型
+     */
+    public enum FundType{
+        本金(1),利息(2);
         private int value;
-        private SerialType(int val){
+        private FundType(int val){
+            this.value = val;
+        }
+        public int getValue(){
+            return this.value;
+        }
+    }
+
+    /**
+     * 收款状态(还款状态)
+     */
+    public enum IncomeStatus{
+        未还(1),已还(2);
+        private int value;
+        private IncomeStatus(int val){
+            this.value = val;
+        }
+        public int getValue(){
+            return this.value;
+        }
+    }
+
+    /**
+     * 标的状态
+     */
+    public enum BidStatus{
+        初始待审核(0),
+        审核被拒(1),
+        招标中(2),
+        满标(3),
+        过期(4),
+        起息中(6),
+        还款中(7),
+        完成(10);
+        private int value;
+        private BidStatus(int val){
+            this.value = val;
+        }
+        public int getValue(){
+            return this.value;
+        }
+    }
+
+    /**
+     * 投资状态
+     */
+    public enum FreezeStatus{
+        冻结中(1),
+        还款中(2),
+        已还款(3),
+        流标(4);
+        private int value;
+        private FreezeStatus(int val){
             this.value = val;
         }
         public int getValue(){

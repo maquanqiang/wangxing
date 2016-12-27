@@ -186,7 +186,6 @@ public class UserController extends _BaseController {
         try {
             ResultData<String> resultData = (ResultData<String>) resultInfo;
             String responseHtml = resultData.getData();
-            //System.out.println(responseHtml);
             response.getWriter().write(responseHtml);
             return null;
         } catch (Exception e) {
@@ -261,7 +260,6 @@ public class UserController extends _BaseController {
         try {
             ResultData<String> resultData = (ResultData<String>) resultInfo;
             String responseHtml = resultData.getData();
-            //System.out.println(responseHtml);
             response.getWriter().write(responseHtml);
             return null;
         } catch (Exception e) {
@@ -336,7 +334,6 @@ public class UserController extends _BaseController {
         try {
             ResultData<String> resultData = (ResultData<String>) resultInfo;
             String responseHtml = resultData.getData();
-           // System.out.println(responseHtml);
             response.getWriter().write(responseHtml);
             return null;
         } catch (Exception e) {
@@ -412,7 +409,6 @@ public class UserController extends _BaseController {
         try {
             ResultData<String> resultData = (ResultData<String>) resultInfo;
             String responseHtml = resultData.getData();
-            //System.out.println(responseHtml);
             response.getWriter().write(responseHtml);
             return null;
         } catch (Exception e) {

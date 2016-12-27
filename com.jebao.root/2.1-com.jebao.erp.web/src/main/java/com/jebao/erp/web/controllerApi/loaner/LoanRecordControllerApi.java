@@ -7,6 +7,7 @@ import com.jebao.erp.web.responseModel.base.JsonResultData;
 import com.jebao.erp.web.responseModel.base.JsonResultList;
 import com.jebao.erp.web.responseModel.loaner.LoanRecordSumVM;
 import com.jebao.erp.web.responseModel.loaner.LoanRecordVM;
+import com.jebao.jebaodb.entity.extEntity.EnumModel;
 import com.jebao.jebaodb.entity.loaner.LoanTotal;
 import com.jebao.jebaodb.entity.loanmanage.TbBidPlan;
 import com.jebao.jebaodb.entity.loanmanage.search.BidPlanExtSM;
@@ -16,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,7 +37,7 @@ public class LoanRecordControllerApi {
         if (model == null) {
             return new JsonResultList<>(null);
         }
-        model.setBpStatus(7);
+        model.setBpStatus(EnumModel.BidStatus.还款中.getValue());
         List<TbBidPlan> planList = tbBidPlanService.selectByLoanerIdForPage(model);
         List<LoanRecordVM> viewModelList = new ArrayList<>();
         planList.forEach(o -> viewModelList.add(new LoanRecordVM(o)));
@@ -63,8 +63,8 @@ public class LoanRecordControllerApi {
         LoanRecordSumVM viewModel = new LoanRecordSumVM();
         viewModel.setJkCount(loanTotal.getTotalTrades());
         viewModel.setJkAmounts(loanTotal.getTotalAmounts());
-        viewModel.setDhAmounts(incomeDetailService.totalMoneyByloanerId(loanerId, 1, 1).setScale(2, BigDecimal.ROUND_HALF_UP));
-        viewModel.setYhAmounts(incomeDetailService.totalMoneyByloanerId(loanerId, 1, 2).setScale(2, BigDecimal.ROUND_HALF_UP));
+        viewModel.setDhAmounts(incomeDetailService.totalMoneyByloanerId(loanerId, EnumModel.FundType.本金.getValue(), EnumModel.IncomeStatus.未还.getValue()));
+        viewModel.setYhAmounts(incomeDetailService.totalMoneyByloanerId(loanerId, EnumModel.FundType.本金.getValue(), EnumModel.IncomeStatus.已还.getValue()));
         return new JsonResultData<>(viewModel);
     }
 }

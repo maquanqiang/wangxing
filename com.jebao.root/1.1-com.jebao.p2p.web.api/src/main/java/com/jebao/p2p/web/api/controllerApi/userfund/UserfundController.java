@@ -5,10 +5,17 @@ import com.jebao.jebaodb.entity.extEntity.ResultData;
 import com.jebao.jebaodb.entity.extEntity.ResultInfo;
 import com.jebao.p2p.service.inf.userfund.IUserfundServiceInf;
 import com.jebao.p2p.web.api.controllerApi._BaseController;
+import com.jebao.p2p.web.api.requestModel.userfund.fundRegModel;
+import com.jebao.p2p.web.api.responseModel.base.JsonResult;
+import com.jebao.p2p.web.api.responseModel.base.JsonResultError;
+import com.jebao.p2p.web.api.responseModel.base.JsonResultOk;
 import com.jebao.p2p.web.api.utils.constants.Constants;
 import com.jebao.p2p.web.api.utils.session.CurrentUser;
 import com.jebao.p2p.web.api.utils.session.CurrentUserContextHolder;
+import com.jebao.p2p.web.api.utils.validation.ValidationResult;
+import com.jebao.p2p.web.api.utils.validation.ValidationUtil;
 import com.jebao.thirdPay.fuiou.model.changeCard.ChangeCardResponse;
+import com.jebao.thirdPay.fuiou.model.reg.RegRequest;
 import com.jebao.thirdPay.fuiou.model.webReg.WebRegResponse;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +34,24 @@ import java.net.URLEncoder;
 public class UserfundController extends _BaseController {
     @Autowired
     private IUserfundServiceInf userfundService;
+
+    @RequestMapping(value = "register",method = RequestMethod.POST)
+    public JsonResult register(fundRegModel model){
+        ValidationResult resultValidation = ValidationUtil.validateEntity(model);
+        if (resultValidation.isHasErrors()) {
+            return new JsonResultError(resultValidation.toString());
+        }
+        if (!model.getPayPassword().equalsIgnoreCase(model.getPayPasswordAgain())) {
+            return new JsonResultError("俩次密码不一致");
+        }
+        CurrentUser user = CurrentUserContextHolder.get();
+        RegRequest reqData = model.toRequest();
+        ResultInfo resultInfo = userfundService.register(reqData,user.getId());
+        if (!resultInfo.getSuccess_is_ok()){
+            return new JsonResultError(resultInfo.getMsg());
+        }
+        return new JsonResultOk(resultInfo.getMsg());
+    }
 
     //非ajax请求
     @RequestMapping(value = "goRegister", method = RequestMethod.POST)

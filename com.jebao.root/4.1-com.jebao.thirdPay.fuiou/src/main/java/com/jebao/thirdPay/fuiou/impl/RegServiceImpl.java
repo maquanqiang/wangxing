@@ -1,13 +1,14 @@
 package com.jebao.thirdPay.fuiou.impl;
 
+import com.jebao.thirdPay.fuiou.constants.FuiouConfig;
 import com.jebao.thirdPay.fuiou.http.WebUtils;
 import com.jebao.thirdPay.fuiou.model.reg.RegRequest;
 import com.jebao.thirdPay.fuiou.model.reg.RegResponse;
 import com.jebao.thirdPay.fuiou.util.PrintUtil;
 import com.jebao.thirdPay.fuiou.util.RegexUtil;
 import com.jebao.thirdPay.fuiou.util.SecurityUtils;
-import org.springframework.stereotype.Service;
 import com.jebao.thirdPay.fuiou.util.XmlUtil;
+import org.springframework.stereotype.Service;
 
 /**
  * 富友--开户注册
@@ -15,6 +16,14 @@ import com.jebao.thirdPay.fuiou.util.XmlUtil;
  */
 @Service
 public class RegServiceImpl {
+    public RegResponse post(RegRequest reqData) {
+        String httpUrl= FuiouConfig.url+"reg.action";
+        try {
+            return post(httpUrl,reqData);
+        } catch (Exception e) {
+            return null;
+        }
+    }
 
     public RegResponse post(String httpUrl, RegRequest reqData) throws Exception {
         String signatureStr = SecurityUtils.sign(reqData.requestSignPlain());

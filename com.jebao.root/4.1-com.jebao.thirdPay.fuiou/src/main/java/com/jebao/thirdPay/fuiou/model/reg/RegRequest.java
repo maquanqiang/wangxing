@@ -1,12 +1,12 @@
 package com.jebao.thirdPay.fuiou.model.reg;
 
+import com.jebao.thirdPay.fuiou.model.base.BaseRequest;
+
 /**
  *
  * Created by Administrator on 2016/9/26.
  */
-public class RegRequest {
-    private String mchnt_cd = "";     //商户代码
-    private String mchnt_txn_ssn = "";//流水号
+public class RegRequest extends BaseRequest{
     private String cust_nm = "";      //注册企业名称
     private String certif_id = "";    //法人身份证号
     private String mobile_no = "";    //手机号
@@ -34,22 +34,6 @@ public class RegRequest {
     //.......
     public void setSignature(String signature) {
         this.signature = signature;
-    }
-
-    public String getMchnt_cd() {
-        return mchnt_cd;
-    }
-
-    public void setMchnt_cd(String mchnt_cd) {
-        this.mchnt_cd = mchnt_cd;
-    }
-
-    public String getMchnt_txn_ssn() {
-        return mchnt_txn_ssn;
-    }
-
-    public void setMchnt_txn_ssn(String mchnt_txn_ssn) {
-        this.mchnt_txn_ssn = mchnt_txn_ssn;
     }
 
     public String getCust_nm() {
