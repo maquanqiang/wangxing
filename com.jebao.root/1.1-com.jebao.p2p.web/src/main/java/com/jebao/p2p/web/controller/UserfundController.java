@@ -29,6 +29,10 @@ public class UserfundController extends _BaseController {
         }
         return "userfund/register";
     }
+    @RequestMapping("registerSuccess")
+    public String registerSuccess(){
+        return "userfund/registerSuccess";
+    }
 
 
 }

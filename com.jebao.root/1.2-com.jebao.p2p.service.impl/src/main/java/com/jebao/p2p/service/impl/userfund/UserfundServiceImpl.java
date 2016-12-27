@@ -29,6 +29,8 @@ import com.jebao.thirdPay.fuiou.model.queryUserInfs.QueryUserInfsRequest;
 import com.jebao.thirdPay.fuiou.model.queryUserInfs.QueryUserInfsResponse;
 import com.jebao.thirdPay.fuiou.model.queryUserInfs.ResponsePlain;
 import com.jebao.thirdPay.fuiou.model.queryUserInfs.ResponsePlainResult;
+import com.jebao.thirdPay.fuiou.model.reg.RegRequest;
+import com.jebao.thirdPay.fuiou.model.reg.RegResponse;
 import com.jebao.thirdPay.fuiou.model.webReg.WebRegRequest;
 import com.jebao.thirdPay.fuiou.model.webReg.WebRegResponse;
 import com.jebao.thirdPay.fuiou.util.SecurityUtils;
@@ -67,9 +69,86 @@ public class UserfundServiceImpl implements IUserfundServiceInf {
     private QueryUserInfsServiceImpl fyQueryUserInfsService;
     @Autowired
     private BalanceActionServiceImpl fyBalanceActionService;
+    @Autowired
+    private RegServiceImpl fyRegService;
 
     /**
-     * 第三方资金账户开户
+     * 第三方资金账户开通，http 直连
+     */
+    @Override
+    public ResultInfo register(RegRequest reqData, long userId) {
+        TbUserDetails userDetailsEntity = userDetailsDao.selectByLoginId(userId);
+        if (userDetailsEntity == null) {
+            return new ResultInfo(false, "不存在的用户");
+        }
+        if (!StringUtils.isBlank(userDetailsEntity.getUdThirdAccount())) {
+            return new ResultInfo(false, "用户已开户，请勿重复操作");
+        }
+        reqData.setMobile_no(userDetailsEntity.getUdPhone()); //手机号
+
+        RegResponse regResponse = fyRegService.post(reqData);
+        if (regResponse == null){
+            return new ResultInfo(false,"与富友通讯异常，请稍后再试");
+        }
+
+        //region 富有响应，记录接口日志
+        TbThirdInterfaceLog thirdInterfaceLog = new TbThirdInterfaceLog();
+        thirdInterfaceLog.setTilType(1); // 接口编号
+        thirdInterfaceLog.setTilSerialNumber(regResponse.getPlain().getMchnt_txn_ssn());
+        thirdInterfaceLog.setTilReturnCode(regResponse.getPlain().getResp_code());
+        String reqJsonText = FastJsonUtil.serialize(reqData); //请求内容
+        String resJsonText = FastJsonUtil.serialize(regResponse); //响应内容
+        thirdInterfaceLog.setTilReqText(reqJsonText);
+        thirdInterfaceLog.setTilRespText(resJsonText);
+        thirdInterfaceLog.setTilCreateTime(new Date());
+        thirdInterfaceLogDao.insert(thirdInterfaceLog);
+        //endregion
+
+        String respCode = regResponse.getPlain().getResp_code();
+        if (!FuiouConfig.Success_Code.equals(respCode)) {
+            return new ResultInfo(false, respCode+"开户失败，请稍后再试");
+        }
+
+        //记录开户日志
+        TbUserLog logModel = new TbUserLog();
+        logModel.setUlUserId(userId);
+        logModel.setUlCreateUserId(userId);
+        logModel.setUlCreateUserTime(new Date());
+        logModel.setUlContent("第三方资金账户开通成功");
+        userLogDao.insert(logModel);
+
+        //更新第三方资金账户信息
+        userDetailsEntity.setUdTrueName(reqData.getCust_nm()); // 客户姓名
+        userDetailsEntity.setUdIdNumber(reqData.getCertif_id()); // 身份证号码
+        userDetailsEntity.setUdEmail(reqData.getEmail()); //邮箱地址
+        userDetailsEntity.setUdBankCityCode(reqData.getCity_id()); //开户行地区代码
+        userDetailsEntity.setUdBankParentBankCode(reqData.getParent_bank_id()); //开户行行别
+        userDetailsEntity.setUdBankParentBankName(reqData.getBank_nm()); //开户行 支行 名称
+        userDetailsEntity.setUdBankCardNo(reqData.getCapAcntNo()); //银行卡号
+        userDetailsEntity.setUdBankCardNoChangeStatus(EnumModel.BankCardChangeStatus.正常.getValue());
+        userDetailsEntity.setUdThirdAccount(reqData.getMobile_no()); //手机号做为第三方资金托管帐号
+        userDetailsEntity.setUdPosStatus(EnumModel.PosStatus.未签约.getValue());
+        userDetailsEntity.setUdUpdateTime(new Date());
+        int reval = userDetailsDao.updateByPrimaryKey(userDetailsEntity);
+        if (reval == 0) {
+            return new ResultInfo(false, "系统异常：更新账户状态失败，请联系客服");
+        }
+
+        //region 设置资金账户余额记录
+        TbAccountsFunds tbAccountsFundsModel = new TbAccountsFunds();
+        tbAccountsFundsModel.setAfLoginId(userId);
+        tbAccountsFundsModel.setAfThirdAccount(reqData.getMobile_no());
+        tbAccountsFundsModel.setAfBalance(new BigDecimal(0));
+        tbAccountsFundsModel.setAfCreateTime(new Date());
+        tbAccountsFundsModel.setAfUpdateTime(new Date());
+        tbAccountsFundsModel.setAfIsDel(EnumModel.IsDel.有效.getValue());
+        accountsFundsService.insert(tbAccountsFundsModel);
+        //endregion
+
+        return new ResultInfo(true, "资金账户开户完成");
+    }
+    /**
+     * 第三方资金账户开户, web 跳转
      *
      * @param userId   金额宝用户id
      * @param realName 真实姓名
