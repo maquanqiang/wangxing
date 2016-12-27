@@ -30,7 +30,7 @@ public class ProductDetailVM extends ViewModel {
         this.bpRiseMoney = entity.getBpRiseMoney();
         this.bpTopMoney = entity.getBpTopMoney();
         this.bpFullTime = entity.getBpFullTime();
-        this.bpStatus = entity.getBpStatus();
+        this.bpStatus = entity.getBpEndTime().before(new Date())?4:entity.getBpStatus();
         this.bpCreateTime = entity.getBpCreateTime();
         this.bpUpdateTime = entity.getBpUpdateTime();
         this.bpLoanTime = entity.getBpLoanTime();
