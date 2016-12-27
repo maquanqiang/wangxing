@@ -18,14 +18,24 @@
     </p>
 </div>
 <!--关于我们内容-->
-<div class="account-main clearfix">
+<div class="aboutUs-main clearfix">
     <!--关于我们--左侧导航-->
     #parse("common/sidebar-about.html")
     <!--关于我们--右侧主要内容-->
-    <div class="aboutUs-content fr" style="height: 731px">
+    <div class="aboutUs-content fr">
         <h2>媒体报道</h2>
+        <ul class="trends-list">
+            <li v-for="item in mediaNews">
+                <a :href="getDetailHref(item.id)" class="clearfix">
+                    <p><i>●</i>{{ item.title }}</p>
+                    <span>{{ item.editDate }}</span>
+                </a>
+            </li>
+        </ul>
+        <div class="page"></div>
     </div>
 </div>
 #parse("common/footer.html")
+<script src=$UrlHelperTool.href("/content/script/article/mediaNews.js")></script>
 </body>
 </html>

@@ -54,7 +54,7 @@ public class FundsDetailsServiceImpl implements IFundsDetailsServiceInf {
     public Map<String, BigDecimal> loanManageInfo(Long loginId) {
 
         BigDecimal loanMoneyTotal = incomeDetailDao.loanMoneyTotal(loginId);
-        TbIncomeDetail repaymentTotal = incomeDetailDao.overdueMoneyOther(loginId,new Date());
+        TbIncomeDetail repaymentTotal = incomeDetailDao.overdueMoneyOther(loginId, new Date());
         TbIncomeDetail overdueMoneyOther = incomeDetailDao.overdueMoneyOther(loginId, null);
 
         Map<String, BigDecimal> map = new HashMap<String, BigDecimal>();
@@ -74,5 +74,13 @@ public class FundsDetailsServiceImpl implements IFundsDetailsServiceInf {
     @Override
     public int update(TbFundsDetails record) {
         return tbFundsDetailsDao.updateBySsn(record);
+    }
+
+    @Override
+    public int selectBySerialNumberForPageCount(Long loginId, String serialNumber) {
+        TbFundsDetails record = new TbFundsDetails();
+        record.setFdLoginId(loginId);
+        record.setFdSerialNumber(serialNumber);
+        return tbFundsDetailsDao.selectByParamsForPageCount(record);
     }
 }

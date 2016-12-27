@@ -95,6 +95,17 @@ public class WithdrawServiceImpl implements IWithdrawServiceInf {
      */
     @Override
     public ResultInfo withdrawDepositByWebComplete(Long loginId, WithdrawDepositResponse model, BigDecimal fee) {
+        if (model != null) {
+            int count = fundsDetailsService.selectBySerialNumberForPageCount(loginId, model.getMchnt_txn_ssn());
+            if (count > 0) {
+                if (FuiouConfig.Success_Code.equals(model.getResp_code())) {
+                    return new ResultInfo(true, "充值成功");
+                } else {
+                    return new ResultInfo(false, "充值失败");
+                }
+            }
+        }
+
         //region 富有返回成功，记录接口日志
         TbThirdInterfaceLog thirdInterfaceLog = new TbThirdInterfaceLog();
         thirdInterfaceLog.setTilType(18); // 接口编号

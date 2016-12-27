@@ -1,7 +1,10 @@
 package com.jebao.p2p.web.controller;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 /**
  * Created by Administrator on 2016/9/21.
@@ -41,6 +44,18 @@ public class HtmlController {
     }
 
     /**
+     * 公司动态详情
+     * @param id
+     * @param model
+     * @return
+     */
+    @RequestMapping(value = "/activity/details/{id}", method = RequestMethod.GET)
+    public String activityDetails(@PathVariable Long id, Model model) {
+        model.addAttribute("aId", id);
+        return "html/activityDetails";
+    }
+
+    /**
      * 关于我们/关于平台
      *
      * @return
@@ -61,13 +76,25 @@ public class HtmlController {
     }
 
     /**
-     * 官方公告
+     * 平台公告
      *
      * @return
      */
     @RequestMapping("officeNews")
     public String officeNews() {
         return "html/officeNews";
+    }
+
+    /**
+     * 平台公告详情
+     * @param id
+     * @param model
+     * @return
+     */
+    @RequestMapping(value = "/officeNews/details/{id}", method = RequestMethod.GET)
+    public String officeNewsDetails(@PathVariable Long id, Model model) {
+        model.addAttribute("aId", id);
+        return "html/officeNewsDetails";
     }
 
     /**
@@ -78,6 +105,18 @@ public class HtmlController {
     @RequestMapping("mediaNews")
     public String mediaNews() {
         return "html/mediaNews";
+    }
+
+    /**
+     * 媒体报道详情
+     * @param id
+     * @param model
+     * @return
+     */
+    @RequestMapping(value = "/mediaNews/details/{id}", method = RequestMethod.GET)
+    public String mediaNewsDetails(@PathVariable Long id, Model model) {
+        model.addAttribute("aId", id);
+        return "html/mediaNewsDetails";
     }
 
     /**
