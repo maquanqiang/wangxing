@@ -18,7 +18,7 @@ public class ArticleInfo {
 
     private Integer aCreateUserId;
 
-    private String createUserName;
+    private String aEditUser;
 
     private Date aCreateTime;
 
@@ -72,14 +72,6 @@ public class ArticleInfo {
         this.aCreateUserId = aCreateUserId;
     }
 
-    public String getCreateUserName() {
-        return createUserName;
-    }
-
-    public void setCreateUserName(String createUserName) {
-        this.createUserName = createUserName;
-    }
-
     public Date getaCreateTime() {
         return aCreateTime;
     }
@@ -94,5 +86,13 @@ public class ArticleInfo {
 
     public void setaUpdateTime(Date aUpdateTime) {
         this.aUpdateTime = aUpdateTime;
+    }
+
+    public String getaEditUser() {
+        return aEditUser;
+    }
+
+    public void setaEditUser(String aEditUser) {
+        this.aEditUser = aEditUser;
     }
 }

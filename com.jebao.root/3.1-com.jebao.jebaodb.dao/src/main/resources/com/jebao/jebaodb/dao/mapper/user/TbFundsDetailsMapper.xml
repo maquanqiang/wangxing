@@ -279,9 +279,9 @@
         select
         <include refid="Base_Column_List"/>
         from tb_funds_details
-        WHERE
+        where
         <include refid="selectByParams_Where_Clause" />
-        order by fd_id DESC
+        order by fd_id desc
         <if test="pageWhere != null">
             LIMIT #{pageWhere.begin},#{pageWhere.pageSize}
         </if>
@@ -289,13 +289,17 @@
     <select id="selectByParamsForPageCount" resultType="java.lang.Integer">
         select count(*)
         from tb_funds_details
-        WHERE
+        where
         <include refid="selectByParams_Where_Clause" />
     </select>
     <sql id="selectByParams_Where_Clause">
-        fd_login_id=#{record.fdLoginId}
+        fd_is_del = 1
+        and fd_login_id=#{record.fdLoginId}
         <if test="record.fdSerialStatus != null" >
-            AND fd_serial_status = #{record.fdSerialStatus}
+            and fd_serial_status = #{record.fdSerialStatus}
+        </if>
+        <if test="record.fdSerialNumber != null" >
+            and fd_serial_number = #{record.fdSerialNumber}
         </if>
     </sql>
 </mapper>

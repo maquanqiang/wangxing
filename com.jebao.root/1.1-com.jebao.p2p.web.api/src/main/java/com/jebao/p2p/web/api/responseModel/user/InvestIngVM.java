@@ -18,7 +18,17 @@ public class InvestIngVM extends ViewModel {
         this.money = entity.getMoney();
         this.periods = String.valueOf(entity.getPeriods()) + getCycleTypeName(entity.getCycleType());
         this.bpRate = entity.getBpRate();
-        this.progress = entity.getProgress().setScale(2, BigDecimal.ROUND_HALF_UP);
+        this.progress = getProgressValue(entity.getProgress());
+    }
+
+    private BigDecimal getProgressValue(BigDecimal pro){
+        if(pro.compareTo(new BigDecimal(0)) == 1 && pro.compareTo(new BigDecimal(1)) == -1){
+            return new BigDecimal(1);
+        }else if(pro.compareTo(new BigDecimal(99)) == 1 && pro.compareTo(new BigDecimal(100)) == -1){
+            return new BigDecimal(99);
+        }else{
+            return pro.setScale(0, BigDecimal.ROUND_HALF_UP);
+        }
     }
 
     private String getCycleTypeName(int cycleType){

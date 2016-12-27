@@ -14,7 +14,7 @@
 <!--关于我们导航-->
 <div class="aboutUs-nav">
     <p>
-        <a href="/">首页</a><a href="javascript:void(0);" class="red">公司动态</a>
+        <a href="/">首页</a><a href="/html/activity" class="red">公司动态</a><a href="javascript:void(0);" class="red">正文</a>
     </p>
 </div>
 <!--关于我们内容-->
@@ -23,19 +23,15 @@
     #parse("common/sidebar-about.html")
     <!--关于我们--右侧主要内容-->
     <div class="aboutUs-content fr">
-        <h2>公司动态</h2>
-        <ul class="trends-list">
-            <li v-for="item in activitys">
-                <a :href="getDetailHref(item.id)" class="clearfix">
-                    <p><i>●</i>{{ item.title }}</p>
-                    <span>{{ item.editDate }}</span>
-                </a>
-            </li>
-        </ul>
-        <div class="page"></div>
+        <form id="defaultForm"><input type="hidden" name="aId" value="${aId}"/></form>
+        <h3>{{ activity.title }}</h3>
+        <p class="release-time">时间：{{ activity.updateTime }}</p>
+        <div id="id_content" class="aboutUs-text"></div>
+        <p class="aboutUs-company">{{ activity.editUser }}</p>
+        <p class="aboutUs-time">{{ activity.editDate }}</p>
     </div>
 </div>
 #parse("common/footer.html")
-<script src=$UrlHelperTool.href("/content/script/article/activity.js")></script>
+<script src=$UrlHelperTool.href("/content/script/article/activityDetails.js")></script>
 </body>
 </html>

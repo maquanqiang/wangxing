@@ -93,17 +93,16 @@ public class RechargeServiceImpl implements IRechargeServiceInf {
      */
     @Override
     public ResultInfo personQuickPayByWebComplete(Long loginId, PersonQuickPayResponse model) {
-        //region 富有返回成功，记录接口日志
-        TbThirdInterfaceLog thirdInterfaceLog = new TbThirdInterfaceLog();
-        thirdInterfaceLog.setTilType(23); // 接口编号
-        thirdInterfaceLog.setTilSerialNumber(model.getMchnt_txn_ssn());
-        thirdInterfaceLog.setTilReturnCode(model.getResp_code());
-        String jsonText = FastJsonUtil.serialize(model);
-        thirdInterfaceLog.setTilReqText("form跳转请求，接口请求内容查看上一条记录");
-        thirdInterfaceLog.setTilRespText(jsonText);
-        thirdInterfaceLog.setTilCreateTime(new Date());
-        thirdInterfaceLogDao.insert(thirdInterfaceLog);
-        //endregion
+        if (model != null) {
+            int count = fundsDetailsService.selectBySerialNumberForPageCount(loginId, model.getMchnt_txn_ssn());
+            if (count > 0) {
+                if (FuiouConfig.Success_Code.equals(model.getResp_code())) {
+                    return new ResultInfo(true, "充值成功");
+                } else {
+                    return new ResultInfo(false, "充值失败");
+                }
+            }
+        }
 
         //获取变更前账户资金信息
         TbAccountsFunds afEntity = userService.getAccountsFundsInfo(loginId);
@@ -130,12 +129,24 @@ public class RechargeServiceImpl implements IRechargeServiceInf {
             return new ResultInfo(false, "第三方返回异常");
         }
 
+        //region 富有返回成功，记录接口日志
+        TbThirdInterfaceLog thirdInterfaceLog = new TbThirdInterfaceLog();
+        thirdInterfaceLog.setTilType(23); // 接口编号
+        thirdInterfaceLog.setTilSerialNumber(model.getMchnt_txn_ssn());
+        thirdInterfaceLog.setTilReturnCode(model.getResp_code());
+        String jsonText = FastJsonUtil.serialize(model);
+        thirdInterfaceLog.setTilReqText("form跳转请求，接口请求内容查看上一条记录");
+        thirdInterfaceLog.setTilRespText(jsonText);
+        thirdInterfaceLog.setTilCreateTime(new Date());
+        thirdInterfaceLogDao.insert(thirdInterfaceLog);
+        //endregion
+
         BigDecimal money = new BigDecimal(model.getAmt()).divide(new BigDecimal(100));
         fundsDetails.setFdSerialAmount(money);
         fundsDetails.setFdSerialNumber(model.getMchnt_txn_ssn());//流水号
         fundsDetails.setFdThirdAccount(model.getLogin_id());
 
-        if(!FuiouConfig.Success_Code.equals(model.getResp_code())){
+        if (!FuiouConfig.Success_Code.equals(model.getResp_code())) {
             String responseMessage = model.getResp_desc();
             if (StringUtils.isBlank(responseMessage)) {
                 responseMessage = "第三方返回异常";
@@ -148,12 +159,12 @@ public class RechargeServiceImpl implements IRechargeServiceInf {
 
         String signature = model.requestSignPlain();
         boolean isValid = SecurityUtils.verifySign(signature, model.getSignature());
-        if (!isValid){
+        if (!isValid) {
             //更新资金收支明细状态为失败
             fundsDetails.setFdSerialStatus(EnumModel.FdSerialStatus.失败.getValue());
             fundsDetails.setFdSerialTime(new Date());
             fundsDetailsService.insert(fundsDetails);
-            return new ResultInfo(false,"操作异常，校验失败");
+            return new ResultInfo(false, "操作异常，校验失败");
         }
 
         BigDecimal balance_new = balance.add(new BigDecimal(model.getAmt()).divide(new BigDecimal(100)));
@@ -171,7 +182,7 @@ public class RechargeServiceImpl implements IRechargeServiceInf {
         accountsFunds.setAfUpdateTime(new Date());
         accountsFundsService.update(accountsFunds);
 
-        return new ResultInfo(true,"充值成功");
+        return new ResultInfo(true, "充值成功");
     }
 
     /**
@@ -215,17 +226,16 @@ public class RechargeServiceImpl implements IRechargeServiceInf {
      */
     @Override
     public ResultInfo fastRechargeByWebComplete(Long loginId, FastRechargeResponse model) {
-        //region 富有返回数据，记录接口日志
-        TbThirdInterfaceLog thirdInterfaceLog = new TbThirdInterfaceLog();
-        thirdInterfaceLog.setTilType(15); // 接口编号
-        thirdInterfaceLog.setTilSerialNumber(model.getMchnt_txn_ssn());
-        thirdInterfaceLog.setTilReturnCode(model.getResp_code());
-        String jsonText = FastJsonUtil.serialize(model);
-        thirdInterfaceLog.setTilReqText("form跳转请求，接口请求内容查看上一条记录");
-        thirdInterfaceLog.setTilRespText(jsonText);
-        thirdInterfaceLog.setTilCreateTime(new Date());
-        thirdInterfaceLogDao.insert(thirdInterfaceLog);
-        //endregion
+        if (model != null) {
+            int count = fundsDetailsService.selectBySerialNumberForPageCount(loginId, model.getMchnt_txn_ssn());
+            if (count > 0) {
+                if (FuiouConfig.Success_Code.equals(model.getResp_code())) {
+                    return new ResultInfo(true, "充值成功");
+                } else {
+                    return new ResultInfo(false, "充值失败");
+                }
+            }
+        }
 
         //获取变更前账户资金信息
         TbAccountsFunds afEntity = userService.getAccountsFundsInfo(loginId);
@@ -252,12 +262,24 @@ public class RechargeServiceImpl implements IRechargeServiceInf {
             return new ResultInfo(false, "第三方返回异常");
         }
 
+        //region 富有返回数据，记录接口日志
+        TbThirdInterfaceLog thirdInterfaceLog = new TbThirdInterfaceLog();
+        thirdInterfaceLog.setTilType(15); // 接口编号
+        thirdInterfaceLog.setTilSerialNumber(model.getMchnt_txn_ssn());
+        thirdInterfaceLog.setTilReturnCode(model.getResp_code());
+        String jsonText = FastJsonUtil.serialize(model);
+        thirdInterfaceLog.setTilReqText("form跳转请求，接口请求内容查看上一条记录");
+        thirdInterfaceLog.setTilRespText(jsonText);
+        thirdInterfaceLog.setTilCreateTime(new Date());
+        thirdInterfaceLogDao.insert(thirdInterfaceLog);
+        //endregion
+
         BigDecimal money = new BigDecimal(model.getAmt()).divide(new BigDecimal(100));
         fundsDetails.setFdSerialAmount(money);
         fundsDetails.setFdSerialNumber(model.getMchnt_txn_ssn());//流水号
         fundsDetails.setFdThirdAccount(model.getLogin_id());
 
-        if(!FuiouConfig.Success_Code.equals(model.getResp_code())){
+        if (!FuiouConfig.Success_Code.equals(model.getResp_code())) {
             String responseMessage = model.getResp_desc();
             if (StringUtils.isBlank(responseMessage)) {
                 responseMessage = "第三方返回异常";
@@ -270,12 +292,12 @@ public class RechargeServiceImpl implements IRechargeServiceInf {
 
         String signature = model.requestSignPlain();
         boolean isValid = SecurityUtils.verifySign(signature, model.getSignature());
-        if (!isValid){
+        if (!isValid) {
             //更新资金收支明细状态为失败
             fundsDetails.setFdSerialStatus(EnumModel.FdSerialStatus.失败.getValue());
             fundsDetails.setFdSerialTime(new Date());
             fundsDetailsService.insert(fundsDetails);
-            return new ResultInfo(false,"操作异常，校验失败");
+            return new ResultInfo(false, "操作异常，校验失败");
         }
 
         BigDecimal balance_new = balance.add(new BigDecimal(model.getAmt()).divide(new BigDecimal(100)));
@@ -293,11 +315,12 @@ public class RechargeServiceImpl implements IRechargeServiceInf {
         accountsFunds.setAfUpdateTime(new Date());
         accountsFundsService.update(accountsFunds);
 
-        return new ResultInfo(true,"充值成功");
+        return new ResultInfo(true, "充值成功");
     }
 
     /**
      * 网银充值 form表单提交 跳转
+     *
      * @param loginId
      * @param money
      * @return
@@ -334,23 +357,23 @@ public class RechargeServiceImpl implements IRechargeServiceInf {
 
     /**
      * 网银充值 返回结果处理
+     *
      * @param loginId
      * @param model
      * @return
      */
     @Override
     public ResultInfo onlineBankRechargeByWebComplete(Long loginId, OnlineBankRechargeResponse model) {
-        //region 富有返回成功，记录接口日志
-        TbThirdInterfaceLog thirdInterfaceLog = new TbThirdInterfaceLog();
-        thirdInterfaceLog.setTilType(16); // 接口编号
-        thirdInterfaceLog.setTilSerialNumber(model.getMchnt_txn_ssn());
-        thirdInterfaceLog.setTilReturnCode(model.getResp_code());
-        String jsonText = FastJsonUtil.serialize(model);
-        thirdInterfaceLog.setTilReqText("form跳转请求，接口请求内容查看上一条记录");
-        thirdInterfaceLog.setTilRespText(jsonText);
-        thirdInterfaceLog.setTilCreateTime(new Date());
-        thirdInterfaceLogDao.insert(thirdInterfaceLog);
-        //endregion
+        if (model != null) {
+            int count = fundsDetailsService.selectBySerialNumberForPageCount(loginId, model.getMchnt_txn_ssn());
+            if (count > 0) {
+                if (FuiouConfig.Success_Code.equals(model.getResp_code())) {
+                    return new ResultInfo(true, "充值成功");
+                } else {
+                    return new ResultInfo(false, "充值失败");
+                }
+            }
+        }
 
         //获取变更前账户资金信息
         TbAccountsFunds afEntity = userService.getAccountsFundsInfo(loginId);
@@ -377,12 +400,24 @@ public class RechargeServiceImpl implements IRechargeServiceInf {
             return new ResultInfo(false, "第三方返回异常");
         }
 
+        //region 富有返回成功，记录接口日志
+        TbThirdInterfaceLog thirdInterfaceLog = new TbThirdInterfaceLog();
+        thirdInterfaceLog.setTilType(16); // 接口编号
+        thirdInterfaceLog.setTilSerialNumber(model.getMchnt_txn_ssn());
+        thirdInterfaceLog.setTilReturnCode(model.getResp_code());
+        String jsonText = FastJsonUtil.serialize(model);
+        thirdInterfaceLog.setTilReqText("form跳转请求，接口请求内容查看上一条记录");
+        thirdInterfaceLog.setTilRespText(jsonText);
+        thirdInterfaceLog.setTilCreateTime(new Date());
+        thirdInterfaceLogDao.insert(thirdInterfaceLog);
+        //endregion
+
         BigDecimal money = new BigDecimal(model.getAmt()).divide(new BigDecimal(100));
         fundsDetails.setFdSerialAmount(money);
         fundsDetails.setFdSerialNumber(model.getMchnt_txn_ssn());//流水号
         fundsDetails.setFdThirdAccount(model.getLogin_id());
 
-        if(!FuiouConfig.Success_Code.equals(model.getResp_code())){
+        if (!FuiouConfig.Success_Code.equals(model.getResp_code())) {
             String responseMessage = model.getRem();
             if (StringUtils.isBlank(responseMessage)) {
                 responseMessage = "第三方返回异常";
@@ -395,12 +430,12 @@ public class RechargeServiceImpl implements IRechargeServiceInf {
 
         String signature = model.requestSignPlain();
         boolean isValid = SecurityUtils.verifySign(signature, model.getSignature());
-        if (!isValid){
+        if (!isValid) {
             //更新资金收支明细状态为失败
             fundsDetails.setFdSerialStatus(EnumModel.FdSerialStatus.失败.getValue());
             fundsDetails.setFdSerialTime(new Date());
             fundsDetailsService.update(fundsDetails);
-            return new ResultInfo(false,"操作异常，校验失败");
+            return new ResultInfo(false, "操作异常，校验失败");
         }
 
         BigDecimal balance_new = balance.add(new BigDecimal(model.getAmt()).divide(new BigDecimal(100)));
@@ -418,6 +453,6 @@ public class RechargeServiceImpl implements IRechargeServiceInf {
         accountsFunds.setAfUpdateTime(new Date());
         accountsFundsService.update(accountsFunds);
 
-        return new ResultInfo(true,"充值成功");
+        return new ResultInfo(true, "充值成功");
     }
 }

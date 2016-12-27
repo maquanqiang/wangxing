@@ -11,6 +11,8 @@ public class TbArticle {
 
     private Date aEditDate;
 
+    private String aEditUser;
+
     private Integer aCreateUserId;
 
     private Date aCreateTime;
@@ -51,6 +53,14 @@ public class TbArticle {
 
     public void setaEditDate(Date aEditDate) {
         this.aEditDate = aEditDate;
+    }
+
+    public String getaEditUser() {
+        return aEditUser;
+    }
+
+    public void setaEditUser(String aEditUser) {
+        this.aEditUser = aEditUser == null ? null : aEditUser.trim();
     }
 
     public Integer getaCreateUserId() {

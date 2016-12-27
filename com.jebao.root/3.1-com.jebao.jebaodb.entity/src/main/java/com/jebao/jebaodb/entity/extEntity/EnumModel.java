@@ -173,4 +173,20 @@ public class EnumModel {
             return this.value;
         }
     }
+
+    /**
+     * 文章类别
+     */
+    public enum ArticleType{
+        公司动态(1),
+        平台公告(2),
+        媒体报道(3);
+        private int value;
+        private ArticleType(int val){
+            this.value = val;
+        }
+        public int getValue(){
+            return this.value;
+        }
+    }
 }

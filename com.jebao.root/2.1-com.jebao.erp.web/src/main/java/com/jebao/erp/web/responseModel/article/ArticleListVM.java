@@ -12,17 +12,14 @@ import java.util.Date;
 public class ArticleListVM extends ViewModel {
     public ArticleListVM(ArticleInfo info) {
         this.id = info.getaId();
-        //this.typeId = info.getaTypeId();
         this.typeName = info.getTypeName();
         this.title = info.getaTitle();
         this.editDate = info.getaEditDate();
-        this.createUserName = info.getCreateUserName();
+        this.editUser = info.getaEditUser();
         this.updateTime = info.getaUpdateTime();
     }
 
     private Long id;
-
-    //private Integer typeId;
 
     private String typeName;
 
@@ -31,7 +28,7 @@ public class ArticleListVM extends ViewModel {
     @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd")
     private Date editDate;
 
-    private String createUserName;
+    private String editUser;
 
     @JsonFormat(timezone = "GMT+8", pattern = "yyyy/MM/dd HH:mm:ss")
     private Date updateTime;
@@ -43,14 +40,6 @@ public class ArticleListVM extends ViewModel {
     public void setId(Long id) {
         this.id = id;
     }
-
-   /* public Integer getTypeId() {
-        return typeId;
-    }
-
-    public void setTypeId(Integer typeId) {
-        this.typeId = typeId;
-    }*/
 
     public String getTypeName() {
         return typeName;
@@ -76,19 +65,19 @@ public class ArticleListVM extends ViewModel {
         this.editDate = editDate;
     }
 
-    public String getCreateUserName() {
-        return createUserName;
-    }
-
-    public void setCreateUserName(String createUserName) {
-        this.createUserName = createUserName;
-    }
-
     public Date getUpdateTime() {
         return updateTime;
     }
 
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public String getEditUser() {
+        return editUser;
+    }
+
+    public void setEditUser(String editUser) {
+        this.editUser = editUser;
     }
 }

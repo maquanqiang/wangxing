@@ -34,17 +34,16 @@ public interface IFundsDetailsServiceInf {
      * @param record
      * @return
      */
-    public List<TbIncomeDetail> selectFundList(FundDetailSM record, PageWhere pageWhere);
+    List<TbIncomeDetail> selectFundList(FundDetailSM record, PageWhere pageWhere);
 
-
-    public int selectFundCount(FundDetailSM record);
+    int selectFundCount(FundDetailSM record);
 
     /**
      * 借款管理统计
      * @param loginId
      * @return
      */
-    public Map<String, BigDecimal> loanManageInfo(Long loginId);
+    Map<String, BigDecimal> loanManageInfo(Long loginId);
 
      /** 新增资金收支明细
      * @param record
@@ -58,4 +57,11 @@ public interface IFundsDetailsServiceInf {
      * @return
      */
     int update(TbFundsDetails record);
+
+    /**
+     * 根据流水号获取资金收支明细详情
+     * @param serialNumber
+     * @return
+     */
+    int selectBySerialNumberForPageCount(Long loginId, String serialNumber);
 }
