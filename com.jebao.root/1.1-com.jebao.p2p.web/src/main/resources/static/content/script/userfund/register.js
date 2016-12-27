@@ -91,6 +91,9 @@ var vm = new Vue({
                             validators: {
                                 notEmpty: {
                                     message: '请输入银行卡号'
+                                },
+                                bankCard:{
+                                    message:'银行卡号输入错误'
                                 }
                             }
                         },
