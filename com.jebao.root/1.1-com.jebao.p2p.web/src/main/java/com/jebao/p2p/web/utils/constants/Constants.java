@@ -21,4 +21,6 @@ public class Constants {
     public static final String WebApiOrgin = ProjectSetting.getConfigProperty("project.webapi.origin");
     //手续费
     public static String COMMISSION_CHARGE = ProjectSetting.getConfigProperty("project.commission_charge") == null ? "0" : ProjectSetting.getConfigProperty("project.commission_charge");
+    //静态资源文件的路径
+    public static final String STATIC_FILE_PATH=ProjectSetting.getConfigProperty("project.static.filePath");
 }
