@@ -137,7 +137,7 @@ var vm = new Vue({
             });
             $.post("/api/investInfo/createIncomeDetails",form,function(response){
                 if (response.success_is_ok){
-                    layer.msg(response.msg,5);
+                    layer.msg(response.msg);
                     $.get("/api/incomeDetail/repaymentList",model.searchObj,function(response) {
                         if (response.success_is_ok) {
                             vm.intentList = response.data;
@@ -190,7 +190,7 @@ var vm = new Vue({
                 $.post("/api/bidPlan/doLoan",form,function(response){
                     if(response.success_is_ok){
                         layer.closeAll('loading');
-                        layer.alert(response.msg, 5);
+                        layer.alert(response.msg);
                         window.location.href = "/postLoan/index";
                     }
                 })

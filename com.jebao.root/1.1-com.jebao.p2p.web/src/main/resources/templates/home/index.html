@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+    <!DOCTYPE html>
 <html>
 <head>#parse("common/head.html")
     <link rel="stylesheet" href="${filePath}/css/index.css">
@@ -112,7 +112,7 @@
             <div class="project-title item-new fl">
                 <p>新手专区</p>
             </div>
-            <div class="project-content-new fl" v-for="data in products2">
+            <div class="project-content-new fl" v-for="data in products2" @click="openDetail(data.bpId)">
                 <div class="project-name">
                     <a href="javascript:;" @click="openDetail(data.bpId)">
                         <p>{{data.bpName}}<span>{{data.bpNumber}}</span></p>
