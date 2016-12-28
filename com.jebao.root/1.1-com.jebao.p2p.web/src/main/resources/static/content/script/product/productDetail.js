@@ -24,7 +24,7 @@ var model = {
     statistics : {},
     cycleType:["","天","个月","季","年"],
     bpInterestPayTypeArr : ["","一次性还本付息","先息后本，按期付息"],
-    bpStatusArr : ["待审核",'审核未通过',"立即投资","已满标",'已过期','','起息中','还款中','','','已结清'],
+    bpStatusArr : ["","","立即投资","满标","募集结束","","","还款中","","","已完成"],
     sex:['','男','女'],
     fundType : ['','本金','利息'],
     repayStatus : ['','未还款','已还款'],
@@ -154,18 +154,28 @@ var vm = new Vue({
                     });
                     flag = false;
                 }
-                if((investMoney-vm.product.bpStartMoney)>=0){
-                    if((investMoney-vm.product.bpStartMoney) % vm.product.bpRiseMoney !=0){
-                        layer.tips("投资金额不符合递增规则", '#investMoney', {
+
+                if(vm.product.bpSurplusMoney > vm.product.bpStartMoney){
+                    if((investMoney-vm.product.bpStartMoney)>=0){
+                        if((investMoney-vm.product.bpStartMoney) % vm.product.bpRiseMoney !=0){
+                            layer.tips("投资金额不符合递增规则", '#investMoney', {
+                                tips: [1, '#0FA6D8'] //还可配置颜色
+                            });
+                            flag = false;
+                        }
+                    }else{
+                        layer.tips("投资金额小于起投金额"+vm.product.bpStartMoney+"元", '#investMoney', {
                             tips: [1, '#0FA6D8'] //还可配置颜色
                         });
                         flag = false;
                     }
                 }else{
-                    layer.tips("投资金额小于起投金额"+vm.product.bpStartMoney+"元", '#investMoney', {
-                        tips: [1, '#0FA6D8'] //还可配置颜色
-                    });
-                    flag = false;
+                    if(investMoney != vm.product.bpSurplusMoney){
+                        layer.tips("最后一次投资，需一次性投满", '#investMoney', {
+                            tips: [1, '#0FA6D8'] //还可配置颜色
+                        });
+                        flag = false;
+                    }
                 }
             }else{
                 layer.tips("投资金额输入有误", '#investMoney', {

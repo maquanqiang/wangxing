@@ -55,6 +55,8 @@ public class ContractController {
     @Autowired
     private IIncomeDetailServiceInf incomeDetailService;
 
+    private ContractCommData commData = null;
+
     //投资人合同模板
     @RequestMapping("template/t1")
     public String templateForT1(ContractParamForm form, Model model) {
@@ -65,17 +67,17 @@ public class ContractController {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         DecimalFormat d1 = new DecimalFormat("#,##0.##");
         String loanMonayRMB = UpCaseRMB.number2CNMontrayUnit(form.getBpLoanMoney());
-
+        if(commData == null){
             //common data
-            ContractCommData commData = new ContractCommData();
+            commData = new ContractCommData();
             TbBidPlan tbBidPlan = bidPlanService.selectByBpId(form.getBpId());
             TbLoaner loaner = loanerService.findLoanerById(tbBidPlan.getBpLoanerId());
 
             commData.setLoanerTrueName(tbBidPlan.getBpTrueName());              //借款人姓名
             commData.setLoanerNumber(loaner.getlIdNumber());                    //证件号码
             commData.setInterestSt(sdf.format(form.getBpInterestSt()));         //受让日期
-            cl.setTime(form.getBpInterestSt());
-            cl.add(Calendar.DATE, 1);
+            cl.setTime(form.getBpRepayTime());
+            cl.add(Calendar.DATE, -1);
             commData.setInterestEt(sdf.format(cl.getTime()));                   //结束日期
             commData.setRepayTime(sdf.format(form.getBpRepayTime()));           //还款日期
             commData.setLoanMoney(d1.format(form.getBpLoanMoney()));            //标的金额--实际放款金额
@@ -100,6 +102,7 @@ public class ContractController {
                 }
             }
             commData.setInfos(datas);
+        }
 
         TbInvestInfo investInfo = investInfoService.selectById(form.getInvestId());
         TbUserDetails userDetails = userDetailsService.selectByLoginId(investInfo.getIiLoginId());

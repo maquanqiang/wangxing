@@ -1,5 +1,7 @@
 package com.jebao.p2p.service.inf.user;
 
+import com.jebao.jebaodb.entity.extEntity.ResultInfo;
+
 import java.math.BigDecimal;
 
 /**
@@ -7,5 +9,5 @@ import java.math.BigDecimal;
  */
 public interface ILoanManageServiceInf {
 
-    public String repay(Long bpId, Long loginId, Integer period, BigDecimal repayMoney);
+    public ResultInfo repay(Long bpId, Long loginId, Integer period, BigDecimal repayMoney);
 }

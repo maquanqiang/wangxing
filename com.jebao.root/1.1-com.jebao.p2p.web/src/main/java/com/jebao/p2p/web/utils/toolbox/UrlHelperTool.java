@@ -76,4 +76,12 @@ public class UrlHelperTool {
     public String getFee() {
         return Constants.COMMISSION_CHARGE;
     }
+
+    /**
+     * 静态资源文件的路径
+     * @return
+     */
+    public String getStaticFilePath() {
+        return Constants.STATIC_FILE_PATH;
+    }
 }

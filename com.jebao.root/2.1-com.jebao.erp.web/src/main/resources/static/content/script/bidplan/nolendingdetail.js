@@ -71,11 +71,11 @@ var vm = new Vue({
             }
         })
         //intentList
-        //$.get("/api/incomeDetail/repaymentList",model.searchObj,function(response) {
-        //    if (response.success_is_ok) {
-        //        vm.intentList = response.data;
-        //    }
-        //})
+        $.get("/api/incomeDetail/repaymentList",model.searchObj,function(response) {
+            if (response.success_is_ok) {
+                vm.intentList = response.data;
+            }
+        })
     },
     //watch可以监视数据变动，针对相应的数据设置监视函数即可
     watch: {
@@ -132,30 +132,47 @@ var vm = new Vue({
             var form = $("#defaultForm").serializeObject();
             $.post("/api/investInfo/createRepaymentDetails",form,function(response){
                 if (response.success_is_ok){
-                    vm.intentList = response.data;
-                    for(var i=0; i<vm.intentList.length; i++){
-                        vm.total += (vm.intentList[i].money)*1;
-                    }
-                    vm.total = vm.total.toFixed(2);
-                    layer.alert("借款人还款明细生成，正在生成投资人收入明细",5);
-                    $.post("/api/investInfo/createIncomeDetails",form,function(response){
-                        if (response.success_is_ok){
-                            layer.alert(response.msg,5);
+                    layer.msg(response.msg);
+                }
+            });
+            $.post("/api/investInfo/createIncomeDetails",form,function(response){
+                if (response.success_is_ok){
+                    layer.msg(response.msg,5);
+                    $.get("/api/incomeDetail/repaymentList",model.searchObj,function(response) {
+                        if (response.success_is_ok) {
+                            vm.intentList = response.data;
+                            for(var i=0; i<vm.intentList.length; i++){
+                                vm.total += (vm.intentList[i].indMoney)*1;
+                            }
+                            vm.total = vm.total.toFixed(2);
                         }
                     })
                 }
-            });
+            })
+            //$.post("/api/investInfo/createRepaymentDetails",form,function(response){
+            //    if (response.success_is_ok){
+            //        vm.intentList = response.data;
+            //        for(var i=0; i<vm.intentList.length; i++){
+            //            vm.total += (vm.intentList[i].money)*1;
+            //        }
+            //        vm.total = vm.total.toFixed(2);
+            //        layer.alert("借款人还款明细生成，正在生成投资人收入明细",5);
+            //        $.post("/api/investInfo/createIncomeDetails",form,function(response){
+            //            if (response.success_is_ok){
+            //                layer.alert(response.msg,5);
+            //            }
+            //        })
+            //    }
+            //});
         },
         doLoanBtn:function(){
             if(vm.intentList.length == 0){
                 layer.alert("请先生成还款明细");
                 return false;
-            }
-            //else if(vm.investInfoList[0].contractUrl == null){
-            //    layer.alert("请先制作合同");
-            //    return false;
-            //}
-            else{
+            }else if(vm.investInfoList[0].contractUrl == null){
+                layer.alert("请先制作合同");
+                return false;
+            }else{
                 //加载层-风格2
                 layer.load(1);
                 vm.myInitValidateForm($('#defaultForm'));

@@ -42,7 +42,7 @@ var vm = new Vue({
         model.searchObj = $("#defaultForm").serializeObject(); //初始化 model.search 对象
         model.searchObj.bpStatus = 7;
         model.searchObj.pageIndex=0;
-        model.searchObj.pageSize=10;
+        model.searchObj.pageSize=15;
     },
     //初始化远程数据
     created:function(){

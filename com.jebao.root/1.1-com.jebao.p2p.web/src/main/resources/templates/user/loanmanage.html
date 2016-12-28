@@ -52,8 +52,8 @@
         <!--还款中借款---已结清借款-->
         <div class="project">
             <div class="project-menu clearfix">
-                <h4 class="active">还款中的借款</h4>
-                <h4>已结清借款</h4>
+                <h4 class="active" @click="repayingList()">还款中的借款</h4>
+                <h4 @click="repayedList()">已结清借款</h4>
             </div>
             <div class="project-list">
                 <div class="project-item active">
@@ -93,7 +93,7 @@
                             暂无还款中借款
                         </p>
                     </div>
-                    <div class="page"></div>
+                    <div class="page" id="page1"></div>
                 </div>
                 <div class="project-item">
 
@@ -131,7 +131,7 @@
                             暂无已结清借款
                         </p>
                     </div>
-                    <div class="page"></div>
+                    <div class="page" id="page2"></div>
                 </div>
             </div>
         </div>

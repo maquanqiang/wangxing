@@ -60,6 +60,11 @@ public class InvestInfoControllerApi {
         return new JsonResultList<>(investInfos);
     }
 
+    /**
+     * 创建借款人还款明细
+     * @param form
+     * @return
+     */
     @RequestMapping("createRepaymentDetails")
     @ResponseBody
     public JsonResult createRepaymentDetails(RepaymentForm form){
@@ -90,10 +95,15 @@ public class InvestInfoControllerApi {
             }
         }
         loanFundIntents.forEach(o -> loanerRepaymentDetailService.save(o));
-        return new JsonResultList<>(repaymentDetails);
+        return new JsonResultOk("生成借款人明细成功");
 
     }
 
+    /**
+     * 创建投资人收益明细
+     * @param form
+     * @return
+     */
     @RequestMapping("createIncomeDetails")
     @ResponseBody
     public JsonResult createIncomeDetails(RepaymentForm form){

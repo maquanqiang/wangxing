@@ -400,6 +400,7 @@
     <sql id="loanInfoCountWhere">
         plan.bp_login_id = #{bpLoginId}
         AND detail.ind_status = 1
+        AND detail.ind_is_del = 1
         <if test="dateTime != null">
             <![CDATA[
             AND detail.ind_date_time <= date_add(#{dateTime}, INTERVAL 10 DAY);

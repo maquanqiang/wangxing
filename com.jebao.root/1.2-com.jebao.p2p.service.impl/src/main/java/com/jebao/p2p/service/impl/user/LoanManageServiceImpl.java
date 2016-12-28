@@ -7,6 +7,7 @@ import com.jebao.jebaodb.dao.dao.loanmanage.TbThirdInterfaceLogDao;
 import com.jebao.jebaodb.dao.dao.user.TbAccountsFundsDao;
 import com.jebao.jebaodb.dao.dao.user.TbFundsDetailsDao;
 import com.jebao.jebaodb.entity.extEntity.PageWhere;
+import com.jebao.jebaodb.entity.extEntity.ResultInfo;
 import com.jebao.jebaodb.entity.investment.TbIncomeDetail;
 import com.jebao.jebaodb.entity.investment.TbInvestInfo;
 import com.jebao.jebaodb.entity.investment.TbLoanerRepaymentDetail;
@@ -53,16 +54,15 @@ public class LoanManageServiceImpl implements ILoanManageServiceInf {
     private static Logger LOGGER = LoggerFactory.getLogger(LoanManageServiceImpl.class);
 
     @Override
-    public String repay(Long bpId, Long loginId, Integer period, BigDecimal repayMoney) {
+    public ResultInfo repay(Long bpId, Long loginId, Integer period, BigDecimal repayMoney) {
 
-        String message = "还款成功";
-        boolean flag = false;
-
+        ResultInfo resultInfo = new ResultInfo(false, "还款失败");
+        boolean flag = true;
         //查看用户本地余额
         TbAccountsFunds accountsFunds = accountsFundsDao.selectByLoginId(loginId);
         if(accountsFunds.getAfBalance().compareTo(repayMoney)==-1){
-            message = "账户余额不足，请及时充值";
-            return message;
+            resultInfo.setMsg("账户余额不足，请及时充值");
+            return resultInfo;
         }
 
         //查询还款列表
@@ -74,8 +74,8 @@ public class LoanManageServiceImpl implements ILoanManageServiceInf {
 
         //并判断还款金额是否跟页面一致
         if(total.compareTo(repayMoney)!=0){
-            message = "还款金额不误，稍后重试，有疑问请联系平台";
-            return message;
+            resultInfo.setMsg("还款金额有误，稍后重试，有疑问请联系平台");
+            return resultInfo;
         }
 
         TbBidPlan plan = tbBidPlanDao.selectByPrimaryKey(bpId);
@@ -175,18 +175,18 @@ public class LoanManageServiceImpl implements ILoanManageServiceInf {
                         inAccount.setAfUpdateTime(new Date());
                         inAccount.setAfBalance(inAccount.getAfBalance().add(detail.getIndMoney()));
                         accountsFundsDao.updateByPrimaryKeySelective(inAccount);
-                        flag = true;
                     }else{
+                        flag = false;
                         //更改出账流水记录
                         outFundsDetails.setFdSerialStatus(-1);
                         fundsDetailsDao.updateByPrimaryKeySelective(outFundsDetails);
-
                         if(LOGGER.isDebugEnabled()){
                             LOGGER.debug("还款失败，当前还款记录ID：{}, 第三方返回码：{}",detail.getIndId(), response.getPlain().getResp_code());
                         }
 
                     }
                 } catch (Exception e) {
+                    flag = false;
                     if(LOGGER.isErrorEnabled()){
                         LOGGER.error("还款失败，当前还款记录ID：{}",detail.getIndId());
                     }
@@ -221,12 +221,13 @@ public class LoanManageServiceImpl implements ILoanManageServiceInf {
                     investInfoDao.updateByPrimaryKeySelective(info);
                 }
             }
-
+            resultInfo.setMsg("还款成功");
+            resultInfo.setSuccess_is_ok(true);
             //TODO 借款人还款明细 作废
 //            TbLoanerRepaymentDetail tbLoanerRepaymentDetail = new TbLoanerRepaymentDetail();
 //            tbLoanerRepaymentDetail.setLrdFactDateTime(new Date());
 //            tbLoanerRepaymentDetail.setLrdFactMoney(repayMoney);
         }
-        return message;
+        return resultInfo;
     }
 }
