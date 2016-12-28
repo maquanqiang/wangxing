@@ -26,15 +26,28 @@
                         <div id="orderlist_table_wrapper" class="dataTables_wrapper">
                             <div class="row">
                                 <div class="col-sm-12">
-                                    <table id="orderlist_table" class="table table-bordered table-hover dataTable" role="grid" aria-describedby="orderlist_table_info">
+                                    <table id="orderlist_table" class="table table-bordered table-hover dataTable"
+                                           role="grid" aria-describedby="orderlist_table_info">
                                         <thead>
                                         <tr role="row">
-                                            <th width="16%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">可用金额</th>
-                                            <th width="16%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">借款金额</th>
-                                            <th width="16%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">借款利息</th>
-                                            <th width="16%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">手续费</th>
-                                            <th width="16%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">待还金额</th>
-                                            <th width="16%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">待还利息</th>
+                                            <th width="16%" class="ui-state-default sorting_disabled" rowspan="1"
+                                                colspan="1">可用金额
+                                            </th>
+                                            <th width="16%" class="ui-state-default sorting_disabled" rowspan="1"
+                                                colspan="1">借款金额
+                                            </th>
+                                            <th width="16%" class="ui-state-default sorting_disabled" rowspan="1"
+                                                colspan="1">借款利息
+                                            </th>
+                                            <th width="16%" class="ui-state-default sorting_disabled" rowspan="1"
+                                                colspan="1">手续费
+                                            </th>
+                                            <th width="16%" class="ui-state-default sorting_disabled" rowspan="1"
+                                                colspan="1">待还金额
+                                            </th>
+                                            <th width="16%" class="ui-state-default sorting_disabled" rowspan="1"
+                                                colspan="1">待还利息
+                                            </th>
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -66,13 +79,22 @@
                         <div class="dataTables_wrapper">
                             <div class="row">
                                 <div class="col-sm-12">
-                                    <table class="table table-bordered table-hover dataTable" role="grid" aria-describedby="orderlist_table_info">
+                                    <table class="table table-bordered table-hover dataTable" role="grid"
+                                           aria-describedby="orderlist_table_info">
                                         <thead>
                                         <tr role="row">
-                                            <th width="25%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">充值次数</th>
-                                            <th width="25%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">充值金额</th>
-                                            <th width="25%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">提现次数</th>
-                                            <th width="25%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">提现金额</th>
+                                            <th width="25%" class="ui-state-default sorting_disabled" rowspan="1"
+                                                colspan="1">充值次数
+                                            </th>
+                                            <th width="25%" class="ui-state-default sorting_disabled" rowspan="1"
+                                                colspan="1">充值金额
+                                            </th>
+                                            <th width="25%" class="ui-state-default sorting_disabled" rowspan="1"
+                                                colspan="1">提现次数
+                                            </th>
+                                            <th width="25%" class="ui-state-default sorting_disabled" rowspan="1"
+                                                colspan="1">提现金额
+                                            </th>
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -102,28 +124,39 @@
                         <div class="dataTables_wrapper">
                             <div class="row">
                                 <div class="col-sm-12">
-                                    <table id="" class="table table-bordered table-hover dataTable" role="grid" aria-describedby="orderlist_table_info">
+                                    <table id="" class="table table-bordered table-hover dataTable" role="grid"
+                                           aria-describedby="orderlist_table_info">
                                         <thead>
                                         <tr role="row">
-                                            <th width="16%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">流水号</th>
-                                            <th width="16%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">用户名</th>
-                                            <th width="16%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">发生金额</th>
-                                            <th width="20%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">时间</th>
-                                            <th width="12%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">手续费</th>
-                                            <th width="12%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">类型</th>
+                                            <th width="16%" class="ui-state-default sorting_disabled" rowspan="1"
+                                                colspan="1">流水号
+                                            </th>
+                                            <th width="16%" class="ui-state-default sorting_disabled" rowspan="1"
+                                                colspan="1">用户名
+                                            </th>
+                                            <th width="16%" class="ui-state-default sorting_disabled" rowspan="1"
+                                                colspan="1">发生金额
+                                            </th>
+                                            <th width="20%" class="ui-state-default sorting_disabled" rowspan="1"
+                                                colspan="1">时间
+                                            </th>
+                                            <th width="12%" class="ui-state-default sorting_disabled" rowspan="1"
+                                                colspan="1">手续费
+                                            </th>
+                                            <th width="12%" class="ui-state-default sorting_disabled" rowspan="1"
+                                                colspan="1">类型
+                                            </th>
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        <template v-for="item in fundsDetails">
-                                            <tr role="row">
-                                                <td>{{ item.serialNumber }}</td>
-                                                <td></td>
-                                                <td>{{ item.serialAmount }}</td>
-                                                <td>{{ item.serialTime }}</td>
-                                                <td>{{ item.commissionCharge }}</td>
-                                                <td>{{ item.serialTypeName }}</td>
-                                            </tr>
-                                        </template>
+                                        <tr role="row" v-for="item in fundsDetails">
+                                            <td>{{ item.serialNumber }}</td>
+                                            <td>{{ nickUserName }}</td>
+                                            <td>{{ item.serialAmount }}</td>
+                                            <td>{{ item.serialTime }}</td>
+                                            <td>{{ item.commissionCharge }}</td>
+                                            <td>{{ item.serialTypeName }}</td>
+                                        </tr>
                                         </tbody>
                                     </table>
                                 </div>

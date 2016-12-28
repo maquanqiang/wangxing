@@ -34,7 +34,7 @@ public class InvestIngVM extends ViewModel {
     private String getCycleTypeName(int cycleType){
         String name = "其他";
         switch (cycleType){
-            case 1:name="日";break;
+            case 1:name="天";break;
             case 2:name="个月";break;
             case 3:name="季";break;
             case 4:name="年";break;

@@ -975,15 +975,13 @@
         <result column="loaner_id" property="loanerId" jdbcType="BIGINT"/>
         <result column="total_trades" property="totalTrades" jdbcType="INTEGER"/>
         <result column="total_amounts" property="totalAmounts" jdbcType="DECIMAL"/>
-        <result column="interests" property="interests" jdbcType="DECIMAL"/>
         <result column="service_charge" property="serviceCharge" jdbcType="DECIMAL"/>
     </resultMap>
     <select id="statisticsByLoanerId" resultMap="LoanTotalResultMap" parameterType="java.lang.Long">
         SELECT bp_loaner_id AS loaner_id,
         COUNT(1) AS total_trades,
         IFNULL(SUM(IFNULL(bp_loan_money,0)),0) AS total_amounts,
-        IFNULL(SUM(IFNULL(bp_loan_money,0) / IFNULL(bp_rate,0)),0) AS interests,
-        IFNULL(SUM(IFNULL(bp_loan_money,0) / IFNULL(bp_service_charge_rate,0)),0) AS service_charge
+        IFNULL(SUM(IFNULL(bp_loan_money,0) * (IFNULL(bp_service_charge_rate,0) / 100)),0) AS service_charge
         FROM tb_bid_plan
         WHERE bp_is_del=1 AND bp_status >= 7
         AND bp_loaner_id=#{bpLoanerId,jdbcType=BIGINT}

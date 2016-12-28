@@ -1,9 +1,13 @@
 package com.jebao.p2p.web.api.utils.http;
 
 import com.jebao.jebaodb.entity.extEntity.EnumModel;
+import org.apache.commons.httpclient.HttpClient;
+import org.apache.commons.httpclient.methods.GetMethod;
+import org.apache.commons.httpclient.params.HttpMethodParams;
 import org.apache.commons.lang.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
+import java.net.HttpURLConnection;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
@@ -68,5 +72,30 @@ public class HttpUtil {
         }
         return EnumModel.Platform.other;
     }
+
+    /**
+     * 发送get请求
+     * @param url    路径
+     * @return
+     */
+    public String sendHttpGet(String url){
+        HttpClient httpClient = new HttpClient();
+        httpClient.setConnectionTimeout(200000);
+        httpClient.getParams().setParameter(HttpMethodParams.HTTP_CONTENT_CHARSET, "UTF-8");
+        GetMethod getMethod = new GetMethod(url);
+
+        //get请求返回结果
+        try {
+            int statusCode = httpClient.executeMethod(getMethod);
+            if (statusCode == HttpURLConnection.HTTP_OK){
+                return getMethod.getResponseBodyAsString();
+            }
+
+        } catch (Exception e) {
+
+        }
+        return "";
+    }
+
 
 }

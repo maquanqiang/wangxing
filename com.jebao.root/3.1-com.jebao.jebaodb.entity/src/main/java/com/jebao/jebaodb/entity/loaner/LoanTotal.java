@@ -16,9 +16,6 @@ public class LoanTotal {
     //借款总金额
     private BigDecimal totalAmounts;
 
-    //利息
-    private BigDecimal interests;
-
     //服务费（手续费）
     private BigDecimal serviceCharge;
 
@@ -44,10 +41,6 @@ public class LoanTotal {
 
     public void setServiceCharge(BigDecimal serviceCharge) {
         this.serviceCharge = serviceCharge;
-    }
-
-    public BigDecimal getInterests() {
-        return interests;
     }
 
     public Long getLoanerId() {

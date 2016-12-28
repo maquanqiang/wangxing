@@ -3,7 +3,6 @@ package com.jebao.erp.service.inf.loanmanage;
 import com.jebao.jebaodb.entity.extEntity.PageWhere;
 import com.jebao.jebaodb.entity.loaner.LoanTotal;
 import com.jebao.jebaodb.entity.loanmanage.TbBidPlan;
-import com.jebao.jebaodb.entity.loanmanage.TbBidRiskData;
 import com.jebao.jebaodb.entity.loanmanage.search.BidPlanExtSM;
 import com.jebao.jebaodb.entity.loanmanage.search.BidPlanSM;
 
@@ -50,7 +49,7 @@ public interface ITbBidPlanServiceInf {
      * @param model
      * @return
      */
-    List<TbBidPlan> selectByLoanerIdForPage(BidPlanExtSM model);
+    List<TbBidPlan> selectLoanRecordByLoanerIdForPage(BidPlanExtSM model);
 
-    int selectByLoanerIdForPageCount(BidPlanExtSM model);
+    int selectLoanRecordByLoanerIdForPageCount(BidPlanExtSM model);
 }
