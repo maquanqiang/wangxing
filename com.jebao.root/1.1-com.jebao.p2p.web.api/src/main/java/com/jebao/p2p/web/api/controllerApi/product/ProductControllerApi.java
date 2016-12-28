@@ -43,7 +43,12 @@ public class ProductControllerApi {
     @Autowired
     private IInvestServiceInf investService;
 
-
+    /**
+     * 项目列表
+     * @param form
+     * @param pageWhere
+     * @return
+     */
     @RequestMapping("list")
     @ResponseBody
     public JsonResult list(ProductForm form, PageWhere pageWhere){
@@ -57,6 +62,11 @@ public class ProductControllerApi {
         return new JsonResultList<>(productVms, count);
     }
 
+    /**
+     * 项目详情
+     * @param bpId
+     * @return
+     */
     @RequestMapping("productDetail")
     @ResponseBody
     public JsonResult productDetail(Long bpId){
@@ -64,6 +74,11 @@ public class ProductControllerApi {
         return new JsonResultData<>(new ProductDetailVM(tbBidPlan));
     }
 
+    /**
+     * 借款人信息
+     * @param lid
+     * @return
+     */
     @RequestMapping("loanerInfo")
     @ResponseBody
     public JsonResult loanerInfo(Long lid){
@@ -71,7 +86,11 @@ public class ProductControllerApi {
         return new JsonResultData<>(new LoanerInfoVM(tbLoaner));
     }
 
-
+    /**
+     * 风控信息
+     * @param bpId
+     * @return
+     */
     @RequestMapping("riskListByBpId")
     @ResponseBody
     public JsonResult riskListByBpId(Long bpId){
@@ -86,7 +105,7 @@ public class ProductControllerApi {
     }
 
     /**
-     *
+     * 该标的投资人列表
      * @param bpId
      * @param pageWhere
      * @return
@@ -162,7 +181,10 @@ public class ProductControllerApi {
         return new JsonResultData<>(productResultVM);
     }
 
-
+    /**
+     * 首页最近投资10条
+     * @return
+     */
     @RequestMapping("recentInvestment")
     @ResponseBody
     public JsonResult recentInvestment(){
@@ -179,6 +201,10 @@ public class ProductControllerApi {
         return new JsonResultList<>(invests);
     }
 
+    /**
+     * 首页投资排行榜
+     * @return
+     */
     @RequestMapping("investmentTop")
     @ResponseBody
     public JsonResult investmentTop(){

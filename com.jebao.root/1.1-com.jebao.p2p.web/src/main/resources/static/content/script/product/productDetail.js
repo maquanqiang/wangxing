@@ -154,18 +154,28 @@ var vm = new Vue({
                     });
                     flag = false;
                 }
-                if((investMoney-vm.product.bpStartMoney)>=0){
-                    if((investMoney-vm.product.bpStartMoney) % vm.product.bpRiseMoney !=0){
-                        layer.tips("投资金额不符合递增规则", '#investMoney', {
+
+                if(vm.product.bpSurplusMoney > vm.product.bpStartMoney){
+                    if((investMoney-vm.product.bpStartMoney)>=0){
+                        if((investMoney-vm.product.bpStartMoney) % vm.product.bpRiseMoney !=0){
+                            layer.tips("投资金额不符合递增规则", '#investMoney', {
+                                tips: [1, '#0FA6D8'] //还可配置颜色
+                            });
+                            flag = false;
+                        }
+                    }else{
+                        layer.tips("投资金额小于起投金额"+vm.product.bpStartMoney+"元", '#investMoney', {
                             tips: [1, '#0FA6D8'] //还可配置颜色
                         });
                         flag = false;
                     }
                 }else{
-                    layer.tips("投资金额小于起投金额"+vm.product.bpStartMoney+"元", '#investMoney', {
-                        tips: [1, '#0FA6D8'] //还可配置颜色
-                    });
-                    flag = false;
+                    if(investMoney != vm.product.bpSurplusMoney){
+                        layer.tips("最后一次投资，需一次性投满", '#investMoney', {
+                            tips: [1, '#0FA6D8'] //还可配置颜色
+                        });
+                        flag = false;
+                    }
                 }
             }else{
                 layer.tips("投资金额输入有误", '#investMoney', {

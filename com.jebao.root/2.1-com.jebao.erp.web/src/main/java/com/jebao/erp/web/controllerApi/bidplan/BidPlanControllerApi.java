@@ -66,6 +66,11 @@ public class BidPlanControllerApi extends _BaseController {
     @Autowired
     private IIncomeDetailServiceInf incomeDetailService;
 
+    /**
+     * 删除标的
+     * @param bpId
+     * @return
+     */
     @RequestMapping("removeBidPlan")
     @ResponseBody
     public JsonResult removeBidPlan(Long bpId) {
@@ -91,6 +96,11 @@ public class BidPlanControllerApi extends _BaseController {
         return new JsonResultList<>(tempVMs);
     }
 
+    /**
+     * 标的详情
+     * @param bpId
+     * @return
+     */
     @RequestMapping("getOne/{bpId}")
     @ResponseBody
     public JsonResult getOne(Long bpId) {
@@ -99,7 +109,11 @@ public class BidPlanControllerApi extends _BaseController {
         return new JsonResultData<>(viewModel);
     }
 
-
+    /**
+     * 添加标的
+     * @param form
+     * @return
+     */
     @RequestMapping("doAddPlan")
     @ResponseBody
     public JsonResult doAddPlan(AddPlanForm form) {
@@ -186,6 +200,11 @@ public class BidPlanControllerApi extends _BaseController {
         }
     }
 
+    /**
+     * 获取风控模板
+     * @param rcptId
+     * @return
+     */
     @RequestMapping("getProjectTempById")
     @ResponseBody
     public JsonResult getProjectTempById(Long rcptId) {
@@ -266,7 +285,13 @@ public class BidPlanControllerApi extends _BaseController {
         return new JsonResultList<>(loanFundIntents);
     }
 
-
+    /**
+     * 标的审核
+     * @param bpId
+     * @param status
+     * @param remark
+     * @return
+     */
     @RequestMapping("reviewedPlan")
     @ResponseBody
     public JsonResult reviewedPlan(Long bpId, Integer status, String remark) {
@@ -286,6 +311,13 @@ public class BidPlanControllerApi extends _BaseController {
         }
     }
 
+    /**
+     * 条件查询标的列表
+     * @param form
+     * @param pageIndex
+     * @param pageSize
+     * @return
+     */
     @RequestMapping("getPlanListBySearchCondition")
     @ResponseBody
     public JsonResult getPlanListBySearchCondition(BidPlanForm form, @RequestParam(value = "pageIndex", defaultValue = "0") Integer pageIndex,
@@ -310,7 +342,7 @@ public class BidPlanControllerApi extends _BaseController {
     public JsonResult doLoan(RepaymentForm form) {
 
         TbBidPlan tbBidPlan = bidPlanService.selectByBpId(form.getBpId());
-        if (tbBidPlan.getBpStatus() != TbBidPlan.STATUS_BID_FULL) {
+        if (tbBidPlan.getBpStatus() != TbBidPlan.STATUS_BID_FULL && tbBidPlan.getBpStatus() != TbBidPlan.STATUS_BID_LOSE) {
             return new JsonResultError("不能操作还款,标的状态为:" + tbBidPlan.getBpStatus());
         }
 
@@ -335,6 +367,12 @@ public class BidPlanControllerApi extends _BaseController {
 
     }
 
+    /**
+     * 关闭当前标的  (只针对不投资已过期的标的)
+     * 设为无效数据
+     * @param bpId
+     * @return
+     */
     @RequestMapping("close")
     @ResponseBody
     public JsonResult close(Long bpId) {

@@ -39,6 +39,14 @@ public class IncomeDetailControllerApi {
     @Autowired
     private ILoginInfoServiceInf loginInfoService;
 
+
+    /**
+     * 投资人台账明细
+     * @param form
+     * @param pageIndex
+     * @param pageSize
+     * @return
+     */
     @RequestMapping("repaymentList")
     @ResponseBody
     public JsonResult repaymentList(RepaymentDetailSM form, @RequestParam(value = "pageIndex", defaultValue = "0") Integer pageIndex,
@@ -53,6 +61,13 @@ public class IncomeDetailControllerApi {
         return new JsonResultList<>(incomeDetailsVM, count);
     }
 
+    /**
+     * 标的每期的还款明细
+     * @param bpId
+     * @param period
+     * @param fundType
+     * @return
+     */
     @RequestMapping("incomeListCurrPeriod")
     @ResponseBody
     public JsonResult incomeListCurrPeriod(Long bpId, Integer period, Integer fundType){

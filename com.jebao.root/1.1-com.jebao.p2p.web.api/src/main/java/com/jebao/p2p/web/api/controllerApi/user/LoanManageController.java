@@ -1,6 +1,7 @@
 package com.jebao.p2p.web.api.controllerApi.user;
 
 import com.jebao.jebaodb.entity.extEntity.PageWhere;
+import com.jebao.jebaodb.entity.extEntity.ResultInfo;
 import com.jebao.jebaodb.entity.investment.FundDetailSM;
 import com.jebao.jebaodb.entity.investment.TbIncomeDetail;
 import com.jebao.jebaodb.entity.user.TbAccountsFunds;
@@ -37,6 +38,11 @@ public class LoanManageController {
     @Autowired
     private ILoanManageServiceInf loanManageService;
 
+    /**
+     * 还款中明细列表
+     * @param pageWhere
+     * @return
+     */
     @RequestMapping("repayingDetails")
     public JsonResult repayingDetails(PageWhere pageWhere){
         CurrentUser currentUser = CurrentUserContextHolder.get();
@@ -60,7 +66,11 @@ public class LoanManageController {
         return new JsonResultList<>(detailsVMs,count);
     }
 
-
+    /**
+     * 已还清的明细列表
+     * @param pageWhere
+     * @return
+     */
     @RequestMapping("repayedDetails")
     public JsonResult repayedDetails(PageWhere pageWhere){
         CurrentUser currentUser = CurrentUserContextHolder.get();
@@ -78,10 +88,14 @@ public class LoanManageController {
 
         List<RepayedDetailsVM> detailsVMs = new ArrayList<>();
         incomeDetails.forEach(o -> detailsVMs.add(new RepayedDetailsVM(o)));
-
-        return new JsonResultList<>(detailsVMs);
+        int count = fundsDetailsService.selectFundCount(fundDetailSM);
+        return new JsonResultList<>(detailsVMs,count);
     }
 
+    /**
+     * 借款管理 统计
+     * @return
+     */
     @RequestMapping("loanMoneyCount")
     public JsonResult loanMoneyCount(){
         CurrentUser currentUser = CurrentUserContextHolder.get();
@@ -102,6 +116,11 @@ public class LoanManageController {
 
     }
 
+    /**
+     * 还款操作
+     * @param form
+     * @return
+     */
     @RequestMapping("repay")
     public JsonResult repay(RepaymentForm form){
         CurrentUser currentUser = CurrentUserContextHolder.get();
@@ -114,9 +133,13 @@ public class LoanManageController {
             return new JsonResultError(resultValidation.getErrorMsg().toString());
         }
 
-        String message = loanManageService.repay(form.getBpId(), currentUser.getId(), form.getPeriod(), form.getRepayMoney());
+        ResultInfo resultInfo = loanManageService.repay(form.getBpId(), currentUser.getId(), form.getPeriod(), form.getRepayMoney());
 
-        return new JsonResultOk(message);
+        if(resultInfo.getSuccess_is_ok()){
+            return new JsonResultOk("还款成功");
+        }else{
+            return new JsonResultError(resultInfo.getMsg());
+        }
     }
 
 }
