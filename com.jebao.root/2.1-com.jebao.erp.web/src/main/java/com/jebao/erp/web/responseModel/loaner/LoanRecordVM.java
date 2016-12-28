@@ -17,11 +17,23 @@ public class LoanRecordVM extends ViewModel {
         this.name = entity.getBpName();
         this.number = entity.getBpNumber();
         this.bidMoney = entity.getBpBidMoney();
-        this.periods = entity.getBpPeriods();
+        this.periods = String.valueOf(entity.getBpPeriods() * entity.getBpCycleSize()) + getCycleTypeName(entity.getBpCycleType());
         this.rate = entity.getBpRate();
         this.loanMoney = entity.getBpLoanMoney();
-        this.interestMoney = entity.getBpLoanMoney().multiply(entity.getBpRate()).setScale(2, BigDecimal.ROUND_HALF_UP);
+        this.interestMoney = entity.getBpLoanMoney().multiply(entity.getBpRate().divide(new BigDecimal(100))).setScale(2, BigDecimal.ROUND_HALF_UP);
         this.repayTime = entity.getBpRepayTime();
+    }
+
+    private String getCycleTypeName(int cycleType){
+        String name = "其他";
+        switch (cycleType){
+            case 1:name="天";break;
+            case 2:name="个月";break;
+            case 3:name="季";break;
+            case 4:name="年";break;
+            default:break;
+        }
+        return name;
     }
 
     //标的ID
@@ -40,7 +52,7 @@ public class LoanRecordVM extends ViewModel {
     private BigDecimal bidMoney;
 
     //期限
-    private Integer periods;
+    private String periods;
 
     //借款利率
     private BigDecimal rate;
@@ -95,11 +107,11 @@ public class LoanRecordVM extends ViewModel {
         this.bidMoney = bidMoney;
     }
 
-    public Integer getPeriods() {
+    public String getPeriods() {
         return periods;
     }
 
-    public void setPeriods(Integer periods) {
+    public void setPeriods(String periods) {
         this.periods = periods;
     }
 

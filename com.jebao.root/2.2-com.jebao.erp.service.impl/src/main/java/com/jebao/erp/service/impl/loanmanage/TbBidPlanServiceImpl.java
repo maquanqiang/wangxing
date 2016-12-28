@@ -24,7 +24,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import sun.rmi.runtime.Log;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -248,12 +247,12 @@ public class TbBidPlanServiceImpl implements ITbBidPlanServiceInf {
      * @return
      */
     @Override
-    public List<TbBidPlan> selectByLoanerIdForPage(BidPlanExtSM model) {
+    public List<TbBidPlan> selectLoanRecordByLoanerIdForPage(BidPlanExtSM model) {
         return bidPlanDao.selectByLoanerIdForPage(model);
     }
 
     @Override
-    public int selectByLoanerIdForPageCount(BidPlanExtSM model) {
+    public int selectLoanRecordByLoanerIdForPageCount(BidPlanExtSM model) {
         return bidPlanDao.selectByLoanerIdForPageCount(model);
     }
 }

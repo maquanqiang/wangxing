@@ -5,10 +5,9 @@ import com.jebao.erp.service.inf.loaner.ILoanerServiceInf;
 import com.jebao.erp.service.inf.loanmanage.ITbBidPlanServiceInf;
 import com.jebao.erp.service.inf.user.IAccountsFundsServiceInf;
 import com.jebao.erp.service.inf.user.IFundsDetailsServiceInf;
+import com.jebao.erp.service.inf.user.IUserDetailsServiceInf;
 import com.jebao.erp.web.requestModel.loaner.FundsDetailsSM;
-import com.jebao.erp.web.responseModel.base.JsonResult;
-import com.jebao.erp.web.responseModel.base.JsonResultData;
-import com.jebao.erp.web.responseModel.base.JsonResultList;
+import com.jebao.erp.web.responseModel.base.*;
 import com.jebao.erp.web.responseModel.loaner.FundsDetailsVM;
 import com.jebao.erp.web.responseModel.loaner.FundsSumVM;
 import com.jebao.erp.web.responseModel.loaner.FundsVM;
@@ -19,6 +18,8 @@ import com.jebao.jebaodb.entity.loaner.TbLoaner;
 import com.jebao.jebaodb.entity.user.FundsStatistics;
 import com.jebao.jebaodb.entity.user.TbAccountsFunds;
 import com.jebao.jebaodb.entity.user.TbFundsDetails;
+import com.jebao.jebaodb.entity.user.TbUserDetails;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -45,6 +46,8 @@ public class FundsControllerApi {
     private ILoanerServiceInf loanerService;
     @Autowired
     private IAccountsFundsServiceInf accountsFundsService;
+    @Autowired
+    private IUserDetailsServiceInf userDetailsService;
 
     @RequestMapping(value = "details", method = RequestMethod.GET)
     @ResponseBody
@@ -55,17 +58,37 @@ public class FundsControllerApi {
         TbFundsDetails record = new TbFundsDetails();
         record.setFdLoginId(model.getLoginId());
         record.setFdSerialStatus(EnumModel.FdSerialStatus.成功.getValue());
+        record.setFdSerialTypeId(12);//只取充值提现的数据
         PageWhere page = new PageWhere(model.getPageIndex(), model.getPageSize());
         List<TbFundsDetails> fdList = fundsDetailsService.selectByParamsForPage(record, page);
+        if(fdList == null || fdList.size() == 0){
+            return new JsonResultList<>(null);
+        }
         List<FundsDetailsVM> viewModelList = new ArrayList<>();
         fdList.forEach(o -> viewModelList.add(new FundsDetailsVM(o)));
-
         int count = 0;
         if (model.getPageIndex() == 0) {
             count = fundsDetailsService.selectByParamsForPageCount(record);
         }
-
         return new JsonResultList<>(viewModelList, count);
+    }
+
+    @RequestMapping(value = "getUser", method = RequestMethod.GET)
+    @ResponseBody
+    public JsonResult getUser(Long loginId){
+        if (loginId == null || loginId == 0) {
+            return new JsonResultError();
+        }
+
+        TbUserDetails userDetails = userDetailsService.selectByLoginId(loginId);
+        if(userDetails == null){
+            return new JsonResultError();
+        }
+        if(StringUtils.isBlank(userDetails.getUdNickName())){
+            return new JsonResultOk(userDetails.getUdTrueName());
+        }else{
+            return new JsonResultOk(userDetails.getUdNickName());
+        }
     }
 
     @RequestMapping(value = "statistics", method = RequestMethod.GET)
@@ -115,11 +138,16 @@ public class FundsControllerApi {
             viewModel.setBalance(new BigDecimal(0));
         }
         viewModel.setBalance(accountsFunds.getAfBalance());
-        viewModel.setJkAmounts(loanTotal.getTotalAmounts());
-        viewModel.setJkInterests(loanTotal.getInterests());
+
+        BigDecimal dhbj = incomeDetailService.totalMoneyByloanerId(loaner.getlId(), EnumModel.FundType.本金.getValue(), EnumModel.IncomeStatus.未还.getValue());
+        BigDecimal dhlx = incomeDetailService.totalMoneyByloanerId(loaner.getlId(), EnumModel.FundType.利息.getValue(), EnumModel.IncomeStatus.未还.getValue());
+        BigDecimal jklx = incomeDetailService.totalMoneyByloanerId(loaner.getlId(), EnumModel.FundType.利息.getValue(), EnumModel.IncomeStatus.已还.getValue());
+
+        viewModel.setJkAmounts(loanTotal.getTotalAmounts().setScale(2, BigDecimal.ROUND_HALF_UP));
         viewModel.setServiceCharge(loanTotal.getServiceCharge());
-        viewModel.setDhAmounts(incomeDetailService.totalMoneyByloanerId(loaner.getlId(), EnumModel.FundType.本金.getValue(), EnumModel.IncomeStatus.未还.getValue()));
-        viewModel.setDhInterests(incomeDetailService.totalMoneyByloanerId(loaner.getlId(), EnumModel.FundType.利息.getValue(), EnumModel.IncomeStatus.未还.getValue()));
+        viewModel.setJkInterests(dhlx.add(jklx).setScale(2, BigDecimal.ROUND_HALF_UP));
+        viewModel.setDhAmounts(dhbj.add(dhlx).setScale(2, BigDecimal.ROUND_HALF_UP));
+        viewModel.setDhInterests(dhlx.setScale(2, BigDecimal.ROUND_HALF_UP));
         return new JsonResultData<>(viewModel);
     }
 }

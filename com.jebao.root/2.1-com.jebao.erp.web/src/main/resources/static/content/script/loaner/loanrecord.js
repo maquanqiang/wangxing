@@ -22,9 +22,9 @@ var vm = new Vue({
         model.searchObj.pageIndex = 0;
         model.searchObj.pageSize = 10;
         model.loanSum.jkCount = 0;
-        model.loanSum.jkAmounts = 0.00;
-        model.loanSum.yhAmounts = 0.00;
-        model.loanSum.dhAmounts = 0.00;
+        model.loanSum.jkAmounts = 0;
+        model.loanSum.yhAmounts = 0;
+        model.loanSum.dhAmounts = 0;
     },
     //初始化远程数据
     created: function () {
@@ -41,6 +41,9 @@ var vm = new Vue({
     },
     //方法，可用于绑定事件或直接调用
     methods: {
+        getDetailHref: function (id) {
+            return "/bidplan/alreadyLoanDetail/" + id;
+        },
         search: function (event) {
             if (typeof event !== "undefined") { //点击查询按钮的话，是查询第一页数据
                 model.searchObj.pageIndex = 0;

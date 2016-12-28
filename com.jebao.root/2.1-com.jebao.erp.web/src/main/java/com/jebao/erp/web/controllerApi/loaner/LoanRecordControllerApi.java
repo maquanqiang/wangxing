@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,13 +39,17 @@ public class LoanRecordControllerApi {
             return new JsonResultList<>(null);
         }
         model.setBpStatus(EnumModel.BidStatus.还款中.getValue());
-        List<TbBidPlan> planList = tbBidPlanService.selectByLoanerIdForPage(model);
+        List<TbBidPlan> planList = tbBidPlanService.selectLoanRecordByLoanerIdForPage(model);
+        if(planList == null || planList.size() == 0){
+            return new JsonResultList<>(null);
+        }
+
         List<LoanRecordVM> viewModelList = new ArrayList<>();
         planList.forEach(o -> viewModelList.add(new LoanRecordVM(o)));
 
         int count = 0;
         if (model.getPageIndex() == 0) {
-            count = tbBidPlanService.selectByLoanerIdForPageCount(model);
+            count = tbBidPlanService.selectLoanRecordByLoanerIdForPageCount(model);
         }
         return new JsonResultList<>(viewModelList, count);
     }
@@ -62,9 +67,11 @@ public class LoanRecordControllerApi {
         }
         LoanRecordSumVM viewModel = new LoanRecordSumVM();
         viewModel.setJkCount(loanTotal.getTotalTrades());
-        viewModel.setJkAmounts(loanTotal.getTotalAmounts());
-        viewModel.setDhAmounts(incomeDetailService.totalMoneyByloanerId(loanerId, EnumModel.FundType.本金.getValue(), EnumModel.IncomeStatus.未还.getValue()));
-        viewModel.setYhAmounts(incomeDetailService.totalMoneyByloanerId(loanerId, EnumModel.FundType.本金.getValue(), EnumModel.IncomeStatus.已还.getValue()));
+        viewModel.setJkAmounts(loanTotal.getTotalAmounts().setScale(2, BigDecimal.ROUND_HALF_UP));
+        BigDecimal dhbj = incomeDetailService.totalMoneyByloanerId(loanerId, EnumModel.FundType.本金.getValue(), EnumModel.IncomeStatus.未还.getValue());
+        BigDecimal dhlx = incomeDetailService.totalMoneyByloanerId(loanerId, EnumModel.FundType.利息.getValue(), EnumModel.IncomeStatus.未还.getValue());
+        viewModel.setDhAmounts(dhbj.add(dhlx).setScale(2, BigDecimal.ROUND_HALF_UP));
+        viewModel.setYhAmounts(incomeDetailService.totalMoneyByloanerId(loanerId, EnumModel.FundType.本金.getValue(), EnumModel.IncomeStatus.已还.getValue()).setScale(2, BigDecimal.ROUND_HALF_UP));
         return new JsonResultData<>(viewModel);
     }
 }

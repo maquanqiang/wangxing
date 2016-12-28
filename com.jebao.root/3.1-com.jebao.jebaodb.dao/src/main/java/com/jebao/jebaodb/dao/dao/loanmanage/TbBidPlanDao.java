@@ -9,7 +9,6 @@ import com.jebao.jebaodb.entity.loanmanage.TbBidPlan;
 import com.jebao.jebaodb.entity.loanmanage.search.BidPlanSM;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.support.nativejdbc.OracleJdbc4NativeJdbcExtractor;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -94,7 +93,7 @@ public class TbBidPlanDao {
      */
     public List<TbBidPlan> selectP2PList(@Param("record") ProductSM record, @Param("pageWhere") PageWhere pageWhere){
         return tbBidPlanMapper.selectP2PList(record, pageWhere);
-    };
+    }
 
     /**
      * p2p条件查询统计
@@ -103,7 +102,7 @@ public class TbBidPlanDao {
      */
     public int selectP2PListCount(@Param("record") ProductSM record){
         return tbBidPlanMapper.selectP2PListCount(record);
-    };
+    }
 
     /**
      * 投标改变剩余金额
