@@ -209,7 +209,7 @@ var vm = new Vue({
                                 }
                             }else{
                                 layer.alert(response.error);
-                                setTximeout(function(){window.location.reload();},5000)
+                                //setTimeout(function(){window.location.reload();},5000)
                             }
                         });
                     },
