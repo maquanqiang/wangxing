@@ -261,9 +261,14 @@
         <result column="serial_type_id" property="serialTypeId" jdbcType="INTEGER"/>
     </resultMap>
     <select id="statisticsByLoginId" resultMap="StatisticsResultMap" parameterType="java.lang.Long">
-        select count(1) as total_trades,sum(fd_serial_amount) as total_amounts,fd_serial_type_id as serial_type_id
+        select
+        count(1) as total_trades,
+        sum(fd_serial_amount) as total_amounts,
+        fd_serial_type_id as serial_type_id
         from tb_funds_details
-        where fd_serial_status=1
+        where
+        fd_is_del = 1
+        and fd_serial_status=1
         and fd_login_id=#{fdLoginId,jdbcType=BIGINT}
         and fd_serial_type_id in (1,2)
         group by fd_serial_type_id
