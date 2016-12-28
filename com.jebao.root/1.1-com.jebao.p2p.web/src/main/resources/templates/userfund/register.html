@@ -61,7 +61,7 @@
                 </div>
                 <div class="bankCard form-group clearfix">
                     <div>银行卡号</div>
-                    <input type="text" value="" placeholder="请输入银行卡号" name="bankCardNo" >
+                    <input type="text" value="" placeholder="请输入银行卡号" name="bankCardNo" v-model="form.bankCardNo" :blur="getBankCardInfo" >
                 </div>
             </div>
             <div class="payPassword">
@@ -82,7 +82,6 @@
     </div>
 </div>
 <!--内容 end-->
-
 
 #parse("common/footer.html")
 <script src="/content/js/lib/bootstrapValidator.js"></script>

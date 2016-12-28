@@ -1,5 +1,6 @@
 package com.jebao.p2p.web.api.controllerApi.userfund;
 
+import com.jebao.common.utils.regex.RegexUtil;
 import com.jebao.common.utils.validation.ValidatorUtil;
 import com.jebao.jebaodb.entity.extEntity.ResultData;
 import com.jebao.jebaodb.entity.extEntity.ResultInfo;
@@ -7,9 +8,11 @@ import com.jebao.p2p.service.inf.userfund.IUserfundServiceInf;
 import com.jebao.p2p.web.api.controllerApi._BaseController;
 import com.jebao.p2p.web.api.requestModel.userfund.fundRegModel;
 import com.jebao.p2p.web.api.responseModel.base.JsonResult;
+import com.jebao.p2p.web.api.responseModel.base.JsonResultData;
 import com.jebao.p2p.web.api.responseModel.base.JsonResultError;
 import com.jebao.p2p.web.api.responseModel.base.JsonResultOk;
 import com.jebao.p2p.web.api.utils.constants.Constants;
+import com.jebao.p2p.web.api.utils.http.HttpUtil;
 import com.jebao.p2p.web.api.utils.session.CurrentUser;
 import com.jebao.p2p.web.api.utils.session.CurrentUserContextHolder;
 import com.jebao.p2p.web.api.utils.validation.ValidationResult;
@@ -25,6 +28,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.io.PrintWriter;
 import java.net.URLEncoder;
+import java.util.List;
 
 /**
  * Created by Jack on 2016/12/13.
@@ -51,6 +55,34 @@ public class UserfundController extends _BaseController {
             return new JsonResultError(resultInfo.getMsg());
         }
         return new JsonResultOk(resultInfo.getMsg());
+    }
+    @RequestMapping("getBankCardInfo")
+    public JsonResult getBankCardInfo(String bankCard){
+        String url = "http://www.cardcn.com/search.php?word="+bankCard;
+        String responseString = new HttpUtil().sendHttpGet(url);
+        if (responseString!=null && responseString.length()>0){
+            String htmlDiv = RegexUtil.getFirstMatch(responseString, "<div class=\"listpage_content\">[\\s\\S]+</div>");
+            if (htmlDiv!=null && htmlDiv.length()>0){
+                List<String> dlList = RegexUtil.getContentByPattern(htmlDiv,"<dl>[\\s\\S]+?</dl>");
+                //region html示例
+                /*
+                <dl><dt><img src="bankicon.jpg"></dt></dl>
+                <dl><dt><font class="con_sub_title">归属信息：</font>北京 - 北京</dt></dl>
+                <dl><dt><font class="con_sub_title">银行名称：</font>中国工商银行</dt></dl>
+                 <dl><dt><font class="con_sub_title">银行卡名：</font>牡丹卡普卡</dt></dl>
+                 <dl><dt><font class="con_sub_title">银行卡种：</font>借记卡</dt></dl>
+                 <dl><dt><font class="con_sub_title">客服电话：</font>95588</dt></dl>
+                 <dl><dt><font class="con_sub_title">官方网址：</font>www.icbc.com.cn</dt></dl>*/
+                //endregion
+                if (dlList!=null && dlList.size()>0){
+                    String dtRegex = "<dt><font class=\"con_sub_title\">.*</font>[\\s\\S]+</dt>";
+                    String province = dlList.size() > 1 ? RegexUtil.getFirstMatch(dlList.get(1),""):"";
+                    return new JsonResultData<>(dlList.subList(1,2));
+                }
+
+            }
+        }
+        return new JsonResultError();
     }
 
     //非ajax请求
