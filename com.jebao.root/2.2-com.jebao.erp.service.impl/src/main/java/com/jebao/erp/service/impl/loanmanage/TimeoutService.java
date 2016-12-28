@@ -21,7 +21,6 @@ public class TimeoutService {
     @Scheduled(cron = "0 0 2 * * ?")
     public void timeoutBid() {
         Date now = new Date();
-        TbBidPlan tbBidPlan = new TbBidPlan();
         tbBidPlanDao.timeoutBid(now);
     }
 }

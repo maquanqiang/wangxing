@@ -36,8 +36,6 @@ var vm = new Vue({
     //方法，可用于绑定事件或直接调用
     methods: {
         repay:function(period, bpId, repayMoney){
-            var th = $(this)
-            th.removeAttr("@click");
             //还款弹出框
             layer.open({
                 title:'还款提示',
