@@ -178,7 +178,7 @@ public class ProductServiceImpl implements IProductServiceInf {
                     //添加投资记录
                     TbInvestInfo tbInvestInfo = new TbInvestInfo();
                     tbInvestInfo.setIiBpId(tbBidPlan.getBpId());
-                    tbInvestInfo.setIiFreezeStatus(1);          //1:冻结中 2:还款中, 3:已还款,4:流标
+                    tbInvestInfo.setIiFreezeStatus(TbInvestInfo.STATUS_FREEZE);          //1:冻结中 2:还款中, 3:已还款,4:流标
                     tbInvestInfo.setBpBidMoney(tbBidPlan.getBpBidMoney());
                     tbInvestInfo.setIiBpName(tbBidPlan.getBpName());
                     tbInvestInfo.setIiBpRepayedPeriods(0);      //默认当前期数0（未还款）

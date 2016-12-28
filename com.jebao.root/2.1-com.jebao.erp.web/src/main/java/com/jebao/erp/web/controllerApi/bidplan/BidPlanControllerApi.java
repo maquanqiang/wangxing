@@ -326,6 +326,8 @@ public class BidPlanControllerApi extends _BaseController {
             tbBidPlan.setBpUpdateTime(tbBidPlan.getBpLoanTime());
             tbBidPlan.setBpStatus(TbBidPlan.STATUS_REPAYING);
             bidPlanService.updateByBidIdSelective(tbBidPlan);
+
+
             return new JsonResultOk("放款成功");
         } else {
             return new JsonResultError("放款失败-联系管理员");

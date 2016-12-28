@@ -216,7 +216,7 @@ public class LoanManageServiceImpl implements ILoanManageServiceInf {
                     info.setIiBpRepayedPeriods(period);
                     info.setIiUpdateTime(new Date());
                     if(period == plan.getBpPeriods()){
-                        info.setIiFreezeStatus(3);
+                        info.setIiFreezeStatus(TbInvestInfo.STATUS_COMPLETE);
                     }
                     investInfoDao.updateByPrimaryKeySelective(info);
                 }
