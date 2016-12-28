@@ -933,7 +933,8 @@
             SET bp_surplus_money = bp_surplus_money - #{investMoney},
             bp_update_time = #{nowTime}
             WHERE
-                bp_start_time <= #{nowTime}
+                bp_status = 2
+                AND bp_start_time <= #{nowTime}
                 AND bp_end_time >=#{nowTime}
                 AND bp_surplus_money >= #{investMoney}
                 AND bp_top_money >= #{investMoney}
