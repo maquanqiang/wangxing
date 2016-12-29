@@ -1,6 +1,7 @@
 package com.jebao.jebaodb.dao.dao.employee;
 
 import com.jebao.jebaodb.dao.mapper.employee.TbEmployeeMapper;
+import com.jebao.jebaodb.entity.employee.EmpPerformanceInfo;
 import com.jebao.jebaodb.entity.employee.EmployeeInfo;
 import com.jebao.jebaodb.entity.employee.TbEmployee;
 import com.jebao.jebaodb.entity.employee.search.EmployeeSM;
@@ -47,6 +48,10 @@ public class TbEmployeeDao {
         searchModel.setPageSize(1);
         List<EmployeeInfo> list = mapper.selectEmployeeDetailsInfo(searchModel);
         return list!=null && list.size()>0?list.get(0):null;
+    }
+
+    public List<EmpPerformanceInfo> selectEmpPerformance(EmployeeSM model){
+        return mapper.selectEmpPerformance(model);
     }
 
     /**

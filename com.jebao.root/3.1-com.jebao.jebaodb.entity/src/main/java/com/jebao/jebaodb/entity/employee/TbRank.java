@@ -11,6 +11,8 @@ public class TbRank {
 
     private BigDecimal rankBrokeragePercent;
 
+    private Boolean rankIsDel;
+
     public Integer getRankId() {
         return rankId;
     }
@@ -41,5 +43,13 @@ public class TbRank {
 
     public void setRankBrokeragePercent(BigDecimal rankBrokeragePercent) {
         this.rankBrokeragePercent = rankBrokeragePercent;
+    }
+
+    public Boolean getRankIsDel() {
+        return rankIsDel;
+    }
+
+    public void setRankIsDel(Boolean rankIsDel) {
+        this.rankIsDel = rankIsDel;
     }
 }

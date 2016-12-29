@@ -1,5 +1,6 @@
 package com.jebao.jebaodb.dao.mapper.employee;
 
+import com.jebao.jebaodb.entity.employee.EmpPerformanceInfo;
 import com.jebao.jebaodb.entity.employee.EmployeeInfo;
 import com.jebao.jebaodb.entity.employee.TbEmployee;
 import com.jebao.jebaodb.entity.employee.search.EmployeeSM;
@@ -22,4 +23,11 @@ public interface TbEmployeeMapper {
      */
     List<EmployeeInfo> selectEmployeeDetailsInfo(EmployeeSM model);
     Integer selectEmployeeDetailsInfoCount(EmployeeSM model);
+
+    /**
+     * 查询员工业绩信息
+     * @param model
+     * @return
+     */
+    List<EmpPerformanceInfo> selectEmpPerformance(EmployeeSM model);
 }
