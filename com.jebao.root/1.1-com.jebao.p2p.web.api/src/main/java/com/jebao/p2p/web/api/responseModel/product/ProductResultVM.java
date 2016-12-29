@@ -7,14 +7,14 @@ import com.jebao.p2p.web.api.responseModel.ViewModel;
  */
 public class ProductResultVM extends ViewModel {
 
-    private String flag;            // 成功失败标识
+    private boolean flag;            // 成功失败标识
     private String msg;             // 返回（成功/失败）信息
 
-    public String getFlag() {
+    public boolean isFlag() {
         return flag;
     }
 
-    public void setFlag(String flag) {
+    public void setFlag(boolean flag) {
         this.flag = flag;
     }
 
