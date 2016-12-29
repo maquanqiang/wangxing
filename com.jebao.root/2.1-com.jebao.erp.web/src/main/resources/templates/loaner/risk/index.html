@@ -59,8 +59,8 @@
                                                        role="button" target="_blank">查看详情</a>
                                                     <a :href="getMaterialsHref(item.id)" class="btn btn-default btn-xs"
                                                        role="button" target="_blank">认证材料</a>
-                                                    <a href="javascript:;" class="btn btn-default btn-xs remove-msg"
-                                                       role="button" @click="openDeleteWin(item.id)">删除</a>
+                                                    <a href="javascript:void(0);" class="btn btn-default btn-xs remove-msg"
+                                                       role="button" @click.prevent="openDeleteWin(item.id)">删除</a>
                                                 </td>
                                             </tr>
                                         </template>

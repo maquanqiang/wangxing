@@ -114,7 +114,7 @@
             </div>
             <div class="project-content-new fl" v-for="data in products2" @click="openDetail(data.bpId)">
                 <div class="project-name">
-                    <a href="javascript:;" @click="openDetail(data.bpId)">
+                    <a href="javascript:void(0);" @click.prevent="openDetail(data.bpId)">
                         <p>{{data.bpName}}<span>{{data.bpNumber}}</span></p>
                     </a>
                 </div>
@@ -142,7 +142,7 @@
                             </div>
                         </li>
                     </ul>
-                    <a href="javascript:;" class="project-btn fl new-btn">{{status[data.bpStatus]}}</a>
+                    <a href="javascript:void(0);" class="project-btn fl new-btn">{{status[data.bpStatus]}}</a>
                 </div>
             </div>
         </div>
@@ -154,7 +154,7 @@
             <div class="project-content-disperse fl">
                 <div class="project-content" v-for="data in products1" @click="openDetail(data.bpId)">
                     <div class="project-name">
-                        <a href="javascript:;" @click="openDetail(data.bpId)">
+                        <a href="javascript:void(0);" @click.prevent="openDetail(data.bpId)">
                             <p>{{data.bpName}}<span>{{data.bpNumber}}</span></p>
                         </a>
                     </div>
@@ -180,7 +180,7 @@
                             </div>
                             <p>投资进度</p>
                         </div>
-                        <a href="javascript:;" class="project-btn fr disperse-btn" @click="openDetail(data.bpId)">{{status[data.bpStatus]}}</a>
+                        <a href="javascript:void(0);" class="project-btn fr disperse-btn" @click.prevent="openDetail(data.bpId)">{{status[data.bpStatus]}}</a>
                     </div>
                 </div>
             </div>

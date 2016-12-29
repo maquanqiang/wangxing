@@ -32,7 +32,7 @@
                                 </div>
                             </div>
                             <div class="input-group  margin">
-                                <a href="javascript:;" class="btn btn-primary " role="button" id="btnSearch" @click="search">搜索</a>
+                                <a href="javascript:void(0);" class="btn btn-primary " role="button" id="btnSearch" @click.prevent="search">搜索</a>
                             </div>
                         </div>
                     </form>
@@ -69,7 +69,7 @@
                                                     <!--<td>5</td>-->
                                                     <!--<td>10000.00</td>-->
                                                     <td>
-                                                        <a href="javascript:;" class="btn btn-default btn-xs" role="button" @click="addPlanBtn(item.id)">添加借款</a>
+                                                        <a href="javascript:void(0);" class="btn btn-default btn-xs" role="button" @click.prevent="addPlanBtn(item.id)">添加借款</a>
                                                     </td>
                                                 </tr>
                                             </template>

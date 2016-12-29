@@ -17,7 +17,7 @@
 <!--我的账户导航-->
 <div class="account-nav">
     <p>
-        <a href="/">首页</a><a href="javascript:;" class="red">我的银行卡</a>
+        <a href="/">首页</a><a href="javascript:void(0);" class="red">我的银行卡</a>
     </p>
 </div>
 <!--我的账户内容-->
@@ -45,7 +45,7 @@
                 </div>
             </div>
             <div class="changeCard">
-                <a href="javascript:;" @click.prevent="goChangeCard">
+                <a href="javascript:void(0);" @click.prevent="goChangeCard">
                     <img src="${filePath}/images/account-changeCard.png">
                     <p v-if="newBankCardNo">更换银行卡审核中</p>
                     <p v-else>更换银行卡</p>

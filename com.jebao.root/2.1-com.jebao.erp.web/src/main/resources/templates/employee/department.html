@@ -146,14 +146,14 @@
 
                                 <div class="form-group">
                                     <div class="input-group  margin">
-                                        <a href="javascript:;" class="btn btn-primary" role="button" id="btnSearch"
-                                           @click="search">搜索</a>
+                                        <a href="javascript:void(0);" class="btn btn-primary" role="button" id="btnSearch"
+                                           @click.prevent="search">搜索</a>
                                     </div>
                                 </div>
                                 <div class="form-group ">
                                     <div class="input-group  margin">
-                                        <a href="javascript:;" class="btn btn-primary " role="button" id="add-people"
-                                           @click="openPostForm(0)">添加</a>
+                                        <a href="javascript:void(0);" class="btn btn-primary " role="button" id="add-people"
+                                           @click.prevent="openPostForm(0)">添加</a>
                                     </div>
                                 </div>
                             </div>
@@ -191,10 +191,10 @@
                                             <td>{{item.parentName}}</td>
                                             <td>{{item.isDepartment?"是":"否"}}</td>
                                             <td>
-                                                <a href="javascript:;" class="btn btn-default btn-xs"
-                                                   role="button" @click="openPostForm(item.id)">修改</a>
-                                                <a href="javascript:;" class="btn btn-default btn-xs remove-msg"
-                                                   role="button" @click="openDeleteWin(item.id)">删除</a>
+                                                <a href="javascript:void(0);" class="btn btn-default btn-xs"
+                                                   role="button" @click.prevent="openPostForm(item.id)">修改</a>
+                                                <a href="javascript:void(0);" class="btn btn-default btn-xs remove-msg"
+                                                   role="button" @click.prevent="openDeleteWin(item.id)">删除</a>
                                             </td>
                                         </tr>
                                     </template>
@@ -269,7 +269,7 @@
 <!-- item template -->
 <script type="text/x-template" id="item-template">
     <li>
-        <a href="javascript:;" @click="toggle">{{model.name}}  <span v-if="hasChildren" class="glyphicon" :class="open?'glyphicon-chevron-down':'glyphicon-chevron-up'"></span></a>
+        <a href="javascript:void(0);" @click.prevent="toggle">{{model.name}}  <span v-if="hasChildren" class="glyphicon" :class="open?'glyphicon-chevron-down':'glyphicon-chevron-up'"></span></a>
 
         <ul v-show="open" v-if="hasChildren">
             <tree-item v-for="item in model.children" :model="item"></tree-item>

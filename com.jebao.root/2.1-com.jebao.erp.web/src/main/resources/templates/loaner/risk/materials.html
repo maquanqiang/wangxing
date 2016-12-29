@@ -25,7 +25,7 @@
                     <form action="" class="form-inline"  method="post" novalidate="novalidate">
                         <div class="box-body">
                             <div class="form-group ">
-                                <a href="javascript:;" class="btn btn-primary " role="button" id="add-material" @click="openAddForm">添加</a>
+                                <a href="javascript:void(0);" class="btn btn-primary " role="button" id="add-material" @click.prevent="openAddForm">添加</a>
                             </div>
                         </div>
                     </form>
@@ -49,8 +49,8 @@
                                 <td>{{ item.name }}</td>
                                 <td>{{ item.remark }}</td>
                                 <td>
-                                    <a href="javascript:;" class="btn btn-default btn-xs" role="button" @click="openViewForm(item.id)">预览</a>
-                                    <a href="javascript:;" class="btn btn-default btn-xs remove-msg" role="button" @click="openDeleteWin(item.id)">删除</a>
+                                    <a href="javascript:void(0);" class="btn btn-default btn-xs" role="button" @click.prevent="openViewForm(item.id)">预览</a>
+                                    <a href="javascript:void(0);" class="btn btn-default btn-xs remove-msg" role="button" @click.prevent="openDeleteWin(item.id)">删除</a>
                                 </td>
                             </tr>
                         </template>

@@ -91,29 +91,29 @@
                         #if($_loginUser_header_.isFundAccount)
                             <a href="/user/chargewithdraw?typeId=1">充值</a>
                         #else
-                            <a href="javascript:;" @click="validAccount">充值</a>
+                            <a href="javascript:void(0);" @click.prevent="validAccount">充值</a>
                         #end
                     #else
                         <a href="/account/login">充值</a>
                     #end
                 </div>
                 <div v-if="product.bpStatus != 2">
-                    <a href="javascript:;" class="plan-btn" >{{bpStatusArr[product.bpStatus]}}</a>
+                    <a href="javascript:void(0);" class="plan-btn" >{{bpStatusArr[product.bpStatus]}}</a>
                 </div>
                 <div v-else>
                     <div v-if="flag">
                         #if($_loginUser_header_.isLogin)
                             #if($_loginUser_header_.isFundAccount)
-                                <a href="javascript:;" class="plan-btn" @click="investBtn">立即投资</a>
+                                <a href="javascript:void(0);" class="plan-btn" @click.prevent="investBtn">立即投资</a>
                             #else
-                                <a href="javascript:;" class="plan-btn" @click="validAccount">立即投资</a>
+                                <a href="javascript:void(0);" class="plan-btn" @click.prevent="validAccount">立即投资</a>
                             #end
                         #else
                         <a href="/account/login" class="plan-btn">立即投资</a>
                         #end
                     </div>
                     <div v-else>
-                        <a href="javascript:;" class="plan-btn">倒计时中</a>
+                        <a href="javascript:void(0);" class="plan-btn">倒计时中</a>
                     </div>
                 </div>
             </form>
@@ -141,8 +141,8 @@
             </div>
             #end
             <!-- 如果需要导航按钮 -->
-            <a href="javascript:;" class="prev btn button-prev" style="background-size: 70%;"></a>
-            <a href="javascript:;" class="next btn button-next" style="background-size: 70%;"></a>
+            <a href="javascript:void(0);" class="prev btn button-prev" style="background-size: 70%;"></a>
+            <a href="javascript:void(0);" class="next btn button-next" style="background-size: 70%;"></a>
         </div>
     </div>
     <!--项目描述-->
