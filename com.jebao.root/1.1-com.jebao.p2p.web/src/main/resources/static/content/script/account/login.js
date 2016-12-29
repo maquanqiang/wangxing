@@ -55,7 +55,7 @@ $(document).ready(function () {
                 }
                 
                 $.get("/api/user/syncThirdAccount");
-                $.get("/api/user/syncUserBalance");
+               // $.get("/api/user/syncUserBalance");
 
                 var redirectUrl = common.getUrlParam("redirect") || "/";
                 window.location.href=redirectUrl;
