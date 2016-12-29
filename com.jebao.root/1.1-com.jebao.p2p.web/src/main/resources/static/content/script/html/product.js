@@ -100,6 +100,8 @@ var vm = new Vue({
             });
         },
         openDetail: function (id) {
+            //同步账户金额
+            $.get("/api/user/syncUserBalance");
             window.location.href = "/product/detail/" + id;
         }
     }

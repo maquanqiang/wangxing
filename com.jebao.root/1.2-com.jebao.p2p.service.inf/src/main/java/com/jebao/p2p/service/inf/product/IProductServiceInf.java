@@ -1,5 +1,6 @@
 package com.jebao.p2p.service.inf.product;
 
+import com.jebao.jebaodb.entity.extEntity.ResultInfo;
 import com.jebao.jebaodb.entity.investment.TbIncomeDetail;
 import com.jebao.jebaodb.entity.investment.TbInvestInfo;
 import com.jebao.jebaodb.entity.loaner.TbLoaner;
@@ -8,6 +9,8 @@ import com.jebao.jebaodb.entity.postLoan.search.RepaymentDetailSM;
 import com.jebao.jebaodb.entity.product.ProductSM;
 import com.jebao.jebaodb.entity.extEntity.PageWhere;
 import com.jebao.jebaodb.entity.loanmanage.TbBidPlan;
+import com.jebao.jebaodb.entity.user.TbAccountsFunds;
+import com.jebao.jebaodb.entity.user.TbUserDetails;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -23,7 +26,7 @@ public interface IProductServiceInf {
 
     TbBidPlan selectByBpId(Long bpId);
 
-    String[] investBid(Long bpId, Long loginId, BigDecimal investMoney);
+//    String[] investBid(Long bpId, Long loginId, BigDecimal investMoney);
 
     TbLoaner selectByPrimaryKey(Long lId);
 
@@ -38,4 +41,6 @@ public interface IProductServiceInf {
     int selectGroupByConditionCount(RepaymentDetailSM record);
 
     List<TbInvestInfo> recentInvestment(TbInvestInfo tbInvestInfo, PageWhere pageWhere);
+
+    ResultInfo investBid(TbUserDetails outUser,TbBidPlan tbBidPlan, BigDecimal investMoney);
 }

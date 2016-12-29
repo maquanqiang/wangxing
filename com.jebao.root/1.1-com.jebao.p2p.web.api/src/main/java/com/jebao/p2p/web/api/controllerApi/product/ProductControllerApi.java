@@ -1,6 +1,7 @@
 package com.jebao.p2p.web.api.controllerApi.product;
 
 import com.jebao.jebaodb.entity.extEntity.PageWhere;
+import com.jebao.jebaodb.entity.extEntity.ResultInfo;
 import com.jebao.jebaodb.entity.investment.TbIncomeDetail;
 import com.jebao.jebaodb.entity.investment.TbInvestInfo;
 import com.jebao.jebaodb.entity.loaner.TbLoaner;
@@ -8,9 +9,11 @@ import com.jebao.jebaodb.entity.loanmanage.TbBidPlan;
 import com.jebao.jebaodb.entity.loanmanage.TbBidRiskData;
 import com.jebao.jebaodb.entity.postLoan.search.RepaymentDetailSM;
 import com.jebao.jebaodb.entity.product.ProductSM;
+import com.jebao.jebaodb.entity.user.TbAccountsFunds;
 import com.jebao.jebaodb.entity.user.TbUserDetails;
 import com.jebao.p2p.service.inf.product.IProductServiceInf;
 import com.jebao.p2p.service.inf.user.IInvestServiceInf;
+import com.jebao.p2p.service.inf.user.IUserServiceInf;
 import com.jebao.p2p.web.api.requestModel.product.InvestInfoForm;
 import com.jebao.p2p.web.api.requestModel.product.ProductForm;
 import com.jebao.p2p.web.api.responseModel.base.*;
@@ -27,6 +30,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletResponse;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,7 +47,8 @@ public class ProductControllerApi {
     private IProductServiceInf productService;
     @Autowired
     private IInvestServiceInf investService;
-
+    @Autowired
+    private IUserServiceInf userService;
     /**
      * 项目列表
      * @param form
@@ -147,39 +153,39 @@ public class ProductControllerApi {
      * @param form
      * @return
      */
-    @RequestMapping("investBid")
-    @ResponseBody
-    public JsonResult investBid(InvestInfoForm form){
-        CurrentUser currentUser = CurrentUserContextHolder.get();
-        if(currentUser == null){            //未登录 重定向登录页
-            return new JsonResultError("尚未登录");
-        }
-
-        //校验
-        ValidationResult resultValidation = ValidationUtil.validateEntity(form);
-        if (resultValidation.isHasErrors()) {
-            return new JsonResultError(resultValidation.getErrorMsg().toString());
-        }
-
-        //判断是否为新手标
-        TbBidPlan tbBidPlan = productService.selectByBpId(form.getBpId());
-        if(tbBidPlan.getBpType()==2){
-            TbInvestInfo tbInvestInfo = new TbInvestInfo();
-            tbInvestInfo.setIiLoginId(currentUser.getId());
-
-            int count = investService.selectInvestBaseByLoginIdForPageCount(tbInvestInfo);
-            if(count>0){
-                return new JsonResultError("新手专享");
-            }
-        }
-
-        String[] result = productService.investBid(form.getBpId(), currentUser.getId(), form.getInvestMoney());
-
-        ProductResultVM productResultVM = new ProductResultVM();
-        productResultVM.setFlag(result[0]);
-        productResultVM.setMsg(result[1]);
-        return new JsonResultData<>(productResultVM);
-    }
+//    @RequestMapping("investBid")
+//    @ResponseBody
+//    public JsonResult investBid(InvestInfoForm form){
+//        CurrentUser currentUser = CurrentUserContextHolder.get();
+//        if(currentUser == null){            //未登录 重定向登录页
+//            return new JsonResultError("尚未登录");
+//        }
+//
+//        //校验
+//        ValidationResult resultValidation = ValidationUtil.validateEntity(form);
+//        if (resultValidation.isHasErrors()) {
+//            return new JsonResultError(resultValidation.getErrorMsg().toString());
+//        }
+//
+//        //判断是否为新手标
+//        TbBidPlan tbBidPlan = productService.selectByBpId(form.getBpId());
+//        if(tbBidPlan.getBpType()==2){
+//            TbInvestInfo tbInvestInfo = new TbInvestInfo();
+//            tbInvestInfo.setIiLoginId(currentUser.getId());
+//
+//            int count = investService.selectInvestBaseByLoginIdForPageCount(tbInvestInfo);
+//            if(count>0){
+//                return new JsonResultError("新手专享");
+//            }
+//        }
+//
+//        String[] result = productService.investBid(form.getBpId(), currentUser.getId(), form.getInvestMoney());
+//
+//        ProductResultVM productResultVM = new ProductResultVM();
+//        productResultVM.setFlag(result[0]);
+//        productResultVM.setMsg(result[1]);
+//        return new JsonResultData<>(productResultVM);
+//    }
 
     /**
      * 首页最近投资10条
@@ -221,4 +227,70 @@ public class ProductControllerApi {
 
         return new JsonResultList<>(vms);
     }
+
+    /**
+     * 投资
+     * @param form
+     * @return
+     */
+    @RequestMapping("investBid")
+    @ResponseBody
+    public JsonResult investBid(InvestInfoForm form, HttpServletResponse response){
+        CurrentUser currentUser = CurrentUserContextHolder.get();
+        if(currentUser == null){            //未登录 重定向登录页
+            return new JsonResultError("尚未登录");
+        }
+        //查询标的信息
+        TbBidPlan bidPlan = productService.selectByBpId(form.getBpId());
+        if(bidPlan.getBpLoginId()==currentUser.getId()){
+            return new JsonResultError("投资人不为能该标的借款人");
+        }
+        //投资人详情
+        TbUserDetails outUser = userService.getUserDetailsInfo(currentUser.getId());
+        if(outUser!=null){
+            if(outUser.getUdThirdAccount()==null){
+                return new JsonResultError("您尚未开通第三方");
+            }
+        }
+        //投资人账户
+        TbAccountsFunds accountsFunds = userService.getAccountsFundsInfo(currentUser.getId());
+        if(accountsFunds==null || accountsFunds.getAfBalance().compareTo(form.getInvestMoney()) <0){
+            return new JsonResultError("账户余额不足");
+        }
+
+        //判断是否为新手标
+        if(bidPlan.getBpType()==2){
+            TbInvestInfo tbInvestInfo = new TbInvestInfo();
+            tbInvestInfo.setIiLoginId(currentUser.getId());
+
+            int count = investService.selectInvestBaseByLoginIdForPageCount(tbInvestInfo);
+            if(count>0){
+                return new JsonResultError("新手专享");
+            }
+        }
+        //校验
+        ValidationResult resultValidation = ValidationUtil.validateEntity(form);
+        if (resultValidation.isHasErrors()) {
+            return new JsonResultError(resultValidation.getErrorMsg().toString());
+        }
+
+        ResultInfo resultInfo = productService.investBid(outUser, bidPlan, form.getInvestMoney());
+        ProductResultVM productResultVM = new ProductResultVM();
+        productResultVM.setFlag(resultInfo.getSuccess_is_ok());
+        productResultVM.setMsg(resultInfo.getMsg());
+//        this.investBid(outUser, bidPlan, form.getInvestMoney(),response);
+
+        return new JsonResultData<>(productResultVM);
+    }
+
+
+//    public void investBid(TbUserDetails outUser,TbBidPlan tbBidPlan, BigDecimal investMoney, HttpServletResponse response){
+//        ResultInfo resultInfo = productService.investBid(outUser, tbBidPlan, investMoney);
+//        if(resultInfo.getSuccess_is_ok()){
+//            response.sendRedirect();
+//        }else{
+//            response.sendRedirect();
+//        }
+//    }
+
 }

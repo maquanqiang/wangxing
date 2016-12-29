@@ -10,6 +10,7 @@ import com.jebao.jebaodb.dao.dao.user.TbAccountsFundsDao;
 import com.jebao.jebaodb.dao.dao.user.TbFundsDetailsDao;
 import com.jebao.jebaodb.dao.dao.user.TbLoginInfoDao;
 import com.jebao.jebaodb.dao.dao.user.TbUserDetailsDao;
+import com.jebao.jebaodb.entity.extEntity.ResultInfo;
 import com.jebao.jebaodb.entity.investment.TbIncomeDetail;
 import com.jebao.jebaodb.entity.investment.TbInvestInfo;
 import com.jebao.jebaodb.entity.loaner.TbLoaner;
@@ -87,154 +88,153 @@ public class ProductServiceImpl implements IProductServiceInf {
 
     /**
      * 投标
-     * @param bpId
      * @return
      */
-    @Override
-    public String[] investBid(Long bpId, Long loginId, BigDecimal investMoney) {
-
-        String[] result = new String[2];
-        result[0] = "false";
-
-        //查询标的信息
-        TbBidPlan tbBidPlan = tbBidPlanDao.selectByPrimaryKey(bpId);
-        if(tbBidPlan.getBpLoginId()==loginId){
-            result[1] = "投资人不为能该标的借款人";
-            return result;
-        }
-        //投资人详情
-        TbUserDetails outUser = tbUserDetailsDao.selectByLoginId(loginId);
-        if(outUser!=null){
-            if(outUser.getUdThirdAccount()==null){
-                result[1] = "您尚未开通第三方";
-                return result;
-            }
-        }
-        //投资人账户
-        TbAccountsFunds accountsFunds = accountsFundsDao.selectByLoginId(loginId);
-        if(accountsFunds==null || accountsFunds.getAfBalance().compareTo(investMoney) <0){
-            result[1] = "账户余额不足";
-            return result;
-        }
-
-        //更新标的信息表
-        Map<String, Object> map = new HashMap<String, Object>();
-        map.put("bpId", bpId);
-        map.put("investMoney", investMoney);
-        map.put("nowTime", new Date());
-        int count = tbBidPlanDao.investBid(map);
-        if(count>0){
-
-                String amt = investMoney.multiply(new BigDecimal(100)).setScale(0, BigDecimal.ROUND_DOWN).toString();
-                //借款人详情
-                TbUserDetails inUser = tbUserDetailsDao.selectByLoginId(tbBidPlan.getBpLoginId());
-
-                //投资人登录信息
-                TbLoginInfo tbLoginInfo = tbLoginInfoDao.selectByPrimaryKey(loginId);
-
-                PreAuthRequest preAuthRequest = new PreAuthRequest();
-                preAuthRequest.setIn_cust_no(inUser.getUdThirdAccount());
-                preAuthRequest.setOut_cust_no(outUser.getUdThirdAccount());
-                preAuthRequest.setRem("investBid");
-                preAuthRequest.setAmt(amt);
-                //保存日志信息
-                TbThirdInterfaceLog thirdInterfaceLog = new TbThirdInterfaceLog();
-                thirdInterfaceLog.setTilCreateTime(new Date());
-                thirdInterfaceLog.setTilSerialNumber(preAuthRequest.getMchnt_txn_ssn());
-                thirdInterfaceLog.setTilType(3);
-                thirdInterfaceLog.setTilReqText(preAuthRequest.requestSignPlain());
-                thirdInterfaceLogDao.insert(thirdInterfaceLog);
-
-                //添加流水记录
-                TbFundsDetails tbFundsDetails = new TbFundsDetails();
-                tbFundsDetails.setFdLoginId(loginId);
-                tbFundsDetails.setFdThirdAccount(outUser.getUdThirdAccount());
-                tbFundsDetails.setFdSerialNumber(preAuthRequest.getMchnt_txn_ssn());
-                tbFundsDetails.setFdSerialTypeId(3);            //3投资冻结 4 借款入账
-                tbFundsDetails.setFdSerialTypeName("投资冻结");
-                tbFundsDetails.setFdSerialAmount(investMoney);
-                tbFundsDetails.setFdBalanceBefore(accountsFunds.getAfBalance());
-                tbFundsDetails.setFdBalanceAfter(accountsFunds.getAfBalance().subtract(investMoney));
-                tbFundsDetails.setFdCommissionCharge(BigDecimal.ZERO);
-                tbFundsDetails.setFdBpId(bpId);
-                tbFundsDetails.setFdBpName(tbBidPlan.getBpName());
-                tbFundsDetails.setFdCreateTime(new Date());
-                tbFundsDetails.setFdSerialTime(new Date());
-                tbFundsDetails.setFdBalanceStatus(2);           //支出
-                tbFundsDetails.setFdSerialStatus(0);
-                tbFundsDetails.setFdIsDel(1);
-
-                fundsDetailsDao.insert(tbFundsDetails);
-            try {
-                PreAuthResponse response = preAuthService.post(preAuthRequest);
-                //更新日志信息
-                String respStr = XmlUtil.toXML(response);
-                thirdInterfaceLog.setTilReturnCode(response.getPlain().getResp_code());
-                thirdInterfaceLog.setTilRespText(respStr);
-                thirdInterfaceLogDao.updateByPrimaryKeySelective(thirdInterfaceLog);
-
-                if("0000".equals(response.getPlain().getResp_code())){  //冻结成功
-
-                    //添加投资记录
-                    TbInvestInfo tbInvestInfo = new TbInvestInfo();
-                    tbInvestInfo.setIiBpId(tbBidPlan.getBpId());
-                    tbInvestInfo.setIiFreezeStatus(TbInvestInfo.STATUS_FREEZE);          //1:冻结中 2:还款中, 3:已还款,4:流标
-                    tbInvestInfo.setBpBidMoney(tbBidPlan.getBpBidMoney());
-                    tbInvestInfo.setIiBpName(tbBidPlan.getBpName());
-                    tbInvestInfo.setIiBpRepayedPeriods(0);      //默认当前期数0（未还款）
-                    tbInvestInfo.setIiContractNo(response.getPlain().getContract_no());
-                    tbInvestInfo.setIiCreateTime(new Date());
-                    tbInvestInfo.setIiMoney(investMoney);
-                    tbInvestInfo.setIiIsDel(1);             //数据有效性 1：有效  2：无效
-                    tbInvestInfo.setIiLoginId(loginId);
-                    tbInvestInfo.setIiLoginName(tbLoginInfo.getLiLoginName());
-                    tbInvestInfo.setIiTrueName(outUser.getUdTrueName());
-                    tbInvestInfo.setIiSsn(response.getPlain().getMchnt_txn_ssn());
-                    tbInvestInfo.setIiUpdateTime(tbInvestInfo.getIiCreateTime());
-                    tbInvestInfo.setIiThirdAccount(outUser.getUdThirdAccount());
-                    tbInvestInfoDao.insert(tbInvestInfo);
-
-                    //更新流水记录
-                    tbFundsDetails.setFdSerialStatus(1);
-                    fundsDetailsDao.updateByPrimaryKeySelective(tbFundsDetails);
-
-
-                    //修改余额
-                    accountsFunds.setAfBalance(accountsFunds.getAfBalance().subtract(investMoney));
-                    accountsFunds.setAfUpdateTime(new Date());
-                    accountsFundsDao.updateByPrimaryKeySelective(accountsFunds);
-
-                    //查询投资总额 满标 更新 标的信息
-                    BigDecimal investTotal = tbInvestInfoDao.investTotal(bpId);
-                    Map<String, Object> fullMap = new HashMap<>();
-                    fullMap.put("bpId", bpId);
-                    fullMap.put("nowTime", new Date());
-                    if(tbBidPlan.getBpBidMoney().compareTo(investTotal) == 0){
-                        tbBidPlanDao.fullBid(fullMap);
-                    }
-
-                    result[0] = "true";
-                    result[1] = "投资成功";
-                }else{
-                    result[1] = "请核实您的账户信息";
-                    //更新流水记录
-                    tbFundsDetails.setFdSerialStatus(-1);
-                    fundsDetailsDao.updateByPrimaryKeySelective(tbFundsDetails);
-                    tbBidPlanDao.addSurplus(map);
-                }
-            } catch (Exception e) {
-                if(LOGGER.isErrorEnabled()){
-                    LOGGER.error("投资调用失败：流水号-{}, 异常信息：{}",preAuthRequest.getMchnt_txn_ssn(), e);
-                }
-                result[1] = "操作异常";
-                tbBidPlanDao.addSurplus(map);
-            }
-        }else {
-            result[1] = "投资金额大于剩余金额";
-        }
-
-        return result;
-    }
+//    @Override
+//    public String[] investBid(Long bpId, Long loginId, BigDecimal investMoney) {
+//
+//        String[] result = new String[2];
+//        result[0] = "false";
+//
+//        //查询标的信息
+//        TbBidPlan tbBidPlan = tbBidPlanDao.selectByPrimaryKey(bpId);
+//        if(tbBidPlan.getBpLoginId()==loginId){
+//            result[1] = "投资人不为能该标的借款人";
+//            return result;
+//        }
+//        //投资人详情
+//        TbUserDetails outUser = tbUserDetailsDao.selectByLoginId(loginId);
+//        if(outUser!=null){
+//            if(outUser.getUdThirdAccount()==null){
+//                result[1] = "您尚未开通第三方";
+//                return result;
+//            }
+//        }
+//        //投资人账户
+//        TbAccountsFunds accountsFunds = accountsFundsDao.selectByLoginId(loginId);
+//        if(accountsFunds==null || accountsFunds.getAfBalance().compareTo(investMoney) <0){
+//            result[1] = "账户余额不足";
+//            return result;
+//        }
+//
+//        //更新标的信息表
+//        Map<String, Object> map = new HashMap<String, Object>();
+//        map.put("bpId", bpId);
+//        map.put("investMoney", investMoney);
+//        map.put("nowTime", new Date());
+//        int count = tbBidPlanDao.investBid(map);
+//        if(count>0){
+//
+//                String amt = investMoney.multiply(new BigDecimal(100)).setScale(0, BigDecimal.ROUND_DOWN).toString();
+//                //借款人详情
+//                TbUserDetails inUser = tbUserDetailsDao.selectByLoginId(tbBidPlan.getBpLoginId());
+//
+//                //投资人登录信息
+//                TbLoginInfo tbLoginInfo = tbLoginInfoDao.selectByPrimaryKey(loginId);
+//
+//                PreAuthRequest preAuthRequest = new PreAuthRequest();
+//                preAuthRequest.setIn_cust_no(inUser.getUdThirdAccount());
+//                preAuthRequest.setOut_cust_no(outUser.getUdThirdAccount());
+//                preAuthRequest.setRem("investBid");
+//                preAuthRequest.setAmt(amt);
+//                //保存日志信息
+//                TbThirdInterfaceLog thirdInterfaceLog = new TbThirdInterfaceLog();
+//                thirdInterfaceLog.setTilCreateTime(new Date());
+//                thirdInterfaceLog.setTilSerialNumber(preAuthRequest.getMchnt_txn_ssn());
+//                thirdInterfaceLog.setTilType(3);
+//                thirdInterfaceLog.setTilReqText(preAuthRequest.requestSignPlain());
+//                thirdInterfaceLogDao.insert(thirdInterfaceLog);
+//
+//                //添加流水记录
+//                TbFundsDetails tbFundsDetails = new TbFundsDetails();
+//                tbFundsDetails.setFdLoginId(loginId);
+//                tbFundsDetails.setFdThirdAccount(outUser.getUdThirdAccount());
+//                tbFundsDetails.setFdSerialNumber(preAuthRequest.getMchnt_txn_ssn());
+//                tbFundsDetails.setFdSerialTypeId(3);            //3投资冻结 4 借款入账
+//                tbFundsDetails.setFdSerialTypeName("投资冻结");
+//                tbFundsDetails.setFdSerialAmount(investMoney);
+//                tbFundsDetails.setFdBalanceBefore(accountsFunds.getAfBalance());
+//                tbFundsDetails.setFdBalanceAfter(accountsFunds.getAfBalance().subtract(investMoney));
+//                tbFundsDetails.setFdCommissionCharge(BigDecimal.ZERO);
+//                tbFundsDetails.setFdBpId(bpId);
+//                tbFundsDetails.setFdBpName(tbBidPlan.getBpName());
+//                tbFundsDetails.setFdCreateTime(new Date());
+//                tbFundsDetails.setFdSerialTime(new Date());
+//                tbFundsDetails.setFdBalanceStatus(2);           //支出
+//                tbFundsDetails.setFdSerialStatus(0);
+//                tbFundsDetails.setFdIsDel(1);
+//
+//                fundsDetailsDao.insert(tbFundsDetails);
+//            try {
+//                PreAuthResponse response = preAuthService.post(preAuthRequest);
+//                //更新日志信息
+//                String respStr = XmlUtil.toXML(response);
+//                thirdInterfaceLog.setTilReturnCode(response.getPlain().getResp_code());
+//                thirdInterfaceLog.setTilRespText(respStr);
+//                thirdInterfaceLogDao.updateByPrimaryKeySelective(thirdInterfaceLog);
+//
+//                if("0000".equals(response.getPlain().getResp_code())){  //冻结成功
+//
+//                    //添加投资记录
+//                    TbInvestInfo tbInvestInfo = new TbInvestInfo();
+//                    tbInvestInfo.setIiBpId(tbBidPlan.getBpId());
+//                    tbInvestInfo.setIiFreezeStatus(TbInvestInfo.STATUS_FREEZE);          //1:冻结中 2:还款中, 3:已还款,4:流标
+//                    tbInvestInfo.setBpBidMoney(tbBidPlan.getBpBidMoney());
+//                    tbInvestInfo.setIiBpName(tbBidPlan.getBpName());
+//                    tbInvestInfo.setIiBpRepayedPeriods(0);      //默认当前期数0（未还款）
+//                    tbInvestInfo.setIiContractNo(response.getPlain().getContract_no());
+//                    tbInvestInfo.setIiCreateTime(new Date());
+//                    tbInvestInfo.setIiMoney(investMoney);
+//                    tbInvestInfo.setIiIsDel(1);             //数据有效性 1：有效  2：无效
+//                    tbInvestInfo.setIiLoginId(loginId);
+//                    tbInvestInfo.setIiLoginName(tbLoginInfo.getLiLoginName());
+//                    tbInvestInfo.setIiTrueName(outUser.getUdTrueName());
+//                    tbInvestInfo.setIiSsn(response.getPlain().getMchnt_txn_ssn());
+//                    tbInvestInfo.setIiUpdateTime(tbInvestInfo.getIiCreateTime());
+//                    tbInvestInfo.setIiThirdAccount(outUser.getUdThirdAccount());
+//                    tbInvestInfoDao.insert(tbInvestInfo);
+//
+//                    //更新流水记录
+//                    tbFundsDetails.setFdSerialStatus(1);
+//                    fundsDetailsDao.updateByPrimaryKeySelective(tbFundsDetails);
+//
+//
+//                    //修改余额
+//                    accountsFunds.setAfBalance(accountsFunds.getAfBalance().subtract(investMoney));
+//                    accountsFunds.setAfUpdateTime(new Date());
+//                    accountsFundsDao.updateByPrimaryKeySelective(accountsFunds);
+//
+//                    //查询投资总额 满标 更新 标的信息
+//                    BigDecimal investTotal = tbInvestInfoDao.investTotal(bpId);
+//                    Map<String, Object> fullMap = new HashMap<>();
+//                    fullMap.put("bpId", bpId);
+//                    fullMap.put("nowTime", new Date());
+//                    if(tbBidPlan.getBpBidMoney().compareTo(investTotal) == 0){
+//                        tbBidPlanDao.fullBid(fullMap);
+//                    }
+//
+//                    result[0] = "true";
+//                    result[1] = "投资成功";
+//                }else{
+//                    result[1] = "请核实您的账户信息";
+//                    //更新流水记录
+//                    tbFundsDetails.setFdSerialStatus(-1);
+//                    fundsDetailsDao.updateByPrimaryKeySelective(tbFundsDetails);
+//                    tbBidPlanDao.addSurplus(map);
+//                }
+//            } catch (Exception e) {
+//                if(LOGGER.isErrorEnabled()){
+//                    LOGGER.error("投资调用失败：流水号-{}, 异常信息：{}",preAuthRequest.getMchnt_txn_ssn(), e);
+//                }
+//                result[1] = "操作异常";
+//                tbBidPlanDao.addSurplus(map);
+//            }
+//        }else {
+//            result[1] = "投资金额大于剩余金额";
+//        }
+//
+//        return result;
+//    }
 
     @Override
     public TbLoaner selectByPrimaryKey(Long lId) {
@@ -271,4 +271,137 @@ public class ProductServiceImpl implements IProductServiceInf {
 
         return tbInvestInfoDao.selectByConditionForPage(tbInvestInfo, pageWhere);
     }
+
+    /**
+     * 投标2
+     * @param outUser   投资人信息
+     * @param tbBidPlan
+     * @param investMoney
+     * @return
+     */
+    @Override
+    public ResultInfo investBid(TbUserDetails outUser,TbBidPlan tbBidPlan, BigDecimal investMoney) {
+
+        ResultInfo resultInfo = new ResultInfo(false, "投资失败");
+
+        TbAccountsFunds accountsFunds = accountsFundsDao.selectByLoginId(outUser.getUdLoginId());
+        //更新标的信息表
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("bpId", tbBidPlan.getBpId());
+        map.put("investMoney", investMoney);
+        map.put("nowTime", new Date());
+        int count = tbBidPlanDao.investBid(map);
+        if(count>0){
+
+            String amt = investMoney.multiply(new BigDecimal(100)).setScale(0, BigDecimal.ROUND_DOWN).toString();
+            //借款人详情
+            TbUserDetails inUser = tbUserDetailsDao.selectByLoginId(tbBidPlan.getBpLoginId());
+
+            //投资人登录信息
+            TbLoginInfo tbLoginInfo = tbLoginInfoDao.selectByPrimaryKey(outUser.getUdLoginId());
+
+            PreAuthRequest preAuthRequest = new PreAuthRequest();
+            preAuthRequest.setIn_cust_no(inUser.getUdThirdAccount());
+            preAuthRequest.setOut_cust_no(outUser.getUdThirdAccount());
+            preAuthRequest.setRem("investBid");
+            preAuthRequest.setAmt(amt);
+            //保存日志信息
+            TbThirdInterfaceLog thirdInterfaceLog = new TbThirdInterfaceLog();
+            thirdInterfaceLog.setTilCreateTime(new Date());
+            thirdInterfaceLog.setTilSerialNumber(preAuthRequest.getMchnt_txn_ssn());
+            thirdInterfaceLog.setTilType(3);
+            thirdInterfaceLog.setTilReqText(preAuthRequest.requestSignPlain());
+            thirdInterfaceLogDao.insert(thirdInterfaceLog);
+
+            //添加流水记录
+            TbFundsDetails tbFundsDetails = new TbFundsDetails();
+            tbFundsDetails.setFdLoginId(outUser.getUdLoginId());
+            tbFundsDetails.setFdThirdAccount(outUser.getUdThirdAccount());
+            tbFundsDetails.setFdSerialNumber(preAuthRequest.getMchnt_txn_ssn());
+            tbFundsDetails.setFdSerialTypeId(3);            //3投资冻结 4 借款入账
+            tbFundsDetails.setFdSerialTypeName("投资冻结");
+            tbFundsDetails.setFdSerialAmount(investMoney);
+            tbFundsDetails.setFdBalanceBefore(accountsFunds.getAfBalance());
+            tbFundsDetails.setFdBalanceAfter(accountsFunds.getAfBalance().subtract(investMoney));
+            tbFundsDetails.setFdCommissionCharge(BigDecimal.ZERO);
+            tbFundsDetails.setFdBpId(tbBidPlan.getBpId());
+            tbFundsDetails.setFdBpName(tbBidPlan.getBpName());
+            tbFundsDetails.setFdCreateTime(new Date());
+            tbFundsDetails.setFdSerialTime(new Date());
+            tbFundsDetails.setFdBalanceStatus(2);           //支出
+            tbFundsDetails.setFdSerialStatus(0);
+            tbFundsDetails.setFdIsDel(1);
+
+            fundsDetailsDao.insert(tbFundsDetails);
+            try {
+                PreAuthResponse response = preAuthService.post(preAuthRequest);
+                //更新日志信息
+                String respStr = XmlUtil.toXML(response);
+                thirdInterfaceLog.setTilReturnCode(response.getPlain().getResp_code());
+                thirdInterfaceLog.setTilRespText(respStr);
+                thirdInterfaceLogDao.updateByPrimaryKeySelective(thirdInterfaceLog);
+
+                if("0000".equals(response.getPlain().getResp_code())){  //冻结成功
+
+                    //添加投资记录
+                    TbInvestInfo tbInvestInfo = new TbInvestInfo();
+                    tbInvestInfo.setIiBpId(tbBidPlan.getBpId());
+                    tbInvestInfo.setIiFreezeStatus(TbInvestInfo.STATUS_FREEZE);          //1:冻结中 2:还款中, 3:已还款,4:流标
+                    tbInvestInfo.setBpBidMoney(tbBidPlan.getBpBidMoney());
+                    tbInvestInfo.setIiBpName(tbBidPlan.getBpName());
+                    tbInvestInfo.setIiBpRepayedPeriods(0);      //默认当前期数0（未还款）
+                    tbInvestInfo.setIiContractNo(response.getPlain().getContract_no());
+                    tbInvestInfo.setIiCreateTime(new Date());
+                    tbInvestInfo.setIiMoney(investMoney);
+                    tbInvestInfo.setIiIsDel(1);             //数据有效性 1：有效  2：无效
+                    tbInvestInfo.setIiLoginId(outUser.getUdLoginId());
+                    tbInvestInfo.setIiLoginName(tbLoginInfo.getLiLoginName());
+                    tbInvestInfo.setIiTrueName(outUser.getUdTrueName());
+                    tbInvestInfo.setIiSsn(response.getPlain().getMchnt_txn_ssn());
+                    tbInvestInfo.setIiUpdateTime(tbInvestInfo.getIiCreateTime());
+                    tbInvestInfo.setIiThirdAccount(outUser.getUdThirdAccount());
+                    tbInvestInfoDao.insert(tbInvestInfo);
+
+                    //更新流水记录
+                    tbFundsDetails.setFdSerialStatus(1);
+                    fundsDetailsDao.updateByPrimaryKeySelective(tbFundsDetails);
+
+
+                    //修改余额
+                    accountsFunds.setAfBalance(accountsFunds.getAfBalance().subtract(investMoney));
+                    accountsFunds.setAfUpdateTime(new Date());
+                    accountsFundsDao.updateByPrimaryKeySelective(accountsFunds);
+
+                    //查询投资总额 满标 更新 标的信息
+                    BigDecimal investTotal = tbInvestInfoDao.investTotal(tbBidPlan.getBpId());
+                    Map<String, Object> fullMap = new HashMap<>();
+                    fullMap.put("bpId", tbBidPlan.getBpId());
+                    fullMap.put("nowTime", new Date());
+                    if(tbBidPlan.getBpBidMoney().compareTo(investTotal) == 0){
+                        tbBidPlanDao.fullBid(fullMap);
+                    }
+
+                    resultInfo.setSuccess_is_ok(true);
+                    resultInfo.setMsg(investMoney.toString());
+                }else{
+                    resultInfo.setMsg("请核实您的账户信息");
+                    //更新流水记录
+                    tbFundsDetails.setFdSerialStatus(-1);
+                    fundsDetailsDao.updateByPrimaryKeySelective(tbFundsDetails);
+                    tbBidPlanDao.addSurplus(map);
+                }
+            } catch (Exception e) {
+                resultInfo.setMsg("操作异常");
+                if(LOGGER.isErrorEnabled()){
+                    LOGGER.error("投资调用失败：流水号-{}, 异常信息：{}",preAuthRequest.getMchnt_txn_ssn(), e);
+                }
+                tbBidPlanDao.addSurplus(map);
+            }
+        }else {
+            resultInfo.setMsg("投资金额大于剩余金额");
+        }
+
+        return resultInfo;
+    }
+
 }

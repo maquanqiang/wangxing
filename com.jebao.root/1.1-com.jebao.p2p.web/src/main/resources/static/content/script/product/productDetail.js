@@ -202,14 +202,21 @@ var vm = new Vue({
                             layer.closeAll();
                             if (response.success_is_ok) {
                                 var data = response.data;
-                                if(data.flag=="true"){
-                                    window.location.href="/product/productSuccess/"+form.investMoney;
+                                var failmsg = data.msg==null?"":data.msg;
+                                if(data.flag){
+                                    window.location.href="/product/productSuccess/"+failmsg;
                                 }else{
-                                    window.location.href="/product/productFail/"+data.msg;
+                                    window.location.href="/product/productFail/"+failmsg;
                                 }
                             }else{
-                                layer.alert(response.error);
-                                //setTimeout(function(){window.location.reload();},5000)
+                                layer.msg(response.error, {
+                                    time: 0 //不自动关闭
+                                    ,btn: ['关闭']
+                                    ,yes: function(index){
+                                        layer.close(index);
+                                        window.location.reload();
+                                    }
+                                });
                             }
                         });
                     },
