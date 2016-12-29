@@ -38,8 +38,10 @@ var vm = new Vue({
                     }
                     var pageCount = Math.ceil(response.count / model.searchObj.pageSize);
                     if (pageCount > 0){
+                        console.log('aaa');
                         //调用分页
                         laypage({
+                            skin: '#e88a6e',
                             cont: $('.page'), //容器。值支持id名、原生dom对象，jquery对象,
                             pages: pageCount, //总页数
                             groups: 7, //连续显示分页数
@@ -48,8 +50,7 @@ var vm = new Vue({
                                     vm.searchObj.pageIndex=obj.curr -1;
                                     vm.search();
                                 }
-                            },
-                            skin: '#3c8dbc'
+                            }
                         });
                     }
                 }

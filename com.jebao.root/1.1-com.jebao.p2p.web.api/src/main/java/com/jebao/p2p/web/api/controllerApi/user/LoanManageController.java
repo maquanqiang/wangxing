@@ -55,6 +55,9 @@ public class LoanManageController {
         fundDetailSM.setPlanStatus(7);
         fundDetailSM.setPeriod(1);
         List<TbIncomeDetail> incomeDetails = fundsDetailsService.selectFundList(fundDetailSM, pageWhere);
+        if(incomeDetails == null || incomeDetails.size() == 0){
+            return new JsonResultList<>(null);
+        }
 
         int count = fundsDetailsService.selectFundCount(fundDetailSM);
 
@@ -72,7 +75,6 @@ public class LoanManageController {
     @RequestMapping("repayedDetails")
     public JsonResult repayedDetails(PageWhere pageWhere){
         CurrentUser currentUser = CurrentUserContextHolder.get();
-
         if(currentUser==null){
             return new JsonResultError("未登录");
         }
@@ -81,9 +83,10 @@ public class LoanManageController {
         fundDetailSM.setLoanLoginId(currentUser.getId());
         fundDetailSM.setPlanStatus(10);
         fundDetailSM.setPeriod(0);
-
         List<TbIncomeDetail> incomeDetails = fundsDetailsService.selectFundList(fundDetailSM, pageWhere);
-
+        if(incomeDetails == null || incomeDetails.size() == 0){
+            return new JsonResultList<>(null);
+        }
         List<RepayedDetailsVM> detailsVMs = new ArrayList<>();
         incomeDetails.forEach(o -> detailsVMs.add(new RepayedDetailsVM(o)));
         int count = fundsDetailsService.selectFundCount(fundDetailSM);

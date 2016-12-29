@@ -19,7 +19,7 @@ public class AuthorizeInterceptor implements HandlerInterceptor {
         boolean isLogin = LoginSessionUtil.isLogin(request, response);
         if (!isLogin) {
             String redirectUrl = request.getRequestURI();
-            response.sendRedirect(request.getContextPath() + "/account/login?redirectUrl="+redirectUrl);
+            response.sendRedirect(request.getContextPath() + "/account/login?redirect="+redirectUrl);
             return false;
         }
         return true;

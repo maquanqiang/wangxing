@@ -7,7 +7,8 @@ var model = {
     //资金汇总
     loanSum: {},
     //查询条件
-    searchObj: {},
+    searchObj1: {},
+    searchObj2: {},
     //还款中项目
     paymentIngs: [],
     isHasDatei: true,
@@ -22,8 +23,11 @@ var vm = new Vue({
     el: ".account-content",
     data: model,
     beforeCreate: function () {
-        model.searchObj.pageIndex = 0;
-        model.searchObj.pageSize = 10;
+        model.searchObj1.pageIndex = 0;
+        model.searchObj1.pageSize = 10;
+
+        model.searchObj2.pageIndex = 0;
+        model.searchObj2.pageSize = 10;
     },
     //初始化远程数据
     created: function () {
@@ -33,7 +37,7 @@ var vm = new Vue({
                 vm.loanSum = data;
             }
         });
-        this.repayingList()
+        this.repayingList();
     },
     //方法，可用于绑定事件或直接调用
     methods: {
@@ -67,36 +71,38 @@ var vm = new Vue({
             });
         },
         repayedList: function () {
-            $.get("/api/loanManage/repayedDetails", model.searchObj, function (response) {
+            $.get("/api/loanManage/repayedDetails", model.searchObj2, function (response) {
                 if (response.success_is_ok) {
                     var data = response.data;
                     vm.paymented = data;
                     if (data != null && data.length > 0) {
-                        vm.isHasDateed = true;
+                        vm.isHasDated = true;
                     } else {
-                        vm.isHasDateed = false;
+                        vm.isHasDated = false;
                     }
-                    var pageCount = Math.ceil(response.count / model.searchObj.pageSize);
+                    var pageCount = Math.ceil(response.count / model.searchObj2.pageSize);
                     if (pageCount > 0) {
                         //调用分页
                         laypage({
-                            cont: $('#page2'), //容器。值支持id名、原生dom对象，jquery对象,
+                            skin: '#e88a6e',
+                            cont: $('#pageNum2'), //容器。值支持id名、原生dom对象，jquery对象,
+                            curr:model.searchObj2.pageIndex + 1,
                             pages: pageCount, //总页数
                             groups: 7, //连续显示分页数
                             jump: function (obj, first) { //触发分页后的回调
                                 if (!first) { //点击跳页触发函数自身，并传递当前页：obj.curr
-                                    vm.searchObj.pageIndex = obj.curr - 1;
+                                    vm.searchObj2.pageIndex = obj.curr - 1;
                                     vm.repayedList();
                                 }
-                            },
-                            skin: '#3c8dbc'
+                            }
                         });
                     }
                 }
             });
         },
         repayingList: function () {
-            $.get("/api/loanManage/repayingDetails", model.searchObj, function (response) {
+            //console.log(model.searchObj1.pageIndex);
+            $.get("/api/loanManage/repayingDetails", model.searchObj1, function (response) {
                 if (response.success_is_ok) {
                     var data = response.data;
                     vm.paymentIngs = data;
@@ -105,20 +111,21 @@ var vm = new Vue({
                     } else {
                         vm.isHasDatei = false;
                     }
-                    var pageCount = Math.ceil(response.count / model.searchObj.pageSize);
+                    var pageCount = Math.ceil(response.count / model.searchObj1.pageSize);
                     if (pageCount > 0) {
                         //调用分页
                         laypage({
-                            cont: $('#page1'), //容器。值支持id名、原生dom对象，jquery对象,
+                            skin: '#e88a6e',
+                            cont: $('#pageNum1'), //容器。值支持id名、原生dom对象，jquery对象,
+                            curr:model.searchObj1.pageIndex + 1,
                             pages: pageCount, //总页数
                             groups: 7, //连续显示分页数
                             jump: function (obj, first) { //触发分页后的回调
                                 if (!first) { //点击跳页触发函数自身，并传递当前页：obj.curr
-                                    vm.searchObj.pageIndex = obj.curr - 1;
+                                    vm.searchObj1.pageIndex = obj.curr - 1;
                                     vm.repayingList();
                                 }
-                            },
-                            skin: '#3c8dbc'
+                            }
                         });
                     }
                 }
