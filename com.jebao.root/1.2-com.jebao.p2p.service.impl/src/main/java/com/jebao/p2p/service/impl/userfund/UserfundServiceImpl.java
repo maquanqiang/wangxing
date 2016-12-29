@@ -542,6 +542,7 @@ public class UserfundServiceImpl implements IUserfundServiceInf {
         }
 
         if(flat){
+            queryUserBalance(userId);//同步（富有）用户可用余额
             return new ResultInfo(true, "用户信息已同步");
         }else{
             return new ResultInfo(false, "用户信息未同步");

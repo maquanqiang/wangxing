@@ -127,11 +127,6 @@ public class FundsControllerApi {
             return new JsonResultData<>(null);
         }
 
-        LoanTotal loanTotal = tbBidPlanService.totalLoanByLoanerId(loaner.getlId());
-        if (loanTotal == null || loanTotal.getLoanerId() == null) {
-            return new JsonResultData<>(null);
-        }
-
         FundsVM viewModel = new FundsVM();
         TbAccountsFunds accountsFunds = accountsFundsService.findAccountsFundsByloginId(loginId);
         if (accountsFunds == null) {
@@ -143,8 +138,15 @@ public class FundsControllerApi {
         BigDecimal dhlx = incomeDetailService.totalMoneyByloanerId(loaner.getlId(), EnumModel.FundType.利息.getValue(), EnumModel.IncomeStatus.未还.getValue());
         BigDecimal jklx = incomeDetailService.totalMoneyByloanerId(loaner.getlId(), EnumModel.FundType.利息.getValue(), EnumModel.IncomeStatus.已还.getValue());
 
-        viewModel.setJkAmounts(loanTotal.getTotalAmounts().setScale(2, BigDecimal.ROUND_HALF_UP));
-        viewModel.setServiceCharge(loanTotal.getServiceCharge());
+        LoanTotal loanTotal = tbBidPlanService.totalLoanByLoanerId(loaner.getlId());
+        if(loanTotal!=null && loanTotal.getLoanerId() != null) {
+            viewModel.setJkAmounts(loanTotal.getTotalAmounts().setScale(2, BigDecimal.ROUND_HALF_UP));
+            viewModel.setServiceCharge(loanTotal.getServiceCharge());
+        }else{
+            viewModel.setJkAmounts(new BigDecimal(0));
+            viewModel.setServiceCharge(new BigDecimal(0));
+        }
+
         viewModel.setJkInterests(dhlx.add(jklx).setScale(2, BigDecimal.ROUND_HALF_UP));
         viewModel.setDhAmounts(dhbj.add(dhlx).setScale(2, BigDecimal.ROUND_HALF_UP));
         viewModel.setDhInterests(dhlx.setScale(2, BigDecimal.ROUND_HALF_UP));

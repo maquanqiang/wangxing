@@ -33,18 +33,22 @@
             <ul class="loanManagement clearfix">
                 <li>
                     <h5>借款金额（元）</h5>
+
                     <p class="red">{{loanSum.loanMoneyTotal}}</p>
                 </li>
                 <li>
                     <h5>逾期金额（元）</h5>
+
                     <p>{{loanSum.overdueMoneyTotal}}</p>
                 </li>
                 <li>
                     <h5>待还金额（元）</h5>
+
                     <p>{{loanSum.repaymentMoneyTotal}}</p>
                 </li>
                 <li>
                     <h5>最近10天应还金额（元）</h5>
+
                     <p>{{loanSum.afterTenMoney}}</p>
                 </li>
             </ul>
@@ -70,7 +74,7 @@
                             <th>操作</th>
                         </tr>
                         </thead>
-                        <tbody>
+                        <tbody v-show="isHasDatei">
                         <tr v-for="data in paymentIngs">
                             <td>
                                 <a :href="'/product/detail/'+data.bpId">{{data.bpName}}</a>
@@ -82,13 +86,14 @@
                             <td>{{data.repayMoney+data.dueMoney}}</td>
                             <!--<td></td>-->
                             <td>
-                                <a href="javascript:void(0);" class="table-btn" @click.prevent="repay(data.bpPeriod, data.bpId, data.repayMoney+data.dueMoney)">还款</a>
+                                <a href="javascript:void(0);" class="table-btn"
+                                   @click.prevent="repay(data.bpPeriod, data.bpId, data.repayMoney+data.dueMoney)">还款</a>
                             </td>
                         </tr>
                         </tbody>
                     </table>
                     <!--无数据-->
-                    <div class="noProject" v-if="paymentIngs.length==0">
+                    <div class="noProject" v-show="!isHasDatei">
                         <p>
                             暂无还款中借款
                         </p>
@@ -96,7 +101,6 @@
                     <div class="page" id="page1"></div>
                 </div>
                 <div class="project-item">
-
                     <table class="borrow-clear">
                         <thead>
                         <tr>
@@ -110,7 +114,7 @@
                             <!--<th>查看</th>-->
                         </tr>
                         </thead>
-                        <tbody>
+                        <tbody v-show="isHasDated">
                         <tr v-for="data in paymented">
                             <td>
                                 <a :href="'/product/detail/'+data.bpId">{{data.bpName}}</a>
@@ -126,7 +130,7 @@
                         </tbody>
                     </table>
                     <!--无数据-->
-                    <div class="noProject" v-if="paymented.length==0">
+                    <div class="noProject" v-show="!isHasDated">
                         <p>
                             暂无已结清借款
                         </p>

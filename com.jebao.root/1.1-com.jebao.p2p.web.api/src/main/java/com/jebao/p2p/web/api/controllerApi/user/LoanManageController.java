@@ -4,8 +4,6 @@ import com.jebao.jebaodb.entity.extEntity.PageWhere;
 import com.jebao.jebaodb.entity.extEntity.ResultInfo;
 import com.jebao.jebaodb.entity.investment.FundDetailSM;
 import com.jebao.jebaodb.entity.investment.TbIncomeDetail;
-import com.jebao.jebaodb.entity.user.TbAccountsFunds;
-import com.jebao.p2p.service.inf.user.IAccountsFundsServiceInf;
 import com.jebao.p2p.service.inf.user.IFundsDetailsServiceInf;
 import com.jebao.p2p.service.inf.user.ILoanManageServiceInf;
 import com.jebao.p2p.web.api.requestModel.user.RepaymentForm;
@@ -113,7 +111,6 @@ public class LoanManageController {
         loanManageInfoVM.setRepaymentMoneyTotal(map.get("repaymentMoneyTotal"));
 
         return new JsonResultData<>(loanManageInfoVM);
-
     }
 
     /**

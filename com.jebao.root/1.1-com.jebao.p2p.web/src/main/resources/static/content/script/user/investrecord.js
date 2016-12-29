@@ -4,8 +4,12 @@
 //Vue实例
 //Model
 var model = {
-    //查询条件
-    searchObj: {},
+    //投资中的项目查询条件
+    searchObj1: {},
+    //还款中的项目查询条件
+    searchObj2: {},
+    //已还款的项目查询条件
+    searchObj3: {},
     //投资中项目列表
     investings: [],
     isHasDateii: true,
@@ -23,9 +27,17 @@ var vm = new Vue({
     data: model,
     beforeCreate: function () {
         //初始化本地数据
-        model.searchObj.freezeStatus = 1;
-        model.searchObj.pageIndex = 0;
-        model.searchObj.pageSize = 10;
+        model.searchObj1.freezeStatus = 1;
+        model.searchObj1.pageIndex = 0;
+        model.searchObj1.pageSize = 10;
+
+        model.searchObj2.freezeStatus = 2;
+        model.searchObj2.pageIndex = 0;
+        model.searchObj2.pageSize = 10;
+
+        model.searchObj3.freezeStatus = 3;
+        model.searchObj3.pageIndex = 0;
+        model.searchObj3.pageSize = 10;
     },
     //初始化远程数据
     created: function () {
@@ -37,8 +49,15 @@ var vm = new Vue({
             return "/product/detail/" + id;
         },
         search: function (fs) {
-            model.searchObj.freezeStatus = fs;
-            $.get("/api/invest/record", model.searchObj, function (response) {
+            var dataVal;
+            if(fs == 1){
+                dataVal = model.searchObj1;
+            }else if(fs == 2){
+                dataVal = model.searchObj2;
+            }else{
+                dataVal = model.searchObj3;
+            }
+            $.get("/api/invest/record", dataVal, function (response) {
                 if (response.success_is_ok) {
                     var data = response.data;
                     if (fs == 1) {
@@ -63,7 +82,7 @@ var vm = new Vue({
                             vm.isHasDatepd = false;
                         }
                     }
-                    var pageCount = Math.ceil(response.count / model.searchObj.pageSize);
+                    var pageCount = Math.ceil(response.count / dataVal.pageSize);
                     if (pageCount > 0) {
                         //调用分页
                         laypage({
@@ -72,7 +91,14 @@ var vm = new Vue({
                             groups: 7, //连续显示分页数
                             jump: function (obj, first) { //触发分页后的回调
                                 if (!first) { //点击跳页触发函数自身，并传递当前页：obj.curr
-                                    vm.searchObj.pageIndex = obj.curr - 1;
+                                    var currIndex = obj.curr - 1;
+                                    if(fs==1){
+                                        vm.searchObj1.pageIndex = currIndex;
+                                    }else if(fs == 2){
+                                        vm.searchObj2.pageIndex = currIndex;
+                                    }else{
+                                        vm.searchObj3.pageIndex = currIndex;
+                                    }
                                     vm.search(fs);
                                 }
                             },
