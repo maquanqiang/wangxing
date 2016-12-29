@@ -55,11 +55,6 @@ function initValidateForm(){
                     notEmpty: {
                         message: '密码不能为空'
                     },
-                    stringLength: {
-                        min: 6,
-                        max: 10,
-                        message: '密码长度必须在6到18位之间'
-                    },
                     regexp: {
                         regexp:/^[\@A-Za-z0-9\!\#\$\%\^\&\*\.\~]{6,22}$/,
                         message: '密码格式有误'
