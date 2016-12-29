@@ -97,8 +97,11 @@ public class EnumModel {
     public enum SerialType{
         充值(1),
         提现(2),
-        投资(3),
-        借款(4);
+        投资冻结(3),
+        借款入账(4),
+        本金还款(5),
+        付息(6),
+        投资转账(7);
         private int value;
         private SerialType(int val){
             this.value = val;

@@ -106,7 +106,8 @@ public class UserfundServiceImpl implements IUserfundServiceInf {
 
         String respCode = regResponse.getPlain().getResp_code();
         if (!FuiouConfig.Success_Code.equals(respCode)) {
-            return new ResultInfo(false, respCode+"开户失败，请稍后再试");
+            String errorMessage = FuiouConfig.getRespDesc().get(respCode);
+            return new ResultInfo(false, errorMessage == null? respCode+"开户失败，请联系客服":errorMessage);
         }
 
         //记录开户日志

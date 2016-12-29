@@ -13,14 +13,14 @@ public class RegServiceImpl_UnitTest {
     public void Test() throws Exception {
         RegRequest reqData = new RegRequest();
         reqData.setCust_nm("张三");
-        reqData.setCertif_id("130102198001015356");
+        reqData.setCertif_id("130481198910182874");
         reqData.setMobile_no("18600000001");
         reqData.setEmail("");
         reqData.setCity_id("1000");
         reqData.setParent_bank_id("0102");
         reqData.setBank_nm("");
         reqData.setCapAcntNm("");
-        reqData.setCapAcntNo("6212250200008619199");
+        reqData.setCapAcntNo("6212250200008619197");
         reqData.setPassword("");
         reqData.setLpassword("");
         reqData.setRem("");

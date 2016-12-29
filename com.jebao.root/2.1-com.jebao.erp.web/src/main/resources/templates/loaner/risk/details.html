@@ -107,7 +107,7 @@
                                     <td>1</td>
                                     <td>{{ item.rcpmtRemark }}</td>
                                     <td>
-                                        <a href="javascript:;" class="btn btn-default btn-xs" role="button" @click="openViewForm(item.rcpmtPath)">预览</a>
+                                        <a href="javascript:void(0);" class="btn btn-default btn-xs" role="button" @click.prevent="openViewForm(item.rcpmtPath)">预览</a>
                                     </td>
                                 </tr>
                             </template>

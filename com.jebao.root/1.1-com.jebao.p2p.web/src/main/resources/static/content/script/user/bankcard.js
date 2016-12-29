@@ -2,7 +2,7 @@
  * Created by Jack on 2016/12/16.
  */
 var model = {
-    hasFundAccount:false,
+    hasFundAccount:true,
     bankName:"",
     bankCardNo:"",
     newBankName:"",
