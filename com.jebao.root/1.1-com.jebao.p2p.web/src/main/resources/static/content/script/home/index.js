@@ -164,7 +164,7 @@ var mVm = new Vue({
                    // console.log(data);
                    // $("#mn_0").html(mVm.mediaNews[0].content);
                     for(var i=0;i<data.length;i++){
-                        $("#media_ul").append("<li><a href='/html/mediaNews/details/"+data[i].id+"'>"+data[i].content+"</a></li>");
+                        $(".media ul").append("<li><a href='/html/mediaNews/details/"+data[i].id+"'>"+data[i].content+"</a></li>");
                     }
                 }
             });
