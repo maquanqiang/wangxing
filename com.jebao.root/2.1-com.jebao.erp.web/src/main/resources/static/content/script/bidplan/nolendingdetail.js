@@ -217,13 +217,19 @@ var vm = new Vue({
                 form.bidNumber = vm.plan.bpNumber;
                 $.post("/contract/createDemo", form, function (response) {
                     if(response.success_is_ok){
-                        layer.msg(response.msg);
-                        //investInfoList
-                        $.get("/api/investInfo/list", {bpId : form.bpId}, function (response) {
-                            if (response.success_is_ok) {
-                                vm.investInfoList = response.data;
-                            }
-                        })
+                        //加载层-默认风格
+                        layer.load(1);
+                        setTimeout(function(){
+                            layer.closeAll('loading');
+                            layer.msg(response.msg);
+                            //investInfoList
+                            $.get("/api/investInfo/list", {bpId : form.bpId}, function (response) {
+                                if (response.success_is_ok) {
+                                    vm.investInfoList = response.data;
+                                }
+                            })
+                        }, 10000);
+
                     }else{
                         layer.msg(response.error);
                     }
