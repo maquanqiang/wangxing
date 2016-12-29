@@ -11,6 +11,7 @@ import com.jebao.p2p.web.api.responseModel.base.JsonResult;
 import com.jebao.p2p.web.api.responseModel.base.JsonResultData;
 import com.jebao.p2p.web.api.responseModel.base.JsonResultError;
 import com.jebao.p2p.web.api.responseModel.base.JsonResultOk;
+import com.jebao.p2p.web.api.responseModel.datavm.BankCardVM;
 import com.jebao.p2p.web.api.utils.constants.Constants;
 import com.jebao.p2p.web.api.utils.http.HttpUtil;
 import com.jebao.p2p.web.api.utils.session.CurrentUser;
@@ -75,9 +76,20 @@ public class UserfundController extends _BaseController {
                  <dl><dt><font class="con_sub_title">官方网址：</font>www.icbc.com.cn</dt></dl>*/
                 //endregion
                 if (dlList!=null && dlList.size()>0){
-                    String dtRegex = "<dt><font class=\"con_sub_title\">.*</font>[\\s\\S]+</dt>";
-                    String province = dlList.size() > 1 ? RegexUtil.getFirstMatch(dlList.get(1),""):"";
-                    return new JsonResultData<>(dlList.subList(1,2));
+                    String dtRegex = "(?<=</font>)[\\s\\S]+?(?=</dt>)";
+                    String bankOfRegions = dlList.size() > 1 ? RegexUtil.getFirstMatch(dlList.get(1),dtRegex):"";
+                    String[] regionArray = bankOfRegions.split("-");
+                    String province = regionArray[0].trim();
+                    String city = regionArray.length > 1 ? regionArray[1].trim() : "";
+                    String bankName = dlList.size() > 2 ? RegexUtil.getFirstMatch(dlList.get(2),dtRegex).trim():"";
+
+                    BankCardVM model = new BankCardVM();
+                    model.setBankCardNo(bankCard);
+                    model.setBankName(bankName);
+                    model.setProvince(province);
+                    model.setCity(city);
+
+                    return new JsonResultData<>(model);
                 }
 
             }

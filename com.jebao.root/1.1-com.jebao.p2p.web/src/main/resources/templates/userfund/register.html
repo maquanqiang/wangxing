@@ -28,7 +28,7 @@
                 </div>
                 <div class="userName form-group clearfix">
                     <div>真实姓名</div>
-                    <input type="text" value="" placeholder="请输入真实姓名" name="realName" >
+                    <input type="text" value="" placeholder="请输入真实姓名" name="realName">
                 </div>
                 <div class="userId  form-group clearfix">
                     <div>身份证号</div>
@@ -38,9 +38,13 @@
             </div>
             <div class="userBank">
                 <p>此银行卡将作为富友账户唯一充值提现卡</p>
+                <div class="bankCard form-group clearfix">
+                    <div>银行卡号</div>
+                    <input type="text" value="" placeholder="请输入银行卡号" name="bankCardNo" v-model="form.bankCardNo" @blur="validateBankCard" >
+                </div>
                 <div class="chooseBank form-group clearfix">
                     <div>选择银行</div>
-                    <select name="bankCode">
+                    <select name="bankCode" v-model="form.bankCode">
                         <option value="">请选择</option>
                         <option v-for="item in banks" :value="item.code" v-text="item.name"></option>
                     </select>
@@ -54,15 +58,12 @@
                 </div>
                 <div class="chooseDistrict form-group clearfix">
                     <div>开户行区县</div>
-                    <select name="bankCityCode">
+                    <select name="bankCityCode" v-model="form.bankCityCode">
                         <option value="0">请选择</option>
                         <option v-for="item in cities" :value="item.code" v-text="item.name"></option>
                     </select>
                 </div>
-                <div class="bankCard form-group clearfix">
-                    <div>银行卡号</div>
-                    <input type="text" value="" placeholder="请输入银行卡号" name="bankCardNo" v-model="form.bankCardNo" :blur="getBankCardInfo" >
-                </div>
+
             </div>
             <div class="payPassword">
                 <p>此密码仅用于富友账户资金提现到银行卡时使用。非银行卡取款密码。</p>
