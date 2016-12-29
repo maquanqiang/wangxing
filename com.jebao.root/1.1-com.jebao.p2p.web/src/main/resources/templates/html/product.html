@@ -93,7 +93,8 @@
                     <a href="javascript:void(0);">{{status[data.bpStatus]}}</a>
                 </div>
             </div>
-            <img src="${filePath}/images/new-project.png" class="new-project" v-show="data.bpType==2">
+            <img src="${filePath}/images/new-project.png" class="new-project" v-if="data.bpType==2">
+            <img src="${filePath}/images/increase.png" class="increase" v-if="data.bpType==3">
         </div>
         <div id="pageNum" class="page" style="padding-bottom: 40px"></div>
     </div>
