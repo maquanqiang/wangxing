@@ -24,12 +24,6 @@ var vm = new Vue({
         getEditHref: function (lid, rid) {
             return "/loaner/risk/info/" + lid + "/rId/" + rid;
         },
-        getDetailHref: function (id) {
-            return "/loaner/risk/details/" + id;
-        },
-        getMaterialsHref: function(id){
-            return "/loaner/risk/materials/" + id;
-        },
         search: function(){
             $.get("/api/risk/list", model.searchObj, function (response) {
                 if (response.success_is_ok) {

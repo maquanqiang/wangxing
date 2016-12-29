@@ -4,6 +4,7 @@ import com.jebao.erp.web.requestModel.base._BaseForm;
 import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
@@ -26,6 +27,11 @@ public class ArticleIM extends _BaseForm {
 
     @NotBlank(message="文章内容不能为空")
     private String content;
+
+    @NotNull
+    @Min(value = 0,message = "权重值不能小于0")
+    @Max(value = 9,message = "权重值不能大于9")
+    private Integer weight;
 
     public Long getId() {
         return id;
@@ -65,5 +71,13 @@ public class ArticleIM extends _BaseForm {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public Integer getWeight() {
+        return weight;
+    }
+
+    public void setWeight(Integer weight) {
+        this.weight = weight;
     }
 }

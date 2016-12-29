@@ -12,12 +12,15 @@ import java.util.Date;
  */
 public class ArticleVM extends ViewModel {
     public ArticleVM(TbArticle entity){
+        this.id = entity.getaId();
         this.title = entity.getaTitle();
         this.editDate = entity.getaEditDate();
         this.updateTime = entity.getaUpdateTime();
         this.editUser = entity.getaEditUser();
         this.content = entity.getaContent();
     }
+
+    private Long id;
 
     private String title;
 
@@ -30,6 +33,14 @@ public class ArticleVM extends ViewModel {
     private String editUser;
 
     private String content;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getTitle() {
         return title;

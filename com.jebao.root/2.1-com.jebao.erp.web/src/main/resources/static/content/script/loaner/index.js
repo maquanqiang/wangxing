@@ -28,18 +28,6 @@ var vm = new Vue({
     },
     //方法，可用于绑定事件或直接调用
     methods: {
-        getDetailHref: function (id) {
-            return "/loaner/details/" + id;
-        },
-        getRiskHref: function (id) {
-            return "/loaner/risk/index/" + id;
-        },
-        getFundsHref: function (loginId) {
-            return "/loaner/funds/" + loginId;
-        },
-        getLoanHref: function (id) {
-            return "/loaner/loanrecord/" + id;
-        },
         search: function (event) {
             if (typeof event !== "undefined") { //点击查询按钮的话，是查询第一页数据
                 model.searchObj.pageIndex = 0;

@@ -55,9 +55,9 @@
                                                 <td>
                                                     <a :href="getEditHref(item.loanerId,item.id)"
                                                        class="btn btn-default btn-xs" role="button">修改</a>
-                                                    <a :href="getDetailHref(item.id)" class="btn btn-default btn-xs"
+                                                    <a :href="'/loaner/risk/details/'+item.id" class="btn btn-default btn-xs"
                                                        role="button" target="_blank">查看详情</a>
-                                                    <a :href="getMaterialsHref(item.id)" class="btn btn-default btn-xs"
+                                                    <a :href="'/loaner/risk/materials/'+item.id" class="btn btn-default btn-xs"
                                                        role="button" target="_blank">认证材料</a>
                                                     <a href="javascript:void(0);" class="btn btn-default btn-xs remove-msg"
                                                        role="button" @click.prevent="openDeleteWin(item.id)">删除</a>

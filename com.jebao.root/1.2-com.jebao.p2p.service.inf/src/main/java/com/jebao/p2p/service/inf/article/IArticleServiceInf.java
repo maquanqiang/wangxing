@@ -34,4 +34,12 @@ public interface IArticleServiceInf {
      * @return
      */
     int selectArticleByTypeIdForPageCount(int typeId);
+
+    /**
+     * 带内容的文章列表
+     * @param typeId
+     * @param page
+     * @return
+     */
+    List<TbArticle> selectArticleByTypeIdForIndex(int typeId, PageWhere page);
 }

@@ -16,6 +16,7 @@ public class ArticleVM extends ViewModel {
         this.title = entity.getaTitle();
         this.editDate = entity.getaEditDate();
         this.content = entity.getaContent();
+        this.weight = entity.getaWeight();
     }
 
     private Long id;
@@ -28,6 +29,9 @@ public class ArticleVM extends ViewModel {
     private Date editDate;
 
     private String content;
+
+    //权重
+    private Integer weight;
 
     public Long getId() {
         return id;
@@ -67,5 +71,13 @@ public class ArticleVM extends ViewModel {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public Integer getWeight() {
+        return weight;
+    }
+
+    public void setWeight(Integer weight) {
+        this.weight = weight;
     }
 }

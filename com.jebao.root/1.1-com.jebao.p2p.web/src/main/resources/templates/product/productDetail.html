@@ -26,20 +26,20 @@
         </form>
         <!--项目头部左侧-->
         <div class="plan-card fl">
-            <div class="plan-name">
+            <div class="plan-name" v-cloak>
                 <p>{{product.bpName}}<span>{{product.bpNumber}}</span></p>
             </div>
             <div class="plan-item clearfix">
                 <div class="plan-info text-left">
-                    <div>{{product.bpRate}}%</div>
+                    <div v-cloak>{{product.bpRate}}%</div>
                     <p>年化收益率</p>
                 </div>
                 <div class="plan-info">
-                    <div>{{product.bpPeriodsDisplay}}{{cycleType[product.bpCycleType]}}</div>
+                    <div v-cloak>{{product.bpPeriodsDisplay}}{{cycleType[product.bpCycleType]}}</div>
                     <p>项目期限</p>
                 </div>
                 <div class="plan-info text-right">
-                    <div>{{product.bpBidMoney}}</div>
+                    <div v-cloak>{{product.bpBidMoney}}</div>
                     <p>项目总额</p>
                 </div>
             </div>
@@ -48,15 +48,15 @@
                 <span class="plan-line">
                     <span :style="'width: '+product.progress+'%'" class="plan-bar plan-bar-info"></span>
                 </span>
-                <span class="num fl">{{product.progress}}%</span>
+                <span class="num fl" v-cloak>{{product.progress}}%</span>
             </div>
             <div class="plan-value clearfix">
-                <p>还款方式：<span>{{bpInterestPayTypeArr[product.bpInterestPayType]}}</span></p>
+                <p>还款方式：<span v-cloak>{{bpInterestPayTypeArr[product.bpInterestPayType]}}</span></p>
 
                 <p>计息时间：<span>满标日计息</span></p>
             </div>
             <div class="plan-value clearfix">
-                <p>开始时间：<span>{{product.bpStartTime}}</span></p>
+                <p>开始时间：<span v-cloak>{{product.bpStartTime}}</span></p>
 
                 <p>剩余期限：<span id="span1">0天0时0分0秒</span></p>
             </div>
@@ -68,9 +68,9 @@
         <div class="plan-investment fr">
             <form>
                 <input id="loginId" name="loginId" type="hidden" value="${_loginUser_header_.userId}">
-                <p class="plan-money">可投金额：<span>{{product.bpSurplusMoney}}元</span></p>
+                <p class="plan-money">可投金额：<span v-cloak>{{product.bpSurplusMoney}}元</span></p>
                 #if($_loginUser_header_.isLogin)
-                <p class="plan-money">可用金额：<span>{{statistics.balance}}元</span></p>
+                <p class="plan-money">可用金额：<span v-cloak>{{statistics.balance}}元</span></p>
                 #else
                 <!--<p class="plan-money">可用金额：<span>----元</span><span><a href="/account/login">登录</a>查看</span></p>-->
                 <div class="plan-money clearfix">
@@ -78,7 +78,7 @@
                     <a href="/account/login" class="fr" style="margin-top: 14px;">登录<span style="font-size: 16px;margin-left: 5px;">查看</span></a>
                 </div>
                 #end
-                <div class="plan-tip">{{product.bpStartMoney}}元起投，{{product.bpRiseMoney}}元递增，{{product.bpTopMoney}}元上限</div>
+                <div class="plan-tip" v-cloak>{{product.bpStartMoney}}元起投，{{product.bpRiseMoney}}元递增，{{product.bpTopMoney}}元上限</div>
                 <div class="spinner">
                     <input type="text" id="investMoney" name="investMoney" :placeholder="product.bpStartMoney+'元起投，'+product.bpRiseMoney+'元递增，'+product.bpTopMoney+'元上限'"
                            class="entry-num">
@@ -98,7 +98,7 @@
                     #end
                 </div>
                 <div v-if="product.bpStatus != 2">
-                    <a href="javascript:void(0);" class="plan-btn" >{{bpStatusArr[product.bpStatus]}}</a>
+                    <a href="javascript:void(0);" class="plan-btn">{{bpStatusArr[product.bpStatus]}}</a>
                 </div>
                 <div v-else>
                     <div v-if="flag">
@@ -169,7 +169,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr>
+                        <tr v-cloak>
                             <td>{{loanerInfo.lTrueName}}</td>
                             <td>{{sex[loanerInfo.lSex]}}</td>
                             <td>{{loanerInfo.lAge}}</td>

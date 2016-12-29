@@ -89,6 +89,16 @@ var vm = new Vue({
                                 message: '请选择文章类别'
                             }
                         }
+                    },
+                    number:{
+                        validators: {
+                            notEmpty: {
+                                message: '权重值不能为空'
+                            },
+                            numeric: {
+                                message: '权重值只能输入数字'
+                            }
+                        }
                     }
                 }
             });
