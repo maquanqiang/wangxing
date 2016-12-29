@@ -97,8 +97,6 @@ var vm = new Vue({
                             }
                         },
                         bankCardNo: {
-                            trigger:"blur",
-                            threshold:14,
                             validators: {
                                 notEmpty: {
                                     message: '请输入银行卡号'
@@ -106,7 +104,7 @@ var vm = new Vue({
                                 callback: {
                                     message: '请输入正确的储蓄卡号',
                                     callback: function(value, validator) {
-                                        return model.validBankCardNoArray.indexOf(value) > -1;
+                                        return true;
                                     }
                                 }
                             }
@@ -162,6 +160,10 @@ var vm = new Vue({
         },
         validateBankCard:function(){
             var bankCardNo = event.target.value.replace(/\s/g,'');
+            if (bankCardNo.length<16){
+                $("#defaultForm").data('bootstrapValidator').updateStatus("bankCardNo","INVALID","callback");
+                return false;
+            }
             jQuery.ajax({
                 url: "https://ccdcapi.alipay.com/validateAndCacheCardInfo.json",
                 dataType: "jsonp",
@@ -169,13 +171,16 @@ var vm = new Vue({
                 timeout: 10000,
                 data: '_input_charset=utf-8&cardNo=' + bankCardNo + '&cardBinCheck=true',
                 success: function(data){
+                    var isValid = false;
                     if (data.validated && data.cardType == 'DC'){ //cardType: DC储蓄卡, CC信用卡
                         model.validBankCardNoArray.push(bankCardNo);
-                        $("#defaultForm").data('bootstrapValidator').updateStatus("bankCardNo","VALID","callback");
+                        isValid=true;
                     }
+                    $("#defaultForm").data('bootstrapValidator').updateStatus("bankCardNo",isValid?"VALID":"INVALID","callback");
                 },
                 error: function(xhr, status, error){
-                    $("#defaultForm").data('bootstrapValidator').enableFieldValidators("bankCardNo",false);
+                    //$("#defaultForm").data('bootstrapValidator').enableFieldValidators("bankCardNo",false);
+                    $("#defaultForm").data('bootstrapValidator').updateStatus("bankCardNo","VALID","callback");
                 }
             });
         },
