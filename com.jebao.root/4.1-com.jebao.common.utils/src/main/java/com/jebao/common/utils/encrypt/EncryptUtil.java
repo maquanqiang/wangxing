@@ -25,10 +25,10 @@ public class EncryptUtil {
             // 得到一个md5的消息摘要
             MessageDigest alga = MessageDigest.getInstance("MD5");
             // 添加要进行计算摘要的信息
-            alga.update(info.getBytes());
+            alga.update(info.getBytes("UTF-8")); //添加 UTF-8 和老系统的密码对应上
             // 得到该摘要
             digesta = alga.digest();
-        } catch (NoSuchAlgorithmException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         // 将摘要转为字符串

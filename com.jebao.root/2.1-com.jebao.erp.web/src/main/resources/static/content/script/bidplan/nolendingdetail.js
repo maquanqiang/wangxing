@@ -137,7 +137,7 @@ var vm = new Vue({
             });
             $.post("/api/investInfo/createIncomeDetails",form,function(response){
                 if (response.success_is_ok){
-                    layer.msg(response.msg,5);
+                    layer.msg(response.msg);
                     $.get("/api/incomeDetail/repaymentList",model.searchObj,function(response) {
                         if (response.success_is_ok) {
                             vm.intentList = response.data;
@@ -190,7 +190,7 @@ var vm = new Vue({
                 $.post("/api/bidPlan/doLoan",form,function(response){
                     if(response.success_is_ok){
                         layer.closeAll('loading');
-                        layer.alert(response.msg, 5);
+                        layer.alert(response.msg);
                         window.location.href = "/postLoan/index";
                     }
                 })
@@ -217,13 +217,19 @@ var vm = new Vue({
                 form.bidNumber = vm.plan.bpNumber;
                 $.post("/contract/createDemo", form, function (response) {
                     if(response.success_is_ok){
-                        layer.msg(response.msg);
-                        //investInfoList
-                        $.get("/api/investInfo/list", {bpId : form.bpId}, function (response) {
-                            if (response.success_is_ok) {
-                                vm.investInfoList = response.data;
-                            }
-                        })
+                        //加载层-默认风格
+                        layer.load(1);
+                        setTimeout(function(){
+                            layer.closeAll('loading');
+                            layer.msg(response.msg);
+                            //investInfoList
+                            $.get("/api/investInfo/list", {bpId : form.bpId}, function (response) {
+                                if (response.success_is_ok) {
+                                    vm.investInfoList = response.data;
+                                }
+                            })
+                        }, 10000);
+
                     }else{
                         layer.msg(response.error);
                     }

@@ -94,7 +94,7 @@ var vm = new Vue({
                                 },
                                 bankCard:{
                                     message:'银行卡号输入错误'
-                                }
+                                },
                             }
                         },
                         payPassword: {
@@ -136,10 +136,25 @@ var vm = new Vue({
                         }
                     }, "json");
 
+                })
+                .on('success.field.bv',function(e,data){
+                    if (data.field == "bankCardNo" && data.result){
+                        vm.getBankCardInfo();
+                    }
                 });
         },
         submit: function () {
             $(model.formSelector).submit();//必须使用jquery的submit
+        },
+        getBankCardInfo:function(){
+            $.get("/api/userfund/getBankCardInfo?bankCard="+model.form.bankCardNo,function(response){
+                if (response.success_is_ok) {
+                    console.log(response.msg)
+                    var $div = $(response.msg);
+                    console.log($div)
+                }
+            });
+
         }
     }
 });
