@@ -1,7 +1,5 @@
 package com.jebao.common.utils;
 
-import com.jebao.common.utils.encrypt.EncryptUtil;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -12,10 +10,15 @@ import java.util.regex.Pattern;
  */
 public class MyTest1 {
     public static void main(String[] args){
-        String password = "123456";
-        String md5Pass =  new EncryptUtil().encryptToMD5(password);
-        System.out.println(md5Pass);
-        System.out.println(md5Pass.equalsIgnoreCase("e10adc3949ba59abbe56e057f20f883e"));
+//        String password = "abc123我";
+//        String md5Pass =  new EncryptUtil().encryptToMD5(password);
+//        System.out.println(md5Pass);
+//
+//        System.out.println(md5Pass.equalsIgnoreCase("40d137d0b87281e64e54c047a65ccd2d"));
+
+        //40d137d0b87281e64e54c047a65ccd2d
+
+        //e10adc3949ba59abbe56e057f20f883e
         String input = "<dl><dt><font class=\"con_sub_title\">归属信息：</font>北京 - 北京</dt></dl><dl><dt><font class=\"con_sub_title\">银行名称：</font>中国工商银行</dt></dl>\n" +
                 "        <dl>\n" +
                 "            <dt><font class=\"con_sub_title\">银行卡名：</font>牡丹卡普卡</dt>\n" +
@@ -39,7 +42,7 @@ public class MyTest1 {
 
         //<dl>[\s\S]+?</dl>
         //<dt><font class="con_sub_title">.*</font>[\s\S]+</dt>
-        Pattern pattern = Pattern.compile("(?<=<dt><font class=\"con_sub_title\">归属信息：</font>)[\\s\\S]+(?=</dt>)");
+        Pattern pattern = Pattern.compile("(?<=<dt><font class=\"con_sub_title\">)归属信息：(?<=</font>)[\\s\\S]+?(?=</dt>)");
 
         Matcher matcher = pattern.matcher(input);
 

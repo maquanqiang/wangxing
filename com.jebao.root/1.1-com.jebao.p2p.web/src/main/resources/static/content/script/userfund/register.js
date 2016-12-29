@@ -5,7 +5,8 @@ var model = {
     regions: [],
     cities:[],
     countries:[],
-    error: {hasError: false, message: "提交错误信息显示的地方"}
+    error: {hasError: false, message: "提交错误信息显示的地方"},
+    validBankCardNoArray:[] //校验正确的银行卡号缓存
 };
 var vm = new Vue({
     el: "#defaultForm",
@@ -88,13 +89,17 @@ var vm = new Vue({
                             }
                         },
                         bankCardNo: {
+                            trigger:"blur",
                             validators: {
                                 notEmpty: {
                                     message: '请输入银行卡号'
                                 },
-                                bankCard:{
-                                    message:'银行卡号输入错误'
-                                },
+                                callback: {
+                                    message: '请输入正确的储蓄卡号',
+                                    callback: function(value, validator) {
+                                        return model.validBankCardNoArray.indexOf(value) > -1;
+                                    }
+                                }
                             }
                         },
                         payPassword: {
@@ -146,12 +151,51 @@ var vm = new Vue({
         submit: function () {
             $(model.formSelector).submit();//必须使用jquery的submit
         },
+        validateBankCard:function(){
+            var bankCardNo = event.target.value;
+            jQuery.ajax({
+                url: "https://ccdcapi.alipay.com/validateAndCacheCardInfo.json",
+                dataType: "jsonp",
+                jsonp: "_callback",
+                timeout: 10000,
+                data: '_input_charset=utf-8&cardNo=' + bankCardNo + '&cardBinCheck=true',
+                success: function(data){
+                    if (data.validated && data.cardType == 'DC'){ //cardType: DC储蓄卡, CC信用卡
+                        model.validBankCardNoArray.push(bankCardNo);
+                        $("#defaultForm").data('bootstrapValidator').updateStatus("bankCardNo","VALID","callback");
+                    }
+                }
+            });
+        },
         getBankCardInfo:function(){
             $.get("/api/userfund/getBankCardInfo?bankCard="+model.form.bankCardNo,function(response){
+                console.log(response)
                 if (response.success_is_ok) {
-                    console.log(response.msg)
-                    var $div = $(response.msg);
-                    console.log($div)
+                    var bankInfo = response.data;
+                    //银行
+                    for (var i=0;i<model.banks.length;i++){
+                        if (model.banks[i].name.indexOf(bankInfo.bankName.trim())>-1){
+                            model.form.bankCode = model.banks[i].code;
+                            break;
+                        }
+                    }
+                    //省
+                    for (var i=0;i<model.regions.length;i++){
+                        var provinceItem = model.regions[i];
+                        if (provinceItem.name.indexOf(bankInfo.province.trim())>-1){
+                            model.form.bankProvinceCode = provinceItem.code;
+                            //城市
+                            for (var j=0;j<provinceItem.children.length;j++){
+                                var cityItem = provinceItem.children[j];
+                                if (cityItem.name.indexOf(bankInfo.city.trim())>-1){
+                                    model.form.bankCityCode = cityItem.code;
+                                    break;
+                                }
+                            }
+                            break;
+                        }
+                    }
+
                 }
             });
 

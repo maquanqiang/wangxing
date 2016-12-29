@@ -1,4 +1,4 @@
-package com.jebao.p2p.web.api.responseModel.data;
+package com.jebao.p2p.web.api.responseModel.datavm;
 
 import com.jebao.jebaodb.entity.base.TbBaseBankInfo;
 import com.jebao.p2p.web.api.responseModel.ViewModel;
