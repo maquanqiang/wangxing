@@ -98,6 +98,7 @@ var vm = new Vue({
                         },
                         bankCardNo: {
                             trigger:"blur",
+                            threshold:14,
                             validators: {
                                 notEmpty: {
                                     message: '请输入银行卡号'
@@ -172,6 +173,9 @@ var vm = new Vue({
                         model.validBankCardNoArray.push(bankCardNo);
                         $("#defaultForm").data('bootstrapValidator').updateStatus("bankCardNo","VALID","callback");
                     }
+                },
+                error: function(xhr, status, error){
+                    $("#defaultForm").data('bootstrapValidator').enableFieldValidators("bankCardNo",false);
                 }
             });
         },

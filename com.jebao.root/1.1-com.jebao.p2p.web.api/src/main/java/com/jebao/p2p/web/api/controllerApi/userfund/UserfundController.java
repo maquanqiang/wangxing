@@ -43,7 +43,7 @@ public class UserfundController extends _BaseController {
     @RequestMapping(value = "register",method = RequestMethod.POST)
     public JsonResult register(fundRegModel model){
         if (model!=null && model.getBankCardNo()!=null){
-            model.setBankCardNo(model.getBankCode().replaceAll("\\s",""));
+            model.setBankCardNo(model.getBankCardNo().replaceAll("\\s",""));
         }
         ValidationResult resultValidation = ValidationUtil.validateEntity(model);
         if (resultValidation.isHasErrors()) {
@@ -54,6 +54,7 @@ public class UserfundController extends _BaseController {
         }
         CurrentUser user = CurrentUserContextHolder.get();
         RegRequest reqData = model.toRequest();
+        reqData.setMobile_no(user.getName());
         ResultInfo resultInfo = userfundService.register(reqData,user.getId());
         if (!resultInfo.getSuccess_is_ok()){
             return new JsonResultError(resultInfo.getMsg());
