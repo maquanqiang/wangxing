@@ -306,7 +306,7 @@
         <if test="record.fdSerialNumber != null" >
             and fd_serial_number = #{record.fdSerialNumber}
         </if>
-        <if test="record.fdSerialTypeId != null and record.fdSerialTypeId = 12" >
+        <if test="record.fdSerialTypeId != null and record.fdSerialTypeId == 12" >
             and fd_serial_type_id in (1,2)
         </if>
     </sql>
