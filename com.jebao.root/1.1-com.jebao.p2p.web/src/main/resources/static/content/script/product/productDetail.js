@@ -188,7 +188,7 @@ var vm = new Vue({
                 $("#investMoney").focus();
                 return;
             }else{
-                var form = {bpId:$("#bpId").val(), investMoney:$("#investMoney").val().trim()}
+                var form = {bpId:$("#bpId").val(), investMoney:($("#investMoney").val())*1}
                 //投资弹出框
                 layer.open({
                     title:'投资提示',
