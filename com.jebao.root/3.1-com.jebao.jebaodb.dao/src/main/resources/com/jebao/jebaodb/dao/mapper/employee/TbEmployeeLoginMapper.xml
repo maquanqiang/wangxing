@@ -9,10 +9,11 @@
     <result column="lg_first_login_time" property="lgFirstLoginTime" jdbcType="TIMESTAMP" />
     <result column="lg_last_login_time" property="lgLastLoginTime" jdbcType="TIMESTAMP" />
     <result column="lg_status" property="lgStatus" jdbcType="INTEGER" />
+    <result column="lg_is_del" property="lgIsDel" jdbcType="BIT" />
   </resultMap>
   <sql id="Base_Column_List" >
     lg_id, lg_emp_id, lg_username, lg_password, lg_first_login_time, lg_last_login_time,
-    lg_status
+    lg_status, lg_is_del
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select
@@ -26,10 +27,10 @@
     </selectKey>
     insert into tb_employee_login (lg_emp_id, lg_username, lg_password,
     lg_first_login_time, lg_last_login_time,
-    lg_status)
+    lg_status, lg_is_del)
     values (#{lgEmpId,jdbcType=INTEGER}, #{lgUsername,jdbcType=VARCHAR}, #{lgPassword,jdbcType=VARCHAR},
     #{lgFirstLoginTime,jdbcType=TIMESTAMP}, #{lgLastLoginTime,jdbcType=TIMESTAMP},
-    #{lgStatus,jdbcType=INTEGER})
+    #{lgStatus,jdbcType=INTEGER}, #{lgIsDel,jdbcType=BIT})
   </insert>
   <insert id="insertSelective" parameterType="com.jebao.jebaodb.entity.employee.TbEmployeeLogin" >
     <selectKey resultType="java.lang.Integer" keyProperty="lgId" order="AFTER" >
@@ -55,6 +56,9 @@
       <if test="lgStatus != null" >
         lg_status,
       </if>
+      <if test="lgIsDel != null" >
+        lg_is_del,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="lgEmpId != null" >
@@ -74,6 +78,9 @@
       </if>
       <if test="lgStatus != null" >
         #{lgStatus,jdbcType=INTEGER},
+      </if>
+      <if test="lgIsDel != null" >
+        #{lgIsDel,jdbcType=BIT},
       </if>
     </trim>
   </insert>
@@ -98,6 +105,9 @@
       <if test="lgStatus != null" >
         lg_status = #{lgStatus,jdbcType=INTEGER},
       </if>
+      <if test="lgIsDel != null" >
+        lg_is_del = #{lgIsDel,jdbcType=BIT},
+      </if>
     </set>
     where lg_id = #{lgId,jdbcType=INTEGER}
   </update>
@@ -108,13 +118,14 @@
     lg_password = #{lgPassword,jdbcType=VARCHAR},
     lg_first_login_time = #{lgFirstLoginTime,jdbcType=TIMESTAMP},
     lg_last_login_time = #{lgLastLoginTime,jdbcType=TIMESTAMP},
-    lg_status = #{lgStatus,jdbcType=INTEGER}
+    lg_status = #{lgStatus,jdbcType=INTEGER},
+    lg_is_del = #{lgIsDel,jdbcType=BIT}
     where lg_id = #{lgId,jdbcType=INTEGER}
   </update>
 
   <!--==================================================华丽分割线==================================================-->
   <delete id="deleteEmployeeLogin" parameterType="integer">
-    DELETE FROM tb_employee_login WHERE lg_emp_id = #{lgEmpId,jdbcType=INTEGER}
+    UPDATE tb_employee_login SET lg_is_del=1 WHERE lg_emp_id = #{lgEmpId,jdbcType=INTEGER}
   </delete>
   <select id="selectByUsername" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select

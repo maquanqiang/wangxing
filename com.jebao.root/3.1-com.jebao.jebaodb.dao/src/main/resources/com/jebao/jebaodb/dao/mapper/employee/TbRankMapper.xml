@@ -6,12 +6,13 @@
     <result column="rank_name" property="rankName" jdbcType="VARCHAR" />
     <result column="rank_parent_id" property="rankParentId" jdbcType="INTEGER" />
     <result column="rank_brokerage_percent" property="rankBrokeragePercent" jdbcType="DECIMAL" />
+    <result column="rank_is_del" property="rankIsDel" jdbcType="BIT" />
   </resultMap>
   <sql id="Base_Column_List" >
-    rank_id, rank_name, rank_parent_id, rank_brokerage_percent
+    rank_id, rank_name, rank_parent_id, rank_brokerage_percent, rank_is_del
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select 
+    select
     <include refid="Base_Column_List" />
     from tb_rank
     where rank_id = #{rankId,jdbcType=INTEGER}
@@ -20,10 +21,10 @@
     <selectKey resultType="java.lang.Integer" keyProperty="rankId" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_rank (rank_name, rank_parent_id, rank_brokerage_percent
-      )
-    values (#{rankName,jdbcType=VARCHAR}, #{rankParentId,jdbcType=INTEGER}, #{rankBrokeragePercent,jdbcType=DECIMAL}
-      )
+    insert into tb_rank (rank_name, rank_parent_id, rank_brokerage_percent,
+    rank_is_del)
+    values (#{rankName,jdbcType=VARCHAR}, #{rankParentId,jdbcType=INTEGER}, #{rankBrokeragePercent,jdbcType=DECIMAL},
+    #{rankIsDel,jdbcType=BIT})
   </insert>
   <insert id="insertSelective" parameterType="com.jebao.jebaodb.entity.employee.TbRank" >
     <selectKey resultType="java.lang.Integer" keyProperty="rankId" order="AFTER" >
@@ -40,6 +41,9 @@
       <if test="rankBrokeragePercent != null" >
         rank_brokerage_percent,
       </if>
+      <if test="rankIsDel != null" >
+        rank_is_del,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="rankName != null" >
@@ -50,6 +54,9 @@
       </if>
       <if test="rankBrokeragePercent != null" >
         #{rankBrokeragePercent,jdbcType=DECIMAL},
+      </if>
+      <if test="rankIsDel != null" >
+        #{rankIsDel,jdbcType=BIT},
       </if>
     </trim>
   </insert>
@@ -65,14 +72,18 @@
       <if test="rankBrokeragePercent != null" >
         rank_brokerage_percent = #{rankBrokeragePercent,jdbcType=DECIMAL},
       </if>
+      <if test="rankIsDel != null" >
+        rank_is_del = #{rankIsDel,jdbcType=BIT},
+      </if>
     </set>
     where rank_id = #{rankId,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.jebao.jebaodb.entity.employee.TbRank" >
     update tb_rank
     set rank_name = #{rankName,jdbcType=VARCHAR},
-      rank_parent_id = #{rankParentId,jdbcType=INTEGER},
-      rank_brokerage_percent = #{rankBrokeragePercent,jdbcType=DECIMAL}
+    rank_parent_id = #{rankParentId,jdbcType=INTEGER},
+    rank_brokerage_percent = #{rankBrokeragePercent,jdbcType=DECIMAL},
+    rank_is_del = #{rankIsDel,jdbcType=BIT}
     where rank_id = #{rankId,jdbcType=INTEGER}
   </update>
 
@@ -104,7 +115,7 @@
 
   </sql>
   <delete id="delete" parameterType="integer">
-    DELETE FROM tb_rank where rank_id = #{value,jdbcType=INTEGER}
+    UPDATE tb_rank SET rank_is_del=1 where rank_id = #{value,jdbcType=INTEGER}
   </delete>
 
 </mapper>

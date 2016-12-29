@@ -241,5 +241,34 @@
 
     </sql>
 
+    <resultMap id="EmpPerformanceInfoResult" type="com.jebao.jebaodb.entity.employee.EmpPerformanceInfo">
+        <id column="ii_id" property="orderId" jdbcType="BIGINT"/>
+        <result column="ii_money" property="orderMoney" jdbcType="DECIMAL"/>
+        <result column="ii_create_time" property="orderCreateTime" jdbcType="DATE"/>
+        <result column="ii_bp_id" property="productId" jdbcType="INTEGER"/>
+        <result column="ii_bp_name" property="productName" jdbcType="VARCHAR"/>
+        <result column="ud_true_name" property="trueName" jdbcType="VARCHAR"/>
+        <result column="ud_phone" property="mobilePhone" jdbcType="VARCHAR"/>
+        <result column="emp_id" property="empId" jdbcType="INTEGER"/>
+        <result column="emp_name" property="empName" jdbcType="VARCHAR"/>
+        <result column="dep_id" property="depId" jdbcType="INTEGER"/>
+        <result column="dep_name" property="depName" jdbcType="VARCHAR"/>
+        <result column="dep_parent_id" property="depParentId" jdbcType="INTEGER"/>
+        <result column="dep_is_department" property="depIsDepartment" jdbcType="BIT"/>
+        <result column="rank_id" property="rankId" jdbcType="INTEGER"/>
+        <result column="rank_name" property="rankName" jdbcType="VARCHAR"/>
+        <result column="rank_parent_id" property="rankParentId" jdbcType="INTEGER"/>
+        <result column="rank_brokerage_percent" property="rankBrokeragePercent" jdbcType="DECIMAL"/>
+    </resultMap>
+
+    <select id="selectEmpPerformance" resultMap="EmpPerformanceInfoResult" parameterType="com.jebao.jebaodb.entity.employee.search.EmployeeSM">
+        SELECT invest.ii_id,invest.ii_money,invest.ii_create_time,invest.ii_bp_id,invest.ii_bp_name,ud.ud_true_name,ud.ud_phone,
+        emp.emp_id,emp.emp_name,emp.dep_id,emp.dep_name,emp.dep_parent_id,emp.dep_is_department,emp.rank_id,emp.rank_name,emp.rank_parent_id,emp.rank_brokerage_percent
+        FROM tb_invest_info invest
+        INNER JOIN tb_user_details ud ON ud.ud_login_id = invest.ii_login_id
+        INNER JOIN v_employee emp ON emp.emp_id = ud.ud_customer_manager_id
+        WHERE ud.ud_customer_manager_id > 0
+    </select>
+
 
 </mapper>
