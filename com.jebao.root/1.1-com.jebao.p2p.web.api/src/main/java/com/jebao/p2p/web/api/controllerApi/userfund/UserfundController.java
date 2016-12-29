@@ -42,6 +42,9 @@ public class UserfundController extends _BaseController {
 
     @RequestMapping(value = "register",method = RequestMethod.POST)
     public JsonResult register(fundRegModel model){
+        if (model!=null && model.getBankCardNo()!=null){
+            model.setBankCardNo(model.getBankCardNo().replaceAll("\\s",""));
+        }
         ValidationResult resultValidation = ValidationUtil.validateEntity(model);
         if (resultValidation.isHasErrors()) {
             return new JsonResultError(resultValidation.toString());
@@ -51,6 +54,7 @@ public class UserfundController extends _BaseController {
         }
         CurrentUser user = CurrentUserContextHolder.get();
         RegRequest reqData = model.toRequest();
+        reqData.setMobile_no(user.getName());
         ResultInfo resultInfo = userfundService.register(reqData,user.getId());
         if (!resultInfo.getSuccess_is_ok()){
             return new JsonResultError(resultInfo.getMsg());
@@ -58,8 +62,8 @@ public class UserfundController extends _BaseController {
         return new JsonResultOk(resultInfo.getMsg());
     }
     @RequestMapping("getBankCardInfo")
-    public JsonResult getBankCardInfo(String bankCard){
-        String url = "http://www.cardcn.com/search.php?word="+bankCard;
+    public JsonResult getBankCardInfo(String bankCardNo){
+        String url = "http://www.cardcn.com/search.php?word="+bankCardNo;
         String responseString = new HttpUtil().sendHttpGet(url);
         if (responseString!=null && responseString.length()>0){
             String htmlDiv = RegexUtil.getFirstMatch(responseString, "<div class=\"listpage_content\">[\\s\\S]+</div>");
@@ -84,7 +88,7 @@ public class UserfundController extends _BaseController {
                     String bankName = dlList.size() > 2 ? RegexUtil.getFirstMatch(dlList.get(2),dtRegex).trim():"";
 
                     BankCardVM model = new BankCardVM();
-                    model.setBankCardNo(bankCard);
+                    model.setBankCardNo(bankCardNo);
                     model.setBankName(bankName);
                     model.setProvince(province);
                     model.setCity(city);

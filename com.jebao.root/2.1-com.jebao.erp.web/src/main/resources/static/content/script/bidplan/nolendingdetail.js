@@ -173,8 +173,6 @@ var vm = new Vue({
                 layer.alert("请先制作合同");
                 return false;
             }else{
-                //加载层-风格2
-                layer.load(1);
                 vm.myInitValidateForm($('#defaultForm'));
                 var bootstrapValidator = $("#defaultForm").data('bootstrapValidator').validate();
                 if (!bootstrapValidator.isValid()) {
@@ -185,13 +183,17 @@ var vm = new Vue({
                     layer.alert("放款金额为0");
                     return false;
                 }
-
+                //加载层-风格2
+                layer.load(1);
                 var form = $("#defaultForm").serializeObject();
                 $.post("/api/bidPlan/doLoan",form,function(response){
                     if(response.success_is_ok){
                         layer.closeAll('loading');
                         layer.alert(response.msg);
                         window.location.href = "/postLoan/index";
+                    }else{
+                        layer.closeAll();
+                        layer.alert(response.error);
                     }
                 })
             }
@@ -213,6 +215,10 @@ var vm = new Vue({
         },
         createContract:function() {
             if (vm.investInfoList.length > 0) {
+                if(vm.intentList.length == 0){
+                    layer.alert("请先生成还款明细");
+                    return false;
+                }
                 var form = $("#defaultForm").serializeObject();
                 form.bidNumber = vm.plan.bpNumber;
                 $.post("/contract/createDemo", form, function (response) {

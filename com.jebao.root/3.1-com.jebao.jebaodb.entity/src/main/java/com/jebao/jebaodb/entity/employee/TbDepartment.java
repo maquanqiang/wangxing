@@ -9,6 +9,8 @@ public class TbDepartment {
 
     private Boolean depIsDepartment;
 
+    private Boolean depIsDel;
+
     public Integer getDepId() {
         return depId;
     }
@@ -39,5 +41,13 @@ public class TbDepartment {
 
     public void setDepIsDepartment(Boolean depIsDepartment) {
         this.depIsDepartment = depIsDepartment;
+    }
+
+    public Boolean getDepIsDel() {
+        return depIsDel;
+    }
+
+    public void setDepIsDel(Boolean depIsDel) {
+        this.depIsDel = depIsDel;
     }
 }

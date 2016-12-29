@@ -17,6 +17,8 @@ public class TbEmployeeLogin {
 
     private Integer lgStatus;
 
+    private Boolean lgIsDel;
+
     public Integer getLgId() {
         return lgId;
     }
@@ -71,5 +73,13 @@ public class TbEmployeeLogin {
 
     public void setLgStatus(Integer lgStatus) {
         this.lgStatus = lgStatus;
+    }
+
+    public Boolean getLgIsDel() {
+        return lgIsDel;
+    }
+
+    public void setLgIsDel(Boolean lgIsDel) {
+        this.lgIsDel = lgIsDel;
     }
 }

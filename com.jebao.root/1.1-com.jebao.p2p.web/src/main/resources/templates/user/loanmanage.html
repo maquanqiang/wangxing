@@ -77,7 +77,7 @@
                         <tbody v-show="isHasDatei">
                         <tr v-for="data in paymentIngs">
                             <td>
-                                <a :href="'/product/detail/'+data.bpId">{{data.bpName}}</a>
+                                <a :href="'/product/detail/'+data.bpId">{{data.bpName}}({{data.bpNumber}})</a>
                             </td>
                             <td>{{data.bpPeriod}}</td>
                             <td>{{data.nextRepayTime}}</td>
@@ -117,7 +117,7 @@
                         <tbody v-show="isHasDated">
                         <tr v-for="data in paymented">
                             <td>
-                                <a :href="'/product/detail/'+data.bpId">{{data.bpName}}</a>
+                                <a :href="'/product/detail/'+data.bpId">{{data.bpName}}({{data.bpNumber}})</a>
                             </td>
                             <td>{{data.bpLoanMoney}}</td>
                             <td>{{data.bpStartTime}}</td>

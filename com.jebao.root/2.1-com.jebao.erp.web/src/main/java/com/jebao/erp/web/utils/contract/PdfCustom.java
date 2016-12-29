@@ -52,7 +52,7 @@ public class PdfCustom {
                     if(result!=null&&result.trim().equals("[OK]")){
                         System.out.println("PDF合同生成-成功");
                         //合同的下载地址
-                        String fileDownloadUrl=FILE_UPLOAD_SERVICE_URL+"/"+pdfInfo.getFileName();
+                        String fileDownloadUrl=FILE_UPLOAD_SERVICE_URL+"/contractFiles/pdfFile/"+pdfInfo.getFileName();
                         System.out.println(fileDownloadUrl);
                         //todo 将合同地址更新到数据库相应的字段
                         TbInvestInfo tbInvestInfo = new TbInvestInfo();

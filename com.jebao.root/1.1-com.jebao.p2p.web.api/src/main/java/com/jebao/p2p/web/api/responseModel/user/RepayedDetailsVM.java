@@ -24,7 +24,7 @@ public class RepayedDetailsVM extends ViewModel {
         this.contractUrl = entity.getContractUrl();
         this.bpLoanMoney = entity.getBpLoanMoney();
         this.cycleType = entity.getCycleType();
-
+        this.bpNumber = entity.getIndBpNumber();
     }
 
     private Long bpId;
@@ -40,6 +40,15 @@ public class RepayedDetailsVM extends ViewModel {
     private String contractUrl;
     private BigDecimal bpLoanMoney;
     private Integer cycleType;
+    private String bpNumber;
+
+    public String getBpNumber() {
+        return bpNumber;
+    }
+
+    public void setBpNumber(String bpNumber) {
+        this.bpNumber = bpNumber;
+    }
 
     public BigDecimal getBpLoanMoney() {
         return bpLoanMoney;

@@ -563,7 +563,8 @@
         info.ii_contract_url,
         detail.ind_fact_date_time,
         plan.bp_loan_money,
-        plan.bp_cycle_type
+        plan.bp_cycle_type,
+        detail.ind_bp_number
         FROM
         tb_income_detail detail
         LEFT JOIN tb_invest_info info ON detail.ind_ii_id = info.ii_id

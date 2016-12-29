@@ -57,7 +57,6 @@ public class LoanManageServiceImpl implements ILoanManageServiceInf {
     public ResultInfo repay(Long bpId, Long loginId, Integer period, BigDecimal repayMoney) {
 
         ResultInfo resultInfo = new ResultInfo(false, "还款失败");
-        boolean flag = true;
         //查看用户本地余额
         TbAccountsFunds accountsFunds = accountsFundsDao.selectByLoginId(loginId);
         if(accountsFunds.getAfBalance().compareTo(repayMoney)==-1){
@@ -86,28 +85,6 @@ public class LoanManageServiceImpl implements ILoanManageServiceInf {
             for (TbIncomeDetail detail : incomeDetails){
                 String amt = detail.getIndMoney().multiply(new BigDecimal(100)).setScale(0).toString();
                 TransferBuRequest request = new TransferBuRequest();
-
-                //添加出账流水记录
-                TbFundsDetails outFundsDetails = new TbFundsDetails();
-                outFundsDetails.setFdLoginId(loginId);
-                outFundsDetails.setFdThirdAccount(accountsFunds.getAfThirdAccount());
-                outFundsDetails.setFdSerialNumber(request.getMchnt_txn_ssn());
-                outFundsDetails.setFdSerialTypeId(detail.getIndFundType()==1?5:6);            //3投资冻结 4 借款入账  5本金还款  6付息
-                outFundsDetails.setFdSerialTypeName(detail.getIndFundType()==1?"本金还款":"付息");
-                outFundsDetails.setFdSerialAmount(detail.getIndMoney());
-                outFundsDetails.setFdBalanceBefore(accountsFunds.getAfBalance());
-                outFundsDetails.setFdBalanceAfter(accountsFunds.getAfBalance().subtract(detail.getIndMoney()));
-                outFundsDetails.setFdCommissionCharge(BigDecimal.ZERO);
-                outFundsDetails.setFdBpId(bpId);
-                outFundsDetails.setFdBpName(plan.getBpName());
-                outFundsDetails.setFdCreateTime(new Date());
-                outFundsDetails.setFdSerialTime(new Date());
-                outFundsDetails.setFdBalanceStatus(2);           //支出
-                outFundsDetails.setFdSerialStatus(0);
-                outFundsDetails.setFdIsDel(1);
-                fundsDetailsDao.insert(outFundsDetails);
-
-
 
                 request.setAmt(amt);
                 request.setRem("repay");
@@ -140,10 +117,25 @@ public class LoanManageServiceImpl implements ILoanManageServiceInf {
                         updateDetail.setIndId(detail.getIndId());
                         tbIncomeDetailDao.updateByPrimaryKeySelective(updateDetail);
 
-
-                        //更新出账流水记录
+                        //添加出账流水记录
+                        TbFundsDetails outFundsDetails = new TbFundsDetails();
+                        outFundsDetails.setFdLoginId(loginId);
+                        outFundsDetails.setFdThirdAccount(accountsFunds.getAfThirdAccount());
+                        outFundsDetails.setFdSerialNumber(request.getMchnt_txn_ssn());
+                        outFundsDetails.setFdSerialTypeId(detail.getIndFundType()==1?5:6);            //3投资冻结 4 借款入账  5本金还款  6付息
+                        outFundsDetails.setFdSerialTypeName(detail.getIndFundType()==1?"本金还款":"付息");
+                        outFundsDetails.setFdSerialAmount(detail.getIndMoney());
+                        outFundsDetails.setFdBalanceBefore(accountsFunds.getAfBalance());
+                        outFundsDetails.setFdBalanceAfter(accountsFunds.getAfBalance().subtract(detail.getIndMoney()));
+                        outFundsDetails.setFdCommissionCharge(BigDecimal.ZERO);
+                        outFundsDetails.setFdBpId(bpId);
+                        outFundsDetails.setFdBpName(plan.getBpName());
+                        outFundsDetails.setFdCreateTime(new Date());
+                        outFundsDetails.setFdSerialTime(new Date());
+                        outFundsDetails.setFdBalanceStatus(2);           //支出
                         outFundsDetails.setFdSerialStatus(1);
-                        fundsDetailsDao.updateByPrimaryKeySelective(outFundsDetails);
+                        outFundsDetails.setFdIsDel(1);
+                        fundsDetailsDao.insert(outFundsDetails);
 
                         accountsFunds.setAfUpdateTime(new Date());
                         accountsFunds.setAfBalance(accountsFunds.getAfBalance().subtract(detail.getIndMoney()));
@@ -175,18 +167,14 @@ public class LoanManageServiceImpl implements ILoanManageServiceInf {
                         inAccount.setAfUpdateTime(new Date());
                         inAccount.setAfBalance(inAccount.getAfBalance().add(detail.getIndMoney()));
                         accountsFundsDao.updateByPrimaryKeySelective(inAccount);
+                        resultInfo.setSuccess_is_ok(true);
                     }else{
-                        flag = false;
-                        //更改出账流水记录
-                        outFundsDetails.setFdSerialStatus(-1);
-                        fundsDetailsDao.updateByPrimaryKeySelective(outFundsDetails);
                         if(LOGGER.isDebugEnabled()){
                             LOGGER.debug("还款失败，当前还款记录ID：{}, 第三方返回码：{}",detail.getIndId(), response.getPlain().getResp_code());
                         }
 
                     }
                 } catch (Exception e) {
-                    flag = false;
                     if(LOGGER.isErrorEnabled()){
                         LOGGER.error("还款失败，当前还款记录ID：{}",detail.getIndId());
                     }
@@ -195,11 +183,15 @@ public class LoanManageServiceImpl implements ILoanManageServiceInf {
             }
         }
         //成功返回true 修改标的信息
-        if(flag){
+        if(resultInfo.getSuccess_is_ok()){
 
             plan.setBpUpdateTime(new Date());
-            if(period == plan.getBpPeriods()){      //说明已到最后一期  修改标的为完成
+            if(plan.getBpInterestPayType()==1){
                 plan.setBpStatus(10);
+            }else if(plan.getBpInterestPayType()==2){      //说明已到最后一期  修改标的为完成
+                if(period == plan.getBpPeriods()){
+                    plan.setBpStatus(10);
+                }
             }
             plan.setBpRepayedPeriods(period);
 
@@ -215,14 +207,16 @@ public class LoanManageServiceImpl implements ILoanManageServiceInf {
                 for(TbInvestInfo info : tbInvestInfos){
                     info.setIiBpRepayedPeriods(period);
                     info.setIiUpdateTime(new Date());
-                    if(period == plan.getBpPeriods()){
+                    if(plan.getBpInterestPayType()==1){
                         info.setIiFreezeStatus(TbInvestInfo.STATUS_COMPLETE);
+                    }else if(plan.getBpInterestPayType()==2){      //说明已到最后一期  修改标的为完成
+                        if(period == plan.getBpPeriods()){
+                            info.setIiFreezeStatus(TbInvestInfo.STATUS_COMPLETE);
+                        }
                     }
                     investInfoDao.updateByPrimaryKeySelective(info);
                 }
             }
-            resultInfo.setMsg("还款成功");
-            resultInfo.setSuccess_is_ok(true);
             //TODO 借款人还款明细 作废
 //            TbLoanerRepaymentDetail tbLoanerRepaymentDetail = new TbLoanerRepaymentDetail();
 //            tbLoanerRepaymentDetail.setLrdFactDateTime(new Date());

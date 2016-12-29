@@ -6,9 +6,10 @@
     <result column="dep_name" property="depName" jdbcType="VARCHAR" />
     <result column="dep_parent_id" property="depParentId" jdbcType="INTEGER" />
     <result column="dep_is_department" property="depIsDepartment" jdbcType="BIT" />
+    <result column="dep_is_del" property="depIsDel" jdbcType="BIT" />
   </resultMap>
   <sql id="Base_Column_List" >
-    dep_id, dep_name, dep_parent_id, dep_is_department
+    dep_id, dep_name, dep_parent_id, dep_is_department, dep_is_del
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select
@@ -20,10 +21,10 @@
     <selectKey resultType="java.lang.Integer" keyProperty="depId" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_department (dep_name, dep_parent_id, dep_is_department
-    )
-    values (#{depName,jdbcType=VARCHAR}, #{depParentId,jdbcType=INTEGER}, #{depIsDepartment,jdbcType=BIT}
-    )
+    insert into tb_department (dep_name, dep_parent_id, dep_is_department,
+    dep_is_del)
+    values (#{depName,jdbcType=VARCHAR}, #{depParentId,jdbcType=INTEGER}, #{depIsDepartment,jdbcType=BIT},
+    #{depIsDel,jdbcType=BIT})
   </insert>
   <insert id="insertSelective" parameterType="com.jebao.jebaodb.entity.employee.TbDepartment" >
     <selectKey resultType="java.lang.Integer" keyProperty="depId" order="AFTER" >
@@ -40,6 +41,9 @@
       <if test="depIsDepartment != null" >
         dep_is_department,
       </if>
+      <if test="depIsDel != null" >
+        dep_is_del,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="depName != null" >
@@ -50,6 +54,9 @@
       </if>
       <if test="depIsDepartment != null" >
         #{depIsDepartment,jdbcType=BIT},
+      </if>
+      <if test="depIsDel != null" >
+        #{depIsDel,jdbcType=BIT},
       </if>
     </trim>
   </insert>
@@ -65,6 +72,9 @@
       <if test="depIsDepartment != null" >
         dep_is_department = #{depIsDepartment,jdbcType=BIT},
       </if>
+      <if test="depIsDel != null" >
+        dep_is_del = #{depIsDel,jdbcType=BIT},
+      </if>
     </set>
     where dep_id = #{depId,jdbcType=INTEGER}
   </update>
@@ -72,7 +82,8 @@
     update tb_department
     set dep_name = #{depName,jdbcType=VARCHAR},
     dep_parent_id = #{depParentId,jdbcType=INTEGER},
-    dep_is_department = #{depIsDepartment,jdbcType=BIT}
+    dep_is_department = #{depIsDepartment,jdbcType=BIT},
+    dep_is_del = #{depIsDel,jdbcType=BIT}
     where dep_id = #{depId,jdbcType=INTEGER}
   </update>
 
@@ -109,7 +120,7 @@
   </sql>
   
   <delete id="delete" parameterType="integer">
-    DELETE FROM tb_department where dep_id = #{value,jdbcType=INTEGER}
+    UPDATE tb_department SET dep_is_del=1 where dep_id = #{value,jdbcType=INTEGER}
   </delete>
 
 </mapper>

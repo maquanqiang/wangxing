@@ -67,6 +67,9 @@
         <!--项目头部右侧-->
         <div class="plan-investment fr">
             <form>
+                <div class="increase-icon" v-if="product.bpType==3">
+                    加息卡编号：{{product.bpUpRate}}
+                </div>
                 <input id="loginId" name="loginId" type="hidden" value="${_loginUser_header_.userId}">
                 <p class="plan-money">可投金额：<span v-cloak>{{product.bpSurplusMoney}}元</span></p>
                 #if($_loginUser_header_.isLogin)
@@ -74,8 +77,7 @@
                 #else
                 <!--<p class="plan-money">可用金额：<span>----元</span><span><a href="/account/login">登录</a>查看</span></p>-->
                 <div class="plan-money clearfix">
-                    <P class="fl">可用金额：<span>----元</span></P>
-                    <a href="/account/login" class="fr" style="margin-top: 14px;">登录<span style="font-size: 16px;margin-left: 5px;">查看</span></a>
+                    <P class="fl">可用金额：<span><a href="/account/login" style="color: #FFAD30" class="fr">登录查看</a></span></P>
                 </div>
                 #end
                 <div class="plan-tip" v-cloak>{{product.bpStartMoney}}元起投，{{product.bpRiseMoney}}元递增，{{product.bpTopMoney}}元上限</div>

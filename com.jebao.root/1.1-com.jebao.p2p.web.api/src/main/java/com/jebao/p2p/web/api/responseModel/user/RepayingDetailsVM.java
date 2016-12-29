@@ -20,7 +20,7 @@ public class RepayingDetailsVM extends ViewModel {
         this.nextRepayTime = entity.getIndDateTime();
         this.repayMoney = entity.getIndMoney();
         this.dueMoney = entity.getIndOverdueMoney();
-
+        this.bpNumber = entity.getIndBpNumber();
     }
 
     private Long bpId;
@@ -30,6 +30,15 @@ public class RepayingDetailsVM extends ViewModel {
     private Date nextRepayTime;
     private BigDecimal repayMoney;
     private BigDecimal dueMoney;
+    private String bpNumber;
+
+    public String getBpNumber() {
+        return bpNumber;
+    }
+
+    public void setBpNumber(String bpNumber) {
+        this.bpNumber = bpNumber;
+    }
 
     public Long getBpId() {
         return bpId;
