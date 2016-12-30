@@ -47,6 +47,7 @@ public class ArticleControllerApi extends _BaseController {
         entity.setaId(model.getId());
         entity.setaContent(model.getContent());
         entity.setaEditDate(model.getEditDate());
+        entity.setaEditUser(model.getEditUser());
         entity.setaTitle(model.getTitle());
         entity.setaTypeId(model.getTypeId());
         entity.setaCreateUserId(user.getId());

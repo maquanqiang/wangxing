@@ -74,6 +74,14 @@ var vm = new Vue({
                             }
                         }
                     },
+                    editUser: {
+                        message: '编辑人验证失败',
+                        validators: {
+                            notEmpty: {
+                                message: '编辑人不能为空'
+                            }
+                        }
+                    },
                     content: {
                         message: '文章内容验证失败',
                         validators: {
@@ -90,7 +98,7 @@ var vm = new Vue({
                             }
                         }
                     },
-                    number:{
+                    weight:{
                         validators: {
                             notEmpty: {
                                 message: '权重值不能为空'
@@ -110,11 +118,10 @@ var vm = new Vue({
             }
             $("#btn-save").addClass("btn disabled");
             layer.load(2);
-           // console.log("post111");
+
             var submitModel = $("#order_search_form").serializeObject();
-           // console.log(submitModel);
+
             $.post("/api/article/post",submitModel,function(response){
-            //    console.log("post2222");
                 if (response.success_is_ok){
                     layer.msg(response.msg);
                     console.log(response.msg);

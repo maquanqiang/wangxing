@@ -15,6 +15,7 @@ public class ArticleVM extends ViewModel {
         this.typeId = entity.getaTypeId();
         this.title = entity.getaTitle();
         this.editDate = entity.getaEditDate();
+        this.editUser = entity.getaEditUser();
         this.content = entity.getaContent();
         this.weight = entity.getaWeight();
     }
@@ -27,6 +28,8 @@ public class ArticleVM extends ViewModel {
 
     @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd")
     private Date editDate;
+
+    private String editUser;
 
     private String content;
 
@@ -63,6 +66,14 @@ public class ArticleVM extends ViewModel {
 
     public void setEditDate(Date editDate) {
         this.editDate = editDate;
+    }
+
+    public String getEditUser() {
+        return editUser;
+    }
+
+    public void setEditUser(String editUser) {
+        this.editUser = editUser;
     }
 
     public String getContent() {
