@@ -1,8 +1,9 @@
 package com.jebao.common.cache.redis.sharded;
 
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -44,6 +45,22 @@ public class ShardedRedisUtil_UnitTest {
         ObjClass obj=new ObjClass();
         obj.setName("2016-objClass");
         String resultObj= redisUtil.setex("ShardedRedisUtilUnitTest_objClass", 60,obj);
+        assertThat(result).isEqualTo("OK");
+    }
+    @Test
+    public void setListExample(){
+        List<ObjClass> list = new ArrayList<>();
+        ObjClass obj_a = new ObjClass();
+        obj_a.setName("王伟");
+        ObjClass obj_b = new ObjClass();
+        obj_b.setName("王晓");
+        list.add(obj_a);
+        list.add(obj_b);
+        ShardedRedisUtil redisUtil = ShardedRedisUtil.getInstance();
+        String key = "20161230user";
+        String result=redisUtil.set(key,list);
+        redisUtil.expire(key,60);
+        List<ObjClass> getList = redisUtil.getList(key,ObjClass.class);
         assertThat(result).isEqualTo("OK");
     }
 }
