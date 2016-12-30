@@ -25,6 +25,9 @@ public class ArticleIM extends _BaseForm {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date editDate;
 
+    @NotBlank(message="编辑人不能为空")
+    private String editUser;
+
     @NotBlank(message="文章内容不能为空")
     private String content;
 
@@ -79,5 +82,13 @@ public class ArticleIM extends _BaseForm {
 
     public void setWeight(Integer weight) {
         this.weight = weight;
+    }
+
+    public String getEditUser() {
+        return editUser;
+    }
+
+    public void setEditUser(String editUser) {
+        this.editUser = editUser;
     }
 }
