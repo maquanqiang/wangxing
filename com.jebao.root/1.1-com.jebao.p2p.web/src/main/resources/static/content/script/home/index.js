@@ -107,15 +107,6 @@ var vm = new Vue({
             //同步账户金额
             $.get("/api/user/syncUserBalance");
             window.location.href = "/product/detail/" + id;
-        },
-        getArticle:function(typeId,count){
-            var dataVal = {"typeId":typeId,"pageIndex":0,"pageSize":count};
-            $.get("/api/article/list", dataVal, function (response) {
-                if (response.success_is_ok) {
-                    var data = response.data;
-                    vm.articles = data;
-                }
-            });
         }
     }
 });
@@ -125,49 +116,31 @@ var aVm = new Vue({
     data: {
         articles: []
     },
-    beforeCreate: function () {
-    },
     //初始化远程数据
     created: function () {
-        this.getArticle(1,3);//公司动态
-    },
-    //方法，可用于绑定事件或直接调用
-    methods: {
-        getArticle:function(typeId,count){
-            var dataVal = {"typeId":typeId,"pageIndex":0,"pageSize":count};
-            $.get("/api/article/list", dataVal, function (response) {
-                if (response.success_is_ok) {
-                    var data = response.data;
-                    aVm.articles = data;
-                }
-            });
-        }
+        var dataVal = {"typeId":1,"pageIndex":0,"pageSize":1};
+        $.get("/api/article/list", dataVal, function (response) {
+            if (response.success_is_ok) {
+                var data = response.data;
+                aVm.articles = data;
+            }
+        });
     }
 });
 
 var mVm = new Vue({
     el: ".media",
     data: {},
-    beforeCreate: function () {
-    },
     //初始化远程数据
     created: function () {
-        this.getArticle(3,3);
-    },
-    //方法，可用于绑定事件或直接调用
-    methods: {
-        getArticle:function(typeId,count){
-            var dataVal = {"typeId":typeId,"pageIndex":0,"pageSize":count};
-            $.get("/api/article/index", dataVal, function (response) {
-                if (response.success_is_ok) {
-                    var data = response.data;
-                   // console.log(data);
-                   // $("#mn_0").html(mVm.mediaNews[0].content);
-                    for(var i=0;i<data.length;i++){
-                        $(".media ul").append("<li><a href='/html/mediaNews/details/"+data[i].id+"'>"+data[i].content+"</a></li>");
-                    }
+        var dataVal = {"typeId":3,"pageIndex":0,"pageSize":3};
+        $.get("/api/article/index", dataVal, function (response) {
+            if (response.success_is_ok) {
+                var data = response.data;
+                for(var i=0;i<data.length;i++){
+                    $(".media ul").append("<li><a href='/html/mediaNews/details/"+data[i].id+"'>"+data[i].content+"</a></li>");
                 }
-            });
-        }
+            }
+        });
     }
 });
