@@ -24,12 +24,13 @@
         <result column="ind_update_time" property="indUpdateTime" jdbcType="TIMESTAMP"/>
         <result column="ind_is_del" property="indIsDel" jdbcType="INTEGER"/>
         <result column="ind_bp_id" property="indBpId" jdbcType="BIGINT"/>
+        <result column="incomeDetailMD5" property="incomeDetailMD5" jdbcType="VARCHAR"/>
     </resultMap>
     <sql id="Base_Column_List">
     ind_id, ind_ii_id, ind_login_id, ind_true_name, ind_third_account, ind_bp_number, 
     ind_bp_name, ind_periods, ind_date_time, ind_fact_date_time, ind_overdue_days, ind_overdue_money, 
     ind_fund_type, ind_money, ind_fact_moeny, ind_interest_st, ind_interest_et, ind_status, 
-    ind_create_time, ind_update_time, ind_is_del, ind_bp_id
+    ind_create_time, ind_update_time, ind_is_del, ind_bp_id, incomeDetailMD5
   </sql>
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long">
         select
@@ -47,7 +48,7 @@
         ind_fact_date_time, ind_overdue_days, ind_overdue_money,
         ind_fund_type, ind_money, ind_fact_moeny,
         ind_interest_st, ind_interest_et, ind_status,
-        ind_create_time, ind_update_time, ind_is_del, ind_bp_id
+        ind_create_time, ind_update_time, ind_is_del, ind_bp_id, incomeDetailMD5
         )
         values (#{indId,jdbcType=BIGINT}, #{indIiId,jdbcType=BIGINT}, #{indLoginId,jdbcType=BIGINT},
         #{indTrueName,jdbcType=VARCHAR}, #{indThirdAccount,jdbcType=VARCHAR}, #{indBpNumber,jdbcType=VARCHAR},
@@ -56,7 +57,7 @@
         #{indFundType,jdbcType=INTEGER}, #{indMoney,jdbcType=DECIMAL}, #{indFactMoeny,jdbcType=DECIMAL},
         #{indInterestSt,jdbcType=TIMESTAMP}, #{indInterestEt,jdbcType=TIMESTAMP}, #{indStatus,jdbcType=INTEGER},
         #{indCreateTime,jdbcType=TIMESTAMP}, #{indUpdateTime,jdbcType=TIMESTAMP}, #{indIsDel,jdbcType=INTEGER},
-        #{indBpId,jdbcType=BIGINT}
+        #{indBpId,jdbcType=BIGINT}, #{incomeDetailMD5,jdbcType=VARCHAR}
         )
     </insert>
     <insert id="insertSelective" parameterType="com.jebao.jebaodb.entity.investment.TbIncomeDetail">
@@ -128,6 +129,9 @@
             <if test="indIiId != null">
                 ind_bp_id,
             </if>
+            <if test="incomeDetailMD5 != null">
+                incomeDetailMD5,
+            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="indId != null">
@@ -195,6 +199,9 @@
             </if>
             <if test="indBpId != null">
                 #{indBpId,jdbcType=BIGINT},
+            </if>
+            <if test="incomeDetailMD5 != null">
+                #{incomeDetailMD5,jdbcType=VARCHAR},
             </if>
         </trim>
     </insert>
@@ -636,10 +643,11 @@
         detail.ind_id,
         detail.ind_ii_id,
         detail.ind_login_id,
-        IFNULL(SUM(detail.ind_money+detail.ind_overdue_money),0) AS ind_money,
+        IFNULL(SUM(detail.ind_money),0) AS ind_money,
         detail.ind_third_account,
-        detail.ind_fund_type
-
+        detail.ind_fund_type,
+        detail.incomeDetailMD5,
+        detail.ind_date_time
         FROM
         tb_income_detail detail
         <where>

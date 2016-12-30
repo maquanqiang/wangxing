@@ -48,6 +48,8 @@ public class TbIncomeDetail {
 
     private Integer indIsDel;
 
+    private String incomeDetailMD5;         //台账记录数据md5
+
     //------------------------------------------
     private String bpTrueName;              //借款人姓名
 
@@ -61,6 +63,15 @@ public class TbIncomeDetail {
     private BigDecimal bpLoanMoney;         //借款额
     private Date bpStartTime;               //募集时间
     private Integer cycleType;              //周期类型
+
+
+    public String getIncomeDetailMD5() {
+        return incomeDetailMD5;
+    }
+
+    public void setIncomeDetailMD5(String incomeDetailMD5) {
+        this.incomeDetailMD5 = incomeDetailMD5;
+    }
 
     public Integer getCycleType() {
         return cycleType;
@@ -324,5 +335,9 @@ public class TbIncomeDetail {
 
     public void setBpTrueName(String bpTrueName) {
         this.bpTrueName = bpTrueName;
+    }
+
+    public String toMD5(){
+        return indIiId+indBpId+indLoginId+indThirdAccount+indMoney;
     }
 }
