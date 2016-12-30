@@ -190,19 +190,25 @@
                                                role="grid" aria-describedby="orderlist_table_info">
                                             <thead>
                                             <tr role="row">
-                                                <th width="20%" class="ui-state-default sorting_disabled" rowspan="1"
+                                                <th width="10%" class="ui-state-default sorting_disabled" rowspan="1"
                                                     colspan="1">期次
                                                 </th>
                                                 <th width="20%" class="ui-state-default sorting_disabled" rowspan="1"
-                                                    colspan="1">还款日期
+                                                    colspan="1">到期日期
                                                 </th>
                                                 <th width="20%" class="ui-state-default sorting_disabled" rowspan="1"
+                                                    colspan="1">预计打款日期
+                                                </th>
+                                                <th width="10%" class="ui-state-default sorting_disabled" rowspan="1"
+                                                    colspan="1">本周期天数
+                                                </th>
+                                                <th width="15%" class="ui-state-default sorting_disabled" rowspan="1"
                                                     colspan="1">还款本金
                                                 </th>
-                                                <th width="20%" class="ui-state-default sorting_disabled" rowspan="1"
+                                                <th width="15%" class="ui-state-default sorting_disabled" rowspan="1"
                                                     colspan="1">还款利息
                                                 </th>
-                                                <th width="20%" class="ui-state-default sorting_disabled" rowspan="1"
+                                                <th width="10%" class="ui-state-default sorting_disabled" rowspan="1"
                                                     colspan="1">还款金额
                                                 </th>
                                             </tr>
@@ -210,13 +216,17 @@
                                             <tbody>
                                             <tr role="row" class="odd" v-for="intent in intentList">
                                                 <td>{{intent.intentPeriod}}</td>
+                                                <td>{{intent.interestEt}}</td>
                                                 <td>{{intent.repayDate}}</td>
+                                                <td>{{intent.days}}</td>
                                                 <td>{{intent.principal}}</td>
                                                 <td>{{intent.interest}}</td>
                                                 <td>{{intent.total}}</td>
                                             </tr>
                                             <tr role="row" class="even">
                                                 <td>总计</td>
+                                                <td></td>
+                                                <td></td>
                                                 <td></td>
                                                 <td>{{principalTotal}}</td>
                                                 <td>{{interestTotal}}</td>

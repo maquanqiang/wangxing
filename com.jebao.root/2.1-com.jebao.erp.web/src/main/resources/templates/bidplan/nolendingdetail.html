@@ -209,8 +209,10 @@
                                     <table id="orderlist_table" class="table table-bordered table-hover dataTable" role="grid" aria-describedby="orderlist_table_info">
                                         <thead>
                                         <tr role="row">
-                                            <th width="20%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">期次</th>
-                                            <th width="20%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">还款日期</th>
+                                            <th width="10%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">期次</th>
+                                            <th width="20%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">到期日期</th>
+                                            <th width="20%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">预计打款日期</th>
+                                            <th width="10%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">本周期天数</th>
                                             <th width="20%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">还款类型</th>
                                             <th width="20%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">还款金额</th>
                                         </tr>
@@ -218,12 +220,16 @@
                                         <tbody>
                                         <tr role="row" class="odd" v-for="intent in intentList">
                                             <td>{{intent.indPeriods}}</td>
+                                            <td>{{intent.indInterestEt}}</td>
                                             <td>{{intent.indDateTime}}</td>
+                                            <td>{{intent.days}}</td>
                                             <td>{{fundType[intent.indFundType]}}</td>
                                             <td>{{intent.indMoney}}</td>
                                         </tr>
                                         <tr role="row" class="even">
                                             <td>总计</td>
+                                            <td></td>
+                                            <td></td>
                                             <td></td>
                                             <td></td>
                                             <td>{{total}}</td>

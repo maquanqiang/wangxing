@@ -522,7 +522,9 @@
         sum(ind_money) AS ind_money,
         sum(ind_fact_moeny) AS ind_fact_moeny,
         ind_status,
-        bp_true_name
+        bp_true_name,
+        ind_interest_et,
+        ind_interest_st
         FROM
         tb_income_detail LEFT JOIN tb_bid_plan ON ind_bp_id = bp_id
         <where>

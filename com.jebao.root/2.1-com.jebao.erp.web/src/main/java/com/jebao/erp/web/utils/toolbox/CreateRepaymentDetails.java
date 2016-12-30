@@ -33,9 +33,10 @@ public class CreateRepaymentDetails {
             interest.setIntentPeriod(1);
             interest.setFundType(2);
             interest.setInterestSt(interestSt);
-
             int days = BetweenDays.differentDays(interestSt, now.getTime());
-            interest.setInterestEt(nextRepayDate);
+            //计算结束日比还款日晚一天
+            now.add(Calendar.DATE, -1);
+            interest.setInterestEt(now.getTime());
             BigDecimal interestMoney = money.multiply(bpRate).multiply(new BigDecimal(days))
                     .divide(new BigDecimal(100 * 365), 2, BigDecimal.ROUND_HALF_UP);
             interest.setMoney(interestMoney);

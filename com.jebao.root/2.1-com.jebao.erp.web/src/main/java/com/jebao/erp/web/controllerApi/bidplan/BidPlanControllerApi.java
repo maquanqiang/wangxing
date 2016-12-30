@@ -235,6 +235,7 @@ public class BidPlanControllerApi extends _BaseController {
             loanIntentVM.setRepayDate(form.getBpExpectRepayDate());
             loanIntentVM.setPrincipal(principal);
             loanIntentVM.setInterest(interest);
+            loanIntentVM.setDays(days);
             loanIntentVM.setTotal(principal.add(interest));
             loanFundIntents.add(loanIntentVM);
             System.out.println(days);
@@ -269,6 +270,7 @@ public class BidPlanControllerApi extends _BaseController {
                         .divide(new BigDecimal(100 * 365), 2, BigDecimal.ROUND_HALF_UP);
                 loanIntent.setRepayDate(nextRepayDate);
                 loanIntent.setInterest(interest);
+                loanIntent.setDays(days);
                 if (i == form.getBpPeriodsDisplay()) {
                     loanIntent.setPrincipal(form.getBpBidMoney());
                     loanIntent.setTotal(interest.add(form.getBpBidMoney()));

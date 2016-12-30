@@ -74,6 +74,10 @@ var vm = new Vue({
         $.get("/api/incomeDetail/repaymentList",model.searchObj,function(response) {
             if (response.success_is_ok) {
                 vm.intentList = response.data;
+                for(var i=0; i<vm.intentList.length; i++){
+                    vm.total += (vm.intentList[i].indMoney)*1;
+                }
+                vm.total=toDecimal2(vm.total);
             }
         })
     },
@@ -144,7 +148,7 @@ var vm = new Vue({
                             for(var i=0; i<vm.intentList.length; i++){
                                 vm.total += (vm.intentList[i].indMoney)*1;
                             }
-                            vm.total = vm.total.toFixed(2);
+                            vm.total=toDecimal2(vm.total);
                         }
                     })
                 }
