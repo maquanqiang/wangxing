@@ -29,18 +29,22 @@ public class ArticleController extends _BaseController {
     @Autowired
     private IArticleServiceInf articleService;
 
-/*    @RequestMapping(value = "indexList", method = RequestMethod.GET)
+    @RequestMapping(value = "index", method = RequestMethod.GET)
     @ResponseBody
-    public JsonResult indexList(){
-        PageWhere page = new PageWhere(0, 3);
-        List<ArticleInfo> articleList = articleService.selectArticleByTypeIdForPage(EnumModel.ArticleType.媒体报道.getValue(), page);
+    public JsonResult index(ArticleSM model){
+        if (model == null) {
+            return new JsonResultList<>(null);
+        }
+
+        PageWhere page = new PageWhere(model.getPageIndex(), model.getPageSize());
+        List<TbArticle> articleList = articleService.selectArticleByTypeIdForIndex(model.getTypeId(), page);
         if (articleList == null || articleList.size() == 0) {
             return new JsonResultList<>(null);
         }
         List<ArticleVM> viewModelList = new ArrayList<>();
         articleList.forEach(o -> viewModelList.add(new ArticleVM(o)));
-
-    }*/
+        return new JsonResultList<>(viewModelList);
+    }
 
     @RequestMapping(value = "list", method = RequestMethod.GET)
     @ResponseBody

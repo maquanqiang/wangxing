@@ -71,8 +71,7 @@
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        <template v-for="item in loaners">
-                                            <tr role="row" class="odd">
+                                            <tr role="row" v-for="item in loaners">
                                                 <td>{{item.nickName}}</td>
                                                 <td>{{item.trueName}}</td>
                                                 <td>{{item.phone}}</td>
@@ -81,14 +80,13 @@
                                                 <td>{{item.borrowAmount}}</td>
                                                 <td>
                                                     <a href="javascript:void(0);" class="btn btn-default btn-xs" role="button" @click.prevent="openEditForm(item.id)">修改</a>
-                                                    <a :href="getDetailHref(item.id)" class="btn btn-default btn-xs" role="button" target="_blank">查看详情</a>
-                                                    <a :href="getFundsHref(item.loginId)" class="btn btn-default btn-xs" role="button" target="_blank">资金信息</a>
-                                                    <a :href="getLoanHref(item.id)" class="btn btn-default btn-xs" role="button" target="_blank">借款信息</a>
-                                                    <a :href="getRiskHref(item.id)" class="btn btn-default btn-xs" role="button" target="_blank">风控信息</a>
+                                                    <a :href="'/loaner/details/'+item.id" class="btn btn-default btn-xs" role="button" target="_blank">查看详情</a>
+                                                    <a :href="'/loaner/funds/'+item.loginId" class="btn btn-default btn-xs" role="button" target="_blank">资金信息</a>
+                                                    <a :href="'/loaner/loanrecord/'+item.id" class="btn btn-default btn-xs" role="button" target="_blank">借款信息</a>
+                                                    <a :href="'/loaner/risk/index/'+item.id" class="btn btn-default btn-xs" role="button" target="_blank">风控信息</a>
                                                     <a href="javascript:void(0);" class="btn btn-default btn-xs remove-msg" role="button" @click.prevent="openDeleteWin(item.id)">删除</a>
                                                 </td>
                                             </tr>
-                                        </template>
                                         </tbody>
                                     </table>
                                 </div>
@@ -99,7 +97,6 @@
                                 </div>
                             </div>
                         </div>
-
                     </div>
                 </div>
             </div>

@@ -119,7 +119,7 @@
                                             <td>{{ item.interestMoney }}</td>
                                             <td>{{ item.repayTime }}</td>
                                             <td>
-                                                <a :href="getDetailHref(item.id)" class="btn btn-default btn-xs" role="button"
+                                                <a :href="'/bidplan/alreadyLoanDetail/'+item.id" class="btn btn-default btn-xs" role="button"
                                                    target="_blank">查看</a>
                                             </td>
                                         </tr>

@@ -25,5 +25,7 @@ public interface TbArticleMapper {
 
     List<ArticleInfo> selectByParamsForPage(@Param("record") TbArticle record, @Param("pageWhere") PageWhere pageWhere);
 
+    List<TbArticle> selectByParamsForPageExt(@Param("record") TbArticle record, @Param("pageWhere") PageWhere pageWhere);
+
     int selectByParamsForPageCount(@Param("record") TbArticle record);
 }

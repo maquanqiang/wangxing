@@ -13,6 +13,7 @@ import com.jebao.erp.web.utils.validation.ValidationResult;
 import com.jebao.erp.web.utils.validation.ValidationUtil;
 import com.jebao.jebaodb.entity.article.ArticleInfo;
 import com.jebao.jebaodb.entity.article.TbArticle;
+import com.jebao.jebaodb.entity.extEntity.EnumModel;
 import com.jebao.jebaodb.entity.extEntity.PageWhere;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -49,7 +50,8 @@ public class ArticleControllerApi extends _BaseController {
         entity.setaTitle(model.getTitle());
         entity.setaTypeId(model.getTypeId());
         entity.setaCreateUserId(user.getId());
-        entity.setaIsDel(1);
+        entity.setaWeight(model.getWeight());
+        entity.setaIsDel(EnumModel.IsDel.有效.getValue());
         int result = articleService.saveArticle(entity);
         //
         if (result > 0) {

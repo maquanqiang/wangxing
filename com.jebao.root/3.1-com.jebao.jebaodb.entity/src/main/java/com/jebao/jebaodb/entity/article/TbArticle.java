@@ -23,6 +23,8 @@ public class TbArticle {
 
     private String aContent;
 
+    private Integer aWeight;
+
     public Long getaId() {
         return aId;
     }
@@ -101,5 +103,13 @@ public class TbArticle {
 
     public void setaContent(String aContent) {
         this.aContent = aContent == null ? null : aContent.trim();
+    }
+
+    public Integer getaWeight() {
+        return aWeight;
+    }
+
+    public void setaWeight(Integer aWeight) {
+        this.aWeight = aWeight;
     }
 }

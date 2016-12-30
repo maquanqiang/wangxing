@@ -24,6 +24,8 @@ public class ArticleInfo {
 
     private Date aUpdateTime;
 
+    private Integer aWeight;
+
     public Long getaId() {
         return aId;
     }
@@ -94,5 +96,13 @@ public class ArticleInfo {
 
     public void setaEditUser(String aEditUser) {
         this.aEditUser = aEditUser;
+    }
+
+    public Integer getaWeight() {
+        return aWeight;
+    }
+
+    public void setaWeight(Integer aWeight) {
+        this.aWeight = aWeight;
     }
 }

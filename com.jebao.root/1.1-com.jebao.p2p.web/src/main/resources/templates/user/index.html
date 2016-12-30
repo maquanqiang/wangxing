@@ -115,7 +115,7 @@
                         </thead>
                         <tbody v-show="isHasDateii">
                             <tr v-for="item in investIngs">
-                                <td><a :href="getDetailHref(item.bpId)">{{ item.bpName }}</a></td>
+                                <td><a :href="'/product/detail/'+item.bpId">{{ item.bpName }}</a></td>
                                 <td>{{ item.createTime }}</td>
                                 <td>{{ item.money }}</td>
                                 <td>{{ item.periods }}</td>
@@ -148,7 +148,7 @@
                         <tbody v-show="isHasDatepi">
                         <tr v-for="item in paymentIngs">
                             <td>
-                                <a :href="getDetailHref(item.bpId)">{{ item.bpName }}</a>
+                                <a :href="'/product/detail/'+item.bpId">{{ item.bpName }}</a>
                             </td>
                             <td>{{ item.createTime }}</td>
                             <td>{{ item.money }}</td>

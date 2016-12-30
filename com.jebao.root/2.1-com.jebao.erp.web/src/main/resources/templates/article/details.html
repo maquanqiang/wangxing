@@ -48,6 +48,12 @@
                             </div>
                             <div class="form-group">
                                 <div class="input-group margin">
+                                    <div class="input-group-addon"><span class="text-red">*</span>权重值</div>
+                                    <input type="number" class="form-control" name="weight" v-model="article.weight" min="0" max="9">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group margin">
                                     <div class="input-group-addon"><span class="text-red">*</span>文章标题</div>
                                     <input type="text" class="form-control" placeholder="" name="title" v-model="article.title" style="width: 600px">
                                 </div>

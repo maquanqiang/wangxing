@@ -17,6 +17,7 @@ public class ArticleListVM extends ViewModel {
         this.editDate = info.getaEditDate();
         this.editUser = info.getaEditUser();
         this.updateTime = info.getaUpdateTime();
+        this.weight = info.getaWeight();
     }
 
     private Long id;
@@ -32,6 +33,9 @@ public class ArticleListVM extends ViewModel {
 
     @JsonFormat(timezone = "GMT+8", pattern = "yyyy/MM/dd HH:mm:ss")
     private Date updateTime;
+
+    //权重
+    private Integer weight;
 
     public Long getId() {
         return id;
@@ -79,5 +83,13 @@ public class ArticleListVM extends ViewModel {
 
     public void setEditUser(String editUser) {
         this.editUser = editUser;
+    }
+
+    public Integer getWeight() {
+        return weight;
+    }
+
+    public void setWeight(Integer weight) {
+        this.weight = weight;
     }
 }

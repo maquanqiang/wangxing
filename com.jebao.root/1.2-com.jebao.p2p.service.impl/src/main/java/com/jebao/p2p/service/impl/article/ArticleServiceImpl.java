@@ -27,7 +27,7 @@ public class ArticleServiceImpl implements IArticleServiceInf {
     public List<ArticleInfo> selectArticleByTypeIdForPage(int typeId, PageWhere page) {
         TbArticle record = new TbArticle();
         record.setaTypeId(typeId);
-        return tbArticleDao.selectByParamsForPage(record,page);
+        return tbArticleDao.selectByParamsForPage(record, page);
     }
 
     @Override
@@ -35,5 +35,12 @@ public class ArticleServiceImpl implements IArticleServiceInf {
         TbArticle record = new TbArticle();
         record.setaTypeId(typeId);
         return tbArticleDao.selectByParamsForPageCount(record);
+    }
+
+    @Override
+    public List<TbArticle> selectArticleByTypeIdForIndex(int typeId, PageWhere page) {
+        TbArticle record = new TbArticle();
+        record.setaTypeId(typeId);
+        return tbArticleDao.selectByParamsForPageExt(record, page);
     }
 }
