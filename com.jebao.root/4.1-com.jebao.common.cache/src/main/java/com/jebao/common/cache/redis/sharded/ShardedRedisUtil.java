@@ -252,4 +252,8 @@ public class ShardedRedisUtil {
         String value = FastJsonUtil.serializeFormDate(object);
         return setex(key,seconds,value);
     }
+    public <T> List<T> getList(final String key,Class<T> clz){
+        String value=get(key);
+        return FastJsonUtil.deserializeList(value, clz);
+    }
 }
