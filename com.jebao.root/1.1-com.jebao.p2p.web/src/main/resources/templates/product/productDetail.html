@@ -77,7 +77,7 @@
                 #else
                 <!--<p class="plan-money">可用金额：<span>----元</span><span><a href="/account/login">登录</a>查看</span></p>-->
                 <div class="plan-money clearfix">
-                    <P class="fl">可用金额：<span><a href="/account/login" style="color: #FFAD30" class="fr">登录查看</a></span></P>
+                    <P class="fl">可用金额：<span><a :href="'/account/login?redirect=/product/detail/'+product.bpId" style="color: #FFAD30" class="fr">登录查看</a></span></P>
                 </div>
                 #end
                 <div class="plan-tip" v-cloak>{{product.bpStartMoney}}元起投，{{product.bpRiseMoney}}元递增，{{product.bpTopMoney}}元上限</div>
@@ -96,7 +96,7 @@
                             <a href="javascript:void(0);" @click.prevent="validAccount">充值</a>
                         #end
                     #else
-                        <a href="/account/login">充值</a>
+                        <a href="/account/login?redirect=/user/chargewithdraw?typeId=1">充值</a>
                     #end
                 </div>
                 <div v-if="product.bpStatus != 2">
@@ -111,7 +111,7 @@
                                 <a href="javascript:void(0);" class="plan-btn" @click.prevent="validAccount">立即投资</a>
                             #end
                         #else
-                        <a href="/account/login" class="plan-btn">立即投资</a>
+                        <a :href="'/account/login?redirect=/product/detail/'+product.bpId" class="plan-btn">立即投资</a>
                         #end
                     </div>
                     <div v-else>
@@ -139,7 +139,7 @@
             #else
             <div class="img-shadow">
                 <img src="${filePath}/images/project-bg.jpg" class="img-shadow">
-                <p>您还没有登录<a href="/account/login">立即登录</a>后可查看认证图片</p>
+                <p>您还没有登录<a :href="'/account/login?redirect=/product/detail/'+product.bpId">立即登录</a>后可查看认证图片</p>
             </div>
             #end
             <!-- 如果需要导航按钮 -->

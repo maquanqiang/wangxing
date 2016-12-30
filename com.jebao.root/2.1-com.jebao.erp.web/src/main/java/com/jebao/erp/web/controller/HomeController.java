@@ -12,14 +12,19 @@ import java.util.List;
  * Created by Administrator on 2016/11/2.
  */
 @Controller
-@RequestMapping("/home/")
 public class HomeController {
-    @RequestMapping("index")
+
+    @RequestMapping("/")
+    public String indexHome(@ModelAttribute("form") IndexForm form) {
+
+        return "redirect:/home/index";
+    }
+    @RequestMapping("/home/index")
     public String index(@ModelAttribute("form") IndexForm form) {
 
         return "home/index";
     }
-    @RequestMapping("test")
+    @RequestMapping("/home/test")
     public String test() {
 
         List<Object[]> list = new ExcelUtil().readFile("D:\\test.xlsx");
