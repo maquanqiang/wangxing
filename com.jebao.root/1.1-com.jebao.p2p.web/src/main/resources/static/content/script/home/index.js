@@ -137,8 +137,10 @@ var mVm = new Vue({
         $.get("/api/article/index", dataVal, function (response) {
             if (response.success_is_ok) {
                 var data = response.data;
-                for(var i=0;i<data.length;i++){
-                    $(".media ul").append("<li><a href='/html/mediaNews/details/"+data[i].id+"'>"+data[i].content+"</a></li>");
+                if(data != null){
+                    for(var i=0;i<data.length;i++){
+                        $(".media ul").append("<li><a href='/html/mediaNews/details/"+data[i].id+"'>"+data[i].content+"</a></li>");
+                    }
                 }
             }
         });
