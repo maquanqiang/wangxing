@@ -28,7 +28,7 @@ var model = {
     //台账列表
     incomeDetailList : [],
     fundType : ['','本金','利息'],
-    repayStatus : ['', '未还款', '已还款']
+    repayStatus : ['还款已冻结', '未还款', '已还款']
 
 
 };
@@ -82,8 +82,20 @@ var vm = new Vue({
                 $("#searchBtn").removeClass("disabled");//解除禁用
             });
         },
-        openView : function(bpId, period, fundType){
-            window.location.href = "/postLoan/incomeDetail/"+bpId+"/"+period + "/"+fundType;
+        openView : function(bpId, period){
+            window.location.href = "/postLoan/incomeDetail/"+bpId+"/"+period;
+        },
+        repay : function(bpId, period){
+            layer.load(1)
+            $.post("/api/bidPlan/repay", {indBpId:bpId, indPeriods:period}, function(response){
+                layer.closeAll();
+                if (response.success_is_ok){
+                    layer.msg(response.msg);
+                    setTimeout(function(){window.location.href = "/postLoan/index"}, 3000);
+                }else{
+                    layer.alert(response.error);
+                }
+            })
         }
     }
 });

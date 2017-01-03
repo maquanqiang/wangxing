@@ -1,6 +1,8 @@
 package com.jebao.p2p.service.inf.user;
 
 import com.jebao.jebaodb.entity.extEntity.ResultInfo;
+import com.jebao.jebaodb.entity.loanmanage.TbBidPlan;
+import com.jebao.jebaodb.entity.user.TbAccountsFunds;
 
 import java.math.BigDecimal;
 
@@ -9,5 +11,5 @@ import java.math.BigDecimal;
  */
 public interface ILoanManageServiceInf {
 
-    public ResultInfo repay(Long bpId, Long loginId, Integer period, BigDecimal repayMoney);
+    public ResultInfo repay(TbBidPlan bidPlan, TbAccountsFunds accountsFunds, Integer period, BigDecimal repayMoney);
 }

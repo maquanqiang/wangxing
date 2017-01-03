@@ -1,6 +1,8 @@
 package com.jebao.erp.service.inf.loanmanage;
 
 import com.jebao.jebaodb.entity.extEntity.PageWhere;
+import com.jebao.jebaodb.entity.extEntity.ResultInfo;
+import com.jebao.jebaodb.entity.investment.TbIncomeDetail;
 import com.jebao.jebaodb.entity.loaner.LoanTotal;
 import com.jebao.jebaodb.entity.loanmanage.TbBidPlan;
 import com.jebao.jebaodb.entity.loanmanage.search.BidPlanExtSM;
@@ -28,6 +30,8 @@ public interface ITbBidPlanServiceInf {
     int selectBySelfConditionCount(BidPlanSM record);
 
     boolean doLoan(TbBidPlan record);
+
+    public ResultInfo repayFreeze(TbIncomeDetail tbIncomeDetail);
 
     /* ==================================================借款人相关借款统计查询==================================================*/
     /**

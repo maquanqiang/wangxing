@@ -25,12 +25,14 @@
         <result column="ind_is_del" property="indIsDel" jdbcType="INTEGER"/>
         <result column="ind_bp_id" property="indBpId" jdbcType="BIGINT"/>
         <result column="incomeDetailMD5" property="incomeDetailMD5" jdbcType="VARCHAR"/>
+        <result column="ind_third_contract_no" property="indThirdContractNo" jdbcType="VARCHAR"/>
+
     </resultMap>
     <sql id="Base_Column_List">
     ind_id, ind_ii_id, ind_login_id, ind_true_name, ind_third_account, ind_bp_number, 
     ind_bp_name, ind_periods, ind_date_time, ind_fact_date_time, ind_overdue_days, ind_overdue_money, 
     ind_fund_type, ind_money, ind_fact_moeny, ind_interest_st, ind_interest_et, ind_status, 
-    ind_create_time, ind_update_time, ind_is_del, ind_bp_id, incomeDetailMD5
+    ind_create_time, ind_update_time, ind_is_del, ind_bp_id, incomeDetailMD5, ind_third_contract_no
   </sql>
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long">
         select
@@ -48,7 +50,7 @@
         ind_fact_date_time, ind_overdue_days, ind_overdue_money,
         ind_fund_type, ind_money, ind_fact_moeny,
         ind_interest_st, ind_interest_et, ind_status,
-        ind_create_time, ind_update_time, ind_is_del, ind_bp_id, incomeDetailMD5
+        ind_create_time, ind_update_time, ind_is_del, ind_bp_id, incomeDetailMD5, ind_third_contract_no
         )
         values (#{indId,jdbcType=BIGINT}, #{indIiId,jdbcType=BIGINT}, #{indLoginId,jdbcType=BIGINT},
         #{indTrueName,jdbcType=VARCHAR}, #{indThirdAccount,jdbcType=VARCHAR}, #{indBpNumber,jdbcType=VARCHAR},
@@ -57,7 +59,7 @@
         #{indFundType,jdbcType=INTEGER}, #{indMoney,jdbcType=DECIMAL}, #{indFactMoeny,jdbcType=DECIMAL},
         #{indInterestSt,jdbcType=TIMESTAMP}, #{indInterestEt,jdbcType=TIMESTAMP}, #{indStatus,jdbcType=INTEGER},
         #{indCreateTime,jdbcType=TIMESTAMP}, #{indUpdateTime,jdbcType=TIMESTAMP}, #{indIsDel,jdbcType=INTEGER},
-        #{indBpId,jdbcType=BIGINT}, #{incomeDetailMD5,jdbcType=VARCHAR}
+        #{indBpId,jdbcType=BIGINT}, #{incomeDetailMD5,jdbcType=VARCHAR}, #{indThirdContractNo,jdbcType=VARCHAR}
         )
     </insert>
     <insert id="insertSelective" parameterType="com.jebao.jebaodb.entity.investment.TbIncomeDetail">
@@ -132,6 +134,9 @@
             <if test="incomeDetailMD5 != null">
                 incomeDetailMD5,
             </if>
+            <if test="indThirdContractNo != null">
+                ind_third_contract_no,
+            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="indId != null">
@@ -203,6 +208,9 @@
             <if test="incomeDetailMD5 != null">
                 #{incomeDetailMD5,jdbcType=VARCHAR},
             </if>
+            <if test="indThirdContractNo != null">
+                #{ind_third_contract_no,jdbcType=VARCHAR},
+            </if>
         </trim>
     </insert>
     <update id="updateByPrimaryKeySelective" parameterType="com.jebao.jebaodb.entity.investment.TbIncomeDetail">
@@ -271,6 +279,9 @@
             <if test="indBpId != null">
                 ind_bp_id = #{indBpId,jdbcType=BIGINT},
             </if>
+            <if test="indThirdContractNo != null">
+                ind_third_contract_no = #{indThirdContractNo,jdbcType=VARCHAR},
+            </if>
         </set>
         where ind_id = #{indId,jdbcType=BIGINT}
     </update>
@@ -296,7 +307,8 @@
       ind_create_time = #{indCreateTime,jdbcType=TIMESTAMP},
       ind_update_time = #{indUpdateTime,jdbcType=TIMESTAMP},
       ind_is_del = #{indIsDel,jdbcType=INTEGER},
-      ind_bp_id = #{indBpId,jdbcType=BIGINT}
+      ind_bp_id = #{indBpId,jdbcType=BIGINT},
+      ind_third_contract_no = #{indThirdContractNo,jdbcType=VARCHAR}
     where ind_id = #{indId,jdbcType=BIGINT}
   </update>
 
@@ -464,7 +476,7 @@
             <include refid="postLoanDetailWhere"/>
         </where>
         GROUP BY
-        ind_bp_id, ind_periods , ind_fund_type
+        ind_bp_id, ind_periods
         <if test="pageWhere.orderBy!=null">
             ORDER BY ${pageWhere.orderBy}
         </if>
@@ -479,7 +491,7 @@
             <include refid="postLoanDetailWhere"/>
         </where>
         GROUP BY
-        ind_bp_id, ind_periods ,ind_fund_type
+        ind_bp_id, ind_periods
         ) a
     </select>
 
@@ -573,7 +585,8 @@
         detail.ind_fact_date_time,
         plan.bp_loan_money,
         plan.bp_cycle_type,
-        detail.ind_bp_number
+        detail.ind_bp_number,
+        detail.ind_status
         FROM
         tb_income_detail detail
         LEFT JOIN tb_invest_info info ON detail.ind_ii_id = info.ii_id

@@ -86,8 +86,9 @@
                             <td>{{data.repayMoney+data.dueMoney}}</td>
                             <!--<td></td>-->
                             <td>
-                                <a href="javascript:void(0);" class="table-btn"
+                                <a v-if="data.status==1" href="javascript:void(0);" class="table-btn"
                                    @click.prevent="repay(data.bpPeriod, data.bpId, data.repayMoney+data.dueMoney)">还款</a>
+                                <a v-if="data.status==0" href="javascript:void(0);" class="table-btn">已冻结</a>
                             </td>
                         </tr>
                         </tbody>

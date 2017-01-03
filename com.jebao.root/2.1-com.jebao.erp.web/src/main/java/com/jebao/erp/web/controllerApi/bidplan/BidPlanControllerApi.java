@@ -19,6 +19,7 @@ import com.jebao.erp.web.responseModel.bidplan.ProjectTempVM;
 import com.jebao.erp.web.utils.contract.UpCaseRMB;
 import com.jebao.erp.web.utils.toolbox.BetweenDays;
 import com.jebao.jebaodb.entity.extEntity.PageWhere;
+import com.jebao.jebaodb.entity.extEntity.ResultInfo;
 import com.jebao.jebaodb.entity.investment.TbIncomeDetail;
 import com.jebao.jebaodb.entity.investment.TbInvestInfo;
 import com.jebao.jebaodb.entity.loaner.TbLoaner;
@@ -393,6 +394,27 @@ public class BidPlanControllerApi extends _BaseController {
             return new JsonResultOk("关闭成功");
         } else {
             return new JsonResultError("关闭失败");
+        }
+    }
+
+
+    /**
+     *
+     * @return
+     */
+    @RequestMapping("repay")
+    @ResponseBody
+    public JsonResult repay(TbIncomeDetail detail){
+        TbIncomeDetail tbIncomeDetail = new TbIncomeDetail();
+        tbIncomeDetail.setIndIsDel(1);
+        tbIncomeDetail.setIndPeriods(detail.getIndPeriods());
+        tbIncomeDetail.setIndBpId(detail.getIndBpId());
+
+        ResultInfo resultInfo = bidPlanService.repayFreeze(tbIncomeDetail);
+        if(resultInfo.getSuccess_is_ok()){
+            return new JsonResultOk(resultInfo.getMsg());
+        }else {
+            return new JsonResultError(resultInfo.getMsg());
         }
     }
 

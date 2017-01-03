@@ -20,12 +20,11 @@ public class PostLoanController {
         return "postLoan/index";
     }
 
-    @RequestMapping("incomeDetail/{bpId}/{period}/{fundType}")
+    @RequestMapping("incomeDetail/{bpId}/{period}")
     public String incomeDetail(@PathVariable("bpId")Long bpId, @PathVariable("period")Integer period,
-                               @PathVariable("fundType") Integer fundType, Model model){
+                               Model model){
         model.addAttribute("bpId", bpId);
         model.addAttribute("period", period);
-        model.addAttribute("fundType", fundType);
         return "postLoan/incomeDetail";
     }
 }

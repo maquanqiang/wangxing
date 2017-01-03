@@ -50,6 +50,8 @@ public class TbIncomeDetail {
 
     private String incomeDetailMD5;         //台账记录数据md5
 
+    private String indThirdContractNo;      //冻结合同号
+
     //------------------------------------------
     private String bpTrueName;              //借款人姓名
 
@@ -64,6 +66,14 @@ public class TbIncomeDetail {
     private Date bpStartTime;               //募集时间
     private Integer cycleType;              //周期类型
 
+    public String getIndThirdContractNo() {
+
+        return indThirdContractNo;
+    }
+
+    public void setIndThirdContractNo(String indThirdContractNo) {
+        this.indThirdContractNo = indThirdContractNo;
+    }
 
     public String getIncomeDetailMD5() {
         return incomeDetailMD5;
