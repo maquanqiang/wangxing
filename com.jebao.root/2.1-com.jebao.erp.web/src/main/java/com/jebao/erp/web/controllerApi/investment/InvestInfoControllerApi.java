@@ -6,10 +6,7 @@ import com.jebao.erp.service.inf.investment.IInvestInfoServiceInf;
 import com.jebao.erp.service.inf.investment.ILoanerRepaymentDetailServiceInf;
 import com.jebao.erp.service.inf.loanmanage.ITbBidPlanServiceInf;
 import com.jebao.erp.web.requestModel.investment.RepaymentForm;
-import com.jebao.erp.web.responseModel.base.JsonResult;
-import com.jebao.erp.web.responseModel.base.JsonResultData;
-import com.jebao.erp.web.responseModel.base.JsonResultList;
-import com.jebao.erp.web.responseModel.base.JsonResultOk;
+import com.jebao.erp.web.responseModel.base.*;
 import com.jebao.erp.web.responseModel.investment.InvestInfoVM;
 import com.jebao.erp.web.responseModel.investment.RepaymentDetail;
 import com.jebao.erp.web.responseModel.postLoan.IncomeDetailsVM;
@@ -111,15 +108,11 @@ public class InvestInfoControllerApi {
     @ResponseBody
     public JsonResult createIncomeDetails(RepaymentForm form){
 
-        //先清空原生成数据(标记为删除)
-        TbIncomeDetail tbIncomeDetail = new TbIncomeDetail();
-        tbIncomeDetail.setIndBpId(form.getBpId());
-        tbIncomeDetail.setIndIsDel(2);
-        int count = incomeDetailService.updateByConditionSelective(tbIncomeDetail);
-
-
         TbBidPlan tbBidPlan = tbBidPlanService.selectByBpId(form.getBpId());
 
+        if(tbBidPlan.getBpRate().compareTo(new BigDecimal(20))>0){
+            return new JsonResultError("利率大于20%，请联系管理员，核实数据");
+        }
         TbInvestInfo tbInvestInfo = new TbInvestInfo();
         tbInvestInfo.setIiBpId(tbBidPlan.getBpId());
         PageWhere pageWhere = new PageWhere(0, 10000);

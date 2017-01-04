@@ -86,16 +86,26 @@ var vm = new Vue({
             window.location.href = "/postLoan/incomeDetail/"+bpId+"/"+period;
         },
         repay : function(bpId, period){
-            layer.load(1)
-            $.post("/api/bidPlan/repay", {indBpId:bpId, indPeriods:period}, function(response){
-                layer.closeAll();
-                if (response.success_is_ok){
-                    layer.msg(response.msg);
-                    setTimeout(function(){window.location.href = "/postLoan/index"}, 3000);
-                }else{
-                    layer.alert(response.error);
+            layer.open({
+                title:'现在确认还款吗',
+                btn: ['确定', '取消'],
+                area:['300px'],
+                btn1: function(){
+                    layer.load(1)
+                    $.post("/api/bidPlan/repay", {indBpId:bpId, indPeriods:period}, function(response){
+                        layer.closeAll();
+                        if (response.success_is_ok){
+                            layer.msg(response.msg);
+                            setTimeout(function(){window.location.href = "/postLoan/index"}, 3000);
+                        }else{
+                            layer.alert(response.error);
+                        }
+                    })
+                },
+                btn2: function(){
+                    layer.closeAll();
                 }
-            })
+            });
         }
     }
 });

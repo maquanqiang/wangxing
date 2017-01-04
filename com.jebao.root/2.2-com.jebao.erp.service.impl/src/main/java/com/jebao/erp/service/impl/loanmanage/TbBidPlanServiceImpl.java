@@ -117,8 +117,6 @@ public class TbBidPlanServiceImpl implements ITbBidPlanServiceInf {
 
                 TransferBuRequest reqData = new TransferBuRequest();
 
-
-
                 //提交富友参数
                 String amt = investInfo.getIiMoney().multiply(new BigDecimal(100)).setScale(0).toString();
                 reqData.setOut_cust_no(investInfo.getIiThirdAccount());
