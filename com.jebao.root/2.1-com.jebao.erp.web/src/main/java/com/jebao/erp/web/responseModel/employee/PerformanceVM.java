@@ -1,17 +1,41 @@
-package com.jebao.jebaodb.entity.employee;
+package com.jebao.erp.web.responseModel.employee;
 
-import com.jebao.jebaodb.entity.extEntity.PageWhere;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.jebao.erp.web.responseModel.ViewModel;
+import com.jebao.jebaodb.entity.employee.EmpPerformanceInfo;
 
 import java.math.BigDecimal;
 import java.util.Date;
 
 /**
- * Created by Jack on 2016/12/29.
- * 员工业绩信息
+ * Created by Jack on 2017/1/4.
  */
-public class EmpPerformanceInfo extends PageWhere {
+public class PerformanceVM extends ViewModel {
+
+    public PerformanceVM(EmpPerformanceInfo entity){
+        this.orderId=entity.getOrderId();
+        this.orderMoney=entity.getOrderMoney();
+        this.orderCreateTime=entity.getOrderCreateTime();
+        this.productId=entity.getProductId();
+        this.productName=entity.getProductName();
+        this.trueName=entity.getTrueName();
+        this.mobilePhone=entity.getMobilePhone();
+        this.empId=entity.getEmpId();
+        this.empName=entity.getEmpName();
+        this.empMobilePhone=entity.getEmpMobilePhone();
+        this.depId=entity.getDepId();
+        this.depName=entity.getDepName();
+        this.depParentId=entity.getDepParentId();
+        this.depIsDepartment=entity.getDepIsDepartment();
+        this.rankId=entity.getRankId();
+        this.rankName=entity.getRankName();
+        this.rankParentId=entity.getRankParentId();
+        this.rankBrokeragePercent=entity.getRankBrokeragePercent();
+    }
+
     private Long orderId;
     private BigDecimal orderMoney;
+    @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm")
     private Date orderCreateTime;
 
     private Long productId;
