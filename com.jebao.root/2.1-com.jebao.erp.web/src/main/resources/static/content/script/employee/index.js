@@ -80,6 +80,7 @@ var vm = new Vue({
                                     return item.name;
                                 }
                                 parentId = item.parentId;
+                                break;
                             }
                         }
                         for(var i=0;i<vm.teams.length;i++){

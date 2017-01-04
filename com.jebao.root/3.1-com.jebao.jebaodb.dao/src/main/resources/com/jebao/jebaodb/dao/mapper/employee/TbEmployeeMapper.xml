@@ -244,13 +244,14 @@
     <resultMap id="EmpPerformanceInfoResult" type="com.jebao.jebaodb.entity.employee.EmpPerformanceInfo">
         <id column="ii_id" property="orderId" jdbcType="BIGINT"/>
         <result column="ii_money" property="orderMoney" jdbcType="DECIMAL"/>
-        <result column="ii_create_time" property="orderCreateTime" jdbcType="DATE"/>
+        <result column="ii_create_time" property="orderCreateTime" jdbcType="TIMESTAMP"/>
         <result column="ii_bp_id" property="productId" jdbcType="INTEGER"/>
         <result column="ii_bp_name" property="productName" jdbcType="VARCHAR"/>
         <result column="ud_true_name" property="trueName" jdbcType="VARCHAR"/>
         <result column="ud_phone" property="mobilePhone" jdbcType="VARCHAR"/>
         <result column="emp_id" property="empId" jdbcType="INTEGER"/>
         <result column="emp_name" property="empName" jdbcType="VARCHAR"/>
+        <result column="emp_mobilephone" property="empMobilePhone" jdbcType="VARCHAR"/>
         <result column="dep_id" property="depId" jdbcType="INTEGER"/>
         <result column="dep_name" property="depName" jdbcType="VARCHAR"/>
         <result column="dep_parent_id" property="depParentId" jdbcType="INTEGER"/>
@@ -267,8 +268,34 @@
         FROM tb_invest_info invest
         INNER JOIN tb_user_details ud ON ud.ud_login_id = invest.ii_login_id
         INNER JOIN v_employee emp ON emp.emp_id = ud.ud_customer_manager_id
-        WHERE ud.ud_customer_manager_id > 0
+        WHERE ud.ud_customer_manager_id > 0 <include refid="selectEmpPerformanceWehre"/> LIMIT #{begin},#{pageSize}
     </select>
+    <select id="selectEmpPerformanceCount" resultType="integer">
+        SELECT COUNT(*)
+        FROM tb_invest_info invest
+        INNER JOIN tb_user_details ud ON ud.ud_login_id = invest.ii_login_id
+        INNER JOIN v_employee emp ON emp.emp_id = ud.ud_customer_manager_id
+        WHERE ud.ud_customer_manager_id > 0 <include refid="selectEmpPerformanceWehre"/>
+    </select>
+
+    <sql id="selectEmpPerformanceWehre">
+        <if test="empId != null and empId>0">
+            AND emp_id = #{empId,jdbcType=INTEGER}
+        </if>
+        <if test="name != null and name != ''">
+            AND emp_name like #{name,jdbcType=VARCHAR}
+        </if>
+        <if test="mobile != null and mobile != ''">
+            AND  emp_mobilephone = #{mobile,jdbcType=VARCHAR}
+        </if>
+        <if test="teamId > 0">
+            AND  dep_id = #{teamId,jdbcType=INTEGER}
+        </if>
+        <if test="rankId > 0">
+            AND  rank_id = #{rankId,jdbcType=INTEGER}
+        </if>
+
+    </sql>
 
 
 </mapper>
