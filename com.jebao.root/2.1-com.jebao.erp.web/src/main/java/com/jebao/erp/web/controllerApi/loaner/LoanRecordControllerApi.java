@@ -68,10 +68,8 @@ public class LoanRecordControllerApi {
         LoanRecordSumVM viewModel = new LoanRecordSumVM();
         viewModel.setJkCount(loanTotal.getTotalTrades());
         viewModel.setJkAmounts(loanTotal.getTotalAmounts().setScale(2, BigDecimal.ROUND_HALF_UP));
-        BigDecimal dhbj = incomeDetailService.totalMoneyByloanerId(loanerId, EnumModel.FundType.本金.getValue(), EnumModel.IncomeStatus.未还.getValue());
-        BigDecimal dhlx = incomeDetailService.totalMoneyByloanerId(loanerId, EnumModel.FundType.利息.getValue(), EnumModel.IncomeStatus.未还.getValue());
-        viewModel.setDhAmounts(dhbj.add(dhlx).setScale(2, BigDecimal.ROUND_HALF_UP));
-        viewModel.setYhAmounts(incomeDetailService.totalMoneyByloanerId(loanerId, EnumModel.FundType.本金.getValue(), EnumModel.IncomeStatus.已还.getValue()).setScale(2, BigDecimal.ROUND_HALF_UP));
+        viewModel.setDhAmounts(incomeDetailService.totalMoneyByloanerId(loanerId, EnumModel.FundType.全部.getValue(), EnumModel.IncomeStatus.未还.getValue()).setScale(2, BigDecimal.ROUND_HALF_UP));
+        viewModel.setYhAmounts(incomeDetailService.totalMoneyByloanerId(loanerId, EnumModel.FundType.全部.getValue(), EnumModel.IncomeStatus.已还.getValue()).setScale(2, BigDecimal.ROUND_HALF_UP));
         return new JsonResultData<>(viewModel);
     }
 }
