@@ -53,6 +53,9 @@ public class TbEmployeeDao {
     public List<EmpPerformanceInfo> selectEmpPerformance(EmployeeSM model){
         return mapper.selectEmpPerformance(model);
     }
+    public int selectEmpPerformanceCount(EmployeeSM model){
+        return mapper.selectEmpPerformanceCount(model);
+    }
 
     /**
      * 逻辑删除员工
