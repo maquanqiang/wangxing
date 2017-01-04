@@ -763,10 +763,10 @@
     <select id="totalMoneyByloanerId" resultType="java.math.BigDecimal"
             parameterType="com.jebao.jebaodb.entity.investment.search.IncomeDetailSM">
         SELECT
-        <if test="status == 1 ">
+        <if test="status == 1 or status == 0">
             IFNULL(SUM(IFNULL(ind_money,0)+IFNULL(ind_overdue_money,0)),0) total_moeny
         </if>
-        <if test="status == 2 ">
+        <if test="status == 2">
             IFNULL(SUM(IFNULL(ind_fact_moeny,0)),0) total_moeny
         </if>
         FROM
@@ -774,8 +774,11 @@
         LEFT JOIN tb_bid_plan bp ON ind.ind_bp_id = bp.bp_id
         WHERE bp.bp_loaner_id = #{loanerId,jdbcType=BIGINT}
         AND ind.ind_status = #{status,jdbcType=INTEGER}
-        AND ind.ind_fund_type = #{fundType,jdbcType=INTEGER}
-        AND ind.ind_is_del = 1 AND bp.bp_is_del = 1
+        <if test="fundType != 0">
+            AND ind.ind_fund_type = #{fundType,jdbcType=INTEGER}
+        </if>
+        AND ind.ind_is_del = 1
+        AND bp.bp_is_del = 1
     </select>
     <!--==================================================投资人账户总览统计==================================================-->
     <select id="totalMoneyByLoginId" resultType="java.math.BigDecimal">

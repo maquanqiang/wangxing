@@ -3,9 +3,13 @@ package com.jebao.p2p.service.impl.user;
 import com.jebao.jebaodb.dao.dao.investment.TbIncomeDetailDao;
 import com.jebao.jebaodb.dao.dao.investment.TbInvestInfoDao;
 import com.jebao.jebaodb.dao.dao.user.TbAccountsFundsDao;
+import com.jebao.jebaodb.dao.dao.user.TbUserDetailsDao;
+import com.jebao.jebaodb.entity.extEntity.EnumModel;
 import com.jebao.jebaodb.entity.extEntity.PageWhere;
 import com.jebao.jebaodb.entity.investment.*;
+import com.jebao.jebaodb.entity.investment.search.IncomeDetailSM;
 import com.jebao.jebaodb.entity.user.TbAccountsFunds;
+import com.jebao.jebaodb.entity.user.TbUserDetails;
 import com.jebao.p2p.service.inf.user.IInvestServiceInf;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,12 +26,12 @@ import java.util.Map;
 public class InvestServiceImpl implements IInvestServiceInf {
     @Autowired
     private TbIncomeDetailDao tbIncomeDetailDao;
-
     @Autowired
     private TbInvestInfoDao tbInvestInfoDao;
-
     @Autowired
     private TbAccountsFundsDao tbAccountsFundsDao;
+    @Autowired
+    private TbUserDetailsDao tbUserDetailsDao;
 
     /**
      * 账户资金汇总
@@ -42,12 +46,23 @@ public class InvestServiceImpl implements IInvestServiceInf {
         if(accountsFunds != null){
             balance = accountsFunds.getAfBalance();
         }
+        BigDecimal freeze_loaner = new BigDecimal(0);
+        TbUserDetails userDetails = tbUserDetailsDao.selectByLoginId(loginId);
+        if(userDetails != null && userDetails.getUdLoanerId() != null) {
+            IncomeDetailSM incomeDetailSM = new IncomeDetailSM();
+            incomeDetailSM.setLoanerId(userDetails.getUdLoanerId());
+            incomeDetailSM.setFundType(EnumModel.FundType.全部.getValue());
+            incomeDetailSM.setStatus(EnumModel.IncomeStatus.冻结中.getValue());
+            freeze_loaner = freeze_loaner.add(tbIncomeDetailDao.totalMoneyByloanerId(incomeDetailSM));
+        }
+
         BigDecimal freeze = tbInvestInfoDao.totalFreezeMoneyByLoginId(loginId);
-        BigDecimal income = tbIncomeDetailDao.totalMoneyByLoginId(loginId, 2, 2);
-        BigDecimal dueInPrincipal = tbIncomeDetailDao.totalMoneyByLoginId(loginId, 1, 1);
-        BigDecimal dueInIncome = tbIncomeDetailDao.totalMoneyByLoginId(loginId, 2, 1);
+        freeze = freeze.add(freeze_loaner);
+        BigDecimal income = tbIncomeDetailDao.totalMoneyByLoginId(loginId, EnumModel.FundType.利息.getValue(), EnumModel.IncomeStatus.已还.getValue());
+        BigDecimal dueInPrincipal = tbIncomeDetailDao.totalMoneyByLoginId(loginId, EnumModel.FundType.本金.getValue(), EnumModel.IncomeStatus.未还.getValue());
+        BigDecimal dueInIncome = tbIncomeDetailDao.totalMoneyByLoginId(loginId, EnumModel.FundType.利息.getValue(), EnumModel.IncomeStatus.未还.getValue());
         BigDecimal totalAssets = new BigDecimal(0);
-        Map<String, BigDecimal> map = new HashMap<String, BigDecimal>();
+        Map<String, BigDecimal> map = new HashMap<>();
         map.put("totalAssets", totalAssets.add(balance).add(freeze).add(dueInPrincipal).add(dueInIncome));
         map.put("incomeAmount", income);
         map.put("balance", balance);
