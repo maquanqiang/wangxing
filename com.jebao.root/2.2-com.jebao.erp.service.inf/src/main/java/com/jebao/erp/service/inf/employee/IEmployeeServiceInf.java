@@ -1,5 +1,6 @@
 package com.jebao.erp.service.inf.employee;
 
+import com.jebao.jebaodb.entity.employee.EmpPerformanceInfo;
 import com.jebao.jebaodb.entity.employee.EmployeeInfo;
 import com.jebao.jebaodb.entity.employee.input.EmployeeIM;
 import com.jebao.jebaodb.entity.employee.search.EmployeeSM;
@@ -34,5 +35,10 @@ public interface IEmployeeServiceInf {
      */
     ResultInfo deleteEmployeeInfo(int empId,int userId);
 
+    /**
+     * 获取员工绩效信息
+     */
+    List<EmpPerformanceInfo> getEmpPerformance(EmployeeSM model);
+    int getEmpPerformanceCount(EmployeeSM model);
 
 }

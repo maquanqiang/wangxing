@@ -30,4 +30,5 @@ public interface TbEmployeeMapper {
      * @return
      */
     List<EmpPerformanceInfo> selectEmpPerformance(EmployeeSM model);
+    int selectEmpPerformanceCount(EmployeeSM model);
 }

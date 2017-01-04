@@ -287,4 +287,13 @@ public class EmployeeServiceImpl implements IEmployeeServiceInf {
         return new ResultInfo(true, "修改成功");
     }
 
+    @Override
+    public List<EmpPerformanceInfo> getEmpPerformance(EmployeeSM model){
+        return employeeDao.selectEmpPerformance(model);
+    }
+    @Override
+    public int getEmpPerformanceCount(EmployeeSM model){
+        return employeeDao.selectEmpPerformanceCount(model);
+    }
+
 }
