@@ -14,6 +14,10 @@ $(function () {
 
 
     $('.project-filter dl dt').click(function () {
+        //初始化本地数据
+
+        model.searchObj.pageIndex = 0;
+        model.searchObj.pageSize = 10;
         model.searchObj.bpInterestPayType = null;
         model.searchObj.bpPeriodStr = null;
         model.searchObj.searchMoneyStr = null;

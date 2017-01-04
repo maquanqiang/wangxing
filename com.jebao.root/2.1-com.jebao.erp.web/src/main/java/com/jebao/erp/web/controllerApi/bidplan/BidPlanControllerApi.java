@@ -18,6 +18,8 @@ import com.jebao.erp.web.responseModel.bidplan.ProjTempNameVM;
 import com.jebao.erp.web.responseModel.bidplan.ProjectTempVM;
 import com.jebao.erp.web.utils.contract.UpCaseRMB;
 import com.jebao.erp.web.utils.toolbox.BetweenDays;
+import com.jebao.erp.web.utils.validation.ValidationResult;
+import com.jebao.erp.web.utils.validation.ValidationUtil;
 import com.jebao.jebaodb.entity.extEntity.PageWhere;
 import com.jebao.jebaodb.entity.extEntity.ResultInfo;
 import com.jebao.jebaodb.entity.investment.TbIncomeDetail;
@@ -348,6 +350,11 @@ public class BidPlanControllerApi extends _BaseController {
     @RequestMapping("doLoan")
     @ResponseBody
     public JsonResult doLoan(RepaymentForm form) {
+        //校验
+        ValidationResult resultValidation = ValidationUtil.validateEntity(form);
+        if (resultValidation.isHasErrors()) {
+            return new JsonResultError(resultValidation.getErrorMsg().toString());
+        }
 
         TbBidPlan tbBidPlan = bidPlanService.selectByBpId(form.getBpId());
         if (tbBidPlan.getBpStatus() != TbBidPlan.STATUS_BID_FULL && tbBidPlan.getBpStatus() != TbBidPlan.STATUS_BID_LOSE) {
