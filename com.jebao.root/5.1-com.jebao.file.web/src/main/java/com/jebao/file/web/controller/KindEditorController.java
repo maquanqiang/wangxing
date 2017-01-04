@@ -13,10 +13,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.multipart.support.StandardMultipartHttpServletRequest;
@@ -27,10 +24,9 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.nio.file.Paths;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * KindEditor-文件上传插件
@@ -84,7 +80,7 @@ public class KindEditorController {
      * 图片读取
      */
     @RequestMapping(method = RequestMethod.GET, value = "/file/{dir}/{filename:.+}")
-    public ResponseEntity<?> readFile(@PathVariable String dir, @PathVariable String filename) {
+    public ResponseEntity<?> readFile(@PathVariable String dir, @PathVariable String filename,@RequestHeader(value = "If-None-Match", required = false) String ifNoneMatch) {
 
         //todo 调试输入图片的保存路径
         //String savePath=Paths.get(ROOT,IMG_PATH,imgPath ,filename).toAbsolutePath().toString();
@@ -117,7 +113,29 @@ public class KindEditorController {
                         .contentType(MediaType.parseMediaType("application/octet-stream"))
                         .body(resource);
             }
-            return ResponseEntity.ok(resourceLoader.getResource("file:" + filePath));
+            //region 图片数据增加缓存，减少服务器的请求流量
+            //当前系统时间
+            long now = System.currentTimeMillis();
+            //文档可以在浏览器端/proxy上缓存多久
+            //(3600*24*100);//设置静态资源缓存时间为100天
+            long maxAge = 8640000;
+            //弱实体
+            String etag = "W/\"" + "582abeb4N71445391"+ "\"";
+            if(StringUtils.equals(ifNoneMatch, etag)) {
+                return new ResponseEntity<String>(HttpStatus.NOT_MODIFIED);
+            }
+            DateFormat gmtDateFormat = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss 'GMT'", Locale.US);
+            HttpHeaders headers = new HttpHeaders();
+            //ETag http 1.1支持
+            headers.add("ETag", etag);
+            //当前系统时间
+            headers.add("Date", gmtDateFormat.format(new Date(now)));
+            //文档生存时间 http 1.1支持
+            headers.add("Cache-Control", "max-age=" + maxAge);
+            return ResponseEntity.ok()
+                    .headers(headers)
+                    .body(resource);
+            //endregion
         } catch (Exception e) {
             return new ResponseEntity<String>("Exception Not found.", HttpStatus.NOT_FOUND);
         }
