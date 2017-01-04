@@ -41,7 +41,7 @@ var vm = new Vue({
         model.searchObj.pageIndex=0;
         model.searchObj.pageSize=15;
 
-        model.bpTypeArr = ["","普通理财","新手专享"];
+        model.bpTypeArr = ["","普通理财","新手专享","加息标"];
         model.bpCycleTypeArr = ["","日","月","季","年"];
         model.bpInterestPayTypeArr = ["","一次性还本付息","先息后本，按期付息"];
         model.bpStatusArr = ["待审核",'审核未通过',"招标中","已满标",'已过期','','起息中','还款中','','','已结清']

@@ -28,7 +28,7 @@ var vm = new Vue({
     data: model,
     beforeCreate:function(){
         //初始化本地数据
-        model.bpTypeArr = ["","普通理财","新手专享"];
+        model.bpTypeArr = ["","普通理财","新手专享","加息标"];
         model.bpCycleTypeArr = ["","日","月","季","年"];
         model.bpInterestPayTypeArr = ["","一次性还本付息","先息后本，按期付息"];
         
