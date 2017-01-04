@@ -157,32 +157,35 @@ var vm = new Vue({
                     return false;
                 }
                 //加载层-风格2
-                layer.load(1);
+                var index = layer.load(1);
                 var form = $("#defaultForm").serializeObject();
                 $.post("/api/investInfo/createRepaymentDetails",form,function(response){
                     if (response.success_is_ok){
                         layer.msg(response.msg);
                     }
                 });
-                $.post("/api/investInfo/createIncomeDetails",form,function(response){
-                    if (response.success_is_ok){
-                        layer.msg(response.msg);
-                        $.post("/contract/createDemo", form, function (response) {
-                            if(response.success_is_ok){
-                                //加载层-默认风格
-                            }else{
-                                layer.msg(response.error);
+
+                $.post("/api/bidPlan/doLoan",form,function(response){
+                    layer.close(index);
+                    if(response.success_is_ok){
+                        layer.alert(response.msg);
+                        $.post("/api/investInfo/createIncomeDetails",form,function(response){
+                            if (response.success_is_ok){
+                                layer.msg(response.msg);
+                                form.bidNumber = vm.plan.bpNumber;
+                                $.post("/contract/createDemo", form, function (response) {
+                                    if(response.success_is_ok){
+                                        //加载层-默认风格
+                                        layer.msg("合同制作成功");
+                                        setTimeout(function(){window.location.href = "/postLoan/index"},3000);
+                                    }else{
+                                        layer.alert(response.error);
+                                    }
+                                })
                             }
                         })
-                    }
-                })
-                $.post("/api/bidPlan/doLoan",form,function(response){
-                    if(response.success_is_ok){
-                        layer.closeAll('loading');
-                        layer.alert(response.msg);
-                        window.location.href = "/postLoan/index";
+
                     }else{
-                        layer.closeAll();
                         layer.alert(response.error);
                     }
                 })

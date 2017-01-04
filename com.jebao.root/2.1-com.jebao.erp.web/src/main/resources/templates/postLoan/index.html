@@ -88,17 +88,16 @@
                                         <tr role="row">
                                             <th width="7%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">标的名称</th>
                                             <th width="7%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">项目编号</th>
-                                            <th width="7%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">借款人</th>
-                                            <th width="7%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">期数</th>
-                                            <th width="7%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">资金类型</th>
-                                            <th width="7%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">应还金额</th>
+                                            <th width="5%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">借款人</th>
+                                            <th width="5%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">期数</th>
+                                            <th width="7%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">本息合计应还</th>
                                             <th width="7%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">计划还款日</th>
                                             <th width="7%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">逾期天数</th>
                                             <th width="7%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">逾期罚息</th>
                                             <th width="9%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">实际到账金额</th>
                                             <th width="9%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">实际到账日期</th>
                                             <th width="7%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">还款情况</th>
-                                            <th width="5%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">操作</th>
+                                            <th width="10%" class="ui-state-default sorting_disabled" rowspan="1" colspan="1">操作</th>
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -107,7 +106,6 @@
                                             <td>{{data.indBpNumber}}</td>
                                             <td>{{data.bpTrueName}}</td>
                                             <td>{{data.indPeriods}}</td>
-                                            <td>{{fundType[data.indFundType]}}</td>
                                             <td>{{data.indMoney}}</td>
                                             <td>{{data.indDateTime}}</td>
                                             <td>{{data.indOverdueDays}}</td>
@@ -116,7 +114,8 @@
                                             <td>{{data.indFactDateTime}}</td>
                                             <td>{{repayStatus[data.indStatus]}}</td>
                                             <td>
-                                                <a href="javascript:void(0);" class="btn btn-default btn-xs" @click.prevent="openView(data.indBpId, data.indPeriods, data.indFundType)">查看详情</a>
+                                                <a href="javascript:void(0);" class="btn btn-default btn-xs" @click.prevent="openView(data.indBpId, data.indPeriods)">查看详情</a>
+                                                <a v-if="data.indStatus==0" href="javascript:void(0);" class="btn btn-default btn-xs" @click.prevent="repay(data.indBpId, data.indPeriods)">还款</a>
                                             </td>
                                         </tr>
                                         </tbody>

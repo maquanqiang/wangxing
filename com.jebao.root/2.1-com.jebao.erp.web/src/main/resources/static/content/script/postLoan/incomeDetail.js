@@ -16,7 +16,7 @@ var model = {
     //台账列表
     incomeDetailList : [],
     fundType : ['','本金','利息'],
-    repayStatus : ['', '未还款', '已还款']
+    repayStatus : ['资金冻结', '未还款', '已还款']
 
 
 };

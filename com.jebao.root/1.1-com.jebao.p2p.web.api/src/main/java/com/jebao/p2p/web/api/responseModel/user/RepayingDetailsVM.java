@@ -1,6 +1,7 @@
 package com.jebao.p2p.web.api.responseModel.user;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.jebao.common.utils.incomeDetail.IncomeDetailUtil;
 import com.jebao.jebaodb.entity.investment.TbIncomeDetail;
 import com.jebao.jebaodb.entity.user.TbFundsDetails;
 import com.jebao.p2p.web.api.responseModel.ViewModel;
@@ -21,6 +22,7 @@ public class RepayingDetailsVM extends ViewModel {
         this.repayMoney = entity.getIndMoney();
         this.dueMoney = entity.getIndOverdueMoney();
         this.bpNumber = entity.getIndBpNumber();
+        this.status = entity.getIndStatus();
     }
 
     private Long bpId;
@@ -31,6 +33,15 @@ public class RepayingDetailsVM extends ViewModel {
     private BigDecimal repayMoney;
     private BigDecimal dueMoney;
     private String bpNumber;
+    private Integer status;
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
 
     public String getBpNumber() {
         return bpNumber;
