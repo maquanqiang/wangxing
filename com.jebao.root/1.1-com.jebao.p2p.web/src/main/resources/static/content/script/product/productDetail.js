@@ -212,6 +212,7 @@ var vm = new Vue({
                                 layer.msg(response.error, {
                                     time: 0 //不自动关闭
                                     ,btn: ['关闭']
+                                    ,icon: 6
                                     ,yes: function(index){
                                         layer.close(index);
                                         window.location.reload();

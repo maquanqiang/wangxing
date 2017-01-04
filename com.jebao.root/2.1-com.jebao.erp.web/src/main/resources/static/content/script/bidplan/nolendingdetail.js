@@ -168,7 +168,7 @@ var vm = new Vue({
                 $.post("/api/bidPlan/doLoan",form,function(response){
                     layer.close(index);
                     if(response.success_is_ok){
-                        layer.alert(response.msg);
+                        layer.msg(response.msg);
                         $.post("/api/investInfo/createIncomeDetails",form,function(response){
                             if (response.success_is_ok){
                                 layer.msg(response.msg);
@@ -177,14 +177,15 @@ var vm = new Vue({
                                     if(response.success_is_ok){
                                         //加载层-默认风格
                                         layer.msg("合同制作成功");
-                                        setTimeout(function(){window.location.href = "/postLoan/index"},3000);
+                                        setTimeout(function(){window.location.href = "/bidplan/alreadyLoanList"},3000);
                                     }else{
                                         layer.alert(response.error);
                                     }
                                 })
+                            }else{
+                                layer.alert(response.error);
                             }
                         })
-
                     }else{
                         layer.alert(response.error);
                     }

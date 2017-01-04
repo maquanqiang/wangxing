@@ -55,8 +55,6 @@ public class ContractController {
     @Autowired
     private IIncomeDetailServiceInf incomeDetailService;
 
-    private ContractCommData commData = null;
-
     //投资人合同模板
     @RequestMapping("template/t1")
     public String templateForT1(ContractParamForm form, Model model) {
@@ -67,42 +65,40 @@ public class ContractController {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         DecimalFormat d1 = new DecimalFormat("#,##0.##");
         String loanMonayRMB = UpCaseRMB.number2CNMontrayUnit(form.getBpLoanMoney());
-        if(commData == null){
-            //common data
-            commData = new ContractCommData();
-            TbBidPlan tbBidPlan = bidPlanService.selectByBpId(form.getBpId());
-            TbLoaner loaner = loanerService.findLoanerById(tbBidPlan.getBpLoanerId());
+        //common data
+        ContractCommData commData = new ContractCommData();
+        TbBidPlan tbBidPlan = bidPlanService.selectByBpId(form.getBpId());
+        TbLoaner loaner = loanerService.findLoanerById(tbBidPlan.getBpLoanerId());
 
-            commData.setLoanerTrueName(tbBidPlan.getBpTrueName());              //借款人姓名
-            commData.setLoanerNumber(loaner.getlIdNumber());                    //证件号码
-            commData.setInterestSt(sdf.format(form.getBpInterestSt()));         //受让日期
-            cl.setTime(form.getBpRepayTime());
-            cl.add(Calendar.DATE, -1);
-            commData.setInterestEt(sdf.format(cl.getTime()));                   //结束日期
-            commData.setRepayTime(sdf.format(form.getBpRepayTime()));           //还款日期
-            commData.setLoanMoney(d1.format(form.getBpLoanMoney()));            //标的金额--实际放款金额
-            commData.setLoanMoneyRMB(loanMonayRMB);                             //标的金额人民币大写
-            commData.setInterestPayType(tbBidPlan.getBpInterestPayType() == 1 ? "一次性还本付息" : "按期付息，到期还本");     //还款方式
-            commData.setBidPeriods(tbBidPlan.getBpPeriods() + cycleType[tbBidPlan.getBpCycleType()]);          //标的周期
-            commData.setLoanTime(sdf.format(form.getBpInterestSt()));            //放款日期  签字日期
-            commData.setBidNumber(tbBidPlan.getBpNumber());
+        commData.setLoanerTrueName(tbBidPlan.getBpTrueName());              //借款人姓名
+        commData.setLoanerNumber(loaner.getlIdNumber());                    //证件号码
+        commData.setInterestSt(sdf.format(form.getBpInterestSt()));         //受让日期
+        cl.setTime(form.getBpRepayTime());
+        cl.add(Calendar.DATE, -1);
+        commData.setInterestEt(sdf.format(cl.getTime()));                   //结束日期
+        commData.setRepayTime(sdf.format(form.getBpRepayTime()));           //还款日期
+        commData.setLoanMoney(d1.format(form.getBpLoanMoney()));            //标的金额--实际放款金额
+        commData.setLoanMoneyRMB(loanMonayRMB);                             //标的金额人民币大写
+        commData.setInterestPayType(tbBidPlan.getBpInterestPayType() == 1 ? "一次性还本付息" : "按期付息，到期还本");     //还款方式
+        commData.setBidPeriods(tbBidPlan.getBpPeriods() + cycleType[tbBidPlan.getBpCycleType()]);          //标的周期
+        commData.setLoanTime(sdf.format(form.getBpInterestSt()));            //放款日期  签字日期
+        commData.setBidNumber(tbBidPlan.getBpNumber());
 
-            TbInvestInfo tbInvestInfo = new TbInvestInfo();
-            tbInvestInfo.setIiBpId(form.getBpId());
-            tbInvestInfo.setIiIsDel(1);
-            PageWhere pageWhere = new PageWhere(0, 10000);
+        TbInvestInfo tbInvestInfo = new TbInvestInfo();
+        tbInvestInfo.setIiBpId(form.getBpId());
+        tbInvestInfo.setIiIsDel(1);
+        PageWhere pageWhere = new PageWhere(0, 10000);
 
-            List<TbInvestInfo> tbInvestInfos = investInfoService.selectByBpId(tbInvestInfo, pageWhere);
-            List<InvestInfoData> datas = new ArrayList<>();
-            if (tbInvestInfos != null && tbInvestInfos.size() > 0) {
-                for (TbInvestInfo info : tbInvestInfos) {
-                    InvestInfoData data = new InvestInfoData(info);
-                    data.setBidNumber(tbBidPlan.getBpNumber());
-                    datas.add(data);
-                }
+        List<TbInvestInfo> tbInvestInfos = investInfoService.selectByBpId(tbInvestInfo, pageWhere);
+        List<InvestInfoData> datas = new ArrayList<>();
+        if (tbInvestInfos != null && tbInvestInfos.size() > 0) {
+            for (TbInvestInfo info : tbInvestInfos) {
+                InvestInfoData data = new InvestInfoData(info);
+                data.setBidNumber(tbBidPlan.getBpNumber());
+                datas.add(data);
             }
-            commData.setInfos(datas);
         }
+        commData.setInfos(datas);
 
         TbInvestInfo investInfo = investInfoService.selectById(form.getInvestId());
         TbUserDetails userDetails = userDetailsService.selectByLoginId(investInfo.getIiLoginId());
