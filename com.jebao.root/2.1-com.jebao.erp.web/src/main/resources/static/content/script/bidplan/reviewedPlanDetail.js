@@ -109,7 +109,7 @@ var vm = new Vue({
                         }
                     });
                 });
-            }else{
+            }else if(state==2){
                 $.post("/api/bidPlan/reviewedPlan",formValue,function(response){
                     if (response.success_is_ok){
                         layer.msg("开标成功");

@@ -302,8 +302,10 @@ public class BidPlanControllerApi extends _BaseController {
     public JsonResult reviewedPlan(Long bpId, Integer status, String remark) {
         TbBidPlan bidPlan = bidPlanService.selectByBpId(bpId);
         //设置借款利率上限 20% 超过则报异常
-        if(bidPlan.getBpRate().compareTo(new BigDecimal(20))>0){
-            return new JsonResultError("审核不通过-利率20");
+        if(status==2){
+            if(bidPlan.getBpRate().compareTo(new BigDecimal(20))>0){
+                return new JsonResultError("审核不通过-利率20");
+            }
         }
         TbBidPlan tbBidPlan = new TbBidPlan();
         tbBidPlan.setBpStatus(status);
