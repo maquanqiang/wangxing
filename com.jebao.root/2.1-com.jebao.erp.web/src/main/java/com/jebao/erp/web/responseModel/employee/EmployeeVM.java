@@ -6,7 +6,6 @@ import com.jebao.jebaodb.entity.employee.EmployeeInfo;
 import com.jebao.jebaodb.entity.employee.TbDepartment;
 import com.jebao.jebaodb.entity.employee.TbEmployee;
 import com.jebao.jebaodb.entity.employee.TbRank;
-import com.sun.org.glassfish.gmbal.Description;
 
 import java.util.Date;
 
@@ -41,9 +40,7 @@ public class EmployeeVM extends ViewModel {
     }
 
     private int id;
-    @Description("姓名")
     private String name;
-    @Description("手机号码")
     private String mobile;
 
     private String cardNo;
@@ -59,10 +56,8 @@ public class EmployeeVM extends ViewModel {
     @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd")
     private Date dimissionDate;
     private int rankId;
-    @Description("员工级别")
     private String rankName;
     private int teamId;
-    @Description("所属团队")
     private String teamName;
     private int loginStatus;
 
