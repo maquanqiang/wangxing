@@ -192,3 +192,62 @@ var vm = new Vue({
         }
     }
 });
+//批量图片上传-begin
+KindEditor.ready(function(K) {
+    var editor = K.editor({
+        uploadJson : '/filePlugin/uploadFile',//上传图片
+        allowFileManager : false,//true或false，true时显示浏览服务器图片功能。
+        afterBlur: function () { this.sync(); }//数据同步
+    });
+    K('#add-batch-material').click(function() {
+        editor.loadPlugin('multiimage', function() {
+            editor.plugin.multiImageDialog({
+                clickFn : function(urlList) {
+                    //div.html('');  //这行要去掉，会影响图片预览框内的样式
+                    var rcptIdVal=$("#rcptIdHid").val();
+                    if(rcptIdVal<0){alert("图片批量上传出现问题，请联系技术人员");return;}
+                    K.each(urlList, function(i, data) {
+                        var path=data.url;
+                        var name=getFileName(data.url);
+                        var remark="无";
+                        var buffer = new StringBuffer();
+                        buffer.append("file="+name)
+                              .append("path="+data.url)
+                              .append("projectId="+rcptIdVal)
+                              .append("name="+name)
+                              .append("remark=无");
+                        var resultParam=buffer.toParam();
+                        $.ajax({
+                            type :"post",
+                            url : "/api/risk/addMaterials",
+                            data : resultParam,
+                            async : false
+                        });
+                        //alert(resultParam);
+                    });
+                    window.location.reload(true)
+                    editor.hideDialog();
+                }
+            });
+        });
+    });
+});
+function getFileName(obj)
+{
+    var pos = obj.lastIndexOf("/")*1;
+    return obj.substring(pos+1);
+};
+function StringBuffer() {
+    this.__strings__ = new Array();
+};
+StringBuffer.prototype.append = function (str) {
+    this.__strings__.push(str);
+    return this;    //方便链式操作
+};
+StringBuffer.prototype.toString = function () {
+    return this.__strings__.join("");
+};
+StringBuffer.prototype.toParam = function () {
+    return this.__strings__.join("&");
+};
+//批量图片上传-end
