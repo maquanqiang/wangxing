@@ -223,6 +223,15 @@ public class TbBidPlanServiceImpl implements ITbBidPlanServiceInf {
         StringBuffer sb = new StringBuffer("还款失败的台账Id:");
         PageWhere pageWhere = new PageWhere(0, 10000);
         List<TbIncomeDetail> incomeDetails = incomeDetailDao.selectByConditionForPage(tbIncomeDetail, pageWhere);
+        //资金是否正常冻结
+        for(TbIncomeDetail incomeDetail : incomeDetails){
+            if(incomeDetail.getIndStatus() != 0 || incomeDetail.getIndThirdContractNo() == null){
+                resultInfo.setSuccess_is_ok(false);
+                resultInfo.setMsg("还款资金冻结异常");
+                return resultInfo;
+            }
+        }
+
 
         TbBidPlan tbBidPlan = bidPlanDao.selectByPrimaryKey(tbIncomeDetail.getIndBpId());
         TbAccountsFunds outUser = accountsFundsDao.selectByLoginId(tbBidPlan.getBpLoginId());
