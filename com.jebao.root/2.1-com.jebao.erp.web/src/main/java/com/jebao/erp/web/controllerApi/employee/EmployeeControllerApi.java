@@ -105,7 +105,7 @@ public class EmployeeControllerApi extends _BaseController {
     }
     @RequestMapping(value = "uploadconfirm",method = RequestMethod.POST)
     public ResultInfo uploadconfirm(String filename){
-        String filePath = Paths.get(FilePluginController.ROOT, "projectFile\\file\\p0",filename).toString();
+        /*String filePath = Paths.get(FilePluginController.ROOT, "projectFile\\file\\p0",filename).toString();
         List<HashMap<String,Object>> mapList =new ExcelUtil().readFileToKv(filePath);
         List<EmployeeIM> modelList = new ArrayList<>();
 
@@ -168,7 +168,8 @@ public class EmployeeControllerApi extends _BaseController {
                 return new ResultInfo(false,"已导入"+successNum+"条。"+modelList.get(i).getName()+" 出现错误："+saveResult.getMsg());
             }
         }
-        return new ResultInfo(true,"执行完毕，导入数据"+successNum+"条。已存在："+existsNum+"条" );
+        return new ResultInfo(true,"执行完毕，导入数据"+successNum+"条。已存在："+existsNum+"条" );*/
+        return  null;
     }
 
     /**

@@ -42,4 +42,25 @@ public class HttpClientUtil {
             throw e;
         }
     }
+
+//    public String getHttpResponse(String uri){
+//        HttpClient httpClient = new HttpClient();
+//        httpClient.setConnectionTimeout(200000);
+//        httpClient.getParams().setParameter(HttpMethodParams.HTTP_CONTENT_CHARSET, "UTF-8");
+//        GetMethod getMethod = new GetMethod(url);
+//
+//        //get请求返回结果
+//        try {
+//            int statusCode = httpClient.executeMethod(getMethod);
+//            if (statusCode == HttpURLConnection.HTTP_OK){
+//                return getMethod.getResponseBodyAsString();
+//            }
+//
+//        } catch (Exception e) {
+//
+//        }
+//        return "";
+//    }
+
+
 }

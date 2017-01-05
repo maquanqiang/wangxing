@@ -37,29 +37,7 @@ public class ExcelUtil {
         List<Object[]> rowList = new ArrayList<>();
         try {
             FileInputStream fileInputStream = new FileInputStream(filePath);
-            XSSFWorkbook workbook = new XSSFWorkbook(fileInputStream);
-            XSSFSheet sheet = workbook.getSheetAt(0);
-
-            FormulaEvaluator formulaEvaluator = workbook.getCreationHelper().createFormulaEvaluator();
-            //region 读取sheet数据填充 list
-            int columnCount = 0;//设置列数
-            for (Row row : sheet) {
-                if (row == null) continue;
-                if (columnCount == 0) {
-                    columnCount = row.getLastCellNum();
-                }
-                Object[] rowObj = new Object[columnCount];//保证每行所存储的单元格数量相同
-
-                //row.iterator 会跳过空单元格，为保证每行的列数相同，循环列数量次
-                for (int i = 0; i < columnCount; i++) {
-                    Cell cell = row.getCell(i);
-                    Object value = getCellValue(cell, formulaEvaluator);
-                    rowObj[i] = value;
-                }
-                rowList.add(rowObj);
-            }
-            //endregion
-
+            return readToList(fileInputStream);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (Exception e) {
@@ -111,6 +89,19 @@ public class ExcelUtil {
         List<HashMap<String, Object>> rowList = new ArrayList<>();
         try {
             FileInputStream fileInputStream = new FileInputStream(filePath);
+            return readFileToKv(fileInputStream);
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rowList;
+    }
+    public List<HashMap<String, Object>> readFileToKv(InputStream fileInputStream) {
+
+        List<HashMap<String, Object>> rowList = new ArrayList<>();
+        try {
             XSSFWorkbook workbook = new XSSFWorkbook(fileInputStream);
             XSSFSheet sheet = workbook.getSheetAt(0);
 
@@ -149,8 +140,6 @@ public class ExcelUtil {
         }
         return rowList;
     }
-
-
     /**
      * 获取单元格值
      */
