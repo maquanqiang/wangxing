@@ -117,5 +117,10 @@ Date.prototype.toFormatString = function (format) {
         if (xhr.status == 403) {
             window.location.href = "/account/login";
         }
+        $(".layui-layer-loading").each(function(i,ele){
+            var times = $(ele).attr("times");
+            layer.close(times);
+        });
+        layer.msg("系统异常，请稍后再试");
     });
 }(jQuery));
