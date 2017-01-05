@@ -59,6 +59,8 @@ public class UserfundController extends _BaseController {
         if (!resultInfo.getSuccess_is_ok()){
             return new JsonResultError(resultInfo.getMsg());
         }
+        user.setFundAccount(reqData.getMobile_no());
+        CurrentUserContextHolder.set(user); // 设置第三方账户
         return new JsonResultOk(resultInfo.getMsg());
     }
     @RequestMapping("getBankCardInfo")
