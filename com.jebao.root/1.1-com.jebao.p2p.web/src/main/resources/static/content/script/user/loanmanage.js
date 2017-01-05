@@ -58,7 +58,7 @@ var vm = new Vue({
                     }, function (response) {
                         layer.closeAll();
                         if (response.success_is_ok) {
-                            layer.alert(response.msg);
+                            layer.msg(response.msg);
                             setTimeout(window.location.reload(),5000);
                         } else {
                             layer.alert(response.error);

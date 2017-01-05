@@ -177,7 +177,7 @@ var vm = new Vue({
                                     if(response.success_is_ok){
                                         //加载层-默认风格
                                         layer.msg("合同制作成功");
-                                        setTimeout(function(){window.location.href = "/bidplan/alreadyLoanList"},3000);
+                                        setTimeout(function(){window.location.href = "/bidplan/noLendingList"},3000);
                                     }else{
                                         layer.alert(response.error);
                                     }
