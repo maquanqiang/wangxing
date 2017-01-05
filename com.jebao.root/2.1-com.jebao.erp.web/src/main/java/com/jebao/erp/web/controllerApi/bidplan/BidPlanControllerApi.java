@@ -335,6 +335,7 @@ public class BidPlanControllerApi extends _BaseController {
     public JsonResult getPlanListBySearchCondition(BidPlanForm form, @RequestParam(value = "pageIndex", defaultValue = "0") Integer pageIndex,
                                                    @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize) {
         PageWhere pageWhere = new PageWhere(pageIndex, pageSize);
+        pageWhere.setOrderBy(" bp_id desc");
         BidPlanSM bidPlanSM = BidPlanForm.toEntity(form);
         List<TbBidPlan> tbBidPlans = bidPlanService.selectBySelfConditionForPage(bidPlanSM, pageWhere);
         List<BidPlanVM> viewModelList = new ArrayList<BidPlanVM>();

@@ -37,7 +37,7 @@ var vm = new Vue({
     beforeCreate:function(){
         //初始化本地数据
         model.searchObj = $("#defaultForm").serializeObject(); //初始化 model.search 对象
-        model.searchObj.bpStatus = 2;
+        model.searchObj.bpStatusSear = '(2,3,4)';
         model.searchObj.pageIndex=0;
         model.searchObj.pageSize=15;
 

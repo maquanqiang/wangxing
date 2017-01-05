@@ -281,11 +281,11 @@ public class LoanManageServiceImpl implements ILoanManageServiceInf {
                     resultInfo.setMsg("还款金额有误，-台账MD5验证失败，有疑问请联系平台");
                     return resultInfo;
                 }
-//                if(new Date().before(detail.getIndDateTime())){
-//                    resultInfo.setSuccess_is_ok(false);
-//                    resultInfo.setMsg("未到还款日期，有疑问请联系平台");
-//                    return resultInfo;
-//                }
+                if(new Date().before(detail.getIndDateTime())){
+                    resultInfo.setSuccess_is_ok(false);
+                    resultInfo.setMsg("未到还款日期，有疑问请联系平台");
+                    return resultInfo;
+                }
             }
 
 

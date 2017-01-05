@@ -32,6 +32,10 @@ public class BidPlanForm {
         bidPlanSM.setSearchDateSt(form.getSearchDateSt());
         bidPlanSM.setSearchDateEnd(form.getSearchDateEnd());
         bidPlanSM.setSearchDateType(form.getSearchDateType());
+        bidPlanSM.setBpStatusSear(form.getBpStatusSear());
+        if(form.getBpNumberSear()!=null){
+            bidPlanSM.setBpNumberSear("'"+form.getBpNumberSear()+"%'");
+        }
         return bidPlanSM;
     }
 
@@ -98,7 +102,25 @@ public class BidPlanForm {
 
     private String searchDateType;
 
+    private String bpStatusSear;
 
+    private String bpNumberSear;
+
+    public String getBpStatusSear() {
+        return bpStatusSear;
+    }
+
+    public void setBpStatusSear(String bpStatusSear) {
+        this.bpStatusSear = bpStatusSear;
+    }
+
+    public String getBpNumberSear() {
+        return bpNumberSear;
+    }
+
+    public void setBpNumberSear(String bpNumberSear) {
+        this.bpNumberSear = bpNumberSear;
+    }
 
     public String getBpName() {
         return bpName;

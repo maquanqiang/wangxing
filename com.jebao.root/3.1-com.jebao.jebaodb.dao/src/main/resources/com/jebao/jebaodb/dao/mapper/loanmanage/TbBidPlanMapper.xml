@@ -800,6 +800,12 @@
         <if test="record.bpType != null" >
             AND bp_type = #{record.bpType,jdbcType=INTEGER}
         </if>
+        <if test="record.bpNumberSear != null" >
+            AND bp_number LIKE ${record.bpNumberSear}
+        </if>
+        <if test="record.bpStatusSear != null" >
+            AND bp_status IN ${record.bpStatusSear}
+        </if>
         AND bp_is_del = 1
     </sql>
 

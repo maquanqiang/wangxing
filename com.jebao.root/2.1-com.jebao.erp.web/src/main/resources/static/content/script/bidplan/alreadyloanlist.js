@@ -40,7 +40,7 @@ var vm = new Vue({
 
         //初始化本地数据
         model.searchObj = $("#defaultForm").serializeObject(); //初始化 model.search 对象
-        model.searchObj.bpStatus = 7;
+        model.searchObj.bpStatusSear = '(7,10)';
         model.searchObj.pageIndex=0;
         model.searchObj.pageSize=15;
     },
@@ -63,11 +63,12 @@ var vm = new Vue({
             }
             $("#searchBtn").addClass("disabled");//禁用按钮
             $.get("/api/bidPlan/getPlanListBySearchCondition",model.searchObj,function(response){
+                $("#searchBtn").removeClass("disabled");//解除禁用
+                //调用分页
                 if (response.success_is_ok){
                     vm.planlist=response.data;
                     if (response.count>0){
                         var pageCount = Math.ceil(response.count / model.searchObj.pageSize);
-                        //调用分页
                         laypage({
                             cont: $('#pageNum'), //容器。值支持id名、原生dom对象，jquery对象,
                             pages : pageCount, //总页数
@@ -84,7 +85,6 @@ var vm = new Vue({
                         });
                     }
                 }
-                $("#searchBtn").removeClass("disabled");//解除禁用
             });
         },
         modifyPlanBtn:function(bpId){
