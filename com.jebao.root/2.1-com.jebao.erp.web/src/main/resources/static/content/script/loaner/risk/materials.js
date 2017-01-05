@@ -102,7 +102,7 @@ var vm = new Vue({
                                 openVmModel.formData.projectId = item.projectId;
                                 openVmModel.formData.no = item.no;
                                 openVmModel.formData.name = item.name;
-                                openVmModel.formData.idNumber = item.idNumber;
+                               // openVmModel.formData.idNumber = item.idNumber;
                                 openVmModel.formData.remark = item.remark;
                                 openVmModel.formData.path = item.path;
                                 openVmModel.formData.url = item.url;
@@ -208,7 +208,8 @@ KindEditor.ready(function(K) {
                     if(rcptIdVal<0){alert("图片批量上传出现问题，请联系技术人员");return;}
                     K.each(urlList, function(i, data) {
                         var path=data.url;
-                        var name=getFileName(data.url);
+                       // var name=getFileName(data.url);
+                        var name=$('.ke-swfupload-body img[src="'+path+'"]').attr("alt");
                         var remark="无";
                         var buffer = new StringBuffer();
                         buffer.append("file="+name)

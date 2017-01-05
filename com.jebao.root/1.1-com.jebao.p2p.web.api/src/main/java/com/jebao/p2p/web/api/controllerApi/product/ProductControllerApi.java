@@ -77,6 +77,9 @@ public class ProductControllerApi {
     @ResponseBody
     public JsonResult productDetail(Long bpId){
         TbBidPlan tbBidPlan = productService.selectByBpId(bpId);
+        if(tbBidPlan==null){
+            return new JsonResultData<>(null);
+        }
         return new JsonResultData<>(new ProductDetailVM(tbBidPlan));
     }
 
@@ -103,7 +106,7 @@ public class ProductControllerApi {
         TbBidRiskData tbBidRiskData = new TbBidRiskData();
         tbBidRiskData.setBrdBpId(bpId);
         PageWhere pageWhere = new PageWhere(0, 100);
-        pageWhere.setOrderBy("BRD_NAME DESC");
+        pageWhere.setOrderBy(" brd_name asc");
         List<TbBidRiskData> tbBidRiskDatas = productService.selectRiskByConditionForPage(tbBidRiskData, pageWhere);
         List<BidRiskDataVM> bidRiskDataVMs = new ArrayList<>();
         tbBidRiskDatas.forEach(o -> bidRiskDataVMs.add(new BidRiskDataVM(o)));
