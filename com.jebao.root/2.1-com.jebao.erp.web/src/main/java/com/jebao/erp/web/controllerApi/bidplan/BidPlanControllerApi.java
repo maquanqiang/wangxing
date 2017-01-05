@@ -17,6 +17,7 @@ import com.jebao.erp.web.responseModel.bidplan.LoanIntentVM;
 import com.jebao.erp.web.responseModel.bidplan.ProjTempNameVM;
 import com.jebao.erp.web.responseModel.bidplan.ProjectTempVM;
 import com.jebao.erp.web.utils.contract.UpCaseRMB;
+import com.jebao.erp.web.utils.excel.ExcelUtil;
 import com.jebao.erp.web.utils.toolbox.BetweenDays;
 import com.jebao.erp.web.utils.validation.ValidationResult;
 import com.jebao.erp.web.utils.validation.ValidationUtil;
@@ -499,6 +500,16 @@ public class BidPlanControllerApi extends _BaseController {
 //        }else {
 //            return new JsonResultError("合同生成失败");
 //        }
+//    }
+
+
+//    public void download(BidPlanForm form){
+//        PageWhere pageWhere = new PageWhere(0, 10000);
+//        pageWhere.setOrderBy(" bp_id desc");
+//        BidPlanSM bidPlanSM = BidPlanForm.toEntity(form);
+//        List<TbBidPlan> tbBidPlans = bidPlanService.selectBySelfConditionForPage(bidPlanSM, pageWhere);
+//        List<BidPlanVM> viewModelList = new ArrayList<BidPlanVM>();
+//        tbBidPlans.forEach(o -> viewModelList.add(new BidPlanVM(o)));
 //    }
 
 }

@@ -82,6 +82,13 @@ var vm = new Vue({
                                 message: '备注不能为空'
                             }
                         }
+                    },
+                    path:{
+                        validators: {
+                            notEmpty: {
+                                message: '图片未上传成功'
+                            }
+                        }
                     }
                 }
             });
