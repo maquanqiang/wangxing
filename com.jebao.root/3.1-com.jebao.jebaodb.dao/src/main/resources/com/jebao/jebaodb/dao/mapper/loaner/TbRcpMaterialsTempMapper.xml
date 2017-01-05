@@ -148,16 +148,16 @@
         select
         <include refid="Base_Column_List"/>
         from tb_rcp_materials_temp
-        order by rcpmt_id DESC
+        order by rcpmt_name asc
         LIMIT #{pageWhere.begin},#{pageWhere.pageSize}
     </select>
     <select id="selectByProjectIdForPage" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from tb_rcp_materials_temp
-        WHERE
+        where
         <include refid="selectByProjectId_Where_Clause"/>
-        order by rcpmt_id DESC
+        order by rcpmt_name asc
         <if test="pageWhere != null" >
         LIMIT #{pageWhere.begin},#{pageWhere.pageSize}
         </if>
