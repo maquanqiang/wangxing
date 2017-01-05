@@ -13,6 +13,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import javax.servlet.http.HttpServletResponse;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -32,7 +33,7 @@ public class ExcelUtil {
      * @param filePath 文件全路径
      * @return List格式的数据表格
      */
-    public List<Object[]> readFile(String filePath) {
+    public List<Object[]> readToList(String filePath) {
         List<Object[]> rowList = new ArrayList<>();
         try {
             FileInputStream fileInputStream = new FileInputStream(filePath);
@@ -66,7 +67,39 @@ public class ExcelUtil {
         }
         return rowList;
     }
+    public List<Object[]> readToList(InputStream fileInputStream) {
+        List<Object[]> rowList = new ArrayList<>();
+        try {
+            XSSFWorkbook workbook = new XSSFWorkbook(fileInputStream);
+            XSSFSheet sheet = workbook.getSheetAt(0);
 
+            FormulaEvaluator formulaEvaluator = workbook.getCreationHelper().createFormulaEvaluator();
+            //region 读取sheet数据填充 list
+            int columnCount = 0;//设置列数
+            for (Row row : sheet) {
+                if (row == null) continue;
+                if (columnCount == 0) {
+                    columnCount = row.getLastCellNum();
+                }
+                Object[] rowObj = new Object[columnCount];//保证每行所存储的单元格数量相同
+
+                //row.iterator 会跳过空单元格，为保证每行的列数相同，循环列数量次
+                for (int i = 0; i < columnCount; i++) {
+                    Cell cell = row.getCell(i);
+                    Object value = getCellValue(cell, formulaEvaluator);
+                    rowObj[i] = value;
+                }
+                rowList.add(rowObj);
+            }
+            //endregion
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rowList;
+    }
     /**
      * 读取Excel内容到一个key,value列表
      *
@@ -117,6 +150,7 @@ public class ExcelUtil {
         return rowList;
     }
 
+
     /**
      * 获取单元格值
      */
@@ -149,7 +183,13 @@ public class ExcelUtil {
         return value;
     }
 
-
+    /**
+     * 导出Excel
+     * @param response HttpServletResponse
+     * @param fileName 导出文件名
+     * @param dataList 导出数据list
+     * @throws Exception
+     */
     public void outputFile(HttpServletResponse response, String fileName, List dataList) throws Exception {
         if (dataList == null || dataList.size() == 0) return;
 
