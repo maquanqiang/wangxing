@@ -138,12 +138,13 @@ var vm = new Vue({
                     e.preventDefault();
 
                     var $form = $(e.target);
-
+                    var loadIndex = layer.load(2);
                     $.post($form.attr('action'), model.form, function (response) {
                         if (response.success_is_ok) {
                             window.location.href = "/userfund/registerSuccess";
                             return;
                         } else {
+                            layer.close(loadIndex);
                             layer.alert(response.error);
                         }
                     }, "json");
