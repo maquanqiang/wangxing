@@ -165,6 +165,10 @@ var vm = new Vue({
                 $("#defaultForm").data('bootstrapValidator').updateStatus("bankCardNo","INVALID","callback");
                 return false;
             }
+            if (model.validBankCardNoArray.indexOf(bankCardNo)>-1){
+                $("#defaultForm").data('bootstrapValidator').updateStatus("bankCardNo","VALID","callback");
+                return true;
+            }
             jQuery.ajax({
                 url: "https://ccdcapi.alipay.com/validateAndCacheCardInfo.json",
                 dataType: "jsonp",
