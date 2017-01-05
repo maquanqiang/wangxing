@@ -14,7 +14,7 @@ public class RepaymentForm {
     @NotNull(message = "标号为空")
     private Long bpId;                  //标id
     @NotNull(message = "还款金额为空")
-    @Min(value = 1, message = "金额小于1")
+    @Min(value = 0, message = "金额小于0")
     private BigDecimal repayMoney;      //还款金额
 
     public Integer getPeriod() {
