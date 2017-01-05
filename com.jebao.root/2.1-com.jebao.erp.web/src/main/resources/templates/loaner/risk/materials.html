@@ -21,11 +21,12 @@
         <div class="row">
             <div class="col-xs-12">
                 <div class="box box-primary">
-                    <form id="search_form"><input type="hidden" name="rcptId" value="${rcptId}"/></form>
+                    <form id="search_form"><input type="hidden" id="rcptIdHid" name="rcptId" value="${rcptId}"/></form>
                     <form action="" class="form-inline"  method="post" novalidate="novalidate">
                         <div class="box-body">
                             <div class="form-group ">
                                 <a href="javascript:void(0);" class="btn btn-primary " role="button" id="add-material" @click.prevent="openAddForm">添加</a>
+                                <a href="javascript:void(0);" class="btn btn-primary " role="button" id="add-batch-material">批量添加</a>
                             </div>
                         </div>
                     </form>
@@ -106,6 +107,12 @@
 <!-- /.content-wrapper -->
 #parse("common/footer.html")
 <!--上传图片-->
+<!-- 编辑器引入 BEGIN-->
+<link rel="stylesheet" href="/content/AdminLTE-2.2.0/kindEditor/themes/default/default.css" />
+<script charset="utf-8" src="/content/AdminLTE-2.2.0/kindEditor/kindeditor-all-min.js"></script>
+<script charset="utf-8" src="/content/AdminLTE-2.2.0/kindEditor/lang/zh-CN.js"></script>
+<!-- 编辑器引入 END-->
+
 <script src="/content/AdminLTE-2.2.0/plugins/jQuery/jquery.form.js"></script>
 <script src=$UrlHelperTool.href("/content/script/loaner/risk/materials.js")></script>
 </body>
