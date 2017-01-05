@@ -3,7 +3,6 @@ package com.jebao.erp.web.controllerApi.employee;
 import com.jebao.erp.service.inf.employee.IDepartmentServiceInf;
 import com.jebao.erp.service.inf.employee.IEmployeeServiceInf;
 import com.jebao.erp.service.inf.employee.IRankServiceInf;
-import com.jebao.erp.web.controller.FilePluginController;
 import com.jebao.erp.web.controller._BaseController;
 import com.jebao.erp.web.responseModel.base.JsonResult;
 import com.jebao.erp.web.responseModel.base.JsonResultList;
@@ -14,23 +13,15 @@ import com.jebao.erp.web.utils.session.LoginSessionUtil;
 import com.jebao.erp.web.utils.validation.ValidationResult;
 import com.jebao.erp.web.utils.validation.ValidationUtil;
 import com.jebao.jebaodb.entity.employee.EmployeeInfo;
-import com.jebao.jebaodb.entity.employee.TbDepartment;
-import com.jebao.jebaodb.entity.employee.TbRank;
 import com.jebao.jebaodb.entity.employee.input.EmployeeIM;
-import com.jebao.jebaodb.entity.employee.search.DepartmentSM;
 import com.jebao.jebaodb.entity.employee.search.EmployeeSM;
-import com.jebao.jebaodb.entity.employee.search.RankSM;
-import com.jebao.jebaodb.entity.extEntity.ResultData;
 import com.jebao.jebaodb.entity.extEntity.ResultInfo;
-import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -172,11 +163,22 @@ public class EmployeeControllerApi extends _BaseController {
         return new ResultInfo(true,"执行完毕，导入数据"+successNum+"条。已存在："+existsNum+"条" );*/
     }
 
+    /**
+     * 导出
+     */
+    @RequestMapping("download")
+    public void download() throws Exception{
+        EmployeeSM model = new EmployeeSM();
+        model.setPageSize(100000); //设置导出条数
+        List<EmployeeInfo> employeeInfoList = employeeService.getEmployeeInfoList(model);
+        List<EmployeeVM> viewModelList = new ArrayList<>();
+        employeeInfoList.forEach(o -> viewModelList.add(new EmployeeVM(o)));
+        new ExcelUtil().outputFile(response,"员工信息.xlsx",viewModelList);
+    }
 
     @RequestMapping("test")
-    public List<Object[]> test() {
-        List<Object[]> list = new ExcelUtil().readFile("D:\\test.xlsx");
-        return list;
+    public void test() throws Exception{
+
     }
 
 
