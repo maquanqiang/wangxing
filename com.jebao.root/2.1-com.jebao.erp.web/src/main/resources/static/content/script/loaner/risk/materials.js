@@ -102,7 +102,6 @@ var vm = new Vue({
                                 openVmModel.formData.projectId = item.projectId;
                                 openVmModel.formData.no = item.no;
                                 openVmModel.formData.name = item.name;
-                               // openVmModel.formData.idNumber = item.idNumber;
                                 openVmModel.formData.remark = item.remark;
                                 openVmModel.formData.path = item.path;
                                 openVmModel.formData.url = item.url;
@@ -110,9 +109,6 @@ var vm = new Vue({
                             }
                         }
                     }
-                },
-                created:function(){
-
                 },
                 mounted:function(){
                     var $form = $(openVmModel.form);
@@ -122,6 +118,9 @@ var vm = new Vue({
                 methods: {
                     fileupload: function(){
                         var fileUploadUrl = $(openVmModel.form).find(".uploadFileUrl");
+                        var fileName = $(openVmModel.form).find(".fileName");
+                        var fileUploadName = $(openVmModel.form).find(".btn-fileupload");
+                        fileName.val(getFileName(fileUploadName));
                         $("#_myUpload_").ajaxSubmit({
                             dataType:  'json', //数据格式为json
                             success:function(data){
@@ -208,7 +207,7 @@ KindEditor.ready(function(K) {
                     if(rcptIdVal<0){alert("图片批量上传出现问题，请联系技术人员");return;}
                     K.each(urlList, function(i, data) {
                         var path=data.url;
-                       // var name=getFileName(data.url);
+                       // var name=getFileUrl(data.url);
                         var name=$('.ke-swfupload-body img[src="'+path+'"]').attr("alt");
                         var remark="无";
                         var buffer = new StringBuffer();
@@ -233,10 +232,18 @@ KindEditor.ready(function(K) {
         });
     });
 });
-function getFileName(obj)
+function getFileUrl(obj)
 {
     var pos = obj.lastIndexOf("/")*1;
     return obj.substring(pos+1);
+};
+function getFileName(obj){
+    var fileName="";
+    if(typeof(fileName) != "undefined") {
+        fileName = $(obj).val().split("\\").pop();
+       // fileName=fileName.substring(0, fileName.lastIndexOf("."));
+    }
+    return fileName;
 };
 function StringBuffer() {
     this.__strings__ = new Array();
