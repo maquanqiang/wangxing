@@ -20,12 +20,14 @@ import com.jebao.p2p.web.api.responseModel.user.UserVM;
 import com.jebao.p2p.web.api.utils.constants.Constants;
 import com.jebao.p2p.web.api.utils.session.CurrentUser;
 import com.jebao.p2p.web.api.utils.session.CurrentUserContextHolder;
+import com.jebao.p2p.web.api.utils.session.LoginSessionUtil;
 import com.jebao.p2p.web.api.utils.validation.ValidationResult;
 import com.jebao.p2p.web.api.utils.validation.ValidationUtil;
 import com.jebao.thirdPay.fuiou.model.fastRecharge.FastRechargeResponse;
 import com.jebao.thirdPay.fuiou.model.onlineBankRecharge.OnlineBankRechargeResponse;
 import com.jebao.thirdPay.fuiou.model.personQuickPay.PersonQuickPayResponse;
 import com.jebao.thirdPay.fuiou.model.withdrawDeposit.WithdrawDepositResponse;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -96,7 +98,15 @@ public class UserController extends _BaseController {
         if (currentUser == null) {
             return new JsonResultError();
         }
-        userfundService.queryUserInfs(currentUser.getId());
+        ResultInfo result = userfundService.queryUserInfs(currentUser.getId());
+        if(result.getSuccess_is_ok()){//更新用户缓存
+            TbUserDetails userDetails = userService.getUserDetailsInfo(currentUser.getId());
+            if(userDetails != null && StringUtils.isNotBlank(userDetails.getUdThirdAccount())){
+                currentUser.setFundAccount(userDetails.getUdThirdAccount());
+                CurrentUserContextHolder.set(currentUser); // 设置第三方账户
+                LoginSessionUtil.Refresh(currentUser,request,response);//刷新
+            }
+        }
         return new JsonResultOk();
     }
 
@@ -106,13 +116,12 @@ public class UserController extends _BaseController {
         if (user == null) {
             return new JsonResultError("用户未登录");
         }
-        TbAccountsFunds accountsFunds = userService.getAccountsFundsInfo(user.getId());
+        /*TbAccountsFunds accountsFunds = userService.getAccountsFundsInfo(user.getId());
         ResultInfo resultInfo = userfundService.queryUserBalance(user.getId());
         if (resultInfo.getSuccess_is_ok()) {
-
             ResultData<TbAccountsFunds> resultData = (ResultData<TbAccountsFunds>) resultInfo;
             accountsFunds = resultData.getData();
-        }
+        }*/
         userfundService.queryUserBalance(user.getId());
         return new JsonResultOk();
     }
