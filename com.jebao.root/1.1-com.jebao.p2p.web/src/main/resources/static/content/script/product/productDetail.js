@@ -32,7 +32,6 @@ var model = {
     investInfoList : [],
     incomeDetailList : [],
     flag : false,
-    mySwiper:null,
     bpMortgageInfo:''
 };
 
@@ -46,28 +45,6 @@ var vm = new Vue({
     //初始化远程数据
     created: function () {
         this.search();
-    },
-    updated:function(){
-        if(this.mySwiper == null){
-            //文件轮播图
-            mySwiper = new Swiper ('.swiper-container', {
-                loop: true,
-                slidesPerView : 3,
-                fade: {
-                    crossFade: true
-                },
-                paginationClickable: true
-            });
-            $('.button-prev').on('click', function(e){
-                e.preventDefault();
-                mySwiper.swipePrev()
-            });
-            $('.button-next').on('click', function(e){
-                e.preventDefault();
-                mySwiper.swipeNext()
-            });
-        }
-
     },
     //方法，可用于绑定事件或直接调用
     methods: {
@@ -111,7 +88,25 @@ var vm = new Vue({
             $.post("/api/product/riskListByBpId", form, function (response) {
                 if (response.success_is_ok) {
                     vm.riskDataList = response.data;
-
+                    setTimeout(function(){
+                        var mySwiper = new Swiper ('.swiper-container', {
+                            loop: true,
+                            slidesPerView : 3,
+                            slidesPerGroup : 3,
+                            fade: {
+                                crossFade: true
+                            },
+                            paginationClickable: true
+                        });
+                        $('.button-prev').on('click', function(e){
+                            e.preventDefault();
+                            mySwiper.swipePrev()
+                        });
+                        $('.button-next').on('click', function(e){
+                            e.preventDefault();
+                            mySwiper.swipeNext()
+                        });
+                    },500)
                 }
             });
             //investInfoList
