@@ -53,8 +53,14 @@ $(document).ready(function () {
                 if(submitData.remember === "1"){
                     $.cookie("jebao_lgn",submitData.jebUsername,{ expires: 3 });
                 }
-                
-                $.get("/api/user/syncThirdAccount");
+
+                $.ajax({
+                    type : "get",
+                    url : "/api/user/syncThirdAccount",
+                    async : false
+                });
+
+                //$.get("/api/user/syncThirdAccount");
                 $.get("/api/user/syncUserBalance");
 
                 var redirectUrl = common.getUrlParam("redirect") || "/";
