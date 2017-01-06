@@ -1,6 +1,5 @@
 package com.jebao.erp.web.utils.excel;
 
-import com.sun.org.glassfish.gmbal.Description;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.FormulaEvaluator;
@@ -193,11 +192,11 @@ public class ExcelUtil {
         Field[] fields = dataList.get(0).getClass().getDeclaredFields(); // 获取字段
         for (int i=0;i<fields.length;i++) {
             Field field =fields[i];
-            if (field.isAnnotationPresent(Description.class)) {
+           /* if (field.isAnnotationPresent(Description.class)) {
                 Description desc = field.getAnnotation(Description.class);
                 columnNameList.add(desc.value());
                 columnCodeList.add(field.getName());
-            }
+            }*/
         }
         //创建列头
         XSSFRow firstRow = sheet.createRow(0);
