@@ -116,7 +116,7 @@ Date.prototype.toFormatString = function (format) {
     $(document).ajaxError(function (event, xhr, settings) {
         if (xhr.status == 403) {
             window.location.href = "/account/login";
-        }else if (xhr.status === 500 || xhr.status === 404){
+        }else if (xhr.status == 500){
             $(".layui-layer-loading").each(function(i,ele){
                 var times = $(ele).attr("times");
                 layer.close(times);
