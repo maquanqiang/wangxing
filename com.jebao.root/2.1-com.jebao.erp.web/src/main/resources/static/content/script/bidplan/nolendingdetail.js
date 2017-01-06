@@ -61,6 +61,12 @@ var vm = new Vue({
                 var cycle = data.bpCycleType;
                 var date = repayDate(bpFullTime, d, cycle);
                 $("#bpRepayTime").val(date);
+
+                var dateEt = new Date(date)
+                dateEt = dateEt.valueOf();
+                dateEt = dateEt - 24 * 60 * 60 * 1000;
+                var dateEtStr = new Date(dateEt).toFormatString("yyyy-MM-dd");
+                $("#bpInterestEt").val(dateEtStr)
             }
         });
         //riskDataList
@@ -247,8 +253,14 @@ laydate({
     choose : function(datas){
         var d = vm.plan.bpPeriodsDisplay;
         var cycle = vm.plan.bpCycleType;
-        var date = repayDate(datas, d, cycle);
-        $("#bpRepayTime").val(date);
+        var dateStr = repayDate(datas, d, cycle);
+        $("#bpRepayTime").val(dateStr);
+        var date = new Date(dateStr)
+        date = date.valueOf();
+        date = date - 24 * 60 * 60 * 1000;
+        var date = new Date(date).toFormatString("yyyy-MM-dd");
+        $("#bpInterestEt").val(date)
+
     }
 });
 
