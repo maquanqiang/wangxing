@@ -1,28 +1,47 @@
 package com.jebao.erp.web.controllerApi.employee;
 
+import com.jebao.common.utils.fastjson.FastJsonUtil;
+import com.jebao.common.utils.map.MapUtil;
 import com.jebao.erp.service.inf.employee.IDepartmentServiceInf;
 import com.jebao.erp.service.inf.employee.IEmployeeServiceInf;
 import com.jebao.erp.service.inf.employee.IRankServiceInf;
+import com.jebao.erp.web.controller.KindEditorController;
 import com.jebao.erp.web.controller._BaseController;
 import com.jebao.erp.web.responseModel.base.JsonResult;
+import com.jebao.erp.web.responseModel.base.JsonResultError;
 import com.jebao.erp.web.responseModel.base.JsonResultList;
 import com.jebao.erp.web.responseModel.employee.EmployeeVM;
+import com.jebao.erp.web.responseModel.employee.FileUploadResult;
 import com.jebao.erp.web.utils.excel.ExcelUtil;
+import com.jebao.erp.web.utils.http.HttpClientUtil;
 import com.jebao.erp.web.utils.session.CurrentUser;
 import com.jebao.erp.web.utils.session.LoginSessionUtil;
 import com.jebao.erp.web.utils.validation.ValidationResult;
 import com.jebao.erp.web.utils.validation.ValidationUtil;
 import com.jebao.jebaodb.entity.employee.EmployeeInfo;
+import com.jebao.jebaodb.entity.employee.TbDepartment;
+import com.jebao.jebaodb.entity.employee.TbRank;
 import com.jebao.jebaodb.entity.employee.input.EmployeeIM;
+import com.jebao.jebaodb.entity.employee.search.DepartmentSM;
 import com.jebao.jebaodb.entity.employee.search.EmployeeSM;
+import com.jebao.jebaodb.entity.employee.search.RankSM;
+import com.jebao.jebaodb.entity.extEntity.ResultData;
 import com.jebao.jebaodb.entity.extEntity.ResultInfo;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Jack on 2016/11/16.
@@ -37,6 +56,8 @@ public class EmployeeControllerApi extends _BaseController {
     private IDepartmentServiceInf departmentService;
     @Autowired
     private IRankServiceInf rankService;
+
+    public static String File_Upload_Dir="file"; //文件上传目录
 
     @RequestMapping("list")
     public JsonResult list(EmployeeSM model) {
@@ -76,29 +97,23 @@ public class EmployeeControllerApi extends _BaseController {
     }
 
     @RequestMapping(value = "upload",method = RequestMethod.POST)
-    public ResultInfo upload(){
-        //TODO -功能再完善中……
-        return new ResultInfo(false,"-功能再完善中……");
-        //---------------------------------------------------------------------------------------------------------
-/*        FilePluginController fileUploader = new FilePluginController(null);
-        FilePluginController.UploadReturnJson returnJson = fileUploader.uploadFile("file",request);
+    public Object upload() throws IOException{
 
-        if (returnJson.getError()==0){
-            String filename = returnJson.getUrl().substring(returnJson.getUrl().lastIndexOf("/")+1);
-            String filePath = Paths.get(FilePluginController.ROOT, "projectFile\\file\\p0",filename).toString();
-            List<Object[]> rowList = new ExcelUtil().readFile(filePath);
-            return new ResultData<List<Object[]>>(true,rowList,filename);
-        }else{
-            return new ResultInfo(false,returnJson.getMessage());
-        }*/
+        Map<String, MultipartFile> multipartFileMap = ((MultipartHttpServletRequest) request).getFileMap();
+        MultipartFile file= MapUtil.getFirstOrNull(multipartFileMap);
+        String targetURL=String.format("%s/kindEditor/uploadFile?dir=%s&key=%s", KindEditorController.FILE_UPLOAD_SERVICE_URL, URLEncoder.encode(File_Upload_Dir, "UTF-8"), KindEditorController.FILE_UPLOAD_KEY);
+        String jsonResultString = HttpClientUtil.FileUploadByMultipartFile(file, targetURL);
+        FileUploadResult jsonResult = FastJsonUtil.deserialize(jsonResultString,FileUploadResult.class);
+        if (jsonResult.getError() == 0){
+            List<Object[]> rowList = new ExcelUtil().readToList(file.getInputStream());
+            return new ResultData<>(true,rowList,jsonResult.getUrl());
+        }
+        return new JsonResultError(jsonResult.getMessage());
     }
     @RequestMapping(value = "uploadconfirm",method = RequestMethod.POST)
     public ResultInfo uploadconfirm(String filename){
-        //TODO -功能再完善中……
-        return new ResultInfo(false,"-功能再完善中……");
-        //---------------------------------------------------------------------------------------------------------
-        /*String filePath = Paths.get(FilePluginController.ROOT, "projectFile\\file\\p0",filename).toString();
-        List<HashMap<String,Object>> mapList =new ExcelUtil().readFileToKv(filePath);
+        InputStream inputStream = new HttpClientUtil().getHttpResponse(filename);
+        List<HashMap<String,Object>> mapList =new ExcelUtil().readFileToKv(inputStream);
         List<EmployeeIM> modelList = new ArrayList<>();
 
         for (int i=0;i<mapList.size();i++){
@@ -160,7 +175,7 @@ public class EmployeeControllerApi extends _BaseController {
                 return new ResultInfo(false,"已导入"+successNum+"条。"+modelList.get(i).getName()+" 出现错误："+saveResult.getMsg());
             }
         }
-        return new ResultInfo(true,"执行完毕，导入数据"+successNum+"条。已存在："+existsNum+"条" );*/
+        return new ResultInfo(true,"执行完毕，导入数据"+successNum+"条。已存在："+existsNum+"条" );
     }
 
     /**

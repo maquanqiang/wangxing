@@ -1,6 +1,7 @@
 package com.jebao.erp.web.responseModel.employee;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonPropertyDescription;
 import com.jebao.erp.web.responseModel.ViewModel;
 import com.jebao.jebaodb.entity.employee.EmployeeInfo;
 import com.jebao.jebaodb.entity.employee.TbDepartment;
@@ -40,7 +41,9 @@ public class EmployeeVM extends ViewModel {
     }
 
     private int id;
+    @JsonPropertyDescription("员工姓名")
     private String name;
+    @JsonPropertyDescription("手机号")
     private String mobile;
 
     private String cardNo;
@@ -56,8 +59,10 @@ public class EmployeeVM extends ViewModel {
     @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd")
     private Date dimissionDate;
     private int rankId;
+    @JsonPropertyDescription("员工级别")
     private String rankName;
     private int teamId;
+    @JsonPropertyDescription("所属团队")
     private String teamName;
     private int loginStatus;
 

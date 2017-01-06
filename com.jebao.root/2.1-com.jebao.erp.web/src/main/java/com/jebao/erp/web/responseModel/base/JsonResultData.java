@@ -1,11 +1,9 @@
 package com.jebao.erp.web.responseModel.base;
 
-import com.jebao.erp.web.responseModel.ViewModel;
-
 /**
  * Created by Administrator on 2016/10/20.
  */
-public class JsonResultData<T extends ViewModel> extends JsonResult {
+public class JsonResultData<T> extends JsonResult {
     public JsonResultData() {}
     public JsonResultData(T data)
     {
