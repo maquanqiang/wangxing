@@ -9,7 +9,7 @@ import java.math.BigDecimal;
  * Created by Lee on 2016/12/8.
  */
 public class InvestInfoForm {
-    @NotNull(message="姓名不能为空！")
+    @NotNull(message="标的不能为空！")
     private Long bpId;
 
     @DecimalMin(value="1",message="投资金额最小值是1")

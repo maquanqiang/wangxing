@@ -332,11 +332,13 @@ $("#bpPeriodsDisplay").change(function(){
     var cycle = $("#bpCycleType").val();
     var dateStr = repayDate(datas, $(this).val(), cycle);
     $("#bpExpectRepayDate").val(dateStr);
-    var date = new Date(dateStr);
-    date = date.valueOf()
-    date = date - 24 * 60 * 60 * 1000;
-    date = new Date(date).toFormatString("yyyy-MM-dd")
-    $("#bpExpectExpireDate").val(date);
+    if(dateStr!=null){
+        var date = new Date(dateStr);
+        date = date.valueOf()
+        date = date - 24 * 60 * 60 * 1000;
+        date = new Date(date).toFormatString("yyyy-MM-dd")
+        $("#bpExpectExpireDate").val(date);
+    }
 });
 
 $("#bpCycleType").change(function(){
@@ -344,9 +346,11 @@ $("#bpCycleType").change(function(){
     var d = $("#bpPeriodsDisplay").val();
     var dateStr = repayDate(datas, d, $(this).val());
     $("#bpExpectRepayDate").val(dateStr);
-    var date = new Date(dateStr);
-    date = date.valueOf()
-    date = date - 24 * 60 * 60 * 1000;
-    date = new Date(date).toFormatString("yyyy-MM-dd")
-    $("#bpExpectExpireDate").val(date);
+    if(dateStr!=null){
+        var date = new Date(dateStr);
+        date = date.valueOf()
+        date = date - 24 * 60 * 60 * 1000;
+        date = new Date(date).toFormatString("yyyy-MM-dd")
+        $("#bpExpectExpireDate").val(date);
+    }
 });

@@ -238,7 +238,7 @@ public class ProductControllerApi {
      */
     @RequestMapping("investBid")
     @ResponseBody
-    public JsonResult investBid(InvestInfoForm form, HttpServletResponse response){
+    public JsonResult investBid(InvestInfoForm form){
         CurrentUser currentUser = CurrentUserContextHolder.get();
         if(currentUser == null){            //未登录 重定向登录页
             return new JsonResultError("尚未登录");
