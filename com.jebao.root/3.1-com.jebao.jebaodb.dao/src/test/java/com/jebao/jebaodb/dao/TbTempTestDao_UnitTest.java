@@ -28,13 +28,26 @@ public class TbTempTestDao_UnitTest extends _BaseUnitTest {
         System.out.println("type:"+type);
         String typeName = EnumModel.SerialType.提现.name();
         System.out.println("typeName:"+typeName);*/
-        BigDecimal a = new BigDecimal(500);
+        /*BigDecimal a = new BigDecimal(500);
         BigDecimal b = new BigDecimal(100);
         int result = a.compareTo(b);
         if(result!=1){
             System.out.println(result);
         }
-        System.out.println(result);
+        System.out.println(result);*/
+        //String content = "<img src=\"images/media-1.png\" alt=\"\"><h4><i></i>聊聊中国P2P公司的估值体系</h4><p>中国的互联网金融公司的价值创造更多的还是资金但在真正获得收益的资产开发端，更多的还是基于线下和人工，和传统机构并无大异。</p><p>但无论市场怎么变化，我始终相信一点，短期波动永远会回归长期价值，是否创造价值最终决定一个公司的估值。</p>";
+        String content = "<img src=\"images/media-1.png\" alt=\"\"><h4><i></i>聊聊中国P2P公司的估值体系</h4>";
+        int firstIndex = content.indexOf("</p>");
+        System.out.println(content.length());
+        String content_new;
+        if(firstIndex > -1 && firstIndex < content.length() - 4 ){
+            content_new = content.substring(0,firstIndex+4);
+            System.out.println(content_new);
+        }else{
+            content_new = content;
+            System.out.println(content_new);
+        }
+
     }
 
     @Test

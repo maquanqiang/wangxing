@@ -6,6 +6,7 @@ import com.jebao.jebaodb.entity.extEntity.PageWhere;
 import com.jebao.p2p.service.inf.article.IArticleServiceInf;
 import com.jebao.p2p.web.api.controllerApi._BaseController;
 import com.jebao.p2p.web.api.requestModel.article.ArticleSM;
+import com.jebao.p2p.web.api.responseModel.article.ArticleIndexVM;
 import com.jebao.p2p.web.api.responseModel.article.ArticleListVM;
 import com.jebao.p2p.web.api.responseModel.article.ArticleVM;
 import com.jebao.p2p.web.api.responseModel.base.JsonResult;
@@ -41,8 +42,8 @@ public class ArticleController extends _BaseController {
         if (articleList == null || articleList.size() == 0) {
             return new JsonResultList<>(null);
         }
-        List<ArticleVM> viewModelList = new ArrayList<>();
-        articleList.forEach(o -> viewModelList.add(new ArticleVM(o)));
+        List<ArticleIndexVM> viewModelList = new ArrayList<>();
+        articleList.forEach(o -> viewModelList.add(new ArticleIndexVM(o)));
         return new JsonResultList<>(viewModelList);
     }
 
