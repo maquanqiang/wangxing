@@ -44,6 +44,7 @@ public class UpdatePlanForm{
         bidPlan.setBpRepayedPeriods(planForm.getBpRepayedPeriods());
         bidPlan.setBpDesc(planForm.getBpDesc());
         bidPlan.setBpType(planForm.getBpType());
+        bidPlan.setBpSurplusMoney(planForm.getBpBidMoney());
         return bidPlan;
     }
     private Long bpId;

@@ -51,6 +51,11 @@ var vm = new Vue({
                 vm.loanMoney = data.bpBidMoney-data.bpSurplusMoney;
                 var bpFullTime = new Date(data.bpFullTime).toFormatString("yyyy-MM-dd");
                 $("#bpInterestSt").val(bpFullTime);
+                var date = new Date(vm.plan.bpExpectRepayDate);
+                date = date.valueOf();
+                date = date - 24 * 60 * 60 * 1000;
+                var dateStr = new Date(date).toFormatString("yyyy-MM-dd");
+                $("#bpExpectExpireDate").val(dateStr)
 
                 var d = data.bpPeriodsDisplay;
                 var cycle = data.bpCycleType;
