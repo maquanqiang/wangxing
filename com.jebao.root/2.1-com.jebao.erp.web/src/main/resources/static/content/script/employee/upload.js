@@ -37,6 +37,8 @@ $("#upfile").on("fileuploaded", function (event, data, previewId, index) {
 //$('#upfile').on('filebatchuploadcomplete', function (event, previewId, index) {
 //
 //});
+
+//选择了文件后
 $('#upfile').on('fileloaded', function(event, file, previewId, index, reader) {
     $(this).fileinput('upload');
     $(".fileinput-upload-button").off("click").on("click",function(){

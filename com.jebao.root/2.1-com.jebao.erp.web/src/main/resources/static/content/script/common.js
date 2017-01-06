@@ -116,13 +116,13 @@ Date.prototype.toFormatString = function (format) {
     $(document).ajaxError(function (event, xhr, settings) {
         if (xhr.status == 403) {
             window.location.href = "/account/login";
-            return;
+        }else if (xhr.status == 500){
+            $(".layui-layer-loading").each(function(i,ele){
+                var times = $(ele).attr("times");
+                layer.close(times);
+            });
+            layer.msg("系统异常，请稍后再试");
         }
-        $(".layui-layer-loading").each(function(i,ele){
-            var times = $(ele).attr("times");
-            layer.close(times);
-        });
-        layer.msg("系统异常，请稍后再试");
     });
     //扩展身份证校验
     $.fn.bootstrapValidator.validators.idCard = {
