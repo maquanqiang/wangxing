@@ -50,6 +50,12 @@ var vm = new Vue({
                 date = date - 24 * 60 * 60 * 1000;
                 var dateStr = new Date(date).toFormatString("yyyy-MM-dd");
                 $("#bpExpectExpireDate").val(dateStr)
+
+                var dateEt = new Date(vm.plan.bpRepayTime);
+                dateEt = dateEt.valueOf();
+                dateEt = dateEt - 24 * 60 * 60 * 1000;
+                var dateEtStr = new Date(dateEt).toFormatString("yyyy-MM-dd");
+                $("#bpInterestEt").val(dateStr)
             }
         });
         $.get("/api/bidRiskData/getRiskDataListForPage", dataVal, function (response) {
