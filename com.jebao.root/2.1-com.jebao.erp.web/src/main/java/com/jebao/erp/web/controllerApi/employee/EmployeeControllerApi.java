@@ -19,10 +19,15 @@ import com.jebao.erp.web.utils.session.LoginSessionUtil;
 import com.jebao.erp.web.utils.validation.ValidationResult;
 import com.jebao.erp.web.utils.validation.ValidationUtil;
 import com.jebao.jebaodb.entity.employee.EmployeeInfo;
+import com.jebao.jebaodb.entity.employee.TbDepartment;
+import com.jebao.jebaodb.entity.employee.TbRank;
 import com.jebao.jebaodb.entity.employee.input.EmployeeIM;
+import com.jebao.jebaodb.entity.employee.search.DepartmentSM;
 import com.jebao.jebaodb.entity.employee.search.EmployeeSM;
+import com.jebao.jebaodb.entity.employee.search.RankSM;
 import com.jebao.jebaodb.entity.extEntity.ResultData;
 import com.jebao.jebaodb.entity.extEntity.ResultInfo;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -31,8 +36,10 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -105,8 +112,8 @@ public class EmployeeControllerApi extends _BaseController {
     }
     @RequestMapping(value = "uploadconfirm",method = RequestMethod.POST)
     public ResultInfo uploadconfirm(String filename){
-        /*String filePath = Paths.get(FilePluginController.ROOT, "projectFile\\file\\p0",filename).toString();
-        List<HashMap<String,Object>> mapList =new ExcelUtil().readFileToKv(filePath);
+        InputStream inputStream = new HttpClientUtil().getHttpResponse(filename);
+        List<HashMap<String,Object>> mapList =new ExcelUtil().readFileToKv(inputStream);
         List<EmployeeIM> modelList = new ArrayList<>();
 
         for (int i=0;i<mapList.size();i++){
@@ -168,8 +175,7 @@ public class EmployeeControllerApi extends _BaseController {
                 return new ResultInfo(false,"已导入"+successNum+"条。"+modelList.get(i).getName()+" 出现错误："+saveResult.getMsg());
             }
         }
-        return new ResultInfo(true,"执行完毕，导入数据"+successNum+"条。已存在："+existsNum+"条" );*/
-        return  null;
+        return new ResultInfo(true,"执行完毕，导入数据"+successNum+"条。已存在："+existsNum+"条" );
     }
 
     /**

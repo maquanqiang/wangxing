@@ -1,11 +1,14 @@
 package com.jebao.erp.web.utils.http;
 
 import org.apache.commons.httpclient.HttpClient;
+import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.httpclient.methods.multipart.FilePart;
 import org.apache.commons.httpclient.methods.multipart.MultipartRequestEntity;
 import org.apache.commons.httpclient.methods.multipart.Part;
 import org.apache.commons.httpclient.methods.multipart.PartSource;
+import org.apache.commons.httpclient.params.HttpMethodParams;
+import org.apache.commons.httpclient.util.HttpURLConnection;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -43,24 +46,24 @@ public class HttpClientUtil {
         }
     }
 
-//    public String getHttpResponse(String uri){
-//        HttpClient httpClient = new HttpClient();
-//        httpClient.setConnectionTimeout(200000);
-//        httpClient.getParams().setParameter(HttpMethodParams.HTTP_CONTENT_CHARSET, "UTF-8");
-//        GetMethod getMethod = new GetMethod(url);
-//
-//        //get请求返回结果
-//        try {
-//            int statusCode = httpClient.executeMethod(getMethod);
-//            if (statusCode == HttpURLConnection.HTTP_OK){
-//                return getMethod.getResponseBodyAsString();
-//            }
-//
-//        } catch (Exception e) {
-//
-//        }
-//        return "";
-//    }
+    public InputStream getHttpResponse(String uri){
+        HttpClient httpClient = new HttpClient();
+        httpClient.setConnectionTimeout(200000);
+        httpClient.getParams().setParameter(HttpMethodParams.HTTP_CONTENT_CHARSET, "UTF-8");
+        GetMethod getMethod = new GetMethod(uri);
+
+        //get请求返回结果
+        try {
+            int statusCode = httpClient.executeMethod(getMethod);
+            if (statusCode == HttpURLConnection.HTTP_OK){
+                return getMethod.getResponseBodyAsStream();
+            }
+
+        } catch (Exception e) {
+
+        }
+        return null;
+    }
 
 
 }
