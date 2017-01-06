@@ -109,6 +109,9 @@ public class BidPlanControllerApi extends _BaseController {
     @ResponseBody
     public JsonResult getOne(Long bpId) {
         TbBidPlan bidPlan = bidPlanService.selectByBpId(bpId);
+        if(bidPlan==null){
+            return new JsonResultError("无此记录");
+        }
         BidPlanVM viewModel = new BidPlanVM(bidPlan);
         return new JsonResultData<>(viewModel);
     }
@@ -169,6 +172,9 @@ public class BidPlanControllerApi extends _BaseController {
     @ResponseBody
     public JsonResult getBidPlanById(Long bpId) {
         TbBidPlan bidPlan = bidPlanService.selectByBpId(bpId);
+        if(bidPlan==null){
+            return new JsonResultError("无此记录");
+        }
         BidPlanVM viewModel = new BidPlanVM(bidPlan);
         return new JsonResultData<>(viewModel);
     }
@@ -193,6 +199,15 @@ public class BidPlanControllerApi extends _BaseController {
     @RequestMapping("updatePlan")
     @ResponseBody
     public JsonResult updatePlan(UpdatePlanForm form) {
+        TbBidPlan tbBidPlan = bidPlanService.selectByBpId(form.getBpId());
+        if(tbBidPlan.getBpStatus()>1){
+            if(form.getBpRate().compareTo(tbBidPlan.getBpRate())!=0 ||
+                    form.getBpPeriods()!=tbBidPlan.getBpPeriods() ||
+                    form.getBpBidMoney().compareTo(tbBidPlan.getBpBidMoney())!=0){
+                return new JsonResultError("修改失败");
+            }
+        }
+
         TbBidPlan bidPlan = UpdatePlanForm.toEntity(form);
         bidPlan.setBpStatus(TbBidPlan.STATUS_UNAUDITED);                             //改为待审核状态
         bidPlan.setBpUpdateTime(new Date());
@@ -307,6 +322,9 @@ public class BidPlanControllerApi extends _BaseController {
             if(bidPlan.getBpRate().compareTo(new BigDecimal(20))>0){
                 return new JsonResultError("审核不通过-利率20");
             }
+        }
+        if(bidPlan.getBpStatus()!=0){
+            return new JsonResultError("标的不是待审核阶段");
         }
         TbBidPlan tbBidPlan = new TbBidPlan();
         tbBidPlan.setBpStatus(status);

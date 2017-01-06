@@ -45,6 +45,11 @@ var vm = new Vue({
             if (response.success_is_ok){
                 var data=response.data;
                 vm.plan=data;
+                var date = new Date(vm.plan.bpExpectRepayDate);
+                date = date.valueOf();
+                date = date - 24 * 60 * 60 * 1000;
+                var dateStr = new Date(date).toFormatString("yyyy-MM-dd");
+                $("#bpExpectExpireDate").val(dateStr)
             }
         });
         $.get("/api/bidRiskData/getRiskDataListForPage", dataVal, function (response) {

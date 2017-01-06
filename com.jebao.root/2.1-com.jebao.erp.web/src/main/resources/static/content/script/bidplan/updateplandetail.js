@@ -18,8 +18,8 @@ var model = {
     riskDataList:[],
     principalTotal:0,
     interestTotal : 0,
-    total : 0
-
+    total : 0,
+    bpExpectExpireDate:''
 };
 
 // 创建一个 Vue 实例 (ViewModel),它连接 View 与 Model
@@ -39,7 +39,14 @@ var vm = new Vue({
             if (response.success_is_ok){
                 var data=response.data;
                 vm.plan=data;
+                var date = new Date(vm.plan.bpExpectRepayDate);
+                date = date.valueOf();
+                date = date - 24 * 60 * 60 * 1000;
+                var dateStr = new Date(date).toFormatString("yyyy-MM-dd");
+                vm.bpExpectExpireDate = dateStr;
                 KindEditor.html("#kindEditorContent", data.bpDesc);
+            }else{
+                layer.msg(response.error);
             }
         });
         $.get("/api/bidRiskData/getRiskDataListForPage", dataVal, function (response) {
@@ -162,6 +169,11 @@ laydate({
         var cycle = $("#bpCycleType").val();
         var date = repayDate(datas, d, cycle);
         $("#bpExpectRepayDate").val(date);
+        var date = new Date(date);
+        date = date.valueOf()
+        date = date - 24 * 60 * 60 * 1000;
+        date = new Date(date).toFormatString("yyyy-MM-dd")
+        $("#bpExpectExpireDate").val(date);
     }
 });
 
@@ -180,6 +192,11 @@ $("#bpPeriodsDisplay").change(function(){
     var cycle = $("#bpCycleType").val();
     var date = repayDate(datas, $(this).val(), cycle);
     $("#bpExpectRepayDate").val(date);
+    var date = new Date(date);
+    date = date.valueOf()
+    date = date - 24 * 60 * 60 * 1000;
+    date = new Date(date).toFormatString("yyyy-MM-dd")
+    $("#bpExpectExpireDate").val(date);
 });
 
 $("#bpCycleType").change(function(){
@@ -187,4 +204,9 @@ $("#bpCycleType").change(function(){
     var d = $("#bpPeriodsDisplay").val();
     var date = repayDate(datas, d, $(this).val());
     $("#bpExpectRepayDate").val(date);
+    var date = new Date(date);
+    date = date.valueOf()
+    date = date - 24 * 60 * 60 * 1000;
+    date = new Date(date).toFormatString("yyyy-MM-dd")
+    $("#bpExpectExpireDate").val(date);
 });

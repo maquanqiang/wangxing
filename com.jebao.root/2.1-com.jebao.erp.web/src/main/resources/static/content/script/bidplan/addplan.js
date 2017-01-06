@@ -307,8 +307,13 @@ laydate({
     choose : function(datas){
         var d = $("#bpPeriodsDisplay").val();
         var cycle = $("#bpCycleType").val();
-        var date = repayDate(datas, d, cycle);
-        $("#bpExpectRepayDate").val(date);
+        var dateStr = repayDate(datas, d, cycle);
+        $("#bpExpectRepayDate").val(dateStr);
+        var date = new Date(dateStr);
+        date = date.valueOf()
+        date = date - 24 * 60 * 60 * 1000;
+        date = new Date(date).toFormatString("yyyy-MM-dd")
+        $("#bpExpectExpireDate").val(date);
     }
 });
 
@@ -325,13 +330,23 @@ $("#bpOpenTime").change(function(){
 $("#bpPeriodsDisplay").change(function(){
     var datas = $("#bpExpectLoanDate").val();
     var cycle = $("#bpCycleType").val();
-    var date = repayDate(datas, $(this).val(), cycle);
-    $("#bpExpectRepayDate").val(date);
+    var dateStr = repayDate(datas, $(this).val(), cycle);
+    $("#bpExpectRepayDate").val(dateStr);
+    var date = new Date(dateStr);
+    date = date.valueOf()
+    date = date - 24 * 60 * 60 * 1000;
+    date = new Date(date).toFormatString("yyyy-MM-dd")
+    $("#bpExpectExpireDate").val(date);
 });
 
 $("#bpCycleType").change(function(){
     var datas = $("#bpExpectLoanDate").val();
     var d = $("#bpPeriodsDisplay").val();
-    var date = repayDate(datas, d, $(this).val());
-    $("#bpExpectRepayDate").val(date);
+    var dateStr = repayDate(datas, d, $(this).val());
+    $("#bpExpectRepayDate").val(dateStr);
+    var date = new Date(dateStr);
+    date = date.valueOf()
+    date = date - 24 * 60 * 60 * 1000;
+    date = new Date(date).toFormatString("yyyy-MM-dd")
+    $("#bpExpectExpireDate").val(date);
 });
