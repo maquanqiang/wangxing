@@ -16,6 +16,7 @@ import com.jebao.p2p.web.api.utils.constants.Constants;
 import com.jebao.p2p.web.api.utils.http.HttpUtil;
 import com.jebao.p2p.web.api.utils.session.CurrentUser;
 import com.jebao.p2p.web.api.utils.session.CurrentUserContextHolder;
+import com.jebao.p2p.web.api.utils.session.LoginSessionUtil;
 import com.jebao.p2p.web.api.utils.validation.ValidationResult;
 import com.jebao.p2p.web.api.utils.validation.ValidationUtil;
 import com.jebao.thirdPay.fuiou.model.changeCard.ChangeCardResponse;
@@ -61,6 +62,7 @@ public class UserfundController extends _BaseController {
         }
         user.setFundAccount(reqData.getMobile_no());
         CurrentUserContextHolder.set(user); // 设置第三方账户
+        LoginSessionUtil.Refresh(user,request,response); //刷新redis缓存
         return new JsonResultOk(resultInfo.getMsg());
     }
     @RequestMapping("getBankCardInfo")

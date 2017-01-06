@@ -16,7 +16,7 @@ public class RegServiceImpl_UnitTest {
         reqData.setCertif_id("130481198910182874");
         reqData.setMobile_no("18600000001");
         reqData.setEmail("");
-        reqData.setCity_id("1000");
+        reqData.setCity_id("1270");
         reqData.setParent_bank_id("0102");
         reqData.setBank_nm("");
         reqData.setCapAcntNm("");
