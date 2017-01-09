@@ -130,8 +130,7 @@ var vm = new Vue({
                                     message: '两次密码不一致'
                                 }
                             }
-                        },
-
+                        }
                     }
                 })
                 .on('success.form.bv', function (e) {

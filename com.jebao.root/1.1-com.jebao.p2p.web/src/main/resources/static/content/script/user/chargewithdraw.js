@@ -76,9 +76,10 @@ var vm = new Vue({
                     }
                 }
             }).on('success.form.bv', function (e) {
+                e.preventDefault();//阻止默认事件提交
+                
                 var $form = $(e.target);
                 $form.attr("action", common.apiOrigin + $form.attr("action"));
-                //console.log($form[0].action)
                 $form[0].submit();
             })
         },
