@@ -76,6 +76,7 @@ var vm = new Vue({
                     }
                 }
             }).on('success.form.bv', function (e) {
+                e.preventDefault();
                 var $form = $(e.target);
                 $form.attr("action", common.apiOrigin + $form.attr("action"));
                 //console.log($form[0].action)
