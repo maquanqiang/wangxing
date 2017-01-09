@@ -189,7 +189,7 @@ var vm = new Vue({
                     title:'投资提示',
                     content:'确认投资：金额为'+form.investMoney,
                     btn: ['确认', '稍后'],
-                    area: ['340px', '180px'],
+                    area: '340px',
                     yes: function() {
                         layer.closeAll();
                         layer.load();
@@ -227,8 +227,8 @@ var vm = new Vue({
             layer.open({
                 title:'提示',
                 content:"你尚未开通第三方，是否马上开通",
-                btn: ['确认', '稍后'],
-                area: ['340px', '180px'],
+                btn: ['开通', '稍后'],
+                area: '340px',
                 icon:3,
                 yes: function() {
                     layer.closeAll();

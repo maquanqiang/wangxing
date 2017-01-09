@@ -47,7 +47,7 @@ var vm = new Vue({
                 title: '还款提示',
                 content: '确认现在还款?',
                 btn: ['确认', '稍后'],
-                area: ['340px', '180px'],
+                area: '340px',
                 yes: function () {
                     layer.closeAll();
                     var index = layer.load();
