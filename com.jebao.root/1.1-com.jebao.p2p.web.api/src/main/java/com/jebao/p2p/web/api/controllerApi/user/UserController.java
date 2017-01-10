@@ -98,6 +98,10 @@ public class UserController extends _BaseController {
         if (currentUser == null) {
             return new JsonResultError();
         }
+        //如果第三方账号存在，则直接返回OK
+        if(!StringUtils.isBlank(currentUser.getFundAccount())){
+            return new JsonResultOk();
+        }
         ResultInfo result = userfundService.queryUserInfs(currentUser.getId());
         if(result.getSuccess_is_ok()){//更新用户缓存
             TbUserDetails userDetails = userService.getUserDetailsInfo(currentUser.getId());
