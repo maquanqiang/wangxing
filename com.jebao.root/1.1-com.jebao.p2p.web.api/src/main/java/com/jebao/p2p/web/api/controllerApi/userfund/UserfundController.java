@@ -28,6 +28,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.PrintWriter;
 import java.net.URLEncoder;
 import java.util.List;
@@ -42,7 +44,7 @@ public class UserfundController extends _BaseController {
     private IUserfundServiceInf userfundService;
 
     @RequestMapping(value = "register",method = RequestMethod.POST)
-    public JsonResult register(fundRegModel model){
+    public JsonResult register(fundRegModel model,HttpServletRequest request, HttpServletResponse response){
         if (model!=null && model.getBankCardNo()!=null){
             model.setBankCardNo(model.getBankCardNo().replaceAll("\\s",""));
         }

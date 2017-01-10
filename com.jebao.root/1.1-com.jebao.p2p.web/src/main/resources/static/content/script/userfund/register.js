@@ -140,6 +140,11 @@ var vm = new Vue({
                     var loadIndex = layer.load(2);
                     $.post($form.attr('action'), model.form, function (response) {
                         if (response.success_is_ok) {
+                            $.ajax({
+                                type : "get",
+                                url : "/api/user/syncThirdAccount",
+                                async : false
+                            });
                             window.location.href = "/userfund/registerSuccess";
                             return;
                         } else {

@@ -34,6 +34,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.math.BigDecimal;
 import java.net.URLEncoder;
 
@@ -97,7 +99,7 @@ public class UserController extends _BaseController {
      * @return
      */
     @RequestMapping("syncThirdAccount")
-    public JsonResult syncThirdAccount() {
+    public JsonResult syncThirdAccount(HttpServletRequest request, HttpServletResponse response) {
         CurrentUser currentUser = CurrentUserContextHolder.get();
         if (currentUser == null) {
             return new JsonResultError();
