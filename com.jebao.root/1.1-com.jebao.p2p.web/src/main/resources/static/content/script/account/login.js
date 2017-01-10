@@ -60,7 +60,7 @@ $(document).ready(function () {
                     async : false
                 });
 
-                //$.get("/api/user/syncThirdAccount");
+                $.get("/api/user/syncThirdPosStatus");
                 $.get("/api/user/syncUserBalance");
 
                 var redirectUrl = common.getUrlParam("redirect") || "/";
