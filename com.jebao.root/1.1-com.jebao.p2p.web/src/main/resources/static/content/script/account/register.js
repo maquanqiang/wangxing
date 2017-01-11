@@ -169,13 +169,14 @@ var vm = new Vue({
                 var $errorPlace = $(".error-place").addClass("hidden");
                 // Get the form instance
                 var $form = $(e.target);
-
+                var loadIndex = layer.load(2);
                 // Use Ajax to submit form data
                 $.post($form.attr('action'), $form.serializeObject(), function (response) {
                     if (response.success_is_ok) {
                         window.location.href = "/account/registerSuccess";
                         return;
                     } else {
+                        layer.close(loadIndex);
                         if (response.code == 1001) {
                             $form.data('bootstrapValidator').updateStatus("imgCode", "INVALID", "notEmpty");
                         } else if (response.code == 1002) {

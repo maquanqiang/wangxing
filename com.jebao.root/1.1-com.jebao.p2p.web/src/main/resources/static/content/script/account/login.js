@@ -46,6 +46,7 @@ $(document).ready(function () {
         if (!$validator.isValid()){
             return false;
         }
+        var loadIndex = layer.load(2);
         var submitData = $form.serializeObject();
         // Use Ajax to submit form data
         $.post($form.attr('action'), submitData, function (response) {
@@ -68,6 +69,7 @@ $(document).ready(function () {
                 return;
             } else {
                 $errorPlace.removeClass("none").find("span").html(response.error);
+                layer.close(loadIndex);
             }
         });
         return false;

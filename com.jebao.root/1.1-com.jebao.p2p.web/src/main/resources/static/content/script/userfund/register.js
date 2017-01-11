@@ -5,8 +5,7 @@ var model = {
     regions: [],
     cities:[],
     countries:[],
-    error: {hasError: false, message: "提交错误信息显示的地方"},
-    validBankCardNoArray:[] //校验正确的银行卡号缓存
+    error: {hasError: false, message: "提交错误信息显示的地方"}
 };
 var vm = new Vue({
     el: "#defaultForm",
@@ -42,97 +41,107 @@ var vm = new Vue({
             }
         },
         "form.bankCardNoFormat":function(val,oldVal){
-            model.form.bankCardNo = model.form.bankCardNoFormat.replace(/\s/g,'');
+            var bankCardNo = model.form.bankCardNoFormat.replace(/\s/g,'');
+            model.form.bankCardNo = bankCardNo;
+            if(bankCardNo.length === 16 || bankCardNo.length === 19){
+                vm.validateBankCard();
+            }
         }
     },
     methods: {
         initValidateForm: function () {
             return $('#defaultForm').bootstrapValidator({
-                    fields: {
-                        realName: {
-                            threshold: 2,
-                            validators: {
-                                notEmpty: {
-                                    message: '请输入真实姓名'
-                                },
-                                regexp: {
-                                    regexp: /^[\u4e00-\u9fa5]+(·[\u4e00-\u9fa5]+)*$/,
-                                    message: '真实姓名只能是中文'
-                                }
+                fields: {
+                    realName: {
+                        threshold: 2,
+                        validators: {
+                            notEmpty: {
+                                message: '请输入真实姓名'
+                            },
+                            regexp: {
+                                regexp: /^[\u4e00-\u9fa5]+(·[\u4e00-\u9fa5]+)*$/,
+                                message: '真实姓名只能是中文'
                             }
-                        },
-                        idCard: {
-                            validators: {
-                                notEmpty: {
-                                    message: '请输入身份证号'
-                                },
-                                idCard: {
-                                    message: '请输入正确的身份证号'
-                                }
+                        }
+                    },
+                    idCard: {
+                        validators: {
+                            notEmpty: {
+                                message: '请输入身份证号'
+                            },
+                            idCard: {
+                                message: '请输入正确的身份证号'
                             }
-                        },
-                        bankCode: {
-                            validators: {
-                                notEmpty: {
-                                    message: '请选择银行'
-                                }
+                        }
+                    },
+                    bankCode: {
+                        validators: {
+                            notEmpty: {
+                                message: '请选择银行'
                             }
-                        },
-                        bankProvinceCode: {
-                            validators: {
-                                greaterThan: {
-                                    value: 0,
-                                    inclusive: false,
-                                    message: '请选择开户行省市'
-                                }
+                        }
+                    },
+                    bankProvinceCode: {
+                        validators: {
+                            greaterThan: {
+                                value: 0,
+                                inclusive: false,
+                                message: '请选择开户行省市'
                             }
-                        },
-                        bankCityCode: {
-                            validators: {
-                                greaterThan: {
-                                    value: 0,
-                                    inclusive: false,
-                                    message: '请选择开户行区县'
-                                }
+                        }
+                    },
+                    bankCityCode: {
+                        validators: {
+                            greaterThan: {
+                                value: 0,
+                                inclusive: false,
+                                message: '请选择开户行区县'
                             }
-                        },
-                        bankCardNo: {
-                            validators: {
-                                notEmpty: {
-                                    message: '请输入银行卡号'
-                                },
-                                callback: {
-                                    message: '请输入正确的储蓄卡号',
-                                    callback: function(value, validator) {
+                        }
+                    },
+                    bankCardNo: {
+                        threshold:1,
+                        validators: {
+                            notEmpty: {
+                                message: '请输入银行卡号'
+                            },
+                            callback: {
+                                message: '请输入正确的储蓄卡号',
+                                callback: function(value, validator) {
+                                    var bankCardNo = value.replace(/\s/g,'');
+                                    if (bankCardNo.length === 16 || bankCardNo.length === 19){
                                         return true;
                                     }
-                                }
-                            }
-                        },
-                        payPassword: {
-                            validators: {
-                                notEmpty: {
-                                    message: '请输入支付密码'
-                                },
-                                regexp: {
-                                    regexp: /^(?![0-9]+$)(?![a-zA-Z]+$)[A-Za-z0-9_-]{8,20}$/,
-                                    message: '请设置8-20位密码（由字母、数字组成）'
-                                }
-                            }
-                        },
-                        payPasswordAgain: {
-                            validators: {
-                                notEmpty: {
-                                    message: '请输入支付确认密码'
-                                },
-                                identical: {
-                                    field: 'payPassword',
-                                    message: '两次密码不一致'
+                                    return false;
                                 }
                             }
                         }
+                    },
+                    payPassword: {
+                        validators: {
+                            notEmpty: {
+                                message: '请输入支付密码'
+                            },
+                            regexp: {
+                                regexp: /^(?![0-9]+$)(?![a-zA-Z]+$)[A-Za-z0-9_-]{8,20}$/,
+                                message: '请设置8-20位密码（由字母、数字组成）'
+                            }
+                        }
+                    },
+                    payPasswordAgain: {
+                        validators: {
+                            notEmpty: {
+                                message: '请输入支付确认密码'
+                            },
+                            identical: {
+                                field: 'payPassword',
+                                message: '两次密码不一致'
+                            }
+                        }
                     }
-                })
+
+                }
+            })
                 .on('success.form.bv', function (e) {
                     e.preventDefault();
 
@@ -140,11 +149,6 @@ var vm = new Vue({
                     var loadIndex = layer.load(2);
                     $.post($form.attr('action'), model.form, function (response) {
                         if (response.success_is_ok) {
-                            $.ajax({
-                                type : "get",
-                                url : "/api/user/syncThirdAccount",
-                                async : false
-                            });
                             window.location.href = "/userfund/registerSuccess";
                             return;
                         } else {
@@ -164,64 +168,75 @@ var vm = new Vue({
             $(model.formSelector).submit();//必须使用jquery的submit
         },
         validateBankCard:function(){
-            var bankCardNo = event.target.value.replace(/\s/g,'');
-            if (bankCardNo.length<16){
-                $("#defaultForm").data('bootstrapValidator').updateStatus("bankCardNo","INVALID","callback");
-                return false;
-            }
-            if (model.validBankCardNoArray.indexOf(bankCardNo)>-1){
-                $("#defaultForm").data('bootstrapValidator').updateStatus("bankCardNo","VALID","callback");
-                return true;
-            }
-            jQuery.ajax({
-                url: "https://ccdcapi.alipay.com/validateAndCacheCardInfo.json",
-                dataType: "jsonp",
-                jsonp: "_callback",
-                timeout: 10000,
-                data: '_input_charset=utf-8&cardNo=' + bankCardNo + '&cardBinCheck=true',
-                success: function(data){
-                    var isValid = false;
-                    if (data.validated && data.cardType == 'DC'){ //cardType: DC储蓄卡, CC信用卡
-                        model.validBankCardNoArray.push(bankCardNo);
-                        isValid=true;
+            var bankCardNo = model.form.bankCardNo;
+            $.get("/api/userfund/validateBankCard?bankCardNo="+bankCardNo,function(response){
+                    if (response.success_is_ok) {
+                        $("#defaultForm").data('bootstrapValidator').updateStatus("bankCardNo","VALID","callback");
+                    }else{
+                        $("#defaultForm").data('bootstrapValidator').updateStatus("bankCardNo","INVALID","callback");
                     }
-                    $("#defaultForm").data('bootstrapValidator').updateStatus("bankCardNo",isValid?"VALID":"INVALID","callback");
-                },
-                error: function(xhr, status, error){
-                    //$("#defaultForm").data('bootstrapValidator').enableFieldValidators("bankCardNo",false);
-                    $("#defaultForm").data('bootstrapValidator').updateStatus("bankCardNo","VALID","callback");
-                }
             });
         },
         getBankCardInfo:function(){
             var bankCardNo = model.form.bankCardNo;
-            $.get("/api/userfund/getBankCardInfo?bankCardNo="+bankCardNo,function(response){
-                if (response.success_is_ok) {
-                    var bankInfo = response.data;
-                    //银行
-                    for (var i=0;i<model.banks.length;i++){
-                        if (model.banks[i].name.indexOf(bankInfo.bankName.trim())>-1){
-                            model.form.bankCode = model.banks[i].code;
-                            break;
+            if (bankCardNo.length < 16){
+                return false;
+            }
+            $.ajax({
+                url: "/api/userfund/getBankCardInfo?bankCardNo="+bankCardNo,
+                timeout: 2000,
+                data: '_input_charset=utf-8&cardNo=' + bankCardNo + '&cardBinCheck=true',
+                success: function(response){
+                    if (response.success_is_ok) {
+                        var $div = $(response.data);
+                        var $dls = $div.children("dl");
+                        if ($dls.length === 0){
+                            return false;
                         }
-                    }
-                    //省
-                    for (var i=0;i<model.regions.length;i++){
-                        var provinceItem = model.regions[i];
-                        if (provinceItem.name.indexOf(bankInfo.province.trim())>-1){
-                            model.form.bankProvinceCode = provinceItem.code;
-                            //城市
-                            for (var j=0;j<provinceItem.children.length;j++){
-                                var cityItem = provinceItem.children[j];
-                                if (cityItem.name.indexOf(bankInfo.city.trim())>-1){
-                                    model.form.bankCityCode = cityItem.code;
+                        var $bankName = $dls.eq(2).find("dt").find("font").remove().end();
+                        var bankName = $bankName.length>0?$bankName.text().trim():"";
+                        var $regions = $dls.eq(1).find("dt").find("font").remove().end();
+                        var regionsArray = $regions.length>0?$regions.text().split("-"):["",""];
+                        console.log(regionsArray)
+                        var province = regionsArray[0].trim();
+                        var city = regionsArray.length>1?regionsArray[1].trim():"";
+
+                        //银行
+                        if (bankName){
+                            for (var i=0;i<model.banks.length;i++){
+                                if (model.banks[i].name.indexOf(bankName)>-1){
+                                    model.form.bankCode = model.banks[i].code;
                                     break;
                                 }
                             }
-                            break;
                         }
-                    }
 
+                        //省
+                        if (province){
+                            for (var i=0;i<model.regions.length;i++){
+                                var provinceItem = model.regions[i];
+                                if (provinceItem.name.indexOf(province)>-1){
+                                    model.form.bankProvinceCode = provinceItem.code;
+                                    //城市
+                                    if (city){
+                                        for (var j=0;j<provinceItem.children.length;j++){
+                                            var cityItem = provinceItem.children[j];
+                                            if (cityItem.name.indexOf(city)>-1){
+                                                model.form.bankCityCode = cityItem.code;
+                                                break;
+                                            }
+                                        }
+                                    }
+                                    break;
+                                }
+                            }
+                        }
+
+
+                    }
+                },
+                error: function(xhr, status, error){
+                    console.log("getBankCardInfo error.")
                 }
             });
 
