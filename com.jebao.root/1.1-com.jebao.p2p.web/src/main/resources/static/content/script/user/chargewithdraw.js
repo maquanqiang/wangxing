@@ -69,8 +69,9 @@ var vm = new Vue({
                             notEmpty: {
                                 message: '金额不能为空'
                             },
-                            numeric: {
-                                message: '请输入数字'
+                            regexp: {
+                                regexp: /^[0-9]\d*$/,
+                                message: '请输入整数'
                             }
                         }
                     }
