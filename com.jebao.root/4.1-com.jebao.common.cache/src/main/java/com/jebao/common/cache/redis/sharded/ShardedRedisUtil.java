@@ -5,6 +5,9 @@ import java.util.List;
 import java.util.Map;
 
 import com.jebao.common.cache.utils.fastjson.FastJsonUtil;
+import com.jebao.common.cache.utils.wrapper.CachedWrapper;
+import com.jebao.common.cache.utils.wrapper.CachedWrapperExecutor;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -255,5 +258,59 @@ public class ShardedRedisUtil {
     public <T> List<T> getList(final String key,Class<T> clz){
         String value=get(key);
         return FastJsonUtil.deserializeList(value, clz);
+    }
+    public <T> String setCachedWrapper(final String key, final int seconds, T object) {
+        return setex(key, seconds, new CachedWrapper<T>(object));
+    }
+
+    public <T> CachedWrapper<T> getCachedWrapper(final String key) {
+        CachedWrapper<T> getObj =get(key, CachedWrapper.class);
+        return getObj;
+    }
+    /**
+     * 读取并设置数据缓存
+     * 通过互斥的锁来减少对数据库的访问
+     * 互斥的锁-使用的redis-setNX的方法
+     * @param key                  key
+     * @param keyExpireSec        key的过期时间
+     * @param nullValueExpireSec 查询结果为NULL值时的过期时间
+     * @param keyMutexExpireSec  互斥key的过期时间(最大值为10秒,参考值为5秒)-互斥key的值取决于查询接口的响应时间
+     * @param executor            获取需要缓存的数据-从数据库或其他的地方查询
+     * @return
+     */
+    public <T> CachedWrapper<T> getCachedWrapperByMutexKey(final String key,
+                                                            final int keyExpireSec,
+                                                            final int nullValueExpireSec,
+                                                            final int keyMutexExpireSec,
+                                                            CachedWrapperExecutor<T> executor) throws Exception {
+        if(StringUtils.isBlank(key))throw new Exception("key值不能为空。");
+        if(keyExpireSec<nullValueExpireSec)throw new Exception("key的过期时间必须大于查询结果为NULL值时的过期时间。");
+        if(keyExpireSec<keyMutexExpireSec)throw new Exception("key的过期时间必须大于互斥key的过期时间。");
+        if(keyMutexExpireSec>10)throw new Exception("互斥key的过期时间必须小于10秒。");
+        CachedWrapper<T> value;
+        String key_mutex = "mutexKey_" + key;
+        while (true) {
+            value = getCachedWrapper(key);
+            //System.out.println(1); //debug
+            if (value != null) return value;
+            if (set(key_mutex, "1", "NX", "EX", keyMutexExpireSec) == null) {
+                //休眠的具体时间必要根据实际的情况做调整
+                //目前暂定300毫秒不会影响到客户体验
+                Thread.sleep(300);
+                //System.out.println(2); //debug
+                continue;
+            }
+            //获取需要缓存的数据-从数据库或其他的地方查询
+            T result = executor.execute();
+            if (result == null) {
+                setCachedWrapper(key, nullValueExpireSec, null);
+            } else {
+                setCachedWrapper(key, keyExpireSec, result);
+            }
+            del(key_mutex);
+            //System.out.println(3); //debug
+            value = new CachedWrapper<T>(result);
+            return value;
+        }
     }
 }
