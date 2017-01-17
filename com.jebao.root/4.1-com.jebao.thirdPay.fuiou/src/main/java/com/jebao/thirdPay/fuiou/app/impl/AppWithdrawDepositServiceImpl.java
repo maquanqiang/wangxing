@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class AppWithdrawDepositServiceImpl {
     public String post(WithdrawDepositRequest reqData) {
-        String httpUrl = FuiouConfig.appUrl + "500003.action";
+        String httpUrl = FuiouConfig.url + "app/500003.action";
         reqData.setPage_notify_url(FuiouConfig.Jebao_Notify_Origin + "mobile/api/withdrawDepositNotify");
         try {
             return post(httpUrl, reqData);

@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class AppFastRechargeServiceImpl {
     public String post(FastRechargeRequest reqData) {
-        String httpUrl= FuiouConfig.appUrl+"500001.action";
+        String httpUrl= FuiouConfig.url+"app/500001.action";
         reqData.setPage_notify_url(FuiouConfig.Jebao_Notify_Origin+"mobile/api/fastRechargeNotify");
         try {
             return post(httpUrl,reqData);

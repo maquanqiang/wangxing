@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class AppPersonQuickPayServiceImpl {
     public String post(PersonQuickPayRequest reqData) {
-        String httpUrl= FuiouConfig.appUrl+"500002.action";
+        String httpUrl= FuiouConfig.url+"app/500002.action";
         reqData.setPage_notify_url(FuiouConfig.Jebao_Notify_Origin+"mobile/api/quickPayNotify");
         try {
             return post(httpUrl,reqData);

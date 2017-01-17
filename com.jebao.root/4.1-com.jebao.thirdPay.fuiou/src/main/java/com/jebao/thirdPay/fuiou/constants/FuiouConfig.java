@@ -6,7 +6,6 @@ import java.util.HashMap;
  * Created by Lee on 2016/12/10.
  */
 public class FuiouConfig {
-    public final static String appUrl= ProjectSetting.getConfigProperty("project.thirdPay.fuiou.appUrl");
     public final static String url= ProjectSetting.getConfigProperty("project.thirdPay.fuiou.url");
     public final static String platLoginName= ProjectSetting.getConfigProperty("project.thirdPay.fuiou.platLoginName");
     public final static String platNumber= ProjectSetting.getConfigProperty("project.thirdPay.fuiou.platNumber");
