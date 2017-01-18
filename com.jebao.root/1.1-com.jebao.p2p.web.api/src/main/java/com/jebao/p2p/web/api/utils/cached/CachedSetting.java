@@ -16,10 +16,19 @@ public class CachedSetting {
         this.setKeyMutexExpireSec(keyMutexExpireSec);
         this.setDesc(desc);
     }
+    public CachedSetting(String key,int keyExpireSec,int nullValueExpireSec,int keyMutexExpireSec,int sleepMilliseconds,String desc){
+        this.setKey(key);
+        this.setKeyExpireSec(keyExpireSec);
+        this.setNullValueExpireSec(nullValueExpireSec);
+        this.setKeyMutexExpireSec(keyMutexExpireSec);
+        this.setDesc(desc);
+        this.setSleepMilliseconds(sleepMilliseconds);
+    }
     private String key;
     private int keyExpireSec;
     private int nullValueExpireSec;
     private int keyMutexExpireSec;
+    private int sleepMilliseconds;
     private String desc;
 
     public String getKey() {
@@ -60,5 +69,13 @@ public class CachedSetting {
 
     public void setDesc(String desc) {
         this.desc = desc;
+    }
+
+    public int getSleepMilliseconds() {
+        return sleepMilliseconds;
+    }
+
+    public void setSleepMilliseconds(int sleepMilliseconds) {
+        this.sleepMilliseconds = sleepMilliseconds;
     }
 }

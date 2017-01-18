@@ -4,8 +4,12 @@ import com.jebao.common.cache.utils.wrapper.CachedWrapper;
 import com.jebao.common.cache.utils.wrapper.CachedWrapperExecutor;
 import org.junit.Test;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -163,6 +167,64 @@ public class ShardedRedisUtil_UnitTest {
                         list.add(obj_b1);
                         // if(obj01!=null) throw new Exception("test");
                         return list;
+                    }
+                });
+    }
+    @Test
+    public void getValueByMutex_ChangeKeyExpireSec() throws Exception {
+        ShardedRedisUtil redisUtil = ShardedRedisUtil.getInstance();
+        int keyExpireSec=2000;
+        int nullValueExpireSec=1000;
+        CachedWrapper<List<ObjClass>> wrapperNullValue=redisUtil.getCachedWrapperByMutexKey("value-107", keyExpireSec, nullValueExpireSec, 10,
+                new CachedWrapperExecutor<List<ObjClass>>() {
+                    @Override
+                    public List<ObjClass> execute()  {
+                        return null;
+                    }
+                });
+        //不需要对数据进行缓存 keyExpireSec==0&&nullValueExpireSec==0&&keyMutexExpireSec==0
+        CachedWrapper<List<ObjClass>> wrapperNoCached=redisUtil.getCachedWrapperByMutexKey("value-207", 0, 0, 0,
+                new CachedWrapperExecutor<List<ObjClass>>() {
+                    @Override
+                    public List<ObjClass> execute()  {
+                        return null;
+                    }
+                });
+        //循环请求中-休眠的具体时间必要根据实际的情况做调整-目前暂定300毫秒不会影响到客户体验
+        CachedWrapper<List<ObjClass>> wrapperValue_Sleep=redisUtil.getCachedWrapperByMutexKey("value-307", 100, 50, 5, 300,
+                new CachedWrapperExecutor<List<ObjClass>>() {
+                    @Override
+                    public List<ObjClass> execute() {
+                        return null;
+                    }
+                });
+    }
+    @Test
+    public void getValueByTimestamp() throws Exception {
+        ShardedRedisUtil redisUtil = ShardedRedisUtil.getInstance();
+        int loginId=1000;
+        String keyTimestampPerson="keyTimestamp_person_"+String.valueOf(loginId);
+        //keyTimestampPerson=keyTimestamp_person_1000
+        //输出结果： "timestamp": "2017-01-18 02:44:41|212cb6a7-5eb7-4b2e-995b-405aa0dcf9ad"
+        CachedWrapper<String> wrapperValue_keyTimestamp=redisUtil.getCachedWrapperByMutexKey(keyTimestampPerson, 60 * 60 * 24, 5, 3,
+                new CachedWrapperExecutor<String>() {
+                    @Override
+                    public String execute() {
+                        DateFormat format1 = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss|");
+                        String dateFormat = format1.format(new Date());
+                        String uuid= UUID.randomUUID().toString();
+                        String timestampSetVal=dateFormat+uuid;
+                        return timestampSetVal;
+                    }
+                });
+        String timestamp=wrapperValue_keyTimestamp.getData();
+        CachedWrapper<String> wrapperValue_Timestamp=redisUtil.getCachedWrapperByTimestamp("value-timestamp", 1000, 500, timestamp,
+                new CachedWrapperExecutor<String>() {
+                    @Override
+                    public String execute() {
+                        return "目前考虑的使用场景-缓存个人用户的全局信息" +
+                                "-但需要设计合理的个人用户信息更新机制" +
+                                "-缓存数据周期长--例如一天";
                     }
                 });
     }

@@ -9,13 +9,18 @@ public class CachedWrapper<T>  {
     {
         this.setData(data);
     }
+    public CachedWrapper(T data,String timestamp)
+    {
+        this.setData(data);
+        this.setTimestamp(timestamp);
+    }
 
     /**
      * 缓存数据
      */
     private T data;
     /**
-     * 缓存数据-时间戳-数据对比
+     * 缓存数据-数据对比时间戳
      */
     private String timestamp;
 
