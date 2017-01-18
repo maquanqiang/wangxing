@@ -1,4 +1,4 @@
-package com.jebao.p2p.service.impl.user;
+package com.jebao.p2p.service.impl.mobile;
 
 import com.jebao.common.utils.fastjson.FastJsonUtil;
 import com.jebao.jebaodb.dao.dao.loanmanage.TbThirdInterfaceLogDao;
@@ -9,14 +9,14 @@ import com.jebao.jebaodb.entity.loanmanage.TbThirdInterfaceLog;
 import com.jebao.jebaodb.entity.user.TbAccountsFunds;
 import com.jebao.jebaodb.entity.user.TbFundsDetails;
 import com.jebao.jebaodb.entity.user.TbUserDetails;
+import com.jebao.p2p.service.inf.mobile.IMobileWithdrawServiceInf;
 import com.jebao.p2p.service.inf.user.IAccountsFundsServiceInf;
 import com.jebao.p2p.service.inf.user.IFundsDetailsServiceInf;
 import com.jebao.p2p.service.inf.user.IUserServiceInf;
-import com.jebao.p2p.service.inf.user.IWithdrawServiceInf;
+import com.jebao.thirdPay.fuiou.app.impl.AppWithdrawDepositServiceImpl;
+import com.jebao.thirdPay.fuiou.app.model.withdrawDeposit.WithdrawDepositRequest;
+import com.jebao.thirdPay.fuiou.app.model.withdrawDeposit.WithdrawDepositResponse;
 import com.jebao.thirdPay.fuiou.constants.FuiouConfig;
-import com.jebao.thirdPay.fuiou.impl.WithdrawDepositServiceImpl;
-import com.jebao.thirdPay.fuiou.model.withdrawDeposit.WithdrawDepositRequest;
-import com.jebao.thirdPay.fuiou.model.withdrawDeposit.WithdrawDepositResponse;
 import com.jebao.thirdPay.fuiou.util.SecurityUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,24 +26,20 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 /**
- * Created by Administrator on 2016/12/15.
+ * Created by Administrator on 2017/1/17.
  */
 @Service
-public class WithdrawServiceImpl implements IWithdrawServiceInf {
+public class MobileWithdrawServiceImpl implements IMobileWithdrawServiceInf {
     @Autowired
     private IUserServiceInf userService;
-
     @Autowired
     private IAccountsFundsServiceInf accountsFundsService;
-
     @Autowired
     private IFundsDetailsServiceInf fundsDetailsService;
-
     @Autowired
     private TbThirdInterfaceLogDao thirdInterfaceLogDao;
-
     @Autowired
-    private WithdrawDepositServiceImpl withdrawDepositService;
+    private AppWithdrawDepositServiceImpl appWithdrawDepositService;
 
     /**
      * 提现接口 form表单提交 跳转
@@ -68,11 +64,11 @@ public class WithdrawServiceImpl implements IWithdrawServiceInf {
         reqData.setAmt(amt);
         reqData.setBack_notify_url("");
 
-        String html = withdrawDepositService.post(reqData);
+        String html = appWithdrawDepositService.post(reqData);
         if (html != null && html.length() > 0) {
             //region 提交到富有，记录接口日志
             TbThirdInterfaceLog thirdInterfaceLog = new TbThirdInterfaceLog();
-            thirdInterfaceLog.setTilType(18); // 接口编号
+            thirdInterfaceLog.setTilType(30); // 接口编号
             thirdInterfaceLog.setTilSerialNumber(reqData.getMchnt_txn_ssn());
             String jsonText = FastJsonUtil.serialize(reqData);
             thirdInterfaceLog.setTilReqText(jsonText);
@@ -108,7 +104,7 @@ public class WithdrawServiceImpl implements IWithdrawServiceInf {
 
         //region 富有返回成功，记录接口日志
         TbThirdInterfaceLog thirdInterfaceLog = new TbThirdInterfaceLog();
-        thirdInterfaceLog.setTilType(18); // 接口编号
+        thirdInterfaceLog.setTilType(30); // 接口编号
         thirdInterfaceLog.setTilSerialNumber(model.getMchnt_txn_ssn());
         thirdInterfaceLog.setTilReturnCode(model.getResp_code());
         String jsonText = FastJsonUtil.serialize(model);
