@@ -1,6 +1,6 @@
 package com.jebao.p2p.web.api.utils.constants;
 
-import java.math.BigDecimal;
+import com.jebao.p2p.web.api.utils.cached.CachedSetting;
 
 /**
  * Created by Administrator on 2016/10/24.
@@ -28,4 +28,7 @@ public class Constants {
     public static final boolean IsTest = ProjectSetting.getConfigProperty("project.isTest").equalsIgnoreCase("true");
     //手续费
     public static String COMMISSION_CHARGE = ProjectSetting.getConfigProperty("project.commission_charge") == null ? "0" : ProjectSetting.getConfigProperty("project.commission_charge");
+
+    //缓存常量列表--目前直接对API的响应数据进行缓存
+    public static CachedSetting CACHED_API_ARTICLE_INDEX=new CachedSetting(DOMAIN+"api_article_index",60*10,10,5,"首页的三个新闻缓存10分钟(url=/api/article/index)");
 }

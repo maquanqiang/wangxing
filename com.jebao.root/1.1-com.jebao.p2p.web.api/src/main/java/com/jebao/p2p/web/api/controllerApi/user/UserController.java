@@ -34,6 +34,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.math.BigDecimal;
 import java.net.URLEncoder;
 
@@ -92,21 +94,43 @@ public class UserController extends _BaseController {
         return new JsonResultData<>(userVM);
     }
 
+    /**
+     * 同步第三方资金帐号信息
+     * @return
+     */
     @RequestMapping("syncThirdAccount")
-    public JsonResult syncThirdAccount() {
+    public JsonResult syncThirdAccount(HttpServletRequest request, HttpServletResponse response) {
         CurrentUser currentUser = CurrentUserContextHolder.get();
         if (currentUser == null) {
             return new JsonResultError();
         }
+        //如果第三方账号存在，则直接返回OK
+        if (!StringUtils.isBlank(currentUser.getFundAccount())) {
+            return new JsonResultOk();
+        }
         ResultInfo result = userfundService.queryUserInfs(currentUser.getId());
-        if(result.getSuccess_is_ok()){//更新用户缓存
+        if (result.getSuccess_is_ok()) {//更新用户缓存
             TbUserDetails userDetails = userService.getUserDetailsInfo(currentUser.getId());
-            if(userDetails != null && StringUtils.isNotBlank(userDetails.getUdThirdAccount())){
+            if (userDetails != null && StringUtils.isNotBlank(userDetails.getUdThirdAccount())) {
                 currentUser.setFundAccount(userDetails.getUdThirdAccount());
                 CurrentUserContextHolder.set(currentUser); // 设置第三方账户
-                LoginSessionUtil.Refresh(currentUser,request,response);//刷新
+                LoginSessionUtil.Refresh(currentUser, request, response);//刷新
             }
         }
+        return new JsonResultOk();
+    }
+
+    /**
+     * 同步第三方账户线下POS签约状态
+     * @return
+     */
+    @RequestMapping("syncThirdPosStatus")
+    public JsonResult syncThirdPosStatus() {
+        CurrentUser currentUser = CurrentUserContextHolder.get();
+        if (currentUser == null) {
+            return new JsonResultError();
+        }
+        userfundService.queryUserInfs(currentUser.getId());
         return new JsonResultOk();
     }
 
@@ -407,8 +431,8 @@ public class UserController extends _BaseController {
             return null;
         }
 
-        BigDecimal fee =new BigDecimal(Constants.COMMISSION_CHARGE);
-        ResultInfo resultInfo = withdrawService.withdrawDepositByWeb(currentUser.getId(), form.getMoney(),fee);
+        BigDecimal fee = new BigDecimal(Constants.COMMISSION_CHARGE);
+        ResultInfo resultInfo = withdrawService.withdrawDepositByWeb(currentUser.getId(), form.getMoney(), fee);
         if (!resultInfo.getSuccess_is_ok()) {
             String content = resultInfo.getMsg();
             goFailedPage(title, content, backUrl);
@@ -438,7 +462,7 @@ public class UserController extends _BaseController {
             return null;
         }
 
-        BigDecimal fee =new BigDecimal(Constants.COMMISSION_CHARGE);
+        BigDecimal fee = new BigDecimal(Constants.COMMISSION_CHARGE);
 
         ResultInfo resultInfo = withdrawService.withdrawDepositByWebComplete(currentUser.getId(), model, fee);
         if (!resultInfo.getSuccess_is_ok()) {

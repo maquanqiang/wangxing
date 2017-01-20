@@ -1,5 +1,8 @@
 package com.jebao.p2p.web.api.controllerApi.article;
 
+import com.jebao.common.cache.redis.sharded.ShardedRedisUtil;
+import com.jebao.common.cache.utils.wrapper.CachedWrapper;
+import com.jebao.common.cache.utils.wrapper.CachedWrapperExecutor;
 import com.jebao.jebaodb.entity.article.ArticleInfo;
 import com.jebao.jebaodb.entity.article.TbArticle;
 import com.jebao.jebaodb.entity.extEntity.PageWhere;
@@ -12,6 +15,9 @@ import com.jebao.p2p.web.api.responseModel.article.ArticleVM;
 import com.jebao.p2p.web.api.responseModel.base.JsonResult;
 import com.jebao.p2p.web.api.responseModel.base.JsonResultData;
 import com.jebao.p2p.web.api.responseModel.base.JsonResultList;
+import com.jebao.p2p.web.api.utils.cached.CachedSetting;
+import com.jebao.p2p.web.api.utils.cached.CachedUtil;
+import com.jebao.p2p.web.api.utils.constants.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -32,19 +38,34 @@ public class ArticleController extends _BaseController {
 
     @RequestMapping(value = "index", method = RequestMethod.GET)
     @ResponseBody
-    public JsonResult index(ArticleSM model){
+    public JsonResult index(ArticleSM model) throws Exception {
         if (model == null) {
             return new JsonResultList<>(null);
         }
-
-        PageWhere page = new PageWhere(model.getPageIndex(), model.getPageSize());
-        List<TbArticle> articleList = articleService.selectArticleByTypeIdForIndex(model.getTypeId(), page);
-        if (articleList == null || articleList.size() == 0) {
-            return new JsonResultList<>(null);
-        }
-        List<ArticleIndexVM> viewModelList = new ArrayList<>();
-        articleList.forEach(o -> viewModelList.add(new ArticleIndexVM(o)));
-        return new JsonResultList<>(viewModelList);
+        //首页的三个新闻缓存10分钟
+        String keyMd5 = CachedUtil.KeyMd5(model);
+        ShardedRedisUtil redisUtil = ShardedRedisUtil.getInstance();
+        CachedSetting cachedSetting = Constants.CACHED_API_ARTICLE_INDEX;
+        CachedWrapper<List<ArticleIndexVM>> articleListCached = redisUtil.getCachedWrapperByMutexKey(
+                cachedSetting.getKey() + keyMd5,
+                cachedSetting.getKeyExpireSec(),
+                cachedSetting.getNullValueExpireSec(),
+                cachedSetting.getKeyMutexExpireSec(),
+                new CachedWrapperExecutor<List<ArticleIndexVM>>() {
+                    @Override
+                    public List<ArticleIndexVM> execute() {
+                        PageWhere page = new PageWhere(model.getPageIndex(), model.getPageSize());
+                        List<TbArticle> articleList = articleService.selectArticleByTypeIdForIndex(model.getTypeId(), page);
+                        if (articleList == null || articleList.size() == 0) {
+                            return null;
+                        }
+                        List<ArticleIndexVM> viewModelList = new ArrayList<>();
+                        articleList.forEach(o -> viewModelList.add(new ArticleIndexVM(o)));
+                        return viewModelList;
+                    }
+                });
+        //
+        return new JsonResultList<>(articleListCached.getData());
     }
 
     @RequestMapping(value = "list", method = RequestMethod.GET)

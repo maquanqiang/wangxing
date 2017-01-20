@@ -1,4 +1,7 @@
 /**
+ * Created by Administrator on 2017/1/17.
+ */
+/**
  * Created by Administrator on 2016/12/14.
  */
 //Vue实例
@@ -6,9 +9,7 @@
 var model = {
     //银行卡信息
     bankInfo: {},
-    posStatus: true,
     inTime: "",
-    typeId: "",
     hasFundAccount: true
 };
 
@@ -20,7 +21,6 @@ var vm = new Vue({
         var now = new Date();
         var tomorrow = new Date(now.setDate(now.getDate() + 1));
         model.inTime = tomorrow.toFormatString('yyyy-MM-dd');
-        model.typeId = $("#typeId").val();
     },
     //初始化远程数据
     created: function () {
@@ -28,22 +28,14 @@ var vm = new Vue({
         this.change();
     },
     mounted: function () {
-        //console.log($("#quickPay_form").length)
         this.initValidateForm("#quickPay_form");
         this.initValidateForm("#fastRecharge_form");
-        this.initValidateForm("#onlineBankRecharge_form");
         this.initValidateForm("#withdrawDeposit_form");
     },
     //方法，可用于绑定事件或直接调用
     methods: {
         change: function () {
             var index = 0;
-            if (model.typeId == 2) {
-                index = 1;
-            } else {
-                index = 0;
-            }
-
             $(".account-rex-tit h4").removeClass('active');
             $(".account-rex-item").removeClass('active');
             $(".account-rex-tit h4").eq(index).addClass('active');
@@ -55,7 +47,6 @@ var vm = new Vue({
                     var data = response.data;
                     if (data != null) {
                         vm.bankInfo = data;
-                        vm.posStatus = data.posStatus == 1 ? true : false;
                         vm.hasFundAccount = data.hasFundAccount;
                     }
                 }
@@ -78,7 +69,7 @@ var vm = new Vue({
                 }
             }).on('success.form.bv', function (e) {
                 e.preventDefault();//阻止默认事件提交
-                
+
                 var $form = $(e.target);
                 $form.attr("action", common.apiOrigin + $form.attr("action"));
                 $form[0].submit();

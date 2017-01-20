@@ -1,5 +1,6 @@
 package com.jebao.p2p.web.api.controllerApi.userfund;
 
+import com.jebao.common.utils.bankcard.BankcardUtil;
 import com.jebao.common.utils.regex.RegexUtil;
 import com.jebao.common.utils.validation.ValidatorUtil;
 import com.jebao.jebaodb.entity.extEntity.ResultData;
@@ -11,7 +12,6 @@ import com.jebao.p2p.web.api.responseModel.base.JsonResult;
 import com.jebao.p2p.web.api.responseModel.base.JsonResultData;
 import com.jebao.p2p.web.api.responseModel.base.JsonResultError;
 import com.jebao.p2p.web.api.responseModel.base.JsonResultOk;
-import com.jebao.p2p.web.api.responseModel.datavm.BankCardVM;
 import com.jebao.p2p.web.api.utils.constants.Constants;
 import com.jebao.p2p.web.api.utils.http.HttpUtil;
 import com.jebao.p2p.web.api.utils.session.CurrentUser;
@@ -28,9 +28,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.PrintWriter;
 import java.net.URLEncoder;
-import java.util.List;
 
 /**
  * Created by Jack on 2016/12/13.
@@ -42,7 +43,7 @@ public class UserfundController extends _BaseController {
     private IUserfundServiceInf userfundService;
 
     @RequestMapping(value = "register",method = RequestMethod.POST)
-    public JsonResult register(fundRegModel model){
+    public JsonResult register(fundRegModel model,HttpServletRequest request, HttpServletResponse response) {
         if (model!=null && model.getBankCardNo()!=null){
             model.setBankCardNo(model.getBankCardNo().replaceAll("\\s",""));
         }
@@ -52,6 +53,9 @@ public class UserfundController extends _BaseController {
         }
         if (!model.getPayPassword().equalsIgnoreCase(model.getPayPasswordAgain())) {
             return new JsonResultError("俩次密码不一致");
+        }
+        if (!BankcardUtil.checkBankCard(model.getBankCardNo())){
+            return new JsonResultError("银行卡号输入错误");
         }
         CurrentUser user = CurrentUserContextHolder.get();
         RegRequest reqData = model.toRequest();
@@ -65,40 +69,61 @@ public class UserfundController extends _BaseController {
         LoginSessionUtil.Refresh(user,request,response); //刷新redis缓存
         return new JsonResultOk(resultInfo.getMsg());
     }
+    @RequestMapping("validateBankCard")
+    public JsonResult validateBankCard(String bankCardNo){
+        if (BankcardUtil.checkBankCard(bankCardNo)){
+            return new JsonResultOk();
+        }
+        return new JsonResultError();
+    }
     @RequestMapping("getBankCardInfo")
     public JsonResult getBankCardInfo(String bankCardNo){
+        if (bankCardNo!=null && bankCardNo.length() < 16){
+            return new JsonResultError();
+        }
         String url = "http://www.cardcn.com/search.php?word="+bankCardNo;
         String responseString = new HttpUtil().sendHttpGet(url);
         if (responseString!=null && responseString.length()>0){
             String htmlDiv = RegexUtil.getFirstMatch(responseString, "<div class=\"listpage_content\">[\\s\\S]+</div>");
             if (htmlDiv!=null && htmlDiv.length()>0){
-                List<String> dlList = RegexUtil.getContentByPattern(htmlDiv,"<dl>[\\s\\S]+?</dl>");
-                //region html示例
-                /*
-                <dl><dt><img src="bankicon.jpg"></dt></dl>
-                <dl><dt><font class="con_sub_title">归属信息：</font>北京 - 北京</dt></dl>
-                <dl><dt><font class="con_sub_title">银行名称：</font>中国工商银行</dt></dl>
-                 <dl><dt><font class="con_sub_title">银行卡名：</font>牡丹卡普卡</dt></dl>
-                 <dl><dt><font class="con_sub_title">银行卡种：</font>借记卡</dt></dl>
-                 <dl><dt><font class="con_sub_title">客服电话：</font>95588</dt></dl>
-                 <dl><dt><font class="con_sub_title">官方网址：</font>www.icbc.com.cn</dt></dl>*/
+                htmlDiv=RegexUtil.replaceContentByPattern(htmlDiv,"<img [^>]+>","");
+                htmlDiv=RegexUtil.replaceContentByPattern(htmlDiv,"<script [^>]+>","");
+                return new JsonResultData<>(htmlDiv);
+
+                // region 提取html，填充model.  注释
+//                List<String> dlList = RegexUtil.getContentByPattern(htmlDiv,"<dl>[\\s\\S]+?</dl>");
+//
+//                /* html 示例
+//                <dl><dt><img src="bankicon.jpg"></dt></dl>
+//                <dl><dt><font class="con_sub_title">归属信息：</font>北京 - 北京</dt></dl>
+//                <dl><dt><font class="con_sub_title">银行名称：</font>中国工商银行</dt></dl>
+//                 <dl><dt><font class="con_sub_title">银行卡名：</font>牡丹卡普卡</dt></dl>
+//                 <dl><dt><font class="con_sub_title">银行卡种：</font>借记卡</dt></dl>
+//                 <dl><dt><font class="con_sub_title">客服电话：</font>95588</dt></dl>
+//                 <dl><dt><font class="con_sub_title">官方网址：</font>www.icbc.com.cn</dt></dl>*/
+//
+//                if (dlList!=null && dlList.size()>0){
+//                    String dtRegex = "(?<=</font>)[\\s\\S]+?(?=</dt>)";
+//                    String bankOfRegions = dlList.size() > 1 ? RegexUtil.getFirstMatch(dlList.get(1),dtRegex):"";
+//                    if (bankOfRegions == null){
+//                        return new JsonResultError();
+//                    }
+//                    String[] regionArray = bankOfRegions.split("-");
+//                    String province = regionArray[0].trim();
+//                    String city = regionArray.length > 1 ? regionArray[1].trim() : "";
+//                    String bankName = dlList.size() > 2 ? RegexUtil.getFirstMatch(dlList.get(2),dtRegex):"";
+//                    if (bankName != null){
+//                        bankName = bankName.trim();
+//                    }
+//                    BankCardVM model = new BankCardVM();
+//                    model.setBankCardNo(bankCardNo);
+//                    model.setBankName(bankName);
+//                    model.setProvince(province);
+//                    model.setCity(city);
+//
+//                    return new JsonResultData<>(model);
+//                }
                 //endregion
-                if (dlList!=null && dlList.size()>0){
-                    String dtRegex = "(?<=</font>)[\\s\\S]+?(?=</dt>)";
-                    String bankOfRegions = dlList.size() > 1 ? RegexUtil.getFirstMatch(dlList.get(1),dtRegex):"";
-                    String[] regionArray = bankOfRegions.split("-");
-                    String province = regionArray[0].trim();
-                    String city = regionArray.length > 1 ? regionArray[1].trim() : "";
-                    String bankName = dlList.size() > 2 ? RegexUtil.getFirstMatch(dlList.get(2),dtRegex).trim():"";
-
-                    BankCardVM model = new BankCardVM();
-                    model.setBankCardNo(bankCardNo);
-                    model.setBankName(bankName);
-                    model.setProvince(province);
-                    model.setCity(city);
-
-                    return new JsonResultData<>(model);
-                }
 
             }
         }
