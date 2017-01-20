@@ -124,6 +124,11 @@ public class BidPlanControllerApi extends _BaseController {
     @RequestMapping("doAddPlan")
     @ResponseBody
     public JsonResult doAddPlan(AddPlanForm form) {
+        //校验
+        ValidationResult resultValidation = ValidationUtil.validateEntity(form);
+        if (resultValidation.isHasErrors()) {
+            return new JsonResultError(resultValidation.getErrorMsg().toString());
+        }
 
         TbBidPlan plan = new TbBidPlan();
         plan.setBpNumber(form.getBpNumber());
@@ -520,15 +525,20 @@ public class BidPlanControllerApi extends _BaseController {
 //        }
 //    }
 
-
-//    public void download(BidPlanForm form){
-//        PageWhere pageWhere = new PageWhere(0, 10000);
-//        pageWhere.setOrderBy(" bp_id desc");
-//        BidPlanSM bidPlanSM = BidPlanForm.toEntity(form);
-//        List<TbBidPlan> tbBidPlans = bidPlanService.selectBySelfConditionForPage(bidPlanSM, pageWhere);
-//        List<BidPlanVM> viewModelList = new ArrayList<BidPlanVM>();
-//        tbBidPlans.forEach(o -> viewModelList.add(new BidPlanVM(o)));
-//    }
+    /**
+     * 导出excel
+     * @param form
+     */
+    @RequestMapping("download")
+    public void download(BidPlanForm form) throws Exception {
+        PageWhere pageWhere = new PageWhere(0, 10000);
+        pageWhere.setOrderBy(" bp_id desc");
+        BidPlanSM bidPlanSM = BidPlanForm.toEntity(form);
+        List<TbBidPlan> tbBidPlans = bidPlanService.selectBySelfConditionForPage(bidPlanSM, pageWhere);
+        List<BidPlanVM> viewModelList = new ArrayList<>();
+        tbBidPlans.forEach(o -> viewModelList.add(new BidPlanVM(o)));
+        new ExcelUtil().outputFile(response, "标的列表.xlsx",viewModelList);
+    }
 
 }
 

@@ -5,6 +5,7 @@ import com.jebao.jebaodb.entity.loanmanage.search.BidPlanSM;
 import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.validation.constraints.DecimalMax;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
@@ -55,27 +56,28 @@ public class AddPlanForm {
     private String bpName;
     @NotBlank(message="标的名称不能为空")
     private String bpNumber;
-    @NotNull
+    @DecimalMin(value = "1")
     private Integer bpPeriodsDisplay;
-    @NotNull
+    @DecimalMin(value = "1")
     private Integer bpPeriods;
-    @NotNull
+    @DecimalMin(value = "1")
     private Integer bpCycleType;
-    @NotNull
+    @DecimalMin(value = "1")
     private Integer bpCycleSize;
     @DecimalMin(value = "0")
     private BigDecimal bpBidMoney;
     @DecimalMin(value = "0")
+    @DecimalMax(value = "20")
     private BigDecimal bpRate;
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date bpStartTime;
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date bpEndTime;
-    @DecimalMin(value = "0")
+    @DecimalMin(value = "1")
     private BigDecimal bpStartMoney;
-    @DecimalMin(value = "0")
+    @DecimalMin(value = "1")
     private BigDecimal bpRiseMoney;
-    @DecimalMin(value = "0")
+    @DecimalMin(value = "1")
     private BigDecimal bpTopMoney;
     @NotNull
     private Long bpLoanerId;
