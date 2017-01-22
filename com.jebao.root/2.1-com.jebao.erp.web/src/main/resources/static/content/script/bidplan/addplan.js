@@ -34,6 +34,10 @@ var vm = new Vue({
                 vm.projList = response.data;
             }
         });
+
+    },
+    mounted:function(){
+        this.myInitValidateForm($('#defaultForm'));
     },
     //watch可以监视数据变动，针对相应的数据设置监视函数即可
     watch: {
@@ -83,8 +87,9 @@ var vm = new Vue({
                     },
                     bpType: {
                         validators: {
-                            notEmpty: {
-                                message: '产品类型不能为空'
+                            regexp: {
+                                regexp: /^[1-9]+$/,
+                                message: '产品类型必选'
                             }
                         }
                     },
@@ -99,7 +104,8 @@ var vm = new Vue({
                         validators: {
                             notEmpty: {
                                 message: '募集期限不能为空'
-                            }
+                            },
+                            numeric: {message: '只能输入数字'}
                         }
                     },
                     bpEndTime: {
@@ -113,48 +119,55 @@ var vm = new Vue({
                         validators: {
                             notEmpty: {
                                 message: '起投金额不能为空'
-                            }
+                            },
+                            numeric: {message: '只能输入数字'}
                         }
                     },
                     bpRiseMoney: {
                         validators: {
                             notEmpty: {
                                 message: '递增金额不能为空'
-                            }
+                            },
+                            numeric: {message: '只能输入数字'}
                         }
                     },
                     bpTopMoney: {
                         validators: {
                             notEmpty: {
                                 message: '投资上限不能为空'
-                            }
+                            },
+                            numeric: {message: '只能输入数字'}
                         }
                     },
                     bpBidMoney: {
                         validators: {
                             notEmpty: {
                                 message: '募集金额不能为空'
-                            }
+                            },
+                            numeric: {message: '只能输入数字'}
                         }
                     },
                     bpRate: {
                         validators: {
                             notEmpty: {
                                 message: '借款利率不能为空'
-                            }
+                            },
+                            numeric: {message: '只能输入数字'}
                         }
                     },
                     bpPeriodsDisplay: {
                         validators: {
                             notEmpty: {
                                 message: '借款期限不能为空'
-                            }
+                            },
+                            numeric: {message: '只能输入数字'}
                         }
                     },
                     bpCycleType: {
                         validators: {
-                            notEmpty: {
-                                message: '周期选项不能为空'
+                            regexp: {
+                                regexp: /^[1-9]+$/,
+                                message: '周期选项必选'
                             }
                         }
                     },
@@ -174,8 +187,9 @@ var vm = new Vue({
                     },
                     bpInterestPayType: {
                         validators: {
-                            notEmpty: {
-                                message: '还款方式不能为空'
+                            regexp: {
+                                regexp: /^[1-9]+$/,
+                                message: '还款方式必选'
                             }
                         }
                     },
@@ -199,6 +213,11 @@ var vm = new Vue({
         search:function(event){
         },
         createIntent:function(){
+            //vm.myInitValidateForm($('#defaultForm'));
+            var bootstrapValidator = $("#defaultForm").data('bootstrapValidator').validate();
+            if (!bootstrapValidator.isValid()) {
+                return false;
+            }
             vm.intentList = [];
             vm.principalTotal = 0;
             vm.interestTotal = 0;
@@ -219,7 +238,7 @@ var vm = new Vue({
             });
         },
         addBtn:function(){
-            vm.myInitValidateForm($('#defaultForm'));
+            //vm.myInitValidateForm($('#defaultForm'));
             var bootstrapValidator = $("#defaultForm").data('bootstrapValidator').validate();
             if (!bootstrapValidator.isValid()) {
                 return false;
@@ -294,7 +313,9 @@ laydate({
         if(bpOpenTime!=null && bpOpenTime != ""){
             var time = endTime(datas,bpOpenTime);
             $("#bpEndTime").val(time)
+            $("#defaultForm").data('bootstrapValidator').updateStatus("bpEndTime","VALID","notEmpty");
         }
+        $("#defaultForm").data('bootstrapValidator').updateStatus("bpStartTime","VALID","notEmpty");
     }
 });
 
@@ -305,15 +326,20 @@ laydate({
     format: 'YYYY-MM-DD',
     istoday : false,
     choose : function(datas){
+        $("#defaultForm").data('bootstrapValidator').updateStatus("bpExpectLoanDate","VALID","notEmpty");
         var d = $("#bpPeriodsDisplay").val();
         var cycle = $("#bpCycleType").val();
         var dateStr = repayDate(datas, d, cycle);
         $("#bpExpectRepayDate").val(dateStr);
-        var date = new Date(dateStr);
-        date = date.valueOf()
-        date = date - 24 * 60 * 60 * 1000;
-        date = new Date(date).toFormatString("yyyy-MM-dd")
-        $("#bpExpectExpireDate").val(date);
+        if(dateStr!=null){
+            $("#defaultForm").data('bootstrapValidator').updateStatus("bpExpectRepayDate","VALID","notEmpty");
+            var date = new Date(dateStr);
+            date = date.valueOf()
+            date = date - 24 * 60 * 60 * 1000;
+            date = new Date(date).toFormatString("yyyy-MM-dd")
+            $("#bpExpectExpireDate").val(date);
+            $("#defaultForm").data('bootstrapValidator').updateStatus("bpExpectExpireDate","VALID","notEmpty");
+        }
     }
 });
 
@@ -323,6 +349,7 @@ $("#bpOpenTime").change(function(){
     if(bpStartTime!=null && bpStartTime != ""){
         var time = endTime(bpStartTime,$(this).val());
         $("#bpEndTime").val(time);
+        $("#defaultForm").data('bootstrapValidator').updateStatus("bpEndTime","VALID","notEmpty");
     }
 });
 
@@ -333,11 +360,13 @@ $("#bpPeriodsDisplay").change(function(){
     var dateStr = repayDate(datas, $(this).val(), cycle);
     $("#bpExpectRepayDate").val(dateStr);
     if(dateStr!=null){
+        $("#defaultForm").data('bootstrapValidator').updateStatus("bpExpectRepayDate","VALID","notEmpty");
         var date = new Date(dateStr);
         date = date.valueOf()
         date = date - 24 * 60 * 60 * 1000;
         date = new Date(date).toFormatString("yyyy-MM-dd")
         $("#bpExpectExpireDate").val(date);
+        $("#defaultForm").data('bootstrapValidator').updateStatus("bpExpectExpireDate","VALID","notEmpty");
     }
 });
 
@@ -347,10 +376,12 @@ $("#bpCycleType").change(function(){
     var dateStr = repayDate(datas, d, $(this).val());
     $("#bpExpectRepayDate").val(dateStr);
     if(dateStr!=null){
+        $("#defaultForm").data('bootstrapValidator').updateStatus("bpExpectRepayDate","VALID","notEmpty");
         var date = new Date(dateStr);
         date = date.valueOf()
         date = date - 24 * 60 * 60 * 1000;
         date = new Date(date).toFormatString("yyyy-MM-dd")
         $("#bpExpectExpireDate").val(date);
+        $("#defaultForm").data('bootstrapValidator').updateStatus("bpExpectExpireDate","VALID","notEmpty");
     }
 });

@@ -156,6 +156,21 @@ var vm = new Vue({
                 }
             });
         },
+        closeBtn:function(){
+            var money = $("#defaultForm input[name=bpLoanMoney]").val();
+            if(money*1>0){
+                layer.alert("放款金额不为空，不能关闭");
+                return false;
+            }
+            $.post("/api/bidPlan/close",{bpId : $("#bpId").val()}, function(response){
+                if(response.success_is_ok){
+                    layer.msg(response.msg);
+                    window.location.href = "/bidplan/noLendingList";
+                }else{
+                    layer.msg(response.error);
+                }
+            })
+        },
         doLoanBtn:function(){
                 vm.myInitValidateForm($('#defaultForm'));
                 var bootstrapValidator = $("#defaultForm").data('bootstrapValidator').validate();
@@ -202,21 +217,6 @@ var vm = new Vue({
                     }
                 })
             }
-        },
-        closeBtn:function(){
-            var money = $("#defaultForm input[name=bpLoanMoney]").val();
-            if(money*1>0){
-                layer.alert("放款金额不为空，不能关闭");
-                return false;
-            }
-            $.post("/api/bidPlan/close",{bpId : $("#bpId").val()}, function(response){
-                if(response.success_is_ok){
-                    layer.msg(response.msg);
-                    window.location.href = "/bidplan/noLendingList";
-                }else{
-                    layer.msg(response.error);
-                }
-            })
         },
         createContract:function() {
             if (vm.investInfoList.length > 0) {
