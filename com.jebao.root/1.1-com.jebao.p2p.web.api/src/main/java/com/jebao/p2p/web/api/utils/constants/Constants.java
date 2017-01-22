@@ -30,5 +30,9 @@ public class Constants {
     public static String COMMISSION_CHARGE = ProjectSetting.getConfigProperty("project.commission_charge") == null ? "0" : ProjectSetting.getConfigProperty("project.commission_charge");
 
     //缓存常量列表--目前直接对API的响应数据进行缓存
-    public static CachedSetting CACHED_API_ARTICLE_INDEX=new CachedSetting(DOMAIN+"api_article_index",60*10,10,5,"首页的三个新闻缓存10分钟(url=/api/article/index)");
+    public static CachedSetting CACHED_API_MEDIANEWS_INDEX=new CachedSetting(DOMAIN+"api_article_index",60*10,10,5,"首页的三个媒体报道缓存10分钟(url=/api/article/index)");
+    public static CachedSetting CACHED_API_ARTICLE_LIST=new CachedSetting(DOMAIN+"api_article_list",60*10,10,5,"文章列表缓存10分钟(url=/api/article/list)");
+    public static CachedSetting CACHED_API_ARTICLE_LIST_COUNT=new CachedSetting(DOMAIN+"api_article_list_count",60*10,10,5,"文章列表总数缓存10分钟(url=/api/article/list)");
+    public static CachedSetting CACHED_API_RECENTINVEST_INDEX=new CachedSetting(DOMAIN+"api_product_recentInvestment",60*10,10,5,"首页最近投资缓存10分钟(url=/api/product/recentInvestment)");
+
 }

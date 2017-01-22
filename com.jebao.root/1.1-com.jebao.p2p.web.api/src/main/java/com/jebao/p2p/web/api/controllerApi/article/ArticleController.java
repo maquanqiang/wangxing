@@ -42,10 +42,10 @@ public class ArticleController extends _BaseController {
         if (model == null) {
             return new JsonResultList<>(null);
         }
-        //首页的三个新闻缓存10分钟
+        //首页的三个媒体报道缓存10分钟
         String keyMd5 = CachedUtil.KeyMd5(model);
         ShardedRedisUtil redisUtil = ShardedRedisUtil.getInstance();
-        CachedSetting cachedSetting = Constants.CACHED_API_ARTICLE_INDEX;
+        CachedSetting cachedSetting = Constants.CACHED_API_MEDIANEWS_INDEX;
         CachedWrapper<List<ArticleIndexVM>> articleListCached = redisUtil.getCachedWrapperByMutexKey(
                 cachedSetting.getKey() + keyMd5,
                 cachedSetting.getKeyExpireSec(),
@@ -70,25 +70,54 @@ public class ArticleController extends _BaseController {
 
     @RequestMapping(value = "list", method = RequestMethod.GET)
     @ResponseBody
-    public JsonResult list(ArticleSM model) {
+    public JsonResult list(ArticleSM model) throws Exception {
         if (model == null) {
             return new JsonResultList<>(null);
         }
 
-        PageWhere page = new PageWhere(model.getPageIndex(), model.getPageSize());
+        //文章列表缓存10分钟
+        String keyMd5 = CachedUtil.KeyMd5(model);
+        ShardedRedisUtil redisUtil = ShardedRedisUtil.getInstance();
+        CachedSetting cachedSetting = Constants.CACHED_API_ARTICLE_LIST;
+        CachedWrapper<List<ArticleListVM>> articleListCached = redisUtil.getCachedWrapperByMutexKey(
+                cachedSetting.getKey() + keyMd5,
+                cachedSetting.getKeyExpireSec(),
+                cachedSetting.getNullValueExpireSec(),
+                cachedSetting.getKeyMutexExpireSec(),
+                new CachedWrapperExecutor<List<ArticleListVM>>() {
+                    @Override
+                    public List<ArticleListVM> execute() {
+                        PageWhere page = new PageWhere(model.getPageIndex(), model.getPageSize());
 
-        List<ArticleInfo> articleList = articleService.selectArticleByTypeIdForPage(model.getTypeId(), page);
-        if (articleList == null || articleList.size() == 0) {
-            return new JsonResultList<>(null);
-        }
-        List<ArticleListVM> viewModelList = new ArrayList<>();
-        articleList.forEach(o -> viewModelList.add(new ArticleListVM(o)));
+                        List<ArticleInfo> articleList = articleService.selectArticleByTypeIdForPage(model.getTypeId(), page);
+                        if (articleList == null || articleList.size() == 0) {
+                            return null;
+                        }
+                        List<ArticleListVM> viewModelList = new ArrayList<>();
+                        articleList.forEach(o -> viewModelList.add(new ArticleListVM(o)));
 
-        int count = 0;
-        if (model.getPageIndex() == 0) {
-            count = articleService.selectArticleByTypeIdForPageCount(model.getTypeId());
-        }
-        return new JsonResultList<>(viewModelList, count);
+                        return viewModelList;
+                    }
+                });
+
+        CachedSetting cachedSettingCount = Constants.CACHED_API_ARTICLE_LIST_COUNT;
+        CachedWrapper<Integer> articleListCountCached = redisUtil.getCachedWrapperByMutexKey(
+                cachedSettingCount.getKey() + keyMd5,
+                cachedSettingCount.getKeyExpireSec(),
+                cachedSettingCount.getNullValueExpireSec(),
+                cachedSettingCount.getKeyMutexExpireSec(),
+                new CachedWrapperExecutor<Integer>() {
+                    @Override
+                    public Integer execute() {
+                        int count = 0;
+                        if (model.getPageIndex() == 0) {
+                            count = articleService.selectArticleByTypeIdForPageCount(model.getTypeId());
+                        }
+                        return count;
+                    }
+                });
+
+        return new JsonResultList<>(articleListCached.getData(), articleListCountCached.getData());
     }
 
     @RequestMapping(value = "details", method = RequestMethod.GET)
