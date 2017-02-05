@@ -7,6 +7,7 @@ import com.jebao.jebaodb.entity.user.TbLoginInfo;
 import com.jebao.jebaodb.entity.user.TbUserDetails;
 import com.jebao.p2p.service.inf.user.IAccountServiceInf;
 import com.jebao.p2p.service.inf.user.IUserServiceInf;
+import com.jebao.p2p.service.inf.userfund.IUserfundServiceInf;
 import com.jebao.p2p.web.api.requestModel.account.LoginForm;
 import com.jebao.p2p.web.api.requestModel.account.RegisterModel;
 import com.jebao.p2p.web.api.responseModel.base.ErrorEnum;
@@ -17,6 +18,7 @@ import com.jebao.p2p.web.api.utils.captcha.CaptchaUtil;
 import com.jebao.p2p.web.api.utils.captcha.MessageUtil;
 import com.jebao.p2p.web.api.utils.http.HttpUtil;
 import com.jebao.p2p.web.api.utils.session.CurrentUser;
+import com.jebao.p2p.web.api.utils.session.CurrentUserContextHolder;
 import com.jebao.p2p.web.api.utils.session.LoginSessionUtil;
 import com.jebao.p2p.web.api.utils.validation.ValidationResult;
 import com.jebao.p2p.web.api.utils.validation.ValidationUtil;
@@ -74,12 +76,46 @@ public class AccountController extends _BaseController {
             //String code = LoginSessionUtil.setAuthCode(currentUser);
             //return new JsonResultOk(code);
             LoginSessionUtil.setLogin(currentUser, request, response);
+            //
+            //同步富友第三方账号
+            syncThirdAccount(currentUser);
+            //
             return new JsonResultOk("登录成功");
         }else {
             String error = resultInfo.getMsg();
             return new JsonResultError(error);
         }
 
+    }
+    @Autowired
+    private IUserfundServiceInf userfundService;
+
+    /**
+     * 核心业务是登录
+     * 同步第三方账号调用的是富友接口吃掉异常是为了减少对富友接口的依赖
+     * @param currentUser
+     */
+    private void syncThirdAccount(CurrentUser currentUser){
+        try {
+            if (currentUser == null) {
+                return ;
+            }
+            //如果第三方账号存在，则直接返回OK
+            if (!StringUtils.isBlank(currentUser.getFundAccount())) {
+                return ;
+            }
+            ResultInfo result = userfundService.queryUserInfs(currentUser.getId());
+            if (result.getSuccess_is_ok()) {//更新用户缓存
+                TbUserDetails userDetails = userService.getUserDetailsInfo(currentUser.getId());
+                if (userDetails != null && StringUtils.isNotBlank(userDetails.getUdThirdAccount())) {
+                    currentUser.setFundAccount(userDetails.getUdThirdAccount());
+                    CurrentUserContextHolder.set(currentUser); // 设置第三方账户
+                    LoginSessionUtil.Refresh(currentUser, request, response);//刷新
+                }
+            }
+        }catch (Exception ex){
+            ex.printStackTrace();
+        }
     }
 
     @RequestMapping("doLogout")
