@@ -14,7 +14,9 @@ public class BidPlanForm {
 
     public static BidPlanSM toEntity(BidPlanForm form){
         BidPlanSM bidPlanSM = new BidPlanSM();
-        bidPlanSM.setBpName(form.getBpName());
+        if(StringUtils.isNotBlank(form.getBpName())){
+            bidPlanSM.setBpName(form.getBpName());
+        }
         bidPlanSM.setBpNumber(form.getBpNumber());
         bidPlanSM.setBpPeriodsDisplay(form.getBpPeriodsDisplay());
         bidPlanSM.setBpPeriods(form.getBpPeriods());
@@ -26,14 +28,16 @@ public class BidPlanForm {
         bidPlanSM.setBpRiseMoney(form.getBpRiseMoney());
         bidPlanSM.setBpTopMoney(form.getBpTopMoney());
         bidPlanSM.setBpStatus(form.getBpStatus());
-        bidPlanSM.setBpTrueName(form.getBpTrueName());
+        if(StringUtils.isNotBlank(form.getBpTrueName())){
+            bidPlanSM.setBpTrueName(form.getBpTrueName());
+        }
         bidPlanSM.setBpLoanerType(form.getBpLoanerType());
         bidPlanSM.setBpInterestPayType(form.getBpInterestPayType());
         bidPlanSM.setSearchDateSt(form.getSearchDateSt());
         bidPlanSM.setSearchDateEnd(form.getSearchDateEnd());
         bidPlanSM.setSearchDateType(form.getSearchDateType());
         bidPlanSM.setBpStatusSear(form.getBpStatusSear());
-        if(form.getBpNumberSear()!=null){
+        if(StringUtils.isNotBlank(form.getBpNumberSear())){
             bidPlanSM.setBpNumberSear("'"+form.getBpNumberSear()+"%'");
         }
         return bidPlanSM;
