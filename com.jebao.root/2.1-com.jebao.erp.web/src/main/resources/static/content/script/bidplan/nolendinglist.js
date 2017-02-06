@@ -53,8 +53,9 @@ var vm = new Vue({
     //方法，可用于绑定事件或直接调用
     methods: {
         search:function(event){
-            if(model.searchObj.searchDateSt!=null||model.searchObj.searchDateEnd!=null){
-                if(model.searchObj.searchDateType==null){
+            if((model.searchObj.searchDateSt!=null && model.searchObj.searchDateSt!= "")
+                ||(model.searchObj.searchDateEnd!=null && model.searchObj.searchDateEnd!="")){
+                if(model.searchObj.searchDateType==null || model.searchObj.searchDateType ==''){
                     layer.alert("请选择时间查询类型");
                     return;
                 }
@@ -85,7 +86,7 @@ var vm = new Vue({
                             skin: '#3c8dbc'
                         });
                     }else{
-                        $("#pageNum").html();
+                        $("#pageNum").html("");
                     }
                 }
                 $("#searchBtn").removeClass("disabled");//解除禁用

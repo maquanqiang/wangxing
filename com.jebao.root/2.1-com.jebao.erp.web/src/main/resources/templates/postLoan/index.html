@@ -41,6 +41,7 @@
                                 <div class="input-group margin">
                                     <div class="input-group-addon">标的状态</div>
                                     <select class="form-control" style="width: 120px;" v-model="searchObj.bpStatusSear">
+                                        <option value="(7,10)">全部</option>
                                         <option value="(7)">还款中</option>
                                         <option value="(10)">已还款</option>
                                     </select>
@@ -58,6 +59,7 @@
                             </div>
                             <div class="form-group">
                                 <select  class="form-control" style="width: 120px;" v-model="searchObj.searchDateType">
+                                    <option value="">不限</option>
                                     <option value="ind_date_time">计划还款日</option>
                                     <option value="ind_fact_date_time">实际到账日</option>
                                 </select>

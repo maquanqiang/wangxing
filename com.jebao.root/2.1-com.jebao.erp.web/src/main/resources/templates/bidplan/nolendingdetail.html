@@ -377,7 +377,7 @@
                                             <td>{{data.loginName}}</td>
                                             <td>{{data.trueName}}</td>
                                             <td>{{data.money}}</td>
-                                            <td>{{(data.money/plan.bpBidMoney)*100}}%</td>
+                                            <td>{{((data.money/plan.bpBidMoney)*100).toFixed(2)}}%</td>
                                             <td>{{data.createTime}}</td>
                                             <!--<td v-if="data.contractUrl != null">-->
                                                 <!--<a :href="data.contractUrl" class="btn btn-default btn-xs" role="button" target="_blank">查看合同</a>-->

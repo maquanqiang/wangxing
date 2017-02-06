@@ -784,12 +784,12 @@
         <if test="record.bpLoanerType != null" >
             AND bp_loaner_type = #{record.bpLoanerType,jdbcType=INTEGER}
         </if>
-        <if test="record.searchDateSt != null" >
+        <if test="record.searchDateSt != null and record.searchDateSt != ''" >
             <![CDATA[
               AND ${record.searchDateType}  >=  #{record.searchDateSt,jdbcType=VARCHAR}
             ]]>
         </if>
-        <if test="record.searchDateEnd != null" >
+        <if test="record.searchDateEnd != null and record.searchDateEnd != ''" >
             <![CDATA[
               AND ${record.searchDateType}  <=  #{record.searchDateEnd,jdbcType=VARCHAR}
             ]]>
@@ -800,10 +800,10 @@
         <if test="record.bpType != null" >
             AND bp_type = #{record.bpType,jdbcType=INTEGER}
         </if>
-        <if test="record.bpNumberSear != null" >
+        <if test="record.bpNumberSear != null and record.bpNumberSear != ''" >
             AND bp_number LIKE ${record.bpNumberSear}
         </if>
-        <if test="record.bpStatusSear != null" >
+        <if test="record.bpStatusSear != null and record.bpStatusSear != ''" >
             AND bp_status IN ${record.bpStatusSear}
         </if>
         AND bp_is_del = 1
