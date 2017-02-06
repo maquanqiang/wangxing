@@ -1,5 +1,8 @@
 package com.jebao.p2p.web.api.controllerApi.product;
 
+import com.jebao.common.cache.redis.sharded.ShardedRedisUtil;
+import com.jebao.common.cache.utils.wrapper.CachedWrapper;
+import com.jebao.common.cache.utils.wrapper.CachedWrapperExecutor;
 import com.jebao.jebaodb.entity.extEntity.PageWhere;
 import com.jebao.jebaodb.entity.extEntity.ResultInfo;
 import com.jebao.jebaodb.entity.investment.TbIncomeDetail;
@@ -18,6 +21,9 @@ import com.jebao.p2p.web.api.requestModel.product.InvestInfoForm;
 import com.jebao.p2p.web.api.requestModel.product.ProductForm;
 import com.jebao.p2p.web.api.responseModel.base.*;
 import com.jebao.p2p.web.api.responseModel.product.*;
+import com.jebao.p2p.web.api.utils.cached.CachedSetting;
+import com.jebao.p2p.web.api.utils.cached.CachedUtil;
+import com.jebao.p2p.web.api.utils.constants.Constants;
 import com.jebao.p2p.web.api.utils.session.CurrentUser;
 import com.jebao.p2p.web.api.utils.session.CurrentUserContextHolder;
 import com.jebao.p2p.web.api.utils.validation.ValidationResult;
@@ -196,18 +202,34 @@ public class ProductControllerApi {
      */
     @RequestMapping("recentInvestment")
     @ResponseBody
-    public JsonResult recentInvestment(){
+    public JsonResult recentInvestment() throws Exception {
+        TbInvestInfo model = new TbInvestInfo();
+        model.setIiIsDel(1);
 
-        TbInvestInfo tbInvestInfo = new TbInvestInfo();
-        tbInvestInfo.setIiIsDel(1);
-        PageWhere pageWhere = new PageWhere(0,10);
-        pageWhere.setOrderBy("ii_id DESC");
-
-        List<TbInvestInfo> tbInvestInfos = productService.recentInvestment(tbInvestInfo, pageWhere);
-        List<RecentInvestVM> invests = new ArrayList<>();
-
-        tbInvestInfos.forEach(o -> invests.add(new RecentInvestVM(o)));
-        return new JsonResultList<>(invests);
+        //首页最近投资列表缓存10分钟
+        String keyMd5 = CachedUtil.KeyMd5(model);
+        ShardedRedisUtil redisUtil = ShardedRedisUtil.getInstance();
+        CachedSetting cachedSetting = Constants.CACHED_API_RECENTINVEST_INDEX;
+        CachedWrapper<List<RecentInvestVM>> recentInvestListCached = redisUtil.getCachedWrapperByMutexKey(
+                cachedSetting.getKey() + keyMd5,
+                cachedSetting.getKeyExpireSec(),
+                cachedSetting.getNullValueExpireSec(),
+                cachedSetting.getKeyMutexExpireSec(),
+                new CachedWrapperExecutor<List<RecentInvestVM>>() {
+                    @Override
+                    public List<RecentInvestVM> execute() {
+                        PageWhere page = new PageWhere(0,10);
+                        page.setOrderBy("ii_id DESC");
+                        List<TbInvestInfo> investInfoList = productService.recentInvestment(model, page);
+                        if (investInfoList == null || investInfoList.size() == 0) {
+                            return null;
+                        }
+                        List<RecentInvestVM> viewModelList = new ArrayList<>();
+                        investInfoList.forEach(o -> viewModelList.add(new RecentInvestVM(o)));
+                        return viewModelList;
+                    }
+                });
+        return new JsonResultList<>(recentInvestListCached.getData());
     }
 
     /**

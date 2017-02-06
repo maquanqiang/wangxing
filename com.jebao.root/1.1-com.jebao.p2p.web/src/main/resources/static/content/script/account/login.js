@@ -54,16 +54,13 @@ $(document).ready(function () {
                 if(submitData.remember === "1"){
                     $.cookie("jebao_lgn",submitData.jebUsername,{ expires: 3 });
                 }
-
-                $.ajax({
-                    type : "get",
-                    url : "/api/user/syncThirdAccount",
-                    async : false
-                });
-
+                //$.ajax({
+                //    type : "get",
+                //    url : "/api/user/syncThirdAccount",
+                //    async : false
+                //});
                 $.get("/api/user/syncThirdPosStatus");
                 $.get("/api/user/syncUserBalance");
-
                 var redirectUrl = common.getUrlParam("redirect") || "/";
                 window.location.href=redirectUrl;
                 return;
