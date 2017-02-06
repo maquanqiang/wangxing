@@ -28,7 +28,7 @@
                             <div class="form-group">
                                 <div class="input-group ">
                                     <div class="input-group-addon">项目编号</div>
-                                    <input type="text" class="form-control" placeholder="" v-model="searchObj.bpNumber">
+                                    <input type="text" class="form-control" placeholder="" v-model="searchObj.bpNumberSear">
                                 </div>
                             </div>
                             <div class="form-group">
@@ -40,20 +40,20 @@
                             <div class="form-group">
                                 <div class="input-group margin">
                                     <div class="input-group-addon">标的状态</div>
-                                    <select class="form-control" style="width: 120px;" v-model="searchObj.bpStatus">
-                                        <option value="7">还款中</option>
-                                        <option value="10">已还款</option>
+                                    <select class="form-control" style="width: 120px;" v-model="searchObj.bpStatusSear">
+                                        <option value="(7)">还款中</option>
+                                        <option value="(10)">已还款</option>
                                     </select>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="input-group">
                                     <div class="input-group-addon">时间</div>
-                                    <input type="text" value="" placeholder="" class="form-control chooseDate" v-model="searchObj.searchDateSt" id="searchDateSt">
+                                    <input type="text" placeholder="" class="form-control chooseDate" v-model="searchObj.searchDateSt" id="searchDateSt">
                                 </div>
                                 <div class="input-group" style="margin-left:-5px;">
                                     <div class="input-group-addon">至</div>
-                                    <input type="text" value="" placeholder="" class="form-control chooseDate" v-model="searchObj.searchDateEnd" id="searchDateEnd">
+                                    <input type="text" placeholder="" class="form-control chooseDate" v-model="searchObj.searchDateEnd" id="searchDateEnd">
                                 </div>
                             </div>
                             <div class="form-group">

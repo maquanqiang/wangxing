@@ -84,6 +84,8 @@ var vm = new Vue({
                             },
                             skin: '#3c8dbc'
                         });
+                    }else{
+                        $("#pageNum").html();
                     }
                 }
                 $("#searchBtn").removeClass("disabled");//解除禁用

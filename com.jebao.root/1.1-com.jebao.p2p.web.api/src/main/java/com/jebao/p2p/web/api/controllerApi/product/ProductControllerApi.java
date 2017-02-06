@@ -246,7 +246,7 @@ public class ProductControllerApi {
         //查询标的信息
         TbBidPlan bidPlan = productService.selectByBpId(form.getBpId());
         if(bidPlan.getBpLoginId()==currentUser.getId()){
-            return new JsonResultError("投资人不为能该标的借款人");
+            return new JsonResultError("投资人不能是该标的借款人");
         }
         //投资人详情
         TbUserDetails outUser = userService.getUserDetailsInfo(currentUser.getId());
@@ -276,6 +276,24 @@ public class ProductControllerApi {
         if (resultValidation.isHasErrors()) {
             return new JsonResultError(resultValidation.getErrorMsg().toString());
         }
+
+        //判断投资金额是否符合规则
+        if(bidPlan.getBpSurplusMoney().compareTo(bidPlan.getBpStartMoney())>=0){
+            if(form.getInvestMoney().compareTo(bidPlan.getBpStartMoney())>=0 && form.getInvestMoney().compareTo(bidPlan.getBpTopMoney())<=0){
+                BigDecimal remainder = (form.getInvestMoney().subtract(bidPlan.getBpStartMoney())).remainder(bidPlan.getBpRiseMoney());
+                if(remainder.compareTo(BigDecimal.ZERO)!=0){
+                    return new JsonResultError("投资金额不符合递增规则");
+                }
+            }else{
+                return new JsonResultError("投资金额小于起投金额或超出上限金额");
+            }
+        }else {
+            if(form.getInvestMoney().compareTo(bidPlan.getBpSurplusMoney())!=0){
+                return new JsonResultError("投资金额必须为剩余金额");
+            }
+        }
+
+
 
         ResultInfo resultInfo = productService.investBid(outUser, bidPlan, form.getInvestMoney());
         ProductResultVM productResultVM = new ProductResultVM();

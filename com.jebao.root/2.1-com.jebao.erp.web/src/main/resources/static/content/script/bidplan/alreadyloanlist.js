@@ -83,6 +83,8 @@ var vm = new Vue({
                             },
                             skin: '#3c8dbc'
                         });
+                    }else{
+                        $("#pageNum").html("");
                     }
                 }
             });
@@ -91,4 +93,12 @@ var vm = new Vue({
             window.location.href = "/bidplan/alreadyLoanDetail/"+bpId;
         }
     }
+});
+
+$("#searchDateSt").change(function(){
+    vm.searchObj.searchDateSt=$(this).val();
+});
+//
+$("#searchDateEnd").change(function(){
+    vm.searchObj.searchDateEnd=$(this).val();
 });

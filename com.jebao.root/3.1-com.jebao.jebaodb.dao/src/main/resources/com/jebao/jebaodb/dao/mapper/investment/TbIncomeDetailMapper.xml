@@ -451,6 +451,12 @@
               AND ${record.searchDateType}  <=  #{record.searchDateEnd,jdbcType=VARCHAR}
             ]]>
         </if>
+        <if test="record.bpNumberSear != null" >
+            AND bp_number LIKE ${record.bpNumberSear}
+        </if>
+        <if test="record.bpStatusSear != null" >
+            AND bp_status IN ${record.bpStatusSear}
+        </if>
         AND bp_is_del = 1
     </sql>
 

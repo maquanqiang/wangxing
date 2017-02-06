@@ -66,7 +66,7 @@ public class AddPlanForm {
     private Integer bpCycleSize;
     @DecimalMin(value = "0")
     private BigDecimal bpBidMoney;
-    @DecimalMin(value = "0")
+    @DecimalMin(value = "1")
     @DecimalMax(value = "20")
     private BigDecimal bpRate;
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")

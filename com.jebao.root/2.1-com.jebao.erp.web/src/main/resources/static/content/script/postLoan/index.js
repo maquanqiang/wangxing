@@ -40,7 +40,7 @@ var vm = new Vue({
     beforeCreate:function(){
         //初始化本地数据
         model.searchObj = $("#defaultForm").serializeObject(); //初始化 model.search 对象
-        model.searchObj.bpStatus = 7;
+        model.searchObj.bpStatusSear = '(7,10)';
         model.searchObj.pageIndex=0;
         model.searchObj.pageSize=15;
     },
@@ -51,7 +51,12 @@ var vm = new Vue({
     //方法，可用于绑定事件或直接调用
     methods: {
         search:function(event){
-
+            if(model.searchObj.searchDateSt!=null||model.searchObj.searchDateEnd!=null){
+                if(model.searchObj.searchDateType==null){
+                    layer.alert("请选择时间查询类型");
+                    return;
+                }
+            }
             if (typeof event !== "undefined"){ //点击查询按钮的话，是查询第一页数据
                 model.searchObj.pageIndex=0;
             }
@@ -77,6 +82,8 @@ var vm = new Vue({
                             },
                             skin: '#3c8dbc'
                         });
+                    }else{
+                        $("#pageNum").html("");
                     }
                 }
                 $("#searchBtn").removeClass("disabled");//解除禁用
@@ -110,4 +117,12 @@ var vm = new Vue({
     }
 });
 
+
+$("#searchDateSt").change(function(){
+    vm.searchObj.searchDateSt=$(this).val();
+});
+//
+$("#searchDateEnd").change(function(){
+    vm.searchObj.searchDateEnd=$(this).val();
+});
 
