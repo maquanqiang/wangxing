@@ -61,9 +61,13 @@ $(document).ready(function () {
                 //});
                 $.get("/api/user/syncThirdPosStatus");
                 $.get("/api/user/syncUserBalance");
-                var redirectUrl = common.getUrlParam("redirect") || "/";
-                window.location.href=redirectUrl;
-                return;
+                //ajax中包含同步的ajax请求需要设置延迟setTimeout,
+                //否则firefox与safari浏览器因跳转太快无法执行前面的两个ajax请求
+                setTimeout(function(){
+                    var redirectUrl = common.getUrlParam("redirect") || "/";
+                    window.location.href=redirectUrl;
+                    return;
+                }, 200 );
             } else {
                 $errorPlace.removeClass("none").find("span").html(response.error);
                 layer.close(loadIndex);
