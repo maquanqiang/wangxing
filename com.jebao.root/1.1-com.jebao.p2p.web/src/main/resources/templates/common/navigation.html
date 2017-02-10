@@ -13,19 +13,19 @@
         </div>
         <ul class="header_nav fr">
             <li>
-                <a href="/">首页</a>
+                <a href="/" class="active">首页</a>
             </li>
             <li>
-                <a href="/html/product">项目列表</a>
+                <a href="/html/product"><img src="${filePath}/images/fire.gif" class="right">我要投资<img src="${filePath}/images/fire.gif" class="left"></a>
             </li>
             <li>
                 <a href="/html/secure">安全保障</a>
             </li>
             <li>
-                <a href="/user/index" class="red">我的账户</a>
+                <a href="/user/index">我的账户</a>
             </li>
             <li>
-                <a href="http://www.jebao.net/" class="red" target="_blank">进入老系统</a>
+                <a href="http://www.jebao.net/" target="_blank">进入老系统</a>
             </li>
         </ul>
     </div>
@@ -35,7 +35,7 @@
     $(".header_nav a").each(function(){
         var hrefVal = $(this).attr("href");
         if(path == hrefVal){
-            $(this).addClass("red")
+            $(this).addClass("active");
         }else{
             $(this).removeClass();
         }

@@ -20,8 +20,8 @@ public class VersionController extends _BaseController {
     @RequestMapping("iosAppVersion")
     public JsonResult iosAppVersion(){
         AppVersion version = new AppVersion();
-        version.setAppVersionCode("1");
-        version.setAppDownloadUrl("url1");
+        version.setAppVersionCode("0.1");
+        version.setAppDownloadUrl("ios.url");
         version.setAppDesc("");
         return new JsonResultData<>(version);
     }
@@ -33,8 +33,8 @@ public class VersionController extends _BaseController {
     @RequestMapping("androidAppVersion")
     public JsonResult androidAppVersion(){
         AppVersion version = new AppVersion();
-        version.setAppVersionCode("2");
-        version.setAppDownloadUrl("url2");
+        version.setAppVersionCode("0.1");
+        version.setAppDownloadUrl("android.url");
         version.setAppDesc("");
         return new JsonResultData<>(version);
     }
