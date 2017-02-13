@@ -16,5 +16,11 @@
     <include refid="Base_Column_List" />
     from tb_base_bank_info WHERE bl_is_del=0
   </select>
-
+  <select id="selectByBankCode" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    from tb_base_bank_info
+    where bl_bank_code = #{blBankCode,jdbcType=VARCHAR}
+    and bl_is_del = 0
+  </select>
 </mapper>

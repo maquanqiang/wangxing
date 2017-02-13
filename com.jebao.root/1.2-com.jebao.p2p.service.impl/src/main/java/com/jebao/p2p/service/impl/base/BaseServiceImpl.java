@@ -28,6 +28,16 @@ public class BaseServiceImpl implements IBaseServiceInf {
     }
 
     /**
+     * 根据银行编号获取银行信息
+     * @param bankCode
+     * @return
+     */
+    @Override
+    public TbBaseBankInfo getBankInfoByBankCode(String bankCode){
+        return baseInfoDao.selectByBankCode(bankCode);
+    }
+
+    /**
      * 获取省市区列表
      *
      * @return

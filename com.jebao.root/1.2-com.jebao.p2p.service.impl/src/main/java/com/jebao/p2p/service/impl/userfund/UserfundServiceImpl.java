@@ -6,6 +6,7 @@ import com.jebao.jebaodb.dao.dao.loanmanage.TbThirdInterfaceLogDao;
 import com.jebao.jebaodb.dao.dao.user.TbLoginInfoDao;
 import com.jebao.jebaodb.dao.dao.user.TbUserDetailsDao;
 import com.jebao.jebaodb.dao.dao.user.TbUserLogDao;
+import com.jebao.jebaodb.entity.base.TbBaseBankInfo;
 import com.jebao.jebaodb.entity.extEntity.EnumModel;
 import com.jebao.jebaodb.entity.extEntity.ResultData;
 import com.jebao.jebaodb.entity.extEntity.ResultInfo;
@@ -14,6 +15,7 @@ import com.jebao.jebaodb.entity.user.TbAccountsFunds;
 import com.jebao.jebaodb.entity.user.TbLoginInfo;
 import com.jebao.jebaodb.entity.user.TbUserDetails;
 import com.jebao.jebaodb.entity.user.TbUserLog;
+import com.jebao.p2p.service.inf.base.IBaseServiceInf;
 import com.jebao.p2p.service.inf.user.IAccountsFundsServiceInf;
 import com.jebao.p2p.service.inf.user.IUserServiceInf;
 import com.jebao.p2p.service.inf.userfund.IUserfundServiceInf;
@@ -59,6 +61,8 @@ public class UserfundServiceImpl implements IUserfundServiceInf {
     private TbThirdInterfaceLogDao thirdInterfaceLogDao;
     @Autowired
     private IUserServiceInf userService;
+    @Autowired
+    private IBaseServiceInf baseService;
     @Autowired
     private WebRegServiceImpl fyWebRegService;
     @Autowired
@@ -124,7 +128,10 @@ public class UserfundServiceImpl implements IUserfundServiceInf {
         userDetailsEntity.setUdEmail(reqData.getEmail()); //邮箱地址
         userDetailsEntity.setUdBankCityCode(reqData.getCity_id()); //开户行地区代码
         userDetailsEntity.setUdBankParentBankCode(reqData.getParent_bank_id()); //开户行行别
-        userDetailsEntity.setUdBankParentBankName(reqData.getBank_nm()); //开户行 支行 名称
+        TbBaseBankInfo bankInfo = baseService.getBankInfoByBankCode(reqData.getParent_bank_id());
+        if(null != bankInfo) {
+            userDetailsEntity.setUdBankParentBankName(bankInfo.getBlBankName()); //开户行 支行 名称
+        }
         userDetailsEntity.setUdBankCardNo(reqData.getCapAcntNo()); //银行卡号
         userDetailsEntity.setUdBankCardNoChangeStatus(EnumModel.BankCardChangeStatus.正常.getValue());
         userDetailsEntity.setUdThirdAccount(reqData.getMobile_no()); //手机号做为第三方资金托管帐号

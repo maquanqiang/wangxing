@@ -7,5 +7,5 @@ import java.util.List;
 public interface TbBaseBankInfoMapper {
 
     List<TbBaseBankInfo> selectList();
-
+    TbBaseBankInfo selectByBankCode(String blBankCode);
 }
