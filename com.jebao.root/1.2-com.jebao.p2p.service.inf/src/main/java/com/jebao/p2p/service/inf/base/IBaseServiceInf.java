@@ -14,6 +14,14 @@ public interface IBaseServiceInf {
      * @return
      */
     List<TbBaseBankInfo> getBankList();
+
+    /**
+     * 根据银行编号获取银行信息
+     * @param bankCode
+     * @return
+     */
+    TbBaseBankInfo getBankInfoByBankCode(String bankCode);
+
     /**
      * 获取省市区列表
      * @return

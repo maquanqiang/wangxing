@@ -28,6 +28,15 @@ public class BaseInfoDao {
     }
 
     /**
+     * 根据银行编号获取银行信息
+     * @param blBankCode
+     * @return
+     */
+    public TbBaseBankInfo selectByBankCode(String blBankCode){
+        return bankInfoMapper.selectByBankCode(blBankCode);
+    }
+
+    /**
      * 获取省市区列表
      * @return
      */

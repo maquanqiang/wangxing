@@ -44,10 +44,10 @@ public class MobileChargeWithdrawController extends _BaseController {
     @RequestMapping(value = "quickPay", method = RequestMethod.POST)
     public String quickPay(RechargeSM form) throws Exception {
         //拒绝ajax请求 //如果是ajax请求响应头会有x-requested-with
-/*        String requestType = request.getHeader("x-requested-with");
+        String requestType = request.getHeader("x-requested-with");
         if (requestType != null && requestType.equalsIgnoreCase("XMLHttpRequest")) {
             return null;
-        }*/
+        }
 
         String title = "充值失败！";
         //region 验证
@@ -116,10 +116,10 @@ public class MobileChargeWithdrawController extends _BaseController {
     @RequestMapping(value = "fastRecharge", method = RequestMethod.POST)
     public String fastRecharge(RechargeSM form) throws Exception {
         //拒绝ajax请求 //如果是ajax请求响应头会有x-requested-with
-/*        String requestType = request.getHeader("x-requested-with");
+        String requestType = request.getHeader("x-requested-with");
         if (requestType != null && requestType.equalsIgnoreCase("XMLHttpRequest")) {
             return null;
-        }*/
+        }
 
         String title = "充值失败！";
         //region 验证
@@ -188,10 +188,10 @@ public class MobileChargeWithdrawController extends _BaseController {
     @RequestMapping(value = "withdrawDeposit", method = RequestMethod.POST)
     public String withdrawDeposit(RechargeSM form) throws Exception {
         //拒绝ajax请求 //如果是ajax请求响应头会有x-requested-with
-/*        String requestType = request.getHeader("x-requested-with");
+        String requestType = request.getHeader("x-requested-with");
         if (requestType != null && requestType.equalsIgnoreCase("XMLHttpRequest")) {
             return null;
-        }*/
+        }
 
         String title = "提现失败！";
         //region 验证
