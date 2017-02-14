@@ -75,4 +75,11 @@ public class BidPlanController {
         model.addAttribute("bpId", bpId);
         return "bidplan/nolendingdetail";
     }
+
+    @RequestMapping("updatePlanMaterial/{bpId}/{bpLoanerId}")
+    public String updatePlanMaterial(@PathVariable("bpId") Long bpId, @PathVariable("bpLoanerId") Long bpLoanerId, Model model) {
+        model.addAttribute("bpId", bpId);
+        model.addAttribute("bpLoanerId", bpLoanerId);
+        return "bidplan/updatePlanMaterial";
+    }
 }

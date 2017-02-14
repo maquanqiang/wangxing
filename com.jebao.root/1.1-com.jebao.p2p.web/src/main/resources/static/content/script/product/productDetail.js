@@ -22,7 +22,7 @@ var model = {
     product: {},
     loanerInfo : {},
     statistics : {},
-    cycleType:["","天","个月","季","年"],
+    cycleType:["","天","个月","季度","年"],
     bpInterestPayTypeArr : ["","一次性还本付息","先息后本，按期付息"],
     bpStatusArr : ["","","立即投资","满标","募集结束","","","还款中","","","已完成"],
     sex:['','男','女'],
@@ -82,52 +82,55 @@ var vm = new Vue({
                             vm.loanerInfo = response.data;
                         }
                     });
-                }
-            });
-            //riskDataList
-            $.post("/api/product/riskListByBpId", form, function (response) {
-                if (response.success_is_ok) {
-                    vm.riskDataList = response.data;
-                    setTimeout(function(){
-                        var mySwiper = new Swiper ('.swiper-container', {
-                            loop: true,
-                            slidesPerView : 3,
-                            slidesPerGroup : 3,
-                            fade: {
-                                crossFade: true
-                            },
-                            paginationClickable: true
-                        });
-                        $('.button-prev').on('click', function(e){
-                            e.preventDefault();
-                            mySwiper.swipePrev()
-                        });
-                        $('.button-next').on('click', function(e){
-                            e.preventDefault();
-                            mySwiper.swipeNext()
-                        });
-                    },500)
-                }
-            });
-            //investInfoList
-            $.post("/api/product/investInfoByBpId", form, function (response) {
-                if (response.success_is_ok) {
-                    vm.investInfoList = response.data;
-                }
-            });
-            //incomeDetailList
-            $.post("/api/product/incomeDetailByBpId", form, function (response) {
-                if (response.success_is_ok) {
-                    vm.incomeDetailList = response.data;
+                    //riskDataList
+                    $.post("/api/product/riskListByBpId", form, function (response) {
+                        if (response.success_is_ok) {
+                            vm.riskDataList = response.data;
+                            setTimeout(function(){
+                                var mySwiper = new Swiper ('.swiper-container', {
+                                    loop: true,
+                                    slidesPerView : 3,
+                                    slidesPerGroup : 3,
+                                    fade: {
+                                        crossFade: true
+                                    },
+                                    paginationClickable: true
+                                });
+                                $('.button-prev').on('click', function(e){
+                                    e.preventDefault();
+                                    mySwiper.swipePrev()
+                                });
+                                $('.button-next').on('click', function(e){
+                                    e.preventDefault();
+                                    mySwiper.swipeNext()
+                                });
+                            },500)
+                        }
+                    });
+                    //investInfoList
+                    $.post("/api/product/investInfoByBpId", form, function (response) {
+                        if (response.success_is_ok) {
+                            vm.investInfoList = response.data;
+                        }
+                    });
+                    //incomeDetailList
+                    $.post("/api/product/incomeDetailByBpId", form, function (response) {
+                        if (response.success_is_ok) {
+                            vm.incomeDetailList = response.data;
+                        }
+                    });
+
+                    //statistics
+                    $.get("/api/invest/statistics", function (response) {
+                        if (response.success_is_ok) {
+                            vm.statistics = response.data;
+                        }
+                    });
+                }else{
+                    layer.msg("标的不存在");
                 }
             });
 
-            //statistics
-            $.get("/api/invest/statistics", function (response) {
-                if (response.success_is_ok) {
-                    vm.statistics = response.data;
-                }
-            });
         },
         investBtn: function () {
             var flag = true;

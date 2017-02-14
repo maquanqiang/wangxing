@@ -841,6 +841,7 @@
         <if test="record.bpType != null" >
             AND bp_type = #{record.bpType,jdbcType=INTEGER}
         </if>
+        AND bp_bid_money > 10
         AND bp_is_del = 1
     </sql>
 

@@ -69,7 +69,7 @@ var model = {
     products1: [],
     products2: [],
     recentInvest : [],
-    cycleType:["","天","个月","季","年"],
+    cycleType:["","天","个月","季度","年"],
     status:["","","立即投资","满标","募集结束","","","还款中","","","已还款"]
 };
 
