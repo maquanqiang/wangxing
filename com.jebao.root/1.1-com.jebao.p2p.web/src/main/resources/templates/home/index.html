@@ -3,7 +3,7 @@
 <head>
     <title>金额宝 - 首页 </title>
     #parse("common/head.html")
-    <link rel="stylesheet" href="${filePath}/css/index.css">
+    <link rel="stylesheet" href="${filePath}/css/index.css?v=2017215">
     <link rel="stylesheet" href="${filePath}/css/lib/swiper.css">
     <link rel="stylesheet" href="${filePath}/css/lib/liMarquee.css">
 </head>
@@ -300,7 +300,7 @@
                     <p>用户</p>
                     <p>投资金额</p>
                 </div>
-                <ul class="rank-info" id="rank">
+                <ul class="rank-info-first rank-info" id="rank">
                     <li v-for="(item, index) in items">
                         <!--<span>{{ index+1 }}</span>
                         <span>{{item.name}}</span>
@@ -308,15 +308,15 @@
                         <img src="${filePath}/images/index-first.png" v-if="index == 0"/>
                         <img src="${filePath}/images/index-second.png" v-if="index == 1"/>
                         <img src="${filePath}/images/index-third.png" v-if="index == 2"/>
-                        <div v-if="index >2">{{ index+1 }}</div>
-                        <span>{{item.name}}</span>
-                        <strong>{{item.money | currency}}</strong>
+                        <div v-if="index > 2">{{ index + 1 }}</div>
+                        <span>{{ item.name }}</span>
+                        <strong>{{ item.money | currency }}</strong>
                     </li>
                 </ul>
             </div>
         </div>
         <div class="investment fr">
-            <h4>最新投标</h4>
+            <h4><img src="${filePath}/images/index-investment.png"/>最新投标</h4>
             <div class="rank-content">
                 <div class="investment-title rank-list-title clearfix">
                     <p>用户</p>
