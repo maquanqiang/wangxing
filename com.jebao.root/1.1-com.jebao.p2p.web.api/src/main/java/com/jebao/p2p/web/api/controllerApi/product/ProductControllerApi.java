@@ -83,8 +83,8 @@ public class ProductControllerApi {
     @ResponseBody
     public JsonResult productDetail(Long bpId){
         TbBidPlan tbBidPlan = productService.selectByBpId(bpId);
-        if(tbBidPlan==null){
-            return new JsonResultData<>(null);
+        if(tbBidPlan==null||tbBidPlan.getBpStatus()< 2){
+            return new JsonResultError();
         }
         return new JsonResultData<>(new ProductDetailVM(tbBidPlan));
     }

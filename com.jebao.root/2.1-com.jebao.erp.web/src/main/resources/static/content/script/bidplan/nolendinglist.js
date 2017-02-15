@@ -94,6 +94,9 @@ var vm = new Vue({
         },
         modifyPlanBtn:function(bpId){
             window.location.href = "/bidplan/noLendingDetail/"+bpId;
+        },
+        modifyPlanMaterialBtn:function(bpId, bpLoanerId){
+            window.location.href = "/bidplan/updatePlanMaterial/"+bpId +"/"+bpLoanerId;
         }
     }
 });

@@ -9,6 +9,7 @@ import com.jebao.erp.service.inf.user.IUserDetailsServiceInf;
 import com.jebao.erp.web.controller._BaseController;
 import com.jebao.erp.web.requestModel.bidplan.AddPlanForm;
 import com.jebao.erp.web.requestModel.bidplan.BidPlanForm;
+import com.jebao.erp.web.requestModel.bidplan.PlanMaterialForm;
 import com.jebao.erp.web.requestModel.bidplan.UpdatePlanForm;
 import com.jebao.erp.web.requestModel.investment.RepaymentForm;
 import com.jebao.erp.web.responseModel.base.*;
@@ -93,8 +94,9 @@ public class BidPlanControllerApi extends _BaseController {
 
     @RequestMapping("getProjList")
     @ResponseBody
-    public JsonResult getProjList(Long bpLoanerId) {
-        List<TbRiskCtlPrjTemp> projectTemps = loanerService.selectRiskCtlPrjTempByLoanerIdForPage(bpLoanerId, null);
+    public JsonResult getProjList(PageWhere page, Long bpLoanerId) {
+        page.setOrderBy(" rcptId desc");
+        List<TbRiskCtlPrjTemp> projectTemps = loanerService.selectRiskCtlPrjTempByLoanerIdForPage(bpLoanerId, page);
         List<ProjTempNameVM> tempVMs = new ArrayList<>();
         projectTemps.forEach(o -> tempVMs.add(new ProjTempNameVM(o)));
         return new JsonResultList<>(tempVMs);
@@ -359,7 +361,7 @@ public class BidPlanControllerApi extends _BaseController {
     public JsonResult getPlanListBySearchCondition(BidPlanForm form, @RequestParam(value = "pageIndex", defaultValue = "0") Integer pageIndex,
                                                    @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize) {
         PageWhere pageWhere = new PageWhere(pageIndex, pageSize);
-        pageWhere.setOrderBy(" bp_id desc");
+        pageWhere.setOrderBy(" bp_id asc");
         BidPlanSM bidPlanSM = BidPlanForm.toEntity(form);
         List<TbBidPlan> tbBidPlans = bidPlanService.selectBySelfConditionForPage(bidPlanSM, pageWhere);
         List<BidPlanVM> viewModelList = new ArrayList<BidPlanVM>();
@@ -449,6 +451,20 @@ public class BidPlanControllerApi extends _BaseController {
             return new JsonResultOk(resultInfo.getMsg());
         }else {
             return new JsonResultError(resultInfo.getMsg());
+        }
+    }
+
+    @RequestMapping("updatePlanMaterial")
+    @ResponseBody
+    public JsonResult updatePlanMaterial(PlanMaterialForm form) {
+
+        TbBidPlan bidPlan = PlanMaterialForm.toEntity(form);
+        bidPlan.setBpUpdateTime(new Date());
+        int count = bidPlanService.updateByBidIdSelective(bidPlan);
+        if (count > 0) {
+            return new JsonResultOk("信息修改成功");
+        } else {
+            return new JsonResultError("信息修改失败");
         }
     }
 

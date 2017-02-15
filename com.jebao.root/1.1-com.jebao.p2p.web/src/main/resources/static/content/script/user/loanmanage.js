@@ -15,7 +15,7 @@ var model = {
     //已结清
     paymented: [],
     isHasDated: true,
-    cycleType: ["", "天", "个月", "季", "年"]
+    cycleType: ["", "天", "个月", "季度", "年"]
 };
 
 // 创建一个 Vue 实例 (ViewModel),它连接 View 与 Model

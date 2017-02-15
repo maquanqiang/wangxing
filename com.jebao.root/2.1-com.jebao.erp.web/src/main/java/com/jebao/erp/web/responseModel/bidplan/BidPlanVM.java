@@ -57,6 +57,7 @@ public class BidPlanVM extends ViewModel {
         this.bpUpRate = entity.getBpUpRate();
         this.progress=(entity.getBpBidMoney().subtract(entity.getBpSurplusMoney())).multiply(new BigDecimal(100)).
                 divide(entity.getBpBidMoney(), 0, BigDecimal.ROUND_DOWN).toString();
+        this.bpLoanerId = entity.getBpLoanerId();
 
     }
 
