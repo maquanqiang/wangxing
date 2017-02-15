@@ -12,6 +12,21 @@
         span{
             font-weight: normal !important;
         }
+        .header, .footer{
+            position: relative;
+        }
+        .header img{
+            width: 150px;
+            position: absolute;
+            top: 60px;
+            left: 120px;
+        }
+        .footer img{
+            width: 150px;
+            position: absolute;
+            top: 10px;
+            left: 120px;
+        }
     </style>
 </head>
 <body>
@@ -47,14 +62,17 @@
             </tbody>
         </table>
         <p>注1：若在客户申请转让债权并成功转让的情况下，到期应收本息会依据实际存续天数计算。</p>
-        <h3>转让方：<span>$!commData.loanerTrueName（以下简称乙方） </span></h3>
-        <h3>证件类型：<span>身份证</span></h3>
-        <h3>证件号码：<span>$!commData.loanerNumber</span></h3>
-        <h3>见证人：<span>金额宝互联网信息科技（北京）有限公司</span></h3>
-        <h3>证件类型：<span>营业执照 </span></h3>
-        <h3>证件号码：<span>91110105MA002E938J </span></h3>
-        <p style="text-indent: 2em;" class="small">甲、乙双方经友好协商，就乙方向甲方转让基础协议项下债权相关事宜达成一致，并通过见证人开发并运营的金额宝网络站点的见证并交易，甲、乙、见证人三方签署本协议，并依照本协议中约定之条款与条件享有权利和履行义务。</p>
-        <br/><br/><br/><br/><br/><br/><br/>
+        <div class="header">
+            <h3>转让方：<span>$!commData.loanerTrueName（以下简称乙方） </span></h3>
+            <h3>证件类型：<span>身份证</span></h3>
+            <h3>证件号码：<span>$!commData.loanerNumber</span></h3>
+            <h3>见证人：<span>金额宝互联网信息科技（北京）有限公司</span></h3>
+            <h3>证件类型：<span>营业执照 </span></h3>
+            <h3>证件号码：<span>91110105MA002E938J </span></h3>
+            <p style="text-indent: 2em;" class="small">甲、乙双方经友好协商，就乙方向甲方转让基础协议项下债权相关事宜达成一致，并通过见证人开发并运营的金额宝网络站点的见证并交易，甲、乙、见证人三方签署本协议，并依照本协议中约定之条款与条件享有权利和履行义务。</p>
+            <img src="/content/images/zhang.png">
+        </div>
+            <br/><br/><br/><br/><br/><br/><br/>
         <h2 class="text-center">第一章 定义与解释</h2>
         <h3>第一条 <span>定义：</span></h3>
         <p>1．金额宝：指由金额宝互联网信息科技（北京）有限公司开发并运营的，撮合出借人和借款人需求的网络站点（以下简称“网站”）。</p>
@@ -164,10 +182,13 @@
         <h3>第三十三条 <span>本协议采用电子签章，打印后与纸质协议具有同等法律效力。</span></h3>
         <p>（以下无正文，为签字盖章页。）</p>
         <br>
-        <h3>甲方：<span>$!data.name</span></h3>
-        <h3>乙方：<span>$!commData.loanerTrueName</span></h3>
-        <h3>见证人：<span>金额宝互联网信息科技（北京）有限公司</span></h3>
-        <h3>日期：<span>$!commData.loanTime</span></h3>
+        <div class="footer">
+            <h3>甲方：<span>$!data.name</span></h3>
+            <h3>乙方：<span>$!commData.loanerTrueName</span></h3>
+            <h3>见证人：<span>金额宝互联网信息科技（北京）有限公司</span></h3>
+            <h3>日期：<span>$!commData.loanTime</span></h3>
+            <img src="/content/images/zhang.png">
+        </div>
         <table class="table-bordered table">
             <thead>
 
