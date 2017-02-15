@@ -19,16 +19,16 @@
     <div class="swiper-container">
         <div class="swiper-wrapper">
             <div class="swiper-slide">
-                <a href="#" style="width:100%;height:400px;display:block;background: url(${filePath}/images/index-banner1.jpg) no-repeat center"></a>
+                <a href="/special/banner1" style="width:100%;height:400px;display:block;background: url(${filePath}/images/index-banner1.jpg) no-repeat center"></a>
             </div>
             <div class="swiper-slide">
-                <a href="/special/banner1" style="width:100%;height:400px;display:block;background: url(${filePath}/images/index-banner2.jpg) no-repeat center"></a>
+                <a href="/special/banner2" style="width:100%;height:400px;display:block;background: url(${filePath}/images/index-banner2.jpg) no-repeat center"></a>
             </div>
             <div class="swiper-slide">
-                <a href="/special/banner2" style="width:100%;height:400px;display:block;background: url(${filePath}/images/index-banner3.jpg) no-repeat center"></a>
+                <a href="/special/banner3" style="width:100%;height:400px;display:block;background: url(${filePath}/images/index-banner3.jpg) no-repeat center"></a>
             </div>
             <div class="swiper-slide">
-                <a href="/special/banner3" style="width:100%;height:400px;display:block;background: url(${filePath}/images/index-banner4.jpg) no-repeat center"></a>
+                <a href="/special/banner4" style="width:100%;height:400px;display:block;background: url(${filePath}/images/index-banner4.jpg) no-repeat center"></a>
             </div>
         </div>
         <!-- 如果需要分页器 -->
@@ -109,7 +109,8 @@
     <div class="index-main-title clearfix">
         <h2>推荐项目</h2>
         <p>精选项目，资深金融人士层层甄选，最靠谱的投资项目呈现给您</p>
-        <a href="/html/product">更多<i></i></a>
+        <a href="/html/product" class="more">更多<i></i></a>
+        <a href="javascript:void(0);" class="guide"><img src="${filePath}/images/index-guide.png"/></a>
     </div>
     <div class="project-list">
         <!--新手专区-->
@@ -224,7 +225,7 @@
             </div>
         </div>
         <!--散标专区-->
-        <div class="project-detail clearfix">
+        <!--<div class="project-detail clearfix">
             <div class="project-title item-gain fl">
                 <p>散标专区</p>
             </div>
@@ -284,7 +285,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div>-->
     </div>
     <!--最新排行-->
     <div class="index-main-title clearfix">
@@ -292,7 +293,7 @@
     </div>
     <div class="rank-list clearfix">
         <div class="rank fl">
-            <h4>投资排行</h4>
+            <h4><img src="${filePath}/images/index-rank.png"/>投资排行</h4>
             <div class="rank-content">
                 <div class="rank-title rank-list-title clearfix">
                     <p>排行</p>
@@ -301,9 +302,15 @@
                 </div>
                 <ul class="rank-info" id="rank">
                     <li v-for="(item, index) in items">
-                        <span>{{ index+1 }}</span>
+                        <!--<span>{{ index+1 }}</span>
                         <span>{{item.name}}</span>
-                        <strong>¥{{item.money}}</strong>
+                        <strong>¥{{item.money}}</strong>-->
+                        <img src="${filePath}/images/index-first.png" v-if="index == 0"/>
+                        <img src="${filePath}/images/index-second.png" v-if="index == 1"/>
+                        <img src="${filePath}/images/index-third.png" v-if="index == 2"/>
+                        <div v-if="index >2">{{ index+1 }}</div>
+                        <span>{{item.name}}</span>
+                        <strong>{{item.money | currency}}</strong>
                     </li>
                 </ul>
             </div>

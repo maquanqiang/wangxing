@@ -24,4 +24,9 @@ public class SpecialController {
     public String banner3() {
         return "special/banner3";
     }
+
+    @RequestMapping("banner4")
+    public String banner4() {
+        return "special/banner4";
+    }
 }
