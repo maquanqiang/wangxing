@@ -385,3 +385,30 @@ $("#bpCycleType").change(function(){
         $("#defaultForm").data('bootstrapValidator').updateStatus("bpExpectExpireDate","VALID","notEmpty");
     }
 });
+
+$("input[name=bpNumber]").keyup(function(){
+    var bpNumberStr = $(this).val().trim();
+    if(bpNumberStr.length>=8){
+        $.get("/api/bidPlan/selectBpNumberList",{bpNumberStr:bpNumberStr},function(response){
+            if (response.success_is_ok){
+                var objData = response.data;
+                var layer = "";
+                layer = "<table id='aa'>";
+                $.each(objData,function (index, item) {
+                    layer += "<tr class='line'><td class='std'>" + item.bpNumber + "</td></tr>";
+                });
+                layer += "</table>";
+
+                //将结果添加到div中
+                $("#searchresult").empty();
+                $("#searchresult").append(layer);
+                $("#searchresult").css("display", "");
+            }
+        });
+    }else{
+        $("#searchresult").empty();
+        $("#searchresult").css("display", "none");
+    }
+
+
+})

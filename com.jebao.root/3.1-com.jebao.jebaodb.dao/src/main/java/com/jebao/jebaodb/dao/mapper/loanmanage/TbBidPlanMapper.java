@@ -44,6 +44,8 @@ public interface TbBidPlanMapper {
     int addSurplus(Map<String, Object> map);
 
     int timeoutBid(@Param("nowDate")Date nowDate);
+
+    List<TbBidPlan> selectBpNumberList(@Param("bpNumberStr") String bpNumberStr);
     /* ==================================================借款人相关借款统计查询==================================================*/
     LoanTotal statisticsByLoanerId(Long loanerId);
 

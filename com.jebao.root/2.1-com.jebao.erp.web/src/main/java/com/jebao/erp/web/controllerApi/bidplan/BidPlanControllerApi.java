@@ -468,6 +468,16 @@ public class BidPlanControllerApi extends _BaseController {
         }
     }
 
+    @RequestMapping("selectBpNumberList")
+    @ResponseBody
+    public JsonResult selectBpNumberList(String bpNumberStr){
+
+        List<TbBidPlan> tbBidPlans = bidPlanService.selectBpNumberList("'"+bpNumberStr+"%'");
+        List<BidPlanVM> viewModelList = new ArrayList<BidPlanVM>();
+        tbBidPlans.forEach(o -> viewModelList.add(new BidPlanVM(o)));
+        return new JsonResultList<>(viewModelList);
+    }
+
 //    @RequestMapping("createContract")
 //    @ResponseBody
 //    public JsonResult createContract(RepaymentForm form) {

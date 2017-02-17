@@ -33,6 +33,8 @@ public interface ITbBidPlanServiceInf {
 
     public ResultInfo repayFreeze(TbIncomeDetail tbIncomeDetail);
 
+    public List<TbBidPlan> selectBpNumberList(String bpNumberStr);
+
     /* ==================================================借款人相关借款统计查询==================================================*/
     /**
      * 借款资金统计

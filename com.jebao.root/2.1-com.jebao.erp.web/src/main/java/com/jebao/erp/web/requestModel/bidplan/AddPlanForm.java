@@ -54,7 +54,7 @@ public class AddPlanForm {
     private Long rcptId;    //项目模板id
     @NotBlank(message="标的名称不能为空")
     private String bpName;
-    @NotBlank(message="标的名称不能为空")
+    @NotBlank(message="标的编号不能为空")
     private String bpNumber;
     @DecimalMin(value = "1")
     private Integer bpPeriodsDisplay;

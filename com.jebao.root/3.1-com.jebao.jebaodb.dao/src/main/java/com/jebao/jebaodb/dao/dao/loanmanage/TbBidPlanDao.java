@@ -144,6 +144,10 @@ public class TbBidPlanDao {
         return tbBidPlanMapper.insert(record);
     }
 
+    public List<TbBidPlan> selectBpNumberList(String bpNumberStr){
+        return tbBidPlanMapper.selectBpNumberList(bpNumberStr);
+    }
+
     /* ==================================================借款人相关借款统计查询==================================================*/
     /**
      * 统计借款总金额，数量

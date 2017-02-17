@@ -373,6 +373,11 @@ public class TbBidPlanServiceImpl implements ITbBidPlanServiceInf {
         return resultInfo;
     }
 
+    @Override
+    public List<TbBidPlan> selectBpNumberList(String bpNumberStr) {
+        return bidPlanDao.selectBpNumberList(bpNumberStr);
+    }
+
 
 
     /* ==================================================借款人相关借款统计查询==================================================*/
