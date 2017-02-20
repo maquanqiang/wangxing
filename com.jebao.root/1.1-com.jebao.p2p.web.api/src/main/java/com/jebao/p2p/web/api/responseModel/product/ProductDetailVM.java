@@ -122,9 +122,9 @@ public class ProductDetailVM extends ViewModel {
     private Date bpInterestSt;
 
     private String bpRemark;
-
+    @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd")
     private Date bpExpectLoanDate;
-
+    @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd")
     private Date bpExpectRepayDate;
 
     private BigDecimal bpServiceChargeRate;

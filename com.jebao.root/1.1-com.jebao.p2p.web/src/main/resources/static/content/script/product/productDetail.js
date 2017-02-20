@@ -2,15 +2,35 @@ $(function () {
 
     //输入金额实时
     $('.entry-num').bind('input propertychange', function() {
-        $('.money-num').html(parseInt($(this).val()*1));
-        var bpExpectLoanDate = new Date(model.product.bpExpectLoanDate);
-        var bpExpectRepayDate = new Date(model.product.bpExpectRepayDate);
-        var days = bpExpectRepayDate.getTime() - bpExpectLoanDate.getTime();
-        var time = parseInt(days / (1000 * 60 * 60 * 24));
-        var interest = parseInt(($(this).val())*time*(model.product.bpRate)/100/365);
-        $('.money-income').html(interest);
-    });
+        var money = parseInt($(this).val() * 1);
+        $('.money-num').html(money);
+        //var bpExpectLoanDate = new Date(model.product.bpExpectLoanDate);
+        //var bpExpectRepayDate = new Date(model.product.bpExpectRepayDate);
+        //var days = bpExpectRepayDate.getTime() - bpExpectLoanDate.getTime();
+        //var time = parseInt(days / (1000 * 60 * 60 * 24));
+        //var interest = parseInt(($(this).val())*time*(model.product.bpRate)/100/365);
+        if(money >= model.product.bpStartMoney && money <= model.product.bpTopMoney){
+            var form = {
+                bpRate: model.product.bpRate,
+                bpExpectLoanDate: model.product.bpExpectLoanDate,
+                bpExpectRepayDate: model.product.bpExpectRepayDate,
+                investMoney: $(this).val()
+            }
 
+            $.post("/api/product/expectRevenue", form, function (response) {
+                if (response.success_is_ok) {
+                    $('.money-income').html(response.data.expectRevenue);
+                } else {
+                    $('.money-income').html(0);
+                    layer.tips("输入金额有误", '#investMoney', {
+                        tips: [1, '#0FA6D8']
+                    });
+                }
+            });
+        }else{
+            $('.money-income').html(0);
+        }
+    });
 
 });
 

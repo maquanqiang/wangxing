@@ -17,6 +17,7 @@ import com.jebao.jebaodb.entity.user.TbUserDetails;
 import com.jebao.p2p.service.inf.product.IProductServiceInf;
 import com.jebao.p2p.service.inf.user.IInvestServiceInf;
 import com.jebao.p2p.service.inf.user.IUserServiceInf;
+import com.jebao.p2p.web.api.requestModel.product.ExpectRevenueForm;
 import com.jebao.p2p.web.api.requestModel.product.InvestInfoForm;
 import com.jebao.p2p.web.api.requestModel.product.ProductForm;
 import com.jebao.p2p.web.api.responseModel.base.*;
@@ -38,8 +39,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletResponse;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by Lee on 2016/12/7.
@@ -326,6 +326,41 @@ public class ProductControllerApi {
         return new JsonResultData<>(productResultVM);
     }
 
+
+    @RequestMapping("expectRevenue")
+    @ResponseBody
+    public JsonResult expectRevenue(ExpectRevenueForm form){
+
+        //校验
+        ValidationResult resultValidation = ValidationUtil.validateEntity(form);
+        if (resultValidation.isHasErrors()) {
+            return new JsonResultError(resultValidation.getErrorMsg().toString());
+        }
+
+        Calendar cal1 = Calendar.getInstance();
+        cal1.setTime(form.getBpExpectLoanDate());
+
+        Calendar cal2 = Calendar.getInstance();
+        cal2.setTime(form.getBpExpectRepayDate());
+
+        int day2 = cal2.get(Calendar.DAY_OF_YEAR);
+        int day1 = cal1.get(Calendar.DAY_OF_YEAR);
+
+        int days = day2-day1-1;
+        BigDecimal investMoney = form.getInvestMoney();
+        BigDecimal revenue = BigDecimal.ZERO;
+
+        if(form.getInvestMoney().compareTo(BigDecimal.ZERO)>0){
+            revenue = investMoney.multiply(form.getBpRate()).multiply(new BigDecimal(days)).divide(new BigDecimal(100)).
+                    divide(new BigDecimal(365), 2, BigDecimal.ROUND_HALF_UP);
+        }
+
+        ExpectRevenueVM vm = new ExpectRevenueVM();
+        vm.setInvestMoney(investMoney);
+        vm.setExpectRevenue(revenue);
+
+        return new JsonResultData<>(vm);
+    }
 
 //    public void investBid(TbUserDetails outUser,TbBidPlan tbBidPlan, BigDecimal investMoney, HttpServletResponse response){
 //        ResultInfo resultInfo = productService.investBid(outUser, tbBidPlan, investMoney);
