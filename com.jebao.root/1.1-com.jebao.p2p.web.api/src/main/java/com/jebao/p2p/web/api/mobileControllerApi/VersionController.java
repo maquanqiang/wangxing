@@ -3,6 +3,7 @@ package com.jebao.p2p.web.api.mobileControllerApi;
 import com.jebao.p2p.web.api.controllerApi._BaseController;
 import com.jebao.p2p.web.api.responseModel.base.JsonResult;
 import com.jebao.p2p.web.api.responseModel.base.JsonResultData;
+import com.jebao.p2p.web.api.utils.constants.Constants;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -32,10 +33,16 @@ public class VersionController extends _BaseController {
      */
     @RequestMapping("androidAppVersion")
     public JsonResult androidAppVersion(){
+        String path = "http://192.168.1.7/";
+        if(!Constants.IsTest){
+            path = "http://static1.jebao.net/";
+        }
+        String url=path+"html/phone/app/android/jebao.apk";
         AppVersion version = new AppVersion();
-        version.setAppVersionCode("0.1");
-        version.setAppDownloadUrl("android.url");
-        version.setAppDesc("");
+        //必须是整数--每次递增加1
+        version.setAppVersionCode("1");
+        version.setAppDownloadUrl(url);
+        version.setAppDesc("金额宝V1.0");
         return new JsonResultData<>(version);
     }
 }
