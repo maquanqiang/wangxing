@@ -52,6 +52,7 @@ public class TbInvestInfo {
 
     private Integer iiChannelType;
 
+    private String iiOrderNumber;
     //---------------------------------
     private BigDecimal bpBidMoney;
 
@@ -221,5 +222,13 @@ public class TbInvestInfo {
 
     public void setIiChannelType(Integer iiChannelType) {
         this.iiChannelType = iiChannelType;
+    }
+
+    public String getIiOrderNumber() {
+        return iiOrderNumber;
+    }
+
+    public void setIiOrderNumber(String iiOrderNumber) {
+        this.iiOrderNumber = iiOrderNumber;
     }
 }
