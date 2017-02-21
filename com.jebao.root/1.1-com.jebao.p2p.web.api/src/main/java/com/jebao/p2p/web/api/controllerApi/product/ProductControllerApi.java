@@ -346,7 +346,7 @@ public class ProductControllerApi {
         int day2 = cal2.get(Calendar.DAY_OF_YEAR);
         int day1 = cal1.get(Calendar.DAY_OF_YEAR);
 
-        int days = day2-day1-1;
+        int days = day2-day1;
         BigDecimal investMoney = form.getInvestMoney();
         BigDecimal revenue = BigDecimal.ZERO;
 
