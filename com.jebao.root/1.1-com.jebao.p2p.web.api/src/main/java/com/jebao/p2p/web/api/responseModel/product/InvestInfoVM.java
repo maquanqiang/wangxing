@@ -25,7 +25,7 @@ public class InvestInfoVM extends ViewModel {
         this.setContractUrl(entity.getIiContractUrl());
         this.setBpRepayedPeriods(entity.getIiBpRepayedPeriods());
         this.setCreateTime(entity.getIiCreateTime());
-        String prefix = entity.getIiLoginName().substring(0,4);
+        String prefix = entity.getIiLoginName().substring(0,3);
         String surfix = entity.getIiLoginName().substring(7);
         this.setLoginName(prefix + "****" + surfix);
         this.setBpBidMoney(entity.getBpBidMoney());
