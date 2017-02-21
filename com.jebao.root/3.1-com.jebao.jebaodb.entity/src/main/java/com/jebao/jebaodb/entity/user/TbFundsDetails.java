@@ -12,6 +12,10 @@ public class TbFundsDetails {
 
     private String fdSerialNumber;
 
+    private Date fdSerialTime;
+
+    private Date fdCreateTime;
+
     private Integer fdSerialTypeId;
 
     private String fdSerialTypeName;
@@ -28,15 +32,19 @@ public class TbFundsDetails {
 
     private String fdBpName;
 
-    private Date fdCreateTime;
-
-    private Date fdSerialTime;
-
     private Integer fdBalanceStatus;
 
     private Integer fdSerialStatus;
 
     private Integer fdIsDel;
+
+    private Integer fdPlatform;
+
+    private Integer fdPlatformType;
+
+    private Integer fdChannel;
+
+    private Integer fdChannelType;
 
     public Long getFdId() {
         return fdId;
@@ -68,6 +76,22 @@ public class TbFundsDetails {
 
     public void setFdSerialNumber(String fdSerialNumber) {
         this.fdSerialNumber = fdSerialNumber == null ? null : fdSerialNumber.trim();
+    }
+
+    public Date getFdSerialTime() {
+        return fdSerialTime;
+    }
+
+    public void setFdSerialTime(Date fdSerialTime) {
+        this.fdSerialTime = fdSerialTime;
+    }
+
+    public Date getFdCreateTime() {
+        return fdCreateTime;
+    }
+
+    public void setFdCreateTime(Date fdCreateTime) {
+        this.fdCreateTime = fdCreateTime;
     }
 
     public Integer getFdSerialTypeId() {
@@ -134,22 +158,6 @@ public class TbFundsDetails {
         this.fdBpName = fdBpName == null ? null : fdBpName.trim();
     }
 
-    public Date getFdCreateTime() {
-        return fdCreateTime;
-    }
-
-    public void setFdCreateTime(Date fdCreateTime) {
-        this.fdCreateTime = fdCreateTime;
-    }
-
-    public Date getFdSerialTime() {
-        return fdSerialTime;
-    }
-
-    public void setFdSerialTime(Date fdSerialTime) {
-        this.fdSerialTime = fdSerialTime;
-    }
-
     public Integer getFdBalanceStatus() {
         return fdBalanceStatus;
     }
@@ -172,5 +180,37 @@ public class TbFundsDetails {
 
     public void setFdIsDel(Integer fdIsDel) {
         this.fdIsDel = fdIsDel;
+    }
+
+    public Integer getFdPlatform() {
+        return fdPlatform;
+    }
+
+    public void setFdPlatform(Integer fdPlatform) {
+        this.fdPlatform = fdPlatform;
+    }
+
+    public Integer getFdPlatformType() {
+        return fdPlatformType;
+    }
+
+    public void setFdPlatformType(Integer fdPlatformType) {
+        this.fdPlatformType = fdPlatformType;
+    }
+
+    public Integer getFdChannel() {
+        return fdChannel;
+    }
+
+    public void setFdChannel(Integer fdChannel) {
+        this.fdChannel = fdChannel;
+    }
+
+    public Integer getFdChannelType() {
+        return fdChannelType;
+    }
+
+    public void setFdChannelType(Integer fdChannelType) {
+        this.fdChannelType = fdChannelType;
     }
 }

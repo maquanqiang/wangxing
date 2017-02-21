@@ -29,6 +29,9 @@
         <result column="ud_create_time" property="udCreateTime" jdbcType="TIMESTAMP" />
         <result column="ud_update_time" property="udUpdateTime" jdbcType="TIMESTAMP" />
         <result column="ud_is_del" property="udIsDel" jdbcType="INTEGER" />
+        <result column="ud_platform_type" property="udPlatformType" jdbcType="INTEGER" />
+        <result column="ud_channel" property="udChannel" jdbcType="INTEGER" />
+        <result column="ud_channel_type" property="udChannelType" jdbcType="INTEGER" />
     </resultMap>
     <sql id="Base_Column_List" >
         ud_id, ud_login_id, ud_nick_name, ud_true_name, ud_id_number, ud_email, ud_phone,
@@ -36,7 +39,7 @@
         ud_third_login_password, ud_third_pay_password, ud_bank_provinces_code, ud_bank_provinces_name,
         ud_bank_city_code, ud_bank_city_name, ud_bank_parent_bank_code, ud_bank_parent_bank_name,
         ud_bank_card_no, ud_bank_card_no_change_status, ud_interface_mchnt_txn_ssn, ud_pos_status,
-        ud_create_time, ud_update_time, ud_is_del
+        ud_create_time, ud_update_time, ud_is_del, ud_platform_type, ud_channel, ud_channel_type
     </sql>
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
         select
@@ -57,7 +60,8 @@
         ud_bank_city_code, ud_bank_city_name, ud_bank_parent_bank_code,
         ud_bank_parent_bank_name, ud_bank_card_no, ud_bank_card_no_change_status,
         ud_interface_mchnt_txn_ssn, ud_pos_status, ud_create_time,
-        ud_update_time, ud_is_del)
+        ud_update_time, ud_is_del, ud_platform_type,
+        ud_channel, ud_channel_type)
         values (#{udLoginId,jdbcType=BIGINT}, #{udNickName,jdbcType=VARCHAR}, #{udTrueName,jdbcType=VARCHAR},
         #{udIdNumber,jdbcType=VARCHAR}, #{udEmail,jdbcType=VARCHAR}, #{udPhone,jdbcType=VARCHAR},
         #{udInvitationCode,jdbcType=VARCHAR}, #{udCustomerManagerId,jdbcType=INTEGER},
@@ -67,7 +71,8 @@
         #{udBankCityCode,jdbcType=VARCHAR}, #{udBankCityName,jdbcType=VARCHAR}, #{udBankParentBankCode,jdbcType=VARCHAR},
         #{udBankParentBankName,jdbcType=VARCHAR}, #{udBankCardNo,jdbcType=VARCHAR}, #{udBankCardNoChangeStatus,jdbcType=INTEGER},
         #{udInterfaceMchntTxnSsn,jdbcType=VARCHAR}, #{udPosStatus,jdbcType=INTEGER}, #{udCreateTime,jdbcType=TIMESTAMP},
-        #{udUpdateTime,jdbcType=TIMESTAMP}, #{udIsDel,jdbcType=INTEGER})
+        #{udUpdateTime,jdbcType=TIMESTAMP}, #{udIsDel,jdbcType=INTEGER}, #{udPlatformType,jdbcType=INTEGER},
+        #{udChannel,jdbcType=INTEGER}, #{udChannelType,jdbcType=INTEGER})
     </insert>
     <insert id="insertSelective" parameterType="com.jebao.jebaodb.entity.user.TbUserDetails" >
         <selectKey resultType="java.lang.Long" keyProperty="udId" order="AFTER" >
@@ -153,6 +158,15 @@
             <if test="udIsDel != null" >
                 ud_is_del,
             </if>
+            <if test="udPlatformType != null" >
+                ud_platform_type,
+            </if>
+            <if test="udChannel != null" >
+                ud_channel,
+            </if>
+            <if test="udChannelType != null" >
+                ud_channel_type,
+            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides="," >
             <if test="udLoginId != null" >
@@ -232,6 +246,15 @@
             </if>
             <if test="udIsDel != null" >
                 #{udIsDel,jdbcType=INTEGER},
+            </if>
+            <if test="udPlatformType != null" >
+                #{udPlatformType,jdbcType=INTEGER},
+            </if>
+            <if test="udChannel != null" >
+                #{udChannel,jdbcType=INTEGER},
+            </if>
+            <if test="udChannelType != null" >
+                #{udChannelType,jdbcType=INTEGER},
             </if>
         </trim>
     </insert>
@@ -316,6 +339,15 @@
             <if test="udIsDel != null" >
                 ud_is_del = #{udIsDel,jdbcType=INTEGER},
             </if>
+            <if test="udPlatformType != null" >
+                ud_platform_type = #{udPlatformType,jdbcType=INTEGER},
+            </if>
+            <if test="udChannel != null" >
+                ud_channel = #{udChannel,jdbcType=INTEGER},
+            </if>
+            <if test="udChannelType != null" >
+                ud_channel_type = #{udChannelType,jdbcType=INTEGER},
+            </if>
         </set>
         where ud_id = #{udId,jdbcType=BIGINT}
     </update>
@@ -346,7 +378,10 @@
         ud_pos_status = #{udPosStatus,jdbcType=INTEGER},
         ud_create_time = #{udCreateTime,jdbcType=TIMESTAMP},
         ud_update_time = #{udUpdateTime,jdbcType=TIMESTAMP},
-        ud_is_del = #{udIsDel,jdbcType=INTEGER}
+        ud_is_del = #{udIsDel,jdbcType=INTEGER},
+        ud_platform_type = #{udPlatformType,jdbcType=INTEGER},
+        ud_channel = #{udChannel,jdbcType=INTEGER},
+        ud_channel_type = #{udChannelType,jdbcType=INTEGER}
         where ud_id = #{udId,jdbcType=BIGINT}
     </update>
     <!--==================================================华丽分割线==================================================-->

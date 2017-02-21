@@ -15,7 +15,8 @@ public class ProductSM {
     private BigDecimal searchMoneyEnd;
     private Integer bpType;
     private Integer bpPeriods;
-
+    private Integer bpDisplayIsPc;
+    private Integer bpDisplayIsMobile;
 
     public Integer getBpInterestPayType() {
         return bpInterestPayType;
@@ -79,5 +80,21 @@ public class ProductSM {
 
     public void setBpPeriods(Integer bpPeriods) {
         this.bpPeriods = bpPeriods;
+    }
+
+    public Integer getBpDisplayIsPc() {
+        return bpDisplayIsPc;
+    }
+
+    public void setBpDisplayIsPc(Integer bpDisplayIsPc) {
+        this.bpDisplayIsPc = bpDisplayIsPc;
+    }
+
+    public Integer getBpDisplayIsMobile() {
+        return bpDisplayIsMobile;
+    }
+
+    public void setBpDisplayIsMobile(Integer bpDisplayIsMobile) {
+        this.bpDisplayIsMobile = bpDisplayIsMobile;
     }
 }

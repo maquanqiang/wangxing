@@ -1,5 +1,6 @@
 package com.jebao.p2p.service.inf.product;
 
+import com.jebao.jebaodb.entity.extEntity.EnumModel;
 import com.jebao.jebaodb.entity.extEntity.ResultInfo;
 import com.jebao.jebaodb.entity.investment.TbIncomeDetail;
 import com.jebao.jebaodb.entity.investment.TbInvestInfo;
@@ -42,5 +43,5 @@ public interface IProductServiceInf {
 
     List<TbInvestInfo> recentInvestment(TbInvestInfo tbInvestInfo, PageWhere pageWhere);
 
-    ResultInfo investBid(TbUserDetails outUser,TbBidPlan tbBidPlan, BigDecimal investMoney);
+    ResultInfo investBid(TbUserDetails outUser, TbBidPlan tbBidPlan, BigDecimal investMoney, EnumModel.Platform platform, EnumModel.PlatformType platformType);
 }

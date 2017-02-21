@@ -87,7 +87,7 @@ public class MobileRechargeServiceImpl implements IMobileRechargeServiceInf {
      * @return
      */
     @Override
-    public ResultInfo personQuickPayByWebComplete(Long loginId, PersonQuickPayResponse model) {
+    public ResultInfo personQuickPayByWebComplete(Long loginId, PersonQuickPayResponse model, EnumModel.Platform platform, EnumModel.PlatformType platformType) {
         if (model != null) {
             int count = fundsDetailsService.selectBySerialNumberForPageCount(loginId, model.getMchnt_txn_ssn());
             if (count > 0) {
@@ -115,7 +115,10 @@ public class MobileRechargeServiceImpl implements IMobileRechargeServiceInf {
         fundsDetails.setFdSerialTypeName(EnumModel.SerialType.充值.name());
         fundsDetails.setFdThirdAccount(afEntity.getAfThirdAccount());
         fundsDetails.setFdIsDel(EnumModel.IsDel.有效.getValue());
-
+        fundsDetails.setFdPlatform(platform.getValue());
+        fundsDetails.setFdPlatformType(platformType.getValue());
+        fundsDetails.setFdChannel(0);
+        fundsDetails.setFdChannelType(0);
         if (model == null) {
             //更新资金收支明细状态为失败
             fundsDetails.setFdSerialStatus(EnumModel.FdSerialStatus.失败.getValue());
@@ -220,7 +223,7 @@ public class MobileRechargeServiceImpl implements IMobileRechargeServiceInf {
      * @return
      */
     @Override
-    public ResultInfo fastRechargeByWebComplete(Long loginId, FastRechargeResponse model) {
+    public ResultInfo fastRechargeByWebComplete(Long loginId, FastRechargeResponse model, EnumModel.Platform platform, EnumModel.PlatformType platformType) {
         if (model != null) {
             int count = fundsDetailsService.selectBySerialNumberForPageCount(loginId, model.getMchnt_txn_ssn());
             if (count > 0) {
@@ -248,7 +251,10 @@ public class MobileRechargeServiceImpl implements IMobileRechargeServiceInf {
         fundsDetails.setFdSerialTypeName(EnumModel.SerialType.充值.name());
         fundsDetails.setFdThirdAccount(afEntity.getAfThirdAccount());
         fundsDetails.setFdIsDel(EnumModel.IsDel.有效.getValue());
-
+        fundsDetails.setFdPlatform(platform.getValue());
+        fundsDetails.setFdPlatformType(platformType.getValue());
+        fundsDetails.setFdChannel(0);
+        fundsDetails.setFdChannelType(0);
         if (model == null) {
             //更新资金收支明细状态为失败
             fundsDetails.setFdSerialStatus(EnumModel.FdSerialStatus.失败.getValue());

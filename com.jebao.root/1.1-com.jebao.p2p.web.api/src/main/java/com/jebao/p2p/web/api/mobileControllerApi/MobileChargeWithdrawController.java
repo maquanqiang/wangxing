@@ -7,6 +7,7 @@ import com.jebao.p2p.service.inf.mobile.IMobileWithdrawServiceInf;
 import com.jebao.p2p.web.api.controllerApi._BaseController;
 import com.jebao.p2p.web.api.requestModel.user.RechargeSM;
 import com.jebao.p2p.web.api.utils.constants.Constants;
+import com.jebao.p2p.web.api.utils.http.HttpUtil;
 import com.jebao.p2p.web.api.utils.session.CurrentUser;
 import com.jebao.p2p.web.api.utils.session.CurrentUserContextHolder;
 import com.jebao.p2p.web.api.utils.validation.ValidationResult;
@@ -92,7 +93,8 @@ public class MobileChargeWithdrawController extends _BaseController {
         if (currentUser == null) {
             return null;
         }
-        ResultInfo resultInfo = rechargeService.personQuickPayByWebComplete(currentUser.getId(), model);
+        HttpUtil httpUtil = new HttpUtil();
+        ResultInfo resultInfo = rechargeService.personQuickPayByWebComplete(currentUser.getId(), model, httpUtil.getPlatform(request), httpUtil.getPlatformType(request));
         if (!resultInfo.getSuccess_is_ok()) {
             String title = "充值失败！";
             String content = resultInfo.getMsg();
@@ -164,7 +166,8 @@ public class MobileChargeWithdrawController extends _BaseController {
         if (currentUser == null) {
             return null;
         }
-        ResultInfo resultInfo = rechargeService.fastRechargeByWebComplete(currentUser.getId(), model);
+        HttpUtil httpUtil = new HttpUtil();
+        ResultInfo resultInfo = rechargeService.fastRechargeByWebComplete(currentUser.getId(), model, httpUtil.getPlatform(request), httpUtil.getPlatformType(request));
         if (!resultInfo.getSuccess_is_ok()) {
             String title = "充值失败！";
             String content = resultInfo.getMsg();
@@ -239,8 +242,8 @@ public class MobileChargeWithdrawController extends _BaseController {
         }
 
         BigDecimal fee = new BigDecimal(Constants.COMMISSION_CHARGE);
-
-        ResultInfo resultInfo = withdrawService.withdrawDepositByWebComplete(currentUser.getId(), model, fee);
+        HttpUtil httpUtil = new HttpUtil();
+        ResultInfo resultInfo = withdrawService.withdrawDepositByWebComplete(currentUser.getId(), model, fee, httpUtil.getPlatform(request), httpUtil.getPlatformType(request));
         if (!resultInfo.getSuccess_is_ok()) {
             String title = "提现失败！";
             String content = resultInfo.getMsg();

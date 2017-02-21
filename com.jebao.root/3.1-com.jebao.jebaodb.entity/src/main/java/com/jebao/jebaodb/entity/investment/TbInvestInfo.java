@@ -44,11 +44,16 @@ public class TbInvestInfo {
 
     private String iiSsn;
 
+    private Integer iiPlatform;
+
+    private Integer iiPlatformType;
+
+    private Integer iiChannel;
+
+    private Integer iiChannelType;
+
     //---------------------------------
     private BigDecimal bpBidMoney;
-
-
-
 
     public Long getIiId() {
         return iiId;
@@ -184,5 +189,37 @@ public class TbInvestInfo {
 
     public void setIiContractNo(String iiContractNo) {
         this.iiContractNo = iiContractNo;
+    }
+
+    public Integer getIiPlatform() {
+        return iiPlatform;
+    }
+
+    public void setIiPlatform(Integer iiPlatform) {
+        this.iiPlatform = iiPlatform;
+    }
+
+    public Integer getIiPlatformType() {
+        return iiPlatformType;
+    }
+
+    public void setIiPlatformType(Integer iiPlatformType) {
+        this.iiPlatformType = iiPlatformType;
+    }
+
+    public Integer getIiChannel() {
+        return iiChannel;
+    }
+
+    public void setIiChannel(Integer iiChannel) {
+        this.iiChannel = iiChannel;
+    }
+
+    public Integer getIiChannelType() {
+        return iiChannelType;
+    }
+
+    public void setIiChannelType(Integer iiChannelType) {
+        this.iiChannelType = iiChannelType;
     }
 }

@@ -57,7 +57,7 @@ public class HttpUtil {
      * @param request httpRequest
      * @return 平台类型
      */
-    public EnumModel.Platform getPlatform(HttpServletRequest request) {
+/*    public EnumModel.Platform getPlatform(HttpServletRequest request) {
         String userAgent = request.getHeader("User-Agent");
         if (!StringUtils.isBlank(userAgent)) {
             if (userAgent.indexOf("MicroMessenger") > -1) { //微信
@@ -71,6 +71,48 @@ public class HttpUtil {
             }
         }
         return EnumModel.Platform.other;
+    }*/
+
+    /**
+     * 获取请求所属平台
+     * @param request httpRequest
+     * @return 平台类型
+     */
+    public EnumModel.Platform getPlatform(HttpServletRequest request) {
+        String userAgent = request.getHeader("User-Agent");
+        if (!StringUtils.isBlank(userAgent)) {
+            if (userAgent.indexOf("Android") > -1 || userAgent.indexOf("iPhone")>-1 || userAgent.indexOf("Mac OS X")>-1) {
+                return EnumModel.Platform.mobile;
+            }else if (userAgent.indexOf("Windows")>-1){
+                return EnumModel.Platform.pc;
+            }else{
+                return EnumModel.Platform.other;
+            }
+        }
+        return EnumModel.Platform.other;
+    }
+
+    /**
+     * 获取请求所属平台分类
+     * @param request httpRequest
+     * @return 平台类型
+     */
+    public EnumModel.PlatformType getPlatformType(HttpServletRequest request) {
+        String userAgent = request.getHeader("User-Agent");
+        if (!StringUtils.isBlank(userAgent)) {
+            if (userAgent.indexOf("MicroMessenger") > -1) { //微信
+                return EnumModel.PlatformType.weixin;
+            } else if (userAgent.indexOf("Android") > -1) {
+                return EnumModel.PlatformType.android;
+            }else if (userAgent.indexOf("iPhone")>-1){
+                return EnumModel.PlatformType.iphone;
+            }else if(userAgent.indexOf("Mac OS X")>-1){
+                return EnumModel.PlatformType.mac;
+            }else if (userAgent.indexOf("Windows")>-1){
+                return EnumModel.PlatformType.pc;
+            }
+        }
+        return EnumModel.PlatformType.other;
     }
 
     /**

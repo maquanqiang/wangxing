@@ -9,11 +9,7 @@ import java.math.BigDecimal;
  * Created by Lee on 2016/12/7.
  */
 public class ProductForm {
-
-
     public static ProductSM toEntity(ProductForm form){
-
-
         ProductSM productSM = new ProductSM();
         if(StringUtils.isNotBlank(form.getBpPeriodStr())){
             String[] periodStr = form.getBpPeriodStr().split("-");
@@ -28,7 +24,8 @@ public class ProductForm {
         productSM.setBpStatus(form.getBpStatus());
         productSM.setBpInterestPayType(form.getBpInterestPayType());
         productSM.setBpType(form.getBpType());
-
+        productSM.setBpDisplayIsPc(form.getBpDisplayIsPc());
+        productSM.setBpDisplayIsMobile(form.getBpDisplayIsMobile());
         return productSM;
     }
 
@@ -37,6 +34,8 @@ public class ProductForm {
     private String searchMoneyStr;
     private String bpPeriodStr;
     private Integer bpType;
+    private Integer bpDisplayIsPc;
+    private Integer bpDisplayIsMobile;
 
     public Integer getBpType() {
         return bpType;
@@ -76,5 +75,21 @@ public class ProductForm {
 
     public void setBpPeriodStr(String bpPeriodStr) {
         this.bpPeriodStr = bpPeriodStr;
+    }
+
+    public Integer getBpDisplayIsPc() {
+        return bpDisplayIsPc;
+    }
+
+    public void setBpDisplayIsPc(Integer bpDisplayIsPc) {
+        this.bpDisplayIsPc = bpDisplayIsPc;
+    }
+
+    public Integer getBpDisplayIsMobile() {
+        return bpDisplayIsMobile;
+    }
+
+    public void setBpDisplayIsMobile(Integer bpDisplayIsMobile) {
+        this.bpDisplayIsMobile = bpDisplayIsMobile;
     }
 }

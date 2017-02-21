@@ -17,6 +17,7 @@ import com.jebao.jebaodb.entity.user.TbUserDetails;
 import com.jebao.p2p.service.inf.product.IProductServiceInf;
 import com.jebao.p2p.service.inf.user.IInvestServiceInf;
 import com.jebao.p2p.service.inf.user.IUserServiceInf;
+import com.jebao.p2p.web.api.controllerApi._BaseController;
 import com.jebao.p2p.web.api.requestModel.product.ExpectRevenueForm;
 import com.jebao.p2p.web.api.requestModel.product.InvestInfoForm;
 import com.jebao.p2p.web.api.requestModel.product.ProductForm;
@@ -25,19 +26,16 @@ import com.jebao.p2p.web.api.responseModel.product.*;
 import com.jebao.p2p.web.api.utils.cached.CachedSetting;
 import com.jebao.p2p.web.api.utils.cached.CachedUtil;
 import com.jebao.p2p.web.api.utils.constants.Constants;
+import com.jebao.p2p.web.api.utils.http.HttpUtil;
 import com.jebao.p2p.web.api.utils.session.CurrentUser;
 import com.jebao.p2p.web.api.utils.session.CurrentUserContextHolder;
 import com.jebao.p2p.web.api.utils.validation.ValidationResult;
 import com.jebao.p2p.web.api.utils.validation.ValidationUtil;
-import com.jebao.thirdPay.fuiou.impl.PreAuthServiceImpl;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.servlet.http.HttpServletResponse;
 import java.math.BigDecimal;
 import java.util.*;
 
@@ -46,24 +44,24 @@ import java.util.*;
  */
 @Controller
 @RequestMapping("api/product")
-public class ProductControllerApi {
-
-
+public class ProductControllerApi extends _BaseController {
     @Autowired
     private IProductServiceInf productService;
     @Autowired
     private IInvestServiceInf investService;
     @Autowired
     private IUserServiceInf userService;
+
     /**
      * 项目列表
+     *
      * @param form
      * @param pageWhere
      * @return
      */
     @RequestMapping("list")
     @ResponseBody
-    public JsonResult list(ProductForm form, PageWhere pageWhere){
+    public JsonResult list(ProductForm form, PageWhere pageWhere) {
 
         ProductSM productSM = ProductForm.toEntity(form);
         pageWhere.setOrderBy("bp_status ASC, bp_bid_money DESC, bp_rate DESC, bp_start_time DESC");
@@ -76,14 +74,15 @@ public class ProductControllerApi {
 
     /**
      * 项目详情
+     *
      * @param bpId
      * @return
      */
     @RequestMapping("productDetail")
     @ResponseBody
-    public JsonResult productDetail(Long bpId){
+    public JsonResult productDetail(Long bpId) {
         TbBidPlan tbBidPlan = productService.selectByBpId(bpId);
-        if(tbBidPlan==null||tbBidPlan.getBpStatus()< 2){
+        if (tbBidPlan == null || tbBidPlan.getBpStatus() < 2) {
             return new JsonResultError();
         }
         return new JsonResultData<>(new ProductDetailVM(tbBidPlan));
@@ -91,24 +90,26 @@ public class ProductControllerApi {
 
     /**
      * 借款人信息
+     *
      * @param lid
      * @return
      */
     @RequestMapping("loanerInfo")
     @ResponseBody
-    public JsonResult loanerInfo(Long lid){
+    public JsonResult loanerInfo(Long lid) {
         TbLoaner tbLoaner = productService.selectByPrimaryKey(lid);
         return new JsonResultData<>(new LoanerInfoVM(tbLoaner));
     }
 
     /**
      * 风控信息
+     *
      * @param bpId
      * @return
      */
     @RequestMapping("riskListByBpId")
     @ResponseBody
-    public JsonResult riskListByBpId(Long bpId){
+    public JsonResult riskListByBpId(Long bpId) {
         TbBidRiskData tbBidRiskData = new TbBidRiskData();
         tbBidRiskData.setBrdBpId(bpId);
         PageWhere pageWhere = new PageWhere(0, 100);
@@ -121,13 +122,14 @@ public class ProductControllerApi {
 
     /**
      * 该标的投资人列表
+     *
      * @param bpId
      * @param pageWhere
      * @return
      */
     @RequestMapping("investInfoByBpId")
     @ResponseBody
-    public JsonResult investInfoByBpId(Long bpId, PageWhere pageWhere){
+    public JsonResult investInfoByBpId(Long bpId, PageWhere pageWhere) {
         TbInvestInfo tbInvestInfo = new TbInvestInfo();
         tbInvestInfo.setIiBpId(bpId);
         List<TbInvestInfo> tbInvestInfos = productService.selectInvestInfoBybpId(tbInvestInfo, pageWhere);
@@ -139,13 +141,14 @@ public class ProductControllerApi {
 
     /**
      * 借款人还款计划
+     *
      * @param bpId
      * @param pageWhere
      * @return
      */
     @RequestMapping("incomeDetailByBpId")
     @ResponseBody
-    public JsonResult incomeDetailByBpId(Long bpId, PageWhere pageWhere){
+    public JsonResult incomeDetailByBpId(Long bpId, PageWhere pageWhere) {
         RepaymentDetailSM repaymentDetailSM = new RepaymentDetailSM();
         repaymentDetailSM.setIndBpId(bpId);
 
@@ -198,6 +201,7 @@ public class ProductControllerApi {
 
     /**
      * 首页最近投资10条
+     *
      * @return
      */
     @RequestMapping("recentInvestment")
@@ -218,7 +222,7 @@ public class ProductControllerApi {
                 new CachedWrapperExecutor<List<RecentInvestVM>>() {
                     @Override
                     public List<RecentInvestVM> execute() {
-                        PageWhere page = new PageWhere(0,10);
+                        PageWhere page = new PageWhere(0, 10);
                         page.setOrderBy("ii_id DESC");
                         List<TbInvestInfo> investInfoList = productService.recentInvestment(model, page);
                         if (investInfoList == null || investInfoList.size() == 0) {
@@ -234,62 +238,64 @@ public class ProductControllerApi {
 
     /**
      * 首页投资排行榜
+     *
      * @return
      */
     @RequestMapping("investmentTop")
     @ResponseBody
-    public JsonResult investmentTop(){
+    public JsonResult investmentTop() {
 
         List<InvestmentTopVM> vms = new ArrayList<>();
 
-        vms.add(new InvestmentTopVM("司**","4350000"));
-        vms.add(new InvestmentTopVM("王**","3000000"));
-        vms.add(new InvestmentTopVM("高**","670000"));
-        vms.add(new InvestmentTopVM("吴**","670000"));
-        vms.add(new InvestmentTopVM("王**","625000"));
-        vms.add(new InvestmentTopVM("杨**","600000"));
-        vms.add(new InvestmentTopVM("谢**","580000"));
+        vms.add(new InvestmentTopVM("司**", "4350000"));
+        vms.add(new InvestmentTopVM("王**", "3000000"));
+        vms.add(new InvestmentTopVM("高**", "670000"));
+        vms.add(new InvestmentTopVM("吴**", "670000"));
+        vms.add(new InvestmentTopVM("王**", "625000"));
+        vms.add(new InvestmentTopVM("杨**", "600000"));
+        vms.add(new InvestmentTopVM("谢**", "580000"));
 
         return new JsonResultList<>(vms);
     }
 
     /**
      * 投资
+     *
      * @param form
      * @return
      */
     @RequestMapping("investBid")
     @ResponseBody
-    public JsonResult investBid(InvestInfoForm form){
+    public JsonResult investBid(InvestInfoForm form) {
         CurrentUser currentUser = CurrentUserContextHolder.get();
-        if(currentUser == null){            //未登录 重定向登录页
+        if (currentUser == null) {            //未登录 重定向登录页
             return new JsonResultError("尚未登录");
         }
         //查询标的信息
         TbBidPlan bidPlan = productService.selectByBpId(form.getBpId());
-        if(bidPlan.getBpLoginId()==currentUser.getId()){
+        if (bidPlan.getBpLoginId() == currentUser.getId()) {
             return new JsonResultError("投资人不能是该标的借款人");
         }
         //投资人详情
         TbUserDetails outUser = userService.getUserDetailsInfo(currentUser.getId());
-        if(outUser!=null){
-            if(outUser.getUdThirdAccount()==null){
+        if (outUser != null) {
+            if (outUser.getUdThirdAccount() == null) {
                 return new JsonResultError("您尚未开通第三方");
             }
         }
         //投资人账户
         TbAccountsFunds accountsFunds = userService.getAccountsFundsInfo(currentUser.getId());
-        if(accountsFunds==null || accountsFunds.getAfBalance().compareTo(form.getInvestMoney()) <0){
+        if (accountsFunds == null || accountsFunds.getAfBalance().compareTo(form.getInvestMoney()) < 0) {
             return new JsonResultError("账户余额不足");
         }
 
         //判断是否为新手标
-        if(bidPlan.getBpType()==2){
+        if (bidPlan.getBpType() == 2) {
             TbInvestInfo tbInvestInfo = new TbInvestInfo();
             tbInvestInfo.setIiLoginId(currentUser.getId());
 
             int count = investService.selectInvestBaseByLoginIdForPageCount(tbInvestInfo);
-            if(count>0){
+            if (count > 0) {
                 return new JsonResultError("新手专享");
             }
         }
@@ -300,24 +306,22 @@ public class ProductControllerApi {
         }
 
         //判断投资金额是否符合规则
-        if(bidPlan.getBpSurplusMoney().compareTo(bidPlan.getBpStartMoney())>=0){
-            if(form.getInvestMoney().compareTo(bidPlan.getBpStartMoney())>=0 && form.getInvestMoney().compareTo(bidPlan.getBpTopMoney())<=0){
+        if (bidPlan.getBpSurplusMoney().compareTo(bidPlan.getBpStartMoney()) >= 0) {
+            if (form.getInvestMoney().compareTo(bidPlan.getBpStartMoney()) >= 0 && form.getInvestMoney().compareTo(bidPlan.getBpTopMoney()) <= 0) {
                 BigDecimal remainder = (form.getInvestMoney().subtract(bidPlan.getBpStartMoney())).remainder(bidPlan.getBpRiseMoney());
-                if(remainder.compareTo(BigDecimal.ZERO)!=0){
+                if (remainder.compareTo(BigDecimal.ZERO) != 0) {
                     return new JsonResultError("投资金额不符合递增规则");
                 }
-            }else{
+            } else {
                 return new JsonResultError("投资金额小于起投金额或超出上限金额");
             }
-        }else {
-            if(form.getInvestMoney().compareTo(bidPlan.getBpSurplusMoney())!=0){
+        } else {
+            if (form.getInvestMoney().compareTo(bidPlan.getBpSurplusMoney()) != 0) {
                 return new JsonResultError("投资金额必须为剩余金额");
             }
         }
-
-
-
-        ResultInfo resultInfo = productService.investBid(outUser, bidPlan, form.getInvestMoney());
+        HttpUtil httpUtil = new HttpUtil();
+        ResultInfo resultInfo = productService.investBid(outUser, bidPlan, form.getInvestMoney(), httpUtil.getPlatform(request), httpUtil.getPlatformType(request));
         ProductResultVM productResultVM = new ProductResultVM();
         productResultVM.setFlag(resultInfo.getSuccess_is_ok());
         productResultVM.setMsg(resultInfo.getMsg());
@@ -329,7 +333,7 @@ public class ProductControllerApi {
 
     @RequestMapping("expectRevenue")
     @ResponseBody
-    public JsonResult expectRevenue(ExpectRevenueForm form){
+    public JsonResult expectRevenue(ExpectRevenueForm form) {
 
         //校验
         ValidationResult resultValidation = ValidationUtil.validateEntity(form);
@@ -346,11 +350,11 @@ public class ProductControllerApi {
         int day2 = cal2.get(Calendar.DAY_OF_YEAR);
         int day1 = cal1.get(Calendar.DAY_OF_YEAR);
 
-        int days = day2-day1-1;
+        int days = day2 - day1 - 1;
         BigDecimal investMoney = form.getInvestMoney();
         BigDecimal revenue = BigDecimal.ZERO;
 
-        if(form.getInvestMoney().compareTo(BigDecimal.ZERO)>0){
+        if (form.getInvestMoney().compareTo(BigDecimal.ZERO) > 0) {
             revenue = investMoney.multiply(form.getBpRate()).multiply(new BigDecimal(days)).divide(new BigDecimal(100)).
                     divide(new BigDecimal(365), 2, BigDecimal.ROUND_HALF_UP);
         }

@@ -1,5 +1,6 @@
 package com.jebao.p2p.service.inf.user;
 
+import com.jebao.jebaodb.entity.extEntity.EnumModel;
 import com.jebao.jebaodb.entity.extEntity.ResultInfo;
 import com.jebao.thirdPay.fuiou.model.fastRecharge.FastRechargeResponse;
 import com.jebao.thirdPay.fuiou.model.onlineBankRecharge.OnlineBankRechargeResponse;
@@ -28,7 +29,7 @@ public interface IRechargeServiceInf {
      * @param model
      * @return
      */
-    ResultInfo personQuickPayByWebComplete(Long loginId, PersonQuickPayResponse model);
+    ResultInfo personQuickPayByWebComplete(Long loginId, PersonQuickPayResponse model, EnumModel.Platform platform, EnumModel.PlatformType platformType);
 
 
     /**
@@ -47,7 +48,7 @@ public interface IRechargeServiceInf {
      * @param model
      * @return
      */
-    ResultInfo fastRechargeByWebComplete(Long loginId, FastRechargeResponse model);
+    ResultInfo fastRechargeByWebComplete(Long loginId, FastRechargeResponse model, EnumModel.Platform platform, EnumModel.PlatformType platformType);
 
     /**
      * 网银充值 form表单提交 跳转
@@ -63,5 +64,5 @@ public interface IRechargeServiceInf {
      * @param model
      * @return
      */
-    ResultInfo onlineBankRechargeByWebComplete(Long loginId, OnlineBankRechargeResponse model);
+    ResultInfo onlineBankRechargeByWebComplete(Long loginId, OnlineBankRechargeResponse model, EnumModel.Platform platform, EnumModel.PlatformType platformType);
 }
