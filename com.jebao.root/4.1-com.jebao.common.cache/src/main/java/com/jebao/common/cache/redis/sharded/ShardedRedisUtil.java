@@ -321,17 +321,23 @@ public class ShardedRedisUtil {
                 //System.out.println(2); //debug
                 continue;
             }
-            //获取需要缓存的数据-从数据库或其他的地方查询
-            T result = executor.execute();
-            if (result == null) {
-                setCachedWrapper(key, nullValueExpireSec, null);
-            } else {
-                setCachedWrapper(key, keyExpireSec, result);
+            try
+            {
+                //获取需要缓存的数据-从数据库或其他的地方查询
+                T result = executor.execute();
+                if (result == null) {
+                    setCachedWrapper(key, nullValueExpireSec, null);
+                } else {
+                    setCachedWrapper(key, keyExpireSec, result);
+                }
+                //System.out.println(3); //debug
+                value = new CachedWrapper<T>(result);
+                return value;
             }
-            del(key_mutex);
-            //System.out.println(3); //debug
-            value = new CachedWrapper<T>(result);
-            return value;
+            finally
+            {
+                del(key_mutex);
+            }
         }
     }
 
