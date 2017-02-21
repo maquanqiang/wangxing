@@ -54,8 +54,10 @@ public class CreateRepaymentDetails {
                 loanIntent.setInterestSt(nextRepayDate);
                 Date repayDate = repayDate(bpCycleType, interestSt, i);
                 now.setTime(repayDate);
-                if(now.get(GregorianCalendar.DAY_OF_MONTH)!=calendar.get(GregorianCalendar.DAY_OF_MONTH)){
-                    now.add(Calendar.DATE, 1);
+                if(bpCycleType!=1){
+                    if(now.get(GregorianCalendar.DAY_OF_MONTH)!=calendar.get(GregorianCalendar.DAY_OF_MONTH)){
+                        now.add(Calendar.DATE, 1);
+                    }
                 }
                 int days = BetweenDays.differentDays(nextRepayDate, now.getTime());
                 nextRepayDate = now.getTime();
