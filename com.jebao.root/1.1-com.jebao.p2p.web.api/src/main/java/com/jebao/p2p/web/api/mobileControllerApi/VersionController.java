@@ -40,7 +40,7 @@ public class VersionController extends _BaseController {
         String url=path+"html/phone/app/android/jebao.apk";
         AppVersion version = new AppVersion();
         //必须是整数--每次递增加1
-        version.setAppVersionCode("1");
+        version.setAppVersionCode("2");
         version.setAppDownloadUrl(url);
         version.setAppDesc("金额宝V1.0");
         return new JsonResultData<>(version);
