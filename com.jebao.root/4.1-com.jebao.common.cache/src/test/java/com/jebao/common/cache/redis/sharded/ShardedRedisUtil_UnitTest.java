@@ -2,14 +2,17 @@ package com.jebao.common.cache.redis.sharded;
 
 import com.jebao.common.cache.utils.wrapper.CachedWrapper;
 import com.jebao.common.cache.utils.wrapper.CachedWrapperExecutor;
+import org.apache.commons.lang.StringUtils;
 import org.junit.Test;
 
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -69,26 +72,28 @@ public class ShardedRedisUtil_UnitTest {
         List<ObjClass> getList = redisUtil.getList(key, ObjClass.class);
         assertThat(result).isEqualTo("OK");
     }
+
     /**
      * 读取并设置数据缓存
      * 通过互斥的锁来减少对数据库的访问
      * 互斥的锁-使用的redis-setNX的方法
+     *
      * @throws Exception
      */
     @Test
     public void getValueByMutex() throws Exception {
         ShardedRedisUtil redisUtil = ShardedRedisUtil.getInstance();
-        CachedWrapper<List<ObjClass>> wrapperNullValue=redisUtil.getCachedWrapperByMutexKey("value-07", 200, 150, 10,
+        CachedWrapper<List<ObjClass>> wrapperNullValue = redisUtil.getCachedWrapperByMutexKey("value-07", 200, 150, 10,
                 new CachedWrapperExecutor<List<ObjClass>>() {
                     @Override
-                    public List<ObjClass> execute()  {
+                    public List<ObjClass> execute() {
                         return null;
                     }
                 });
-        CachedWrapper<List<ObjClass>> wrapperListValue=redisUtil.getCachedWrapperByMutexKey("value-08", 20, 15, 5,
+        CachedWrapper<List<ObjClass>> wrapperListValue = redisUtil.getCachedWrapperByMutexKey("value-08", 20, 15, 5,
                 new CachedWrapperExecutor<List<ObjClass>>() {
                     @Override
-                    public List<ObjClass> execute(){
+                    public List<ObjClass> execute() {
                         //List对象
                         List<ObjClass> list = new ArrayList<>();
                         ObjClass obj_a1 = new ObjClass();
@@ -102,10 +107,10 @@ public class ShardedRedisUtil_UnitTest {
                 });
         //List<ObjClass> listDynamicValue = new ArrayList<>();
         //推荐写法
-        CachedWrapper<List<ObjClass>> wrapperDynamicValue=redisUtil.getCachedWrapperByMutexKey("value-09", 20, 15, 5,
+        CachedWrapper<List<ObjClass>> wrapperDynamicValue = redisUtil.getCachedWrapperByMutexKey("value-09", 20, 15, 5,
                 new CachedWrapperExecutor<List<ObjClass>>() {
                     @Override
-                    public List<ObjClass> execute(){
+                    public List<ObjClass> execute() {
                         //List对象
                         List<ObjClass> listDynamicValue = new ArrayList<>();
                         ObjClass obj_a1 = new ObjClass();
@@ -118,21 +123,21 @@ public class ShardedRedisUtil_UnitTest {
                     }
                 });
         //不推荐lambda写法
-        CachedWrapper<List<ObjClass>> wrapperDynamicValue1=redisUtil.getCachedWrapperByMutexKey("value-10", 200, 15, 5,
-                ()-> {
-                        //List对象
+        CachedWrapper<List<ObjClass>> wrapperDynamicValue1 = redisUtil.getCachedWrapperByMutexKey("value-10", 200, 15, 5,
+                () -> {
+                    //List对象
                     List<ObjClass> listDynamicValue = new ArrayList<>();
-                        ObjClass obj_a1 = new ObjClass();
-                        obj_a1.setName("测试LIST-10-011");
-                        ObjClass obj_b1 = new ObjClass();
-                        obj_b1.setName("测试LIST-10-022");
-                        listDynamicValue.add(obj_a1);
-                        listDynamicValue.add(obj_b1);
-                        return listDynamicValue;
+                    ObjClass obj_a1 = new ObjClass();
+                    obj_a1.setName("测试LIST-10-011");
+                    ObjClass obj_b1 = new ObjClass();
+                    obj_b1.setName("测试LIST-10-022");
+                    listDynamicValue.add(obj_a1);
+                    listDynamicValue.add(obj_b1);
+                    return listDynamicValue;
                 });
         //------------------------------------------------------------------------------------------------------------
-        String result=getValueByMutexFun("value-01");
-        getValueByMutexFun("value-02",10,5,5);
+        String result = getValueByMutexFun("value-01");
+        getValueByMutexFun("value-02", 10, 5, 5);
         getCachedWrapperByMutexFun_Obj("value-03", 20, 15, 15, null);
         getCachedWrapperByMutexFun("value-04", 20, 15, 15,
                 new CachedWrapperExecutor<String>() {
@@ -141,7 +146,7 @@ public class ShardedRedisUtil_UnitTest {
                         return null;
                     }
                 });
-        CachedWrapper<ObjClass> wrapperObjClass=getCachedWrapperByMutexFun("value-05", 20, 15, 15,
+        CachedWrapper<ObjClass> wrapperObjClass = getCachedWrapperByMutexFun("value-05", 20, 15, 15,
                 new CachedWrapperExecutor<ObjClass>() {
                     @Override
                     public ObjClass execute() throws Exception {
@@ -152,7 +157,7 @@ public class ShardedRedisUtil_UnitTest {
                         return obj01;
                     }
                 });
-        CachedWrapper<List<ObjClass>> wrapperList=getCachedWrapperByMutexFun("value-06", 20, 15, 15,
+        CachedWrapper<List<ObjClass>> wrapperList = getCachedWrapperByMutexFun("value-06", 20, 15, 15,
                 new CachedWrapperExecutor<List<ObjClass>>() {
                     @Override
                     public List<ObjClass> execute() throws Exception {
@@ -170,28 +175,29 @@ public class ShardedRedisUtil_UnitTest {
                     }
                 });
     }
+
     @Test
     public void getValueByMutex_ChangeKeyExpireSec() throws Exception {
         ShardedRedisUtil redisUtil = ShardedRedisUtil.getInstance();
-        int keyExpireSec=2000;
-        int nullValueExpireSec=1000;
-        CachedWrapper<List<ObjClass>> wrapperNullValue=redisUtil.getCachedWrapperByMutexKey("value-107", keyExpireSec, nullValueExpireSec, 10,
+        int keyExpireSec = 2000;
+        int nullValueExpireSec = 1000;
+        CachedWrapper<List<ObjClass>> wrapperNullValue = redisUtil.getCachedWrapperByMutexKey("value-107", keyExpireSec, nullValueExpireSec, 10,
                 new CachedWrapperExecutor<List<ObjClass>>() {
                     @Override
-                    public List<ObjClass> execute()  {
+                    public List<ObjClass> execute() {
                         return null;
                     }
                 });
         //不需要对数据进行缓存 keyExpireSec==0&&nullValueExpireSec==0&&keyMutexExpireSec==0
-        CachedWrapper<List<ObjClass>> wrapperNoCached=redisUtil.getCachedWrapperByMutexKey("value-207", 0, 0, 0,
+        CachedWrapper<List<ObjClass>> wrapperNoCached = redisUtil.getCachedWrapperByMutexKey("value-207", 0, 0, 0,
                 new CachedWrapperExecutor<List<ObjClass>>() {
                     @Override
-                    public List<ObjClass> execute()  {
+                    public List<ObjClass> execute() {
                         return null;
                     }
                 });
         //循环请求中-休眠的具体时间必要根据实际的情况做调整-目前暂定300毫秒不会影响到客户体验
-        CachedWrapper<List<ObjClass>> wrapperValue_Sleep=redisUtil.getCachedWrapperByMutexKey("value-307", 100, 50, 5, 300,
+        CachedWrapper<List<ObjClass>> wrapperValue_Sleep = redisUtil.getCachedWrapperByMutexKey("value-307", 100, 50, 5, 300,
                 new CachedWrapperExecutor<List<ObjClass>>() {
                     @Override
                     public List<ObjClass> execute() {
@@ -199,26 +205,27 @@ public class ShardedRedisUtil_UnitTest {
                     }
                 });
     }
+
     @Test
     public void getValueByTimestamp() throws Exception {
         ShardedRedisUtil redisUtil = ShardedRedisUtil.getInstance();
-        int loginId=1000;
-        String keyTimestampPerson="keyTimestamp_person_"+String.valueOf(loginId);
+        int loginId = 1000;
+        String keyTimestampPerson = "keyTimestamp_person_" + String.valueOf(loginId);
         //keyTimestampPerson=keyTimestamp_person_1000
         //输出结果： "timestamp": "2017-01-18 02:44:41|212cb6a7-5eb7-4b2e-995b-405aa0dcf9ad"
-        CachedWrapper<String> wrapperValue_keyTimestamp=redisUtil.getCachedWrapperByMutexKey(keyTimestampPerson, 60 * 60 * 24, 5, 3,
+        CachedWrapper<String> wrapperValue_keyTimestamp = redisUtil.getCachedWrapperByMutexKey(keyTimestampPerson, 60 * 60 * 24, 5, 3,
                 new CachedWrapperExecutor<String>() {
                     @Override
                     public String execute() {
                         DateFormat format1 = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss|");
                         String dateFormat = format1.format(new Date());
-                        String uuid= UUID.randomUUID().toString();
-                        String timestampSetVal=dateFormat+uuid;
+                        String uuid = UUID.randomUUID().toString();
+                        String timestampSetVal = dateFormat + uuid;
                         return timestampSetVal;
                     }
                 });
-        String timestamp=wrapperValue_keyTimestamp.getData();
-        CachedWrapper<String> wrapperValue_Timestamp=redisUtil.getCachedWrapperByTimestamp("value-timestamp", 1000, 500, timestamp,
+        String timestamp = wrapperValue_keyTimestamp.getData();
+        CachedWrapper<String> wrapperValue_Timestamp = redisUtil.getCachedWrapperByTimestamp("value-timestamp", 1000, 500, timestamp,
                 new CachedWrapperExecutor<String>() {
                     @Override
                     public String execute() {
@@ -228,6 +235,7 @@ public class ShardedRedisUtil_UnitTest {
                     }
                 });
     }
+
     //region 测试-getCachedWrapperByMutexKey方法
     @Test
     public void setCachedWrapper() {
@@ -306,11 +314,11 @@ public class ShardedRedisUtil_UnitTest {
     }
 
     /**
-     * @param key                  key
-     * @param keyExpireSec        key的过期时间
+     * @param key                key
+     * @param keyExpireSec       key的过期时间
      * @param nullValueExpireSec 查询结果为NULL值时的过期时间
      * @param keyMutexExpireSec  互斥key的过期时间
-     * @param executor            获取需要缓存的数据-从数据库或其他的地方查询
+     * @param executor           获取需要缓存的数据-从数据库或其他的地方查询
      * @return
      */
     private <T> CachedWrapper<T> getCachedWrapperByMutexFun(final String key,
@@ -352,10 +360,10 @@ public class ShardedRedisUtil_UnitTest {
      * @return
      */
     private <T> CachedWrapper<T> getCachedWrapperByMutexFun_Obj(final String key,
-                                                            final int keyExpireSec,
-                                                            final int nullValueExpireSec,
-                                                            final int keyMutexExpireSec,
-                                                            T obj) throws InterruptedException {
+                                                                final int keyExpireSec,
+                                                                final int nullValueExpireSec,
+                                                                final int keyMutexExpireSec,
+                                                                T obj) throws InterruptedException {
         CachedWrapper<T> value;
         String key_mutex = "key_mutex_" + key;
         ShardedRedisUtil redisUtil = ShardedRedisUtil.getInstance();
@@ -431,6 +439,91 @@ public class ShardedRedisUtil_UnitTest {
             redisUtil.del(key_mutex);
             System.out.println(3);
             return value;
+        }
+    }
+
+    //endregion
+
+    //region   简易令牌桶算法
+    /**
+     * 产品控流--50处理等待请求计数|200访问等待请求计数
+     -简易令牌桶算法
+     -每个产品一个令牌桶
+     * @throws InterruptedException
+     * @throws IOException
+     */
+    @Test
+    public void getValueByTokenBucket() throws InterruptedException, IOException {
+        getValueByTokenBucketFun();
+        for (int i = 0; i < 500; i++) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        getValueByTokenBucketFun();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }).start();
+        }
+        System.in.read();
+    }
+
+    private void getValueByTokenBucketFun() throws InterruptedException {
+        ShardedRedisUtil redisUtil = ShardedRedisUtil.getInstance();
+        //
+        int ProductId = 50;
+        Long maxAccessAwaitReqLimiter = 200L;        //访问等待请求上限
+        int maxAccessAwaitReqExpireSeconds = 10 * 60;  //key超时间10分钟
+        int maxProcessAwaitReqLimiter = 50;        //处理等待请求上限
+        int maxProcessAwaitReqExpireSeconds = 5 * 60; //key超时间5分钟
+        String maxAccessAwaitReqKey = "maxAccessAwaitReqLimiter_" + String.valueOf(ProductId);
+        String maxProcessAwaitReqKey = "maxProcessAwaitReqLimiter_" + String.valueOf(ProductId);
+        //
+        String maxAccessAwaitReqNumStr = redisUtil.get(maxAccessAwaitReqKey);
+        Long maxAccessAwaitReqNum = Long.parseLong(StringUtils.isBlank(maxAccessAwaitReqNumStr) ? "0" : maxAccessAwaitReqNumStr);
+        if (maxAccessAwaitReqNum > maxAccessAwaitReqLimiter) {
+            throw new IllegalArgumentException("超过200访问等待请求上限");
+        }
+        redisUtil.incr(maxAccessAwaitReqKey);
+        redisUtil.expire(maxAccessAwaitReqKey, maxAccessAwaitReqExpireSeconds);
+        //
+        int getTimeoutLimiter = 20;
+        int getTimeoutNum = 0;
+        boolean maxProcessAwaitReqKeyIsIncreased = false;
+        try {
+            while (true) {
+                if (getTimeoutNum > getTimeoutLimiter) {
+                    throw new IllegalArgumentException("超过获取等待超时时间20秒");
+                }
+                String maxProcessAwaitReqNumStr = redisUtil.get(maxProcessAwaitReqKey);
+                Long maxProcessAwaitReqNum = Long.parseLong(StringUtils.isBlank(maxProcessAwaitReqNumStr) ? "0" : maxProcessAwaitReqNumStr);
+                if (maxProcessAwaitReqNum > maxProcessAwaitReqLimiter) {
+                    getTimeoutNum=getTimeoutNum+1;
+                    TimeUnit.SECONDS.sleep(1);
+                    //Thread.sleep(1000);
+                    continue;
+                }
+                //
+                redisUtil.incr(maxProcessAwaitReqKey);
+                maxProcessAwaitReqKeyIsIncreased = true;
+                redisUtil.expire(maxProcessAwaitReqKey, maxProcessAwaitReqExpireSeconds);
+                //调试使用：模拟业务处理的时间。
+                TimeUnit.SECONDS.sleep(10);
+                //Thread.sleep(12000);
+                //逻辑操作处理程序
+                System.out.println("逻辑操作处理程序");
+
+                return; //中断循环
+            }
+        } catch (InterruptedException e) {
+            throw e;
+        } finally {
+            if (maxProcessAwaitReqKeyIsIncreased){
+                redisUtil.decr(maxProcessAwaitReqKey);
+            }
+            redisUtil.decr(maxAccessAwaitReqKey);
         }
     }
     //endregion

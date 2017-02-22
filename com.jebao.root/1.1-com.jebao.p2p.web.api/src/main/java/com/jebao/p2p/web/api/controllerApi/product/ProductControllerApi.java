@@ -27,6 +27,7 @@ import com.jebao.p2p.web.api.utils.cached.CachedSetting;
 import com.jebao.p2p.web.api.utils.cached.CachedUtil;
 import com.jebao.p2p.web.api.utils.constants.Constants;
 import com.jebao.p2p.web.api.utils.http.HttpUtil;
+import com.jebao.p2p.web.api.utils.product.BetweenDay;
 import com.jebao.p2p.web.api.utils.session.CurrentUser;
 import com.jebao.p2p.web.api.utils.session.CurrentUserContextHolder;
 import com.jebao.p2p.web.api.utils.validation.ValidationResult;
@@ -341,16 +342,8 @@ public class ProductControllerApi extends _BaseController {
             return new JsonResultError(resultValidation.getErrorMsg().toString());
         }
 
-        Calendar cal1 = Calendar.getInstance();
-        cal1.setTime(form.getBpExpectLoanDate());
+        int days = BetweenDay.differentDays(form.getBpExpectLoanDate(), form.getBpExpectRepayDate());
 
-        Calendar cal2 = Calendar.getInstance();
-        cal2.setTime(form.getBpExpectRepayDate());
-
-        int day2 = cal2.get(Calendar.DAY_OF_YEAR);
-        int day1 = cal1.get(Calendar.DAY_OF_YEAR);
-
-        int days = day2 - day1 - 1;
         BigDecimal investMoney = form.getInvestMoney();
         BigDecimal revenue = BigDecimal.ZERO;
 
