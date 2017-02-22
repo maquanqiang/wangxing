@@ -19,7 +19,8 @@ var model = {
     planlist: [],
     bpTypeArr:[],
     bpCycleTypeArr : [],
-    bpInterestPayTypeArr : []
+    bpInterestPayTypeArr : [],
+    displayArr : []
 };
 
 // 创建一个 Vue 实例 (ViewModel),它连接 View 与 Model
@@ -31,7 +32,7 @@ var vm = new Vue({
         model.bpTypeArr = ["","普通理财","新手专享","加息标"];
         model.bpCycleTypeArr = ["","日","月","季","年"];
         model.bpInterestPayTypeArr = ["","一次性还本付息","先息后本，按期付息"];
-        
+        model.displayArr = ["","显示","不显示"];
         model.searchObj.page=0;
         model.searchObj.rows=10;
         model.searchObj.bpStatus=0;

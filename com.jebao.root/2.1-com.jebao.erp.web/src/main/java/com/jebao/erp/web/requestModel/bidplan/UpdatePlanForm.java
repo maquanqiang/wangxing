@@ -45,6 +45,8 @@ public class UpdatePlanForm{
         bidPlan.setBpDesc(planForm.getBpDesc());
         bidPlan.setBpType(planForm.getBpType());
         bidPlan.setBpSurplusMoney(planForm.getBpBidMoney());
+        bidPlan.setBpDisplayIsPc(planForm.getBpDisplayIsPc());
+        bidPlan.setBpDisplayIsMobile(planForm.getBpDisplayIsMobile());
         return bidPlan;
     }
     private Long bpId;
@@ -110,6 +112,10 @@ public class UpdatePlanForm{
     private Integer bpType;
 
     private Integer bpLoanerType;
+
+    private Integer bpDisplayIsPc;
+
+    private Integer bpDisplayIsMobile;
 
     public String getBpName() {
         return bpName;
@@ -366,5 +372,21 @@ public class UpdatePlanForm{
 
     public void setBpExpectRepayDate(Date bpExpectRepayDate) {
         this.bpExpectRepayDate = bpExpectRepayDate;
+    }
+
+    public Integer getBpDisplayIsPc() {
+        return bpDisplayIsPc;
+    }
+
+    public void setBpDisplayIsPc(Integer bpDisplayIsPc) {
+        this.bpDisplayIsPc = bpDisplayIsPc;
+    }
+
+    public Integer getBpDisplayIsMobile() {
+        return bpDisplayIsMobile;
+    }
+
+    public void setBpDisplayIsMobile(Integer bpDisplayIsMobile) {
+        this.bpDisplayIsMobile = bpDisplayIsMobile;
     }
 }

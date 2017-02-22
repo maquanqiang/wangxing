@@ -206,6 +206,22 @@ var vm = new Vue({
                                 message: '逾期罚息不能为空'
                             }
                         }
+                    },
+                    bpDisplayIsPc: {
+                        validators: {
+                            regexp: {
+                                regexp: /^[1-9]+$/,
+                                message: '是否PC端显示选项必选'
+                            }
+                        }
+                    },
+                    bpDisplayIsMobile: {
+                        validators: {
+                            regexp: {
+                                regexp: /^[1-9]+$/,
+                                message: '是否移动端显示选项必选'
+                            }
+                        }
                     }
                 }
             });

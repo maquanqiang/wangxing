@@ -58,7 +58,8 @@ public class BidPlanVM extends ViewModel {
         this.progress=(entity.getBpBidMoney().subtract(entity.getBpSurplusMoney())).multiply(new BigDecimal(100)).
                 divide(entity.getBpBidMoney(), 0, BigDecimal.ROUND_DOWN).toString();
         this.bpLoanerId = entity.getBpLoanerId();
-
+        this.bpDisplayIsPc = entity.getBpDisplayIsPc();
+        this.bpDisplayIsMobile = entity.getBpDisplayIsMobile();
     }
 
     private Long bpId;
@@ -150,6 +151,10 @@ public class BidPlanVM extends ViewModel {
     private String bpUpRate;
 
     private String progress;
+
+    private Integer bpDisplayIsPc;
+
+    private Integer bpDisplayIsMobile;
 
     public String getProgress() {
         return progress;
@@ -509,5 +514,21 @@ public class BidPlanVM extends ViewModel {
 
     public void setBpType(Integer bpType) {
         this.bpType = bpType;
+    }
+
+    public Integer getBpDisplayIsPc() {
+        return bpDisplayIsPc;
+    }
+
+    public void setBpDisplayIsPc(Integer bpDisplayIsPc) {
+        this.bpDisplayIsPc = bpDisplayIsPc;
+    }
+
+    public Integer getBpDisplayIsMobile() {
+        return bpDisplayIsMobile;
+    }
+
+    public void setBpDisplayIsMobile(Integer bpDisplayIsMobile) {
+        this.bpDisplayIsMobile = bpDisplayIsMobile;
     }
 }
