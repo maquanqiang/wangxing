@@ -90,7 +90,7 @@ public class MobileWithdrawServiceImpl implements IMobileWithdrawServiceInf {
      * @return
      */
     @Override
-    public ResultInfo withdrawDepositByWebComplete(Long loginId, WithdrawDepositResponse model, BigDecimal fee) {
+    public ResultInfo withdrawDepositByWebComplete(Long loginId, WithdrawDepositResponse model, BigDecimal fee, EnumModel.Platform platform, EnumModel.PlatformType platformType) {
         if (model != null) {
             int count = fundsDetailsService.selectBySerialNumberForPageCount(loginId, model.getMchnt_txn_ssn());
             if (count > 0) {
@@ -130,7 +130,10 @@ public class MobileWithdrawServiceImpl implements IMobileWithdrawServiceInf {
         fundsDetails.setFdSerialTypeName(EnumModel.SerialType.提现.name());
         fundsDetails.setFdThirdAccount(afEntity.getAfThirdAccount());
         fundsDetails.setFdIsDel(EnumModel.IsDel.有效.getValue());
-
+        fundsDetails.setFdPlatform(platform.getValue());
+        fundsDetails.setFdPlatformType(platformType.getValue());
+        fundsDetails.setFdChannel(0);
+        fundsDetails.setFdChannelType(0);
         if (model == null) {
             //更新资金收支明细状态为失败
             fundsDetails.setFdSerialStatus(EnumModel.FdSerialStatus.失败.getValue());

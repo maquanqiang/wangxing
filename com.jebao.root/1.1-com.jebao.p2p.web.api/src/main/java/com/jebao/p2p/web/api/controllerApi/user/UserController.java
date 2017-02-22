@@ -18,6 +18,7 @@ import com.jebao.p2p.web.api.responseModel.base.JsonResultOk;
 import com.jebao.p2p.web.api.responseModel.user.UserDetailsVM;
 import com.jebao.p2p.web.api.responseModel.user.UserVM;
 import com.jebao.p2p.web.api.utils.constants.Constants;
+import com.jebao.p2p.web.api.utils.http.HttpUtil;
 import com.jebao.p2p.web.api.utils.session.CurrentUser;
 import com.jebao.p2p.web.api.utils.session.CurrentUserContextHolder;
 import com.jebao.p2p.web.api.utils.session.LoginSessionUtil;
@@ -238,7 +239,8 @@ public class UserController extends _BaseController {
         if (currentUser == null) {
             return null;
         }
-        ResultInfo resultInfo = rechargeService.personQuickPayByWebComplete(currentUser.getId(), model);
+        HttpUtil httpUtil = new HttpUtil();
+        ResultInfo resultInfo = rechargeService.personQuickPayByWebComplete(currentUser.getId(), model, httpUtil.getPlatform(request), httpUtil.getPlatformType(request));
         if (!resultInfo.getSuccess_is_ok()) {
             String title = "充值失败！";
             String content = resultInfo.getMsg();
@@ -312,7 +314,8 @@ public class UserController extends _BaseController {
         if (currentUser == null) {
             return null;
         }
-        ResultInfo resultInfo = rechargeService.fastRechargeByWebComplete(currentUser.getId(), model);
+        HttpUtil httpUtil = new HttpUtil();
+        ResultInfo resultInfo = rechargeService.fastRechargeByWebComplete(currentUser.getId(), model, httpUtil.getPlatform(request), httpUtil.getPlatformType(request));
         if (!resultInfo.getSuccess_is_ok()) {
             String title = "充值失败！";
             String content = resultInfo.getMsg();
@@ -386,7 +389,8 @@ public class UserController extends _BaseController {
         if (currentUser == null) {
             return null;
         }
-        ResultInfo resultInfo = rechargeService.onlineBankRechargeByWebComplete(currentUser.getId(), model);
+        HttpUtil httpUtil = new HttpUtil();
+        ResultInfo resultInfo = rechargeService.onlineBankRechargeByWebComplete(currentUser.getId(), model, httpUtil.getPlatform(request), httpUtil.getPlatformType(request));
         if (!resultInfo.getSuccess_is_ok()) {
             String title = "充值失败！";
             String content = resultInfo.getMsg();
@@ -463,8 +467,8 @@ public class UserController extends _BaseController {
         }
 
         BigDecimal fee = new BigDecimal(Constants.COMMISSION_CHARGE);
-
-        ResultInfo resultInfo = withdrawService.withdrawDepositByWebComplete(currentUser.getId(), model, fee);
+        HttpUtil httpUtil = new HttpUtil();
+        ResultInfo resultInfo = withdrawService.withdrawDepositByWebComplete(currentUser.getId(), model, fee, httpUtil.getPlatform(request), httpUtil.getPlatformType(request));
         if (!resultInfo.getSuccess_is_ok()) {
             String title = "提现失败！";
             String content = resultInfo.getMsg();

@@ -90,6 +90,7 @@ var vm = new Vue({
     methods: {
         search: function (event) {
             model.searchObj.bpType = 1;
+            model.searchObj.bpDisplayIsPc = 1;
             $.post("/api/product/list", model.searchObj, function (response) {
                 if (response.success_is_ok) {
                     vm.products1 = response.data;

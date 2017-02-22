@@ -105,6 +105,10 @@ public class TbBidPlan {
 
     private String bpUpRate;
 
+    private Integer bpDisplayIsPc;
+
+    private Integer bpDisplayIsMobile;
+
     public String getBpUpRate() {
         return bpUpRate;
     }
@@ -466,4 +470,19 @@ public class TbBidPlan {
     }
 
 
+    public Integer getBpDisplayIsPc() {
+        return bpDisplayIsPc;
+    }
+
+    public void setBpDisplayIsPc(Integer bpDisplayIsPc) {
+        this.bpDisplayIsPc = bpDisplayIsPc;
+    }
+
+    public Integer getBpDisplayIsMobile() {
+        return bpDisplayIsMobile;
+    }
+
+    public void setBpDisplayIsMobile(Integer bpDisplayIsMobile) {
+        this.bpDisplayIsMobile = bpDisplayIsMobile;
+    }
 }

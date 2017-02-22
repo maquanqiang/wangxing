@@ -54,7 +54,7 @@ public class AccountServiceImpl implements IAccountServiceInf {
     }
     @Override
     @Transactional
-    public ResultData<Long> register(String username, String password, String invitationCode,String ip,  EnumModel.Platform platform){
+    public ResultData<Long> register(String username, String password, String invitationCode,String ip, EnumModel.Platform platform, EnumModel.PlatformType platformType){
 
         TbLoginInfo existsLoginEntity = loginInfoDao.selectByLoginName(username);
         if (existsLoginEntity != null){
@@ -73,7 +73,10 @@ public class AccountServiceImpl implements IAccountServiceInf {
             TbUserDetails detailsModel = new TbUserDetails();
             detailsModel.setUdLoginId(userId);//用户id，登录表id
             detailsModel.setUdPhone(username);//手机号码
-            detailsModel.setUdPlatform(platform.getValue());//注册平台
+            detailsModel.setUdPlatform(platform.getValue());//注册(来源)平台
+            detailsModel.setUdPlatformType(platformType.getValue());//注册(来源)平台分类
+            detailsModel.setUdChannel(0);//渠道
+            detailsModel.setUdChannelType(0);//渠道分类
             detailsModel.setUdCreateTime(new Date());//创建时间
             detailsModel.setUdIsDel(1);//是否有效，1有效
             detailsModel.setUdPosStatus(0);//POS机签约状态 0未签约  1签约

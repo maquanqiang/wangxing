@@ -3,8 +3,13 @@
 <mapper namespace="com.jebao.jebaodb.dao.mapper.loanmanage.TbBidPlanMapper" >
     <resultMap id="BaseResultMap" type="com.jebao.jebaodb.entity.loanmanage.TbBidPlan" >
         <id column="bp_id" property="bpId" jdbcType="BIGINT" />
-        <result column="bp_name" property="bpName" jdbcType="VARCHAR" />
+        <result column="bp_loaner_id" property="bpLoanerId" jdbcType="BIGINT" />
+        <result column="bp_loaner_type" property="bpLoanerType" jdbcType="INTEGER" />
+        <result column="bp_true_name" property="bpTrueName" jdbcType="VARCHAR" />
+        <result column="bp_login_id" property="bpLoginId" jdbcType="BIGINT" />
+        <result column="bp_type" property="bpType" jdbcType="INTEGER" />
         <result column="bp_number" property="bpNumber" jdbcType="VARCHAR" />
+        <result column="bp_name" property="bpName" jdbcType="VARCHAR" />
         <result column="bp_periods_display" property="bpPeriodsDisplay" jdbcType="INTEGER" />
         <result column="bp_periods" property="bpPeriods" jdbcType="INTEGER" />
         <result column="bp_cycle_type" property="bpCycleType" jdbcType="INTEGER" />
@@ -19,19 +24,11 @@
         <result column="bp_rise_money" property="bpRiseMoney" jdbcType="DECIMAL" />
         <result column="bp_top_money" property="bpTopMoney" jdbcType="DECIMAL" />
         <result column="bp_full_time" property="bpFullTime" jdbcType="TIMESTAMP" />
-        <result column="bp_status" property="bpStatus" jdbcType="INTEGER" />
-        <result column="bp_create_time" property="bpCreateTime" jdbcType="TIMESTAMP" />
-        <result column="bp_update_time" property="bpUpdateTime" jdbcType="TIMESTAMP" />
         <result column="bp_loan_time" property="bpLoanTime" jdbcType="TIMESTAMP" />
         <result column="bp_repay_time" property="bpRepayTime" jdbcType="TIMESTAMP" />
-        <result column="bp_loaner_id" property="bpLoanerId" jdbcType="BIGINT" />
-        <result column="bp_true_name" property="bpTrueName" jdbcType="VARCHAR" />
-        <result column="bp_login_id" property="bpLoginId" jdbcType="BIGINT" />
-        <result column="bp_loaner_type" property="bpLoanerType" jdbcType="INTEGER" />
         <result column="bp_interest_pay_type" property="bpInterestPayType" jdbcType="INTEGER" />
         <result column="bp_open_time" property="bpOpenTime" jdbcType="INTEGER" />
         <result column="bp_interest_st" property="bpInterestSt" jdbcType="TIMESTAMP" />
-        <result column="bp_remark" property="bpRemark" jdbcType="VARCHAR" />
         <result column="bp_expect_loan_date" property="bpExpectLoanDate" jdbcType="TIMESTAMP" />
         <result column="bp_expect_repay_date" property="bpExpectRepayDate" jdbcType="TIMESTAMP" />
         <result column="bp_service_charge_rate" property="bpServiceChargeRate" jdbcType="DECIMAL" />
@@ -43,23 +40,27 @@
         <result column="bp_mortgage_info" property="bpMortgageInfo" jdbcType="VARCHAR" />
         <result column="bp_risk_opinion" property="bpRiskOpinion" jdbcType="VARCHAR" />
         <result column="bp_repayed_periods" property="bpRepayedPeriods" jdbcType="INTEGER" />
+        <result column="bp_remark" property="bpRemark" jdbcType="VARCHAR" />
+        <result column="bp_status" property="bpStatus" jdbcType="INTEGER" />
+        <result column="bp_create_time" property="bpCreateTime" jdbcType="TIMESTAMP" />
+        <result column="bp_update_time" property="bpUpdateTime" jdbcType="TIMESTAMP" />
         <result column="bp_is_del" property="bpIsDel" jdbcType="INTEGER" />
-        <result column="bp_type" property="bpType" jdbcType="INTEGER" />
         <result column="bp_up_rate" property="bpUpRate" jdbcType="VARCHAR" />
-
+        <result column="bp_display_is_pc" property="bpDisplayIsPc" jdbcType="INTEGER" />
+        <result column="bp_display_is_mobile" property="bpDisplayIsMobile" jdbcType="INTEGER" />
     </resultMap>
     <resultMap id="ResultMapWithBLOBs" type="com.jebao.jebaodb.entity.loanmanage.TbBidPlan" extends="BaseResultMap" >
         <result column="bp_desc" property="bpDesc" jdbcType="LONGVARCHAR" />
     </resultMap>
     <sql id="Base_Column_List" >
-        bp_id, bp_name, bp_number, bp_periods_display, bp_periods, bp_cycle_type, bp_cycle_size,
-        bp_surplus_money, bp_loan_money, bp_bid_money, bp_rate, bp_start_time, bp_end_time,
-        bp_start_money, bp_rise_money, bp_top_money, bp_full_time, bp_status, bp_create_time,
-        bp_update_time, bp_loan_time, bp_repay_time, bp_loaner_id, bp_true_name, bp_login_id,
-        bp_loaner_type, bp_interest_pay_type, bp_open_time, bp_interest_st,
-        bp_remark, bp_expect_loan_date, bp_expect_repay_date, bp_service_charge_rate, bp_late_rate,
-        bp_borrow_desc, bp_funds_purpose, bp_repaying_source, bp_personal_credit, bp_mortgage_info,
-        bp_risk_opinion, bp_repayed_periods, bp_is_del, bp_type, bp_up_rate
+        bp_id, bp_loaner_id, bp_loaner_type, bp_true_name, bp_login_id, bp_type, bp_number,
+        bp_name, bp_periods_display, bp_periods, bp_cycle_type, bp_cycle_size, bp_surplus_money,
+        bp_loan_money, bp_bid_money, bp_rate, bp_start_time, bp_end_time, bp_start_money,
+        bp_rise_money, bp_top_money, bp_full_time, bp_loan_time, bp_repay_time, bp_interest_pay_type,
+        bp_open_time, bp_interest_st, bp_expect_loan_date, bp_expect_repay_date, bp_service_charge_rate,
+        bp_late_rate, bp_borrow_desc, bp_funds_purpose, bp_repaying_source, bp_personal_credit,
+        bp_mortgage_info, bp_risk_opinion, bp_repayed_periods, bp_remark, bp_status, bp_create_time,
+        bp_update_time, bp_is_del, bp_up_rate, bp_display_is_pc, bp_display_is_mobile
     </sql>
     <sql id="Blob_Column_List" >
         bp_desc
@@ -76,48 +77,65 @@
         <selectKey resultType="java.lang.Long" keyProperty="bpId" order="AFTER" >
             SELECT LAST_INSERT_ID()
         </selectKey>
-        insert into tb_bid_plan (bp_id, bp_name, bp_number,
-        bp_periods_display, bp_periods, bp_cycle_type,
-        bp_cycle_size, bp_surplus_money, bp_loan_money,
-        bp_bid_money, bp_rate, bp_start_time,
-        bp_end_time, bp_start_money, bp_rise_money,
-        bp_top_money, bp_full_time, bp_status,
-        bp_create_time, bp_update_time, bp_loan_time,
-        bp_repay_time, bp_loaner_id, bp_true_name,
-        bp_login_id, bp_loaner_type, bp_interest_pay_type,
-        bp_open_time, bp_interest_st,
-        bp_remark, bp_expect_loan_date, bp_expect_repay_date,
-        bp_service_charge_rate, bp_late_rate, bp_borrow_desc,
-        bp_funds_purpose, bp_repaying_source, bp_personal_credit,
-        bp_mortgage_info, bp_risk_opinion, bp_repayed_periods,
-        bp_is_del, bp_desc, bp_type, bp_up_rate)
-        values (#{bpId,jdbcType=BIGINT}, #{bpName,jdbcType=VARCHAR}, #{bpNumber,jdbcType=VARCHAR},
-        #{bpPeriodsDisplay,jdbcType=INTEGER}, #{bpPeriods,jdbcType=INTEGER}, #{bpCycleType,jdbcType=INTEGER},
-        #{bpCycleSize,jdbcType=INTEGER}, #{bpSurplusMoney,jdbcType=DECIMAL}, #{bpLoanMoney,jdbcType=DECIMAL},
-        #{bpBidMoney,jdbcType=DECIMAL}, #{bpRate,jdbcType=DECIMAL}, #{bpStartTime,jdbcType=TIMESTAMP},
-        #{bpEndTime,jdbcType=TIMESTAMP}, #{bpStartMoney,jdbcType=DECIMAL}, #{bpRiseMoney,jdbcType=DECIMAL},
-        #{bpTopMoney,jdbcType=DECIMAL}, #{bpFullTime,jdbcType=TIMESTAMP}, #{bpStatus,jdbcType=INTEGER},
-        #{bpCreateTime,jdbcType=TIMESTAMP}, #{bpUpdateTime,jdbcType=TIMESTAMP}, #{bpLoanTime,jdbcType=TIMESTAMP},
-        #{bpRepayTime,jdbcType=TIMESTAMP}, #{bpLoanerId,jdbcType=BIGINT}, #{bpTrueName,jdbcType=VARCHAR},
-        #{bpLoginId,jdbcType=BIGINT}, #{bpLoanerType,jdbcType=INTEGER}, #{bpInterestPayType,jdbcType=INTEGER},
-        #{bpOpenTime,jdbcType=INTEGER}, #{bpInterestSt,jdbcType=TIMESTAMP},
-        #{bpRemark,jdbcType=VARCHAR}, #{bpExpectLoanDate,jdbcType=TIMESTAMP}, #{bpExpectRepayDate,jdbcType=TIMESTAMP},
-        #{bpServiceChargeRate,jdbcType=DECIMAL}, #{bpLateRate,jdbcType=DECIMAL}, #{bpBorrowDesc,jdbcType=VARCHAR},
-        #{bpFundsPurpose,jdbcType=VARCHAR}, #{bpRepayingSource,jdbcType=VARCHAR}, #{bpPersonalCredit,jdbcType=VARCHAR},
-        #{bpMortgageInfo,jdbcType=VARCHAR}, #{bpRiskOpinion,jdbcType=VARCHAR}, #{bpRepayedPeriods,jdbcType=INTEGER},
-        #{bpIsDel,jdbcType=INTEGER}, #{bpDesc,jdbcType=LONGVARCHAR}, #{bpType,jdbcType=INTEGER},  #{bpUpRate,jdbcType=VARCHAR})
+        insert into tb_bid_plan (bp_loaner_id, bp_loaner_type, bp_true_name,
+        bp_login_id, bp_type, bp_number,
+        bp_name, bp_periods_display, bp_periods,
+        bp_cycle_type, bp_cycle_size, bp_surplus_money,
+        bp_loan_money, bp_bid_money, bp_rate,
+        bp_start_time, bp_end_time, bp_start_money,
+        bp_rise_money, bp_top_money, bp_full_time,
+        bp_loan_time, bp_repay_time, bp_interest_pay_type,
+        bp_open_time, bp_interest_st, bp_expect_loan_date,
+        bp_expect_repay_date, bp_service_charge_rate,
+        bp_late_rate, bp_borrow_desc, bp_funds_purpose,
+        bp_repaying_source, bp_personal_credit, bp_mortgage_info,
+        bp_risk_opinion, bp_repayed_periods, bp_remark,
+        bp_status, bp_create_time, bp_update_time,
+        bp_is_del, bp_up_rate, bp_display_is_pc,
+        bp_display_is_mobile, bp_desc)
+        values (#{bpLoanerId,jdbcType=BIGINT}, #{bpLoanerType,jdbcType=INTEGER}, #{bpTrueName,jdbcType=VARCHAR},
+        #{bpLoginId,jdbcType=BIGINT}, #{bpType,jdbcType=INTEGER}, #{bpNumber,jdbcType=VARCHAR},
+        #{bpName,jdbcType=VARCHAR}, #{bpPeriodsDisplay,jdbcType=INTEGER}, #{bpPeriods,jdbcType=INTEGER},
+        #{bpCycleType,jdbcType=INTEGER}, #{bpCycleSize,jdbcType=INTEGER}, #{bpSurplusMoney,jdbcType=DECIMAL},
+        #{bpLoanMoney,jdbcType=DECIMAL}, #{bpBidMoney,jdbcType=DECIMAL}, #{bpRate,jdbcType=DECIMAL},
+        #{bpStartTime,jdbcType=TIMESTAMP}, #{bpEndTime,jdbcType=TIMESTAMP}, #{bpStartMoney,jdbcType=DECIMAL},
+        #{bpRiseMoney,jdbcType=DECIMAL}, #{bpTopMoney,jdbcType=DECIMAL}, #{bpFullTime,jdbcType=TIMESTAMP},
+        #{bpLoanTime,jdbcType=TIMESTAMP}, #{bpRepayTime,jdbcType=TIMESTAMP}, #{bpInterestPayType,jdbcType=INTEGER},
+        #{bpOpenTime,jdbcType=INTEGER}, #{bpInterestSt,jdbcType=TIMESTAMP}, #{bpExpectLoanDate,jdbcType=TIMESTAMP},
+        #{bpExpectRepayDate,jdbcType=TIMESTAMP}, #{bpServiceChargeRate,jdbcType=DECIMAL},
+        #{bpLateRate,jdbcType=DECIMAL}, #{bpBorrowDesc,jdbcType=VARCHAR}, #{bpFundsPurpose,jdbcType=VARCHAR},
+        #{bpRepayingSource,jdbcType=VARCHAR}, #{bpPersonalCredit,jdbcType=VARCHAR}, #{bpMortgageInfo,jdbcType=VARCHAR},
+        #{bpRiskOpinion,jdbcType=VARCHAR}, #{bpRepayedPeriods,jdbcType=INTEGER}, #{bpRemark,jdbcType=VARCHAR},
+        #{bpStatus,jdbcType=INTEGER}, #{bpCreateTime,jdbcType=TIMESTAMP}, #{bpUpdateTime,jdbcType=TIMESTAMP},
+        #{bpIsDel,jdbcType=INTEGER}, #{bpUpRate,jdbcType=VARCHAR}, #{bpDisplayIsPc,jdbcType=INTEGER},
+        #{bpDisplayIsMobile,jdbcType=INTEGER}, #{bpDesc,jdbcType=LONGVARCHAR})
     </insert>
     <insert id="insertSelective" parameterType="com.jebao.jebaodb.entity.loanmanage.TbBidPlan" >
+        <selectKey resultType="java.lang.Long" keyProperty="bpId" order="AFTER" >
+            SELECT LAST_INSERT_ID()
+        </selectKey>
         insert into tb_bid_plan
         <trim prefix="(" suffix=")" suffixOverrides="," >
-            <if test="bpId != null" >
-                bp_id,
+            <if test="bpLoanerId != null" >
+                bp_loaner_id,
             </if>
-            <if test="bpName != null" >
-                bp_name,
+            <if test="bpLoanerType != null" >
+                bp_loaner_type,
+            </if>
+            <if test="bpTrueName != null" >
+                bp_true_name,
+            </if>
+            <if test="bpLoginId != null" >
+                bp_login_id,
+            </if>
+            <if test="bpType != null" >
+                bp_type,
             </if>
             <if test="bpNumber != null" >
                 bp_number,
+            </if>
+            <if test="bpName != null" >
+                bp_name,
             </if>
             <if test="bpPeriodsDisplay != null" >
                 bp_periods_display,
@@ -161,32 +179,11 @@
             <if test="bpFullTime != null" >
                 bp_full_time,
             </if>
-            <if test="bpStatus != null" >
-                bp_status,
-            </if>
-            <if test="bpCreateTime != null" >
-                bp_create_time,
-            </if>
-            <if test="bpUpdateTime != null" >
-                bp_update_time,
-            </if>
             <if test="bpLoanTime != null" >
                 bp_loan_time,
             </if>
             <if test="bpRepayTime != null" >
                 bp_repay_time,
-            </if>
-            <if test="bpLoanerId != null" >
-                bp_loaner_id,
-            </if>
-            <if test="bpTrueName != null" >
-                bp_true_name,
-            </if>
-            <if test="bpLoginId != null" >
-                bp_login_id,
-            </if>
-            <if test="bpLoanerType != null" >
-                bp_loaner_type,
             </if>
             <if test="bpInterestPayType != null" >
                 bp_interest_pay_type,
@@ -196,9 +193,6 @@
             </if>
             <if test="bpInterestSt != null" >
                 bp_interest_st,
-            </if>
-            <if test="bpRemark != null" >
-                bp_remark,
             </if>
             <if test="bpExpectLoanDate != null" >
                 bp_expect_loan_date,
@@ -233,28 +227,55 @@
             <if test="bpRepayedPeriods != null" >
                 bp_repayed_periods,
             </if>
+            <if test="bpRemark != null" >
+                bp_remark,
+            </if>
+            <if test="bpStatus != null" >
+                bp_status,
+            </if>
+            <if test="bpCreateTime != null" >
+                bp_create_time,
+            </if>
+            <if test="bpUpdateTime != null" >
+                bp_update_time,
+            </if>
             <if test="bpIsDel != null" >
                 bp_is_del,
-            </if>
-            <if test="bpDesc != null" >
-                bp_desc,
-            </if>
-            <if test="bpType != null" >
-                bp_type,
             </if>
             <if test="bpUpRate != null" >
                 bp_up_rate,
             </if>
+            <if test="bpDisplayIsPc != null" >
+                bp_display_is_pc,
+            </if>
+            <if test="bpDisplayIsMobile != null" >
+                bp_display_is_mobile,
+            </if>
+            <if test="bpDesc != null" >
+                bp_desc,
+            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides="," >
-            <if test="bpId != null" >
-                #{bpId,jdbcType=BIGINT},
+            <if test="bpLoanerId != null" >
+                #{bpLoanerId,jdbcType=BIGINT},
             </if>
-            <if test="bpName != null" >
-                #{bpName,jdbcType=VARCHAR},
+            <if test="bpLoanerType != null" >
+                #{bpLoanerType,jdbcType=INTEGER},
+            </if>
+            <if test="bpTrueName != null" >
+                #{bpTrueName,jdbcType=VARCHAR},
+            </if>
+            <if test="bpLoginId != null" >
+                #{bpLoginId,jdbcType=BIGINT},
+            </if>
+            <if test="bpType != null" >
+                #{bpType,jdbcType=INTEGER},
             </if>
             <if test="bpNumber != null" >
                 #{bpNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="bpName != null" >
+                #{bpName,jdbcType=VARCHAR},
             </if>
             <if test="bpPeriodsDisplay != null" >
                 #{bpPeriodsDisplay,jdbcType=INTEGER},
@@ -298,32 +319,11 @@
             <if test="bpFullTime != null" >
                 #{bpFullTime,jdbcType=TIMESTAMP},
             </if>
-            <if test="bpStatus != null" >
-                #{bpStatus,jdbcType=INTEGER},
-            </if>
-            <if test="bpCreateTime != null" >
-                #{bpCreateTime,jdbcType=TIMESTAMP},
-            </if>
-            <if test="bpUpdateTime != null" >
-                #{bpUpdateTime,jdbcType=TIMESTAMP},
-            </if>
             <if test="bpLoanTime != null" >
                 #{bpLoanTime,jdbcType=TIMESTAMP},
             </if>
             <if test="bpRepayTime != null" >
                 #{bpRepayTime,jdbcType=TIMESTAMP},
-            </if>
-            <if test="bpLoanerId != null" >
-                #{bpLoanerId,jdbcType=BIGINT},
-            </if>
-            <if test="bpTrueName != null" >
-                #{bpTrueName,jdbcType=VARCHAR},
-            </if>
-            <if test="bpLoginId != null" >
-                #{bpLoginId,jdbcType=BIGINT},
-            </if>
-            <if test="bpLoanerType != null" >
-                #{bpLoanerType,jdbcType=INTEGER},
             </if>
             <if test="bpInterestPayType != null" >
                 #{bpInterestPayType,jdbcType=INTEGER},
@@ -333,9 +333,6 @@
             </if>
             <if test="bpInterestSt != null" >
                 #{bpInterestSt,jdbcType=TIMESTAMP},
-            </if>
-            <if test="bpRemark != null" >
-                #{bpRemark,jdbcType=VARCHAR},
             </if>
             <if test="bpExpectLoanDate != null" >
                 #{bpExpectLoanDate,jdbcType=TIMESTAMP},
@@ -370,28 +367,58 @@
             <if test="bpRepayedPeriods != null" >
                 #{bpRepayedPeriods,jdbcType=INTEGER},
             </if>
+            <if test="bpRemark != null" >
+                #{bpRemark,jdbcType=VARCHAR},
+            </if>
+            <if test="bpStatus != null" >
+                #{bpStatus,jdbcType=INTEGER},
+            </if>
+            <if test="bpCreateTime != null" >
+                #{bpCreateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="bpUpdateTime != null" >
+                #{bpUpdateTime,jdbcType=TIMESTAMP},
+            </if>
             <if test="bpIsDel != null" >
                 #{bpIsDel,jdbcType=INTEGER},
             </if>
-            <if test="bpDesc != null" >
-                #{bpDesc,jdbcType=LONGVARCHAR},
-            </if>
-            <if test="bpType != null" >
-                #{bpType,jdbcType=INTEGER},
-            </if>
             <if test="bpUpRate != null" >
                 #{bpUpRate,jdbcType=VARCHAR},
+            </if>
+            <if test="bpDisplayIsPc != null" >
+                #{bpDisplayIsPc,jdbcType=INTEGER},
+            </if>
+            <if test="bpDisplayIsMobile != null" >
+                #{bpDisplayIsMobile,jdbcType=INTEGER},
+            </if>
+            <if test="bpDesc != null" >
+                #{bpDesc,jdbcType=LONGVARCHAR},
             </if>
         </trim>
     </insert>
     <update id="updateByPrimaryKeySelective" parameterType="com.jebao.jebaodb.entity.loanmanage.TbBidPlan" >
         update tb_bid_plan
         <set >
-            <if test="bpName != null" >
-                bp_name = #{bpName,jdbcType=VARCHAR},
+            <if test="bpLoanerId != null" >
+                bp_loaner_id = #{bpLoanerId,jdbcType=BIGINT},
+            </if>
+            <if test="bpLoanerType != null" >
+                bp_loaner_type = #{bpLoanerType,jdbcType=INTEGER},
+            </if>
+            <if test="bpTrueName != null" >
+                bp_true_name = #{bpTrueName,jdbcType=VARCHAR},
+            </if>
+            <if test="bpLoginId != null" >
+                bp_login_id = #{bpLoginId,jdbcType=BIGINT},
+            </if>
+            <if test="bpType != null" >
+                bp_type = #{bpType,jdbcType=INTEGER},
             </if>
             <if test="bpNumber != null" >
                 bp_number = #{bpNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="bpName != null" >
+                bp_name = #{bpName,jdbcType=VARCHAR},
             </if>
             <if test="bpPeriodsDisplay != null" >
                 bp_periods_display = #{bpPeriodsDisplay,jdbcType=INTEGER},
@@ -435,32 +462,11 @@
             <if test="bpFullTime != null" >
                 bp_full_time = #{bpFullTime,jdbcType=TIMESTAMP},
             </if>
-            <if test="bpStatus != null" >
-                bp_status = #{bpStatus,jdbcType=INTEGER},
-            </if>
-            <if test="bpCreateTime != null" >
-                bp_create_time = #{bpCreateTime,jdbcType=TIMESTAMP},
-            </if>
-            <if test="bpUpdateTime != null" >
-                bp_update_time = #{bpUpdateTime,jdbcType=TIMESTAMP},
-            </if>
             <if test="bpLoanTime != null" >
                 bp_loan_time = #{bpLoanTime,jdbcType=TIMESTAMP},
             </if>
             <if test="bpRepayTime != null" >
                 bp_repay_time = #{bpRepayTime,jdbcType=TIMESTAMP},
-            </if>
-            <if test="bpLoanerId != null" >
-                bp_loaner_id = #{bpLoanerId,jdbcType=BIGINT},
-            </if>
-            <if test="bpTrueName != null" >
-                bp_true_name = #{bpTrueName,jdbcType=VARCHAR},
-            </if>
-            <if test="bpLoginId != null" >
-                bp_login_id = #{bpLoginId,jdbcType=BIGINT},
-            </if>
-            <if test="bpLoanerType != null" >
-                bp_loaner_type = #{bpLoanerType,jdbcType=INTEGER},
             </if>
             <if test="bpInterestPayType != null" >
                 bp_interest_pay_type = #{bpInterestPayType,jdbcType=INTEGER},
@@ -470,9 +476,6 @@
             </if>
             <if test="bpInterestSt != null" >
                 bp_interest_st = #{bpInterestSt,jdbcType=TIMESTAMP},
-            </if>
-            <if test="bpRemark != null" >
-                bp_remark = #{bpRemark,jdbcType=VARCHAR},
             </if>
             <if test="bpExpectLoanDate != null" >
                 bp_expect_loan_date = #{bpExpectLoanDate,jdbcType=TIMESTAMP},
@@ -507,25 +510,45 @@
             <if test="bpRepayedPeriods != null" >
                 bp_repayed_periods = #{bpRepayedPeriods,jdbcType=INTEGER},
             </if>
+            <if test="bpRemark != null" >
+                bp_remark = #{bpRemark,jdbcType=VARCHAR},
+            </if>
+            <if test="bpStatus != null" >
+                bp_status = #{bpStatus,jdbcType=INTEGER},
+            </if>
+            <if test="bpCreateTime != null" >
+                bp_create_time = #{bpCreateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="bpUpdateTime != null" >
+                bp_update_time = #{bpUpdateTime,jdbcType=TIMESTAMP},
+            </if>
             <if test="bpIsDel != null" >
                 bp_is_del = #{bpIsDel,jdbcType=INTEGER},
             </if>
-            <if test="bpDesc != null" >
-                bp_desc = #{bpDesc,jdbcType=LONGVARCHAR},
-            </if>
-            <if test="bpType != null" >
-                bp_type = #{bpType,jdbcType=INTEGER},
-            </if>
             <if test="bpUpRate != null" >
                 bp_up_rate = #{bpUpRate,jdbcType=VARCHAR},
+            </if>
+            <if test="bpDisplayIsPc != null" >
+                bp_display_is_pc = #{bpDisplayIsPc,jdbcType=INTEGER},
+            </if>
+            <if test="bpDisplayIsMobile != null" >
+                bp_display_is_mobile = #{bpDisplayIsMobile,jdbcType=INTEGER},
+            </if>
+            <if test="bpDesc != null" >
+                bp_desc = #{bpDesc,jdbcType=LONGVARCHAR},
             </if>
         </set>
         where bp_id = #{bpId,jdbcType=BIGINT}
     </update>
     <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.jebao.jebaodb.entity.loanmanage.TbBidPlan" >
         update tb_bid_plan
-        set bp_name = #{bpName,jdbcType=VARCHAR},
+        set bp_loaner_id = #{bpLoanerId,jdbcType=BIGINT},
+        bp_loaner_type = #{bpLoanerType,jdbcType=INTEGER},
+        bp_true_name = #{bpTrueName,jdbcType=VARCHAR},
+        bp_login_id = #{bpLoginId,jdbcType=BIGINT},
+        bp_type = #{bpType,jdbcType=INTEGER},
         bp_number = #{bpNumber,jdbcType=VARCHAR},
+        bp_name = #{bpName,jdbcType=VARCHAR},
         bp_periods_display = #{bpPeriodsDisplay,jdbcType=INTEGER},
         bp_periods = #{bpPeriods,jdbcType=INTEGER},
         bp_cycle_type = #{bpCycleType,jdbcType=INTEGER},
@@ -540,19 +563,11 @@
         bp_rise_money = #{bpRiseMoney,jdbcType=DECIMAL},
         bp_top_money = #{bpTopMoney,jdbcType=DECIMAL},
         bp_full_time = #{bpFullTime,jdbcType=TIMESTAMP},
-        bp_status = #{bpStatus,jdbcType=INTEGER},
-        bp_create_time = #{bpCreateTime,jdbcType=TIMESTAMP},
-        bp_update_time = #{bpUpdateTime,jdbcType=TIMESTAMP},
         bp_loan_time = #{bpLoanTime,jdbcType=TIMESTAMP},
         bp_repay_time = #{bpRepayTime,jdbcType=TIMESTAMP},
-        bp_loaner_id = #{bpLoanerId,jdbcType=BIGINT},
-        bp_true_name = #{bpTrueName,jdbcType=VARCHAR},
-        bp_login_id = #{bpLoginId,jdbcType=BIGINT},
-        bp_loaner_type = #{bpLoanerType,jdbcType=INTEGER},
         bp_interest_pay_type = #{bpInterestPayType,jdbcType=INTEGER},
         bp_open_time = #{bpOpenTime,jdbcType=INTEGER},
         bp_interest_st = #{bpInterestSt,jdbcType=TIMESTAMP},
-        bp_remark = #{bpRemark,jdbcType=VARCHAR},
         bp_expect_loan_date = #{bpExpectLoanDate,jdbcType=TIMESTAMP},
         bp_expect_repay_date = #{bpExpectRepayDate,jdbcType=TIMESTAMP},
         bp_service_charge_rate = #{bpServiceChargeRate,jdbcType=DECIMAL},
@@ -564,59 +579,66 @@
         bp_mortgage_info = #{bpMortgageInfo,jdbcType=VARCHAR},
         bp_risk_opinion = #{bpRiskOpinion,jdbcType=VARCHAR},
         bp_repayed_periods = #{bpRepayedPeriods,jdbcType=INTEGER},
+        bp_remark = #{bpRemark,jdbcType=VARCHAR},
+        bp_status = #{bpStatus,jdbcType=INTEGER},
+        bp_create_time = #{bpCreateTime,jdbcType=TIMESTAMP},
+        bp_update_time = #{bpUpdateTime,jdbcType=TIMESTAMP},
         bp_is_del = #{bpIsDel,jdbcType=INTEGER},
-        bp_desc = #{bpDesc,jdbcType=LONGVARCHAR},
-        bp_type = #{bpType,jdbcType=INTEGER},
-        bp_up_rate = #{bpUpRate,jdbcType=VARCHAR}
+        bp_up_rate = #{bpUpRate,jdbcType=VARCHAR},
+        bp_display_is_pc = #{bpDisplayIsPc,jdbcType=INTEGER},
+        bp_display_is_mobile = #{bpDisplayIsMobile,jdbcType=INTEGER},
+        bp_desc = #{bpDesc,jdbcType=LONGVARCHAR}
         where bp_id = #{bpId,jdbcType=BIGINT}
     </update>
     <update id="updateByPrimaryKey" parameterType="com.jebao.jebaodb.entity.loanmanage.TbBidPlan" >
-    update tb_bid_plan
-    set bp_name = #{bpName,jdbcType=VARCHAR},
-      bp_number = #{bpNumber,jdbcType=VARCHAR},
-      bp_periods_display = #{bpPeriodsDisplay,jdbcType=INTEGER},
-      bp_periods = #{bpPeriods,jdbcType=INTEGER},
-      bp_cycle_type = #{bpCycleType,jdbcType=INTEGER},
-      bp_cycle_size = #{bpCycleSize,jdbcType=INTEGER},
-      bp_surplus_money = #{bpSurplusMoney,jdbcType=DECIMAL},
-      bp_loan_money = #{bpLoanMoney,jdbcType=DECIMAL},
-      bp_bid_money = #{bpBidMoney,jdbcType=DECIMAL},
-      bp_rate = #{bpRate,jdbcType=DECIMAL},
-      bp_start_time = #{bpStartTime,jdbcType=TIMESTAMP},
-      bp_end_time = #{bpEndTime,jdbcType=TIMESTAMP},
-      bp_start_money = #{bpStartMoney,jdbcType=DECIMAL},
-      bp_rise_money = #{bpRiseMoney,jdbcType=DECIMAL},
-      bp_top_money = #{bpTopMoney,jdbcType=DECIMAL},
-      bp_full_time = #{bpFullTime,jdbcType=TIMESTAMP},
-      bp_status = #{bpStatus,jdbcType=INTEGER},
-      bp_create_time = #{bpCreateTime,jdbcType=TIMESTAMP},
-      bp_loan_time = #{bpLoanTime,jdbcType=TIMESTAMP},
-      bp_repay_time = #{bpRepayTime,jdbcType=TIMESTAMP},
-      bp_loaner_id = #{bpLoanerId,jdbcType=BIGINT},
-      bp_true_name = #{bpTrueName,jdbcType=VARCHAR},
-      bp_login_id = #{bpLoginId,jdbcType=BIGINT},
-      bp_loaner_type = #{bpLoanerType,jdbcType=INTEGER},
-      bp_interest_pay_type = #{bpInterestPayType,jdbcType=INTEGER},
-      bp_open_time = #{bpOpenTime,jdbcType=INTEGER},
-      bp_interest_st = #{bpInterestSt,jdbcType=TIMESTAMP},
-      bp_remark = #{bpRemark,jdbcType=VARCHAR},
-      bp_expect_loan_date = #{bpExpectLoanDate,jdbcType=TIMESTAMP},
-      bp_expect_repay_date = #{bpExpectRepayDate,jdbcType=TIMESTAMP},
-      bp_service_charge_rate = #{bpServiceChargeRate,jdbcType=DECIMAL},
-      bp_late_rate = #{bpLateRate,jdbcType=DECIMAL},
-      bp_borrow_desc = #{bpBorrowDesc,jdbcType=VARCHAR},
-      bp_funds_purpose = #{bpFundsPurpose,jdbcType=VARCHAR},
-      bp_repaying_source = #{bpRepayingSource,jdbcType=VARCHAR},
-      bp_personal_credit = #{bpPersonalCredit,jdbcType=VARCHAR},
-      bp_mortgage_info = #{bpMortgageInfo,jdbcType=VARCHAR},
-      bp_risk_opinion = #{bpRiskOpinion,jdbcType=VARCHAR},
-      bp_repayed_periods = #{bpRepayedPeriods,jdbcType=INTEGER},
-      bp_is_del = #{bpIsDel,jdbcType=INTEGER},
-      bp_type = #{bpType,jdbcType=INTEGER},
-      bp_up_rate = #{bpUpRate,jdbcType=VARCHAR}
-    where bp_id = #{bpId,jdbcType=BIGINT}
-  </update>
-
+        update tb_bid_plan
+        set bp_loaner_id = #{bpLoanerId,jdbcType=BIGINT},
+        bp_loaner_type = #{bpLoanerType,jdbcType=INTEGER},
+        bp_true_name = #{bpTrueName,jdbcType=VARCHAR},
+        bp_login_id = #{bpLoginId,jdbcType=BIGINT},
+        bp_type = #{bpType,jdbcType=INTEGER},
+        bp_number = #{bpNumber,jdbcType=VARCHAR},
+        bp_name = #{bpName,jdbcType=VARCHAR},
+        bp_periods_display = #{bpPeriodsDisplay,jdbcType=INTEGER},
+        bp_periods = #{bpPeriods,jdbcType=INTEGER},
+        bp_cycle_type = #{bpCycleType,jdbcType=INTEGER},
+        bp_cycle_size = #{bpCycleSize,jdbcType=INTEGER},
+        bp_surplus_money = #{bpSurplusMoney,jdbcType=DECIMAL},
+        bp_loan_money = #{bpLoanMoney,jdbcType=DECIMAL},
+        bp_bid_money = #{bpBidMoney,jdbcType=DECIMAL},
+        bp_rate = #{bpRate,jdbcType=DECIMAL},
+        bp_start_time = #{bpStartTime,jdbcType=TIMESTAMP},
+        bp_end_time = #{bpEndTime,jdbcType=TIMESTAMP},
+        bp_start_money = #{bpStartMoney,jdbcType=DECIMAL},
+        bp_rise_money = #{bpRiseMoney,jdbcType=DECIMAL},
+        bp_top_money = #{bpTopMoney,jdbcType=DECIMAL},
+        bp_full_time = #{bpFullTime,jdbcType=TIMESTAMP},
+        bp_loan_time = #{bpLoanTime,jdbcType=TIMESTAMP},
+        bp_repay_time = #{bpRepayTime,jdbcType=TIMESTAMP},
+        bp_interest_pay_type = #{bpInterestPayType,jdbcType=INTEGER},
+        bp_open_time = #{bpOpenTime,jdbcType=INTEGER},
+        bp_interest_st = #{bpInterestSt,jdbcType=TIMESTAMP},
+        bp_expect_loan_date = #{bpExpectLoanDate,jdbcType=TIMESTAMP},
+        bp_expect_repay_date = #{bpExpectRepayDate,jdbcType=TIMESTAMP},
+        bp_service_charge_rate = #{bpServiceChargeRate,jdbcType=DECIMAL},
+        bp_late_rate = #{bpLateRate,jdbcType=DECIMAL},
+        bp_borrow_desc = #{bpBorrowDesc,jdbcType=VARCHAR},
+        bp_funds_purpose = #{bpFundsPurpose,jdbcType=VARCHAR},
+        bp_repaying_source = #{bpRepayingSource,jdbcType=VARCHAR},
+        bp_personal_credit = #{bpPersonalCredit,jdbcType=VARCHAR},
+        bp_mortgage_info = #{bpMortgageInfo,jdbcType=VARCHAR},
+        bp_risk_opinion = #{bpRiskOpinion,jdbcType=VARCHAR},
+        bp_repayed_periods = #{bpRepayedPeriods,jdbcType=INTEGER},
+        bp_remark = #{bpRemark,jdbcType=VARCHAR},
+        bp_status = #{bpStatus,jdbcType=INTEGER},
+        bp_create_time = #{bpCreateTime,jdbcType=TIMESTAMP},
+        bp_update_time = #{bpUpdateTime,jdbcType=TIMESTAMP},
+        bp_is_del = #{bpIsDel,jdbcType=INTEGER},
+        bp_up_rate = #{bpUpRate,jdbcType=VARCHAR},
+        bp_display_is_pc = #{bpDisplayIsPc,jdbcType=INTEGER},
+        bp_display_is_mobile = #{bpDisplayIsMobile,jdbcType=INTEGER}
+        where bp_id = #{bpId,jdbcType=BIGINT}
+    </update>
     <!--==================================================华丽分割线==================================================-->
     <sql id="selectByCondition_Where_Clause">
         <if test="record.bpName != null and record.bpName != ''" >
@@ -840,6 +862,12 @@
         <!--</if>-->
         <if test="record.bpType != null" >
             AND bp_type = #{record.bpType,jdbcType=INTEGER}
+        </if>
+        <if test="record.bpDisplayIsPc != null" >
+            AND bp_display_is_pc = #{record.bpDisplayIsPc,jdbcType=INTEGER}
+        </if>
+        <if test="record.bpDisplayIsMobile != null" >
+            AND bp_display_is_mobile = #{record.bpDisplayIsMobile,jdbcType=INTEGER}
         </if>
         AND bp_is_del = 1
     </sql>

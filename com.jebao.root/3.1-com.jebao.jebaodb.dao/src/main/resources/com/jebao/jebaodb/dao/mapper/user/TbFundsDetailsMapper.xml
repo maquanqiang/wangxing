@@ -6,6 +6,8 @@
         <result column="fd_login_id" property="fdLoginId" jdbcType="BIGINT" />
         <result column="fd_third_account" property="fdThirdAccount" jdbcType="VARCHAR" />
         <result column="fd_serial_number" property="fdSerialNumber" jdbcType="VARCHAR" />
+        <result column="fd_serial_time" property="fdSerialTime" jdbcType="TIMESTAMP" />
+        <result column="fd_create_time" property="fdCreateTime" jdbcType="TIMESTAMP" />
         <result column="fd_serial_type_id" property="fdSerialTypeId" jdbcType="INTEGER" />
         <result column="fd_serial_type_name" property="fdSerialTypeName" jdbcType="VARCHAR" />
         <result column="fd_serial_amount" property="fdSerialAmount" jdbcType="DECIMAL" />
@@ -14,16 +16,19 @@
         <result column="fd_commission_charge" property="fdCommissionCharge" jdbcType="DECIMAL" />
         <result column="fd_bp_id" property="fdBpId" jdbcType="BIGINT" />
         <result column="fd_bp_name" property="fdBpName" jdbcType="VARCHAR" />
-        <result column="fd_create_time" property="fdCreateTime" jdbcType="TIMESTAMP" />
-        <result column="fd_serial_time" property="fdSerialTime" jdbcType="TIMESTAMP" />
         <result column="fd_balance_status" property="fdBalanceStatus" jdbcType="INTEGER" />
         <result column="fd_serial_status" property="fdSerialStatus" jdbcType="INTEGER" />
         <result column="fd_is_del" property="fdIsDel" jdbcType="INTEGER" />
+        <result column="fd_platform" property="fdPlatform" jdbcType="INTEGER" />
+        <result column="fd_platform_type" property="fdPlatformType" jdbcType="INTEGER" />
+        <result column="fd_channel" property="fdChannel" jdbcType="INTEGER" />
+        <result column="fd_channel_type" property="fdChannelType" jdbcType="INTEGER" />
     </resultMap>
     <sql id="Base_Column_List" >
-        fd_id, fd_login_id, fd_third_account, fd_serial_number, fd_serial_type_id,
-        fd_serial_type_name, fd_serial_amount, fd_balance_before, fd_balance_after, fd_commission_charge,
-        fd_bp_id, fd_bp_name, fd_create_time, fd_serial_time, fd_balance_status, fd_serial_status, fd_is_del
+        fd_id, fd_login_id, fd_third_account, fd_serial_number, fd_serial_time, fd_create_time,
+        fd_serial_type_id, fd_serial_type_name, fd_serial_amount, fd_balance_before, fd_balance_after,
+        fd_commission_charge, fd_bp_id, fd_bp_name, fd_balance_status, fd_serial_status,
+        fd_is_del, fd_platform, fd_platform_type, fd_channel, fd_channel_type
     </sql>
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
         select
@@ -36,16 +41,19 @@
             SELECT LAST_INSERT_ID()
         </selectKey>
         insert into tb_funds_details (fd_login_id, fd_third_account, fd_serial_number,
-        fd_serial_type_id, fd_serial_type_name,fd_serial_amount, fd_balance_before, fd_balance_after,
-        fd_commission_charge, fd_bp_id, fd_bp_name, fd_create_time, fd_serial_time,
-        fd_balance_status, fd_serial_status, fd_is_del
-        )
+        fd_serial_time, fd_create_time, fd_serial_type_id,
+        fd_serial_type_name, fd_serial_amount, fd_balance_before,
+        fd_balance_after, fd_commission_charge, fd_bp_id,
+        fd_bp_name, fd_balance_status, fd_serial_status,
+        fd_is_del, fd_platform, fd_platform_type,
+        fd_channel, fd_channel_type)
         values (#{fdLoginId,jdbcType=BIGINT}, #{fdThirdAccount,jdbcType=VARCHAR}, #{fdSerialNumber,jdbcType=VARCHAR},
-        #{fdSerialTypeId,jdbcType=INTEGER}, #{fdSerialTypeName,jdbcType=VARCHAR}, #{fdSerialAmount,jdbcType=DECIMAL},
-        #{fdBalanceBefore,jdbcType=DECIMAL}, #{fdBalanceAfter,jdbcType=DECIMAL},#{fdCommissionCharge,jdbcType=DECIMAL},
-        #{fdBpId,jdbcType=BIGINT}, #{fdBpName,jdbcType=VARCHAR}, #{fdCreateTime,jdbcType=TIMESTAMP}, #{fdSerialTime,jdbcType=TIMESTAMP},
-        #{fdBalanceStatus,jdbcType=INTEGER}, #{fdSerialStatus,jdbcType=INTEGER}, #{fdIsDel,jdbcType=INTEGER}
-        )
+        #{fdSerialTime,jdbcType=TIMESTAMP}, #{fdCreateTime,jdbcType=TIMESTAMP}, #{fdSerialTypeId,jdbcType=INTEGER},
+        #{fdSerialTypeName,jdbcType=VARCHAR}, #{fdSerialAmount,jdbcType=DECIMAL}, #{fdBalanceBefore,jdbcType=DECIMAL},
+        #{fdBalanceAfter,jdbcType=DECIMAL}, #{fdCommissionCharge,jdbcType=DECIMAL}, #{fdBpId,jdbcType=BIGINT},
+        #{fdBpName,jdbcType=VARCHAR}, #{fdBalanceStatus,jdbcType=INTEGER}, #{fdSerialStatus,jdbcType=INTEGER},
+        #{fdIsDel,jdbcType=INTEGER}, #{fdPlatform,jdbcType=INTEGER}, #{fdPlatformType,jdbcType=INTEGER},
+        #{fdChannel,jdbcType=INTEGER}, #{fdChannelType,jdbcType=INTEGER})
     </insert>
     <insert id="insertSelective" parameterType="com.jebao.jebaodb.entity.user.TbFundsDetails" >
         <selectKey resultType="java.lang.Long" keyProperty="fdId" order="AFTER" >
@@ -61,6 +69,12 @@
             </if>
             <if test="fdSerialNumber != null" >
                 fd_serial_number,
+            </if>
+            <if test="fdSerialTime != null" >
+                fd_serial_time,
+            </if>
+            <if test="fdCreateTime != null" >
+                fd_create_time,
             </if>
             <if test="fdSerialTypeId != null" >
                 fd_serial_type_id,
@@ -86,12 +100,6 @@
             <if test="fdBpName != null" >
                 fd_bp_name,
             </if>
-            <if test="fdCreateTime != null" >
-                fd_create_time,
-            </if>
-            <if test="fdSerialTime != null" >
-                fd_serial_time,
-            </if>
             <if test="fdBalanceStatus != null" >
                 fd_balance_status,
             </if>
@@ -100,6 +108,18 @@
             </if>
             <if test="fdIsDel != null" >
                 fd_is_del,
+            </if>
+            <if test="fdPlatform != null" >
+                fd_platform,
+            </if>
+            <if test="fdPlatformType != null" >
+                fd_platform_type,
+            </if>
+            <if test="fdChannel != null" >
+                fd_channel,
+            </if>
+            <if test="fdChannelType != null" >
+                fd_channel_type,
             </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides="," >
@@ -111,6 +131,12 @@
             </if>
             <if test="fdSerialNumber != null" >
                 #{fdSerialNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="fdSerialTime != null" >
+                #{fdSerialTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="fdCreateTime != null" >
+                #{fdCreateTime,jdbcType=TIMESTAMP},
             </if>
             <if test="fdSerialTypeId != null" >
                 #{fdSerialTypeId,jdbcType=INTEGER},
@@ -136,12 +162,6 @@
             <if test="fdBpName != null" >
                 #{fdBpName,jdbcType=VARCHAR},
             </if>
-            <if test="fdCreateTime != null" >
-                #{fdCreateTime,jdbcType=TIMESTAMP},
-            </if>
-            <if test="fdSerialTime != null" >
-                #{fdSerialTime,jdbcType=TIMESTAMP},
-            </if>
             <if test="fdBalanceStatus != null" >
                 #{fdBalanceStatus,jdbcType=INTEGER},
             </if>
@@ -150,6 +170,18 @@
             </if>
             <if test="fdIsDel != null" >
                 #{fdIsDel,jdbcType=INTEGER},
+            </if>
+            <if test="fdPlatform != null" >
+                #{fdPlatform,jdbcType=INTEGER},
+            </if>
+            <if test="fdPlatformType != null" >
+                #{fdPlatformType,jdbcType=INTEGER},
+            </if>
+            <if test="fdChannel != null" >
+                #{fdChannel,jdbcType=INTEGER},
+            </if>
+            <if test="fdChannelType != null" >
+                #{fdChannelType,jdbcType=INTEGER},
             </if>
         </trim>
     </insert>
@@ -164,6 +196,12 @@
             </if>
             <if test="fdSerialNumber != null" >
                 fd_serial_number = #{fdSerialNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="fdSerialTime != null" >
+                fd_serial_time = #{fdSerialTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="fdCreateTime != null" >
+                fd_create_time = #{fdCreateTime,jdbcType=TIMESTAMP},
             </if>
             <if test="fdSerialTypeId != null" >
                 fd_serial_type_id = #{fdSerialTypeId,jdbcType=INTEGER},
@@ -189,12 +227,6 @@
             <if test="fdBpName != null" >
                 fd_bp_name = #{fdBpName,jdbcType=VARCHAR},
             </if>
-            <if test="fdCreateTime != null" >
-                fd_create_time = #{fdCreateTime,jdbcType=TIMESTAMP},
-            </if>
-            <if test="fdSerialTime != null" >
-                fd_serial_time = #{fdSerialTime,jdbcType=TIMESTAMP},
-            </if>
             <if test="fdBalanceStatus != null" >
                 fd_balance_status = #{fdBalanceStatus,jdbcType=INTEGER},
             </if>
@@ -204,6 +236,18 @@
             <if test="fdIsDel != null" >
                 fd_is_del = #{fdIsDel,jdbcType=INTEGER},
             </if>
+            <if test="fdPlatform != null" >
+                fd_platform = #{fdPlatform,jdbcType=INTEGER},
+            </if>
+            <if test="fdPlatformType != null" >
+                fd_platform_type = #{fdPlatformType,jdbcType=INTEGER},
+            </if>
+            <if test="fdChannel != null" >
+                fd_channel = #{fdChannel,jdbcType=INTEGER},
+            </if>
+            <if test="fdChannelType != null" >
+                fd_channel_type = #{fdChannelType,jdbcType=INTEGER},
+            </if>
         </set>
         where fd_id = #{fdId,jdbcType=BIGINT}
     </update>
@@ -212,6 +256,8 @@
         set fd_login_id = #{fdLoginId,jdbcType=BIGINT},
         fd_third_account = #{fdThirdAccount,jdbcType=VARCHAR},
         fd_serial_number = #{fdSerialNumber,jdbcType=VARCHAR},
+        fd_serial_time = #{fdSerialTime,jdbcType=TIMESTAMP},
+        fd_create_time = #{fdCreateTime,jdbcType=TIMESTAMP},
         fd_serial_type_id = #{fdSerialTypeId,jdbcType=INTEGER},
         fd_serial_type_name = #{fdSerialTypeName,jdbcType=VARCHAR},
         fd_serial_amount = #{fdSerialAmount,jdbcType=DECIMAL},
@@ -220,11 +266,13 @@
         fd_commission_charge = #{fdCommissionCharge,jdbcType=DECIMAL},
         fd_bp_id = #{fdBpId,jdbcType=BIGINT},
         fd_bp_name = #{fdBpName,jdbcType=VARCHAR},
-        fd_create_time = #{fdCreateTime,jdbcType=TIMESTAMP},
-        fd_serial_time = #{fdSerialTime,jdbcType=TIMESTAMP},
         fd_balance_status = #{fdBalanceStatus,jdbcType=INTEGER},
         fd_serial_status = #{fdSerialStatus,jdbcType=INTEGER},
-        fd_is_del = #{fdIsDel,jdbcType=INTEGER}
+        fd_is_del = #{fdIsDel,jdbcType=INTEGER},
+        fd_platform = #{fdPlatform,jdbcType=INTEGER},
+        fd_platform_type = #{fdPlatformType,jdbcType=INTEGER},
+        fd_channel = #{fdChannel,jdbcType=INTEGER},
+        fd_channel_type = #{fdChannelType,jdbcType=INTEGER}
         where fd_id = #{fdId,jdbcType=BIGINT}
     </update>
     <!--==================================================华丽分割线==================================================-->

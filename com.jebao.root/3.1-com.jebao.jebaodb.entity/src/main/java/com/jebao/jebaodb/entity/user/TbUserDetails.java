@@ -57,6 +57,12 @@ public class TbUserDetails {
 
     private Integer udIsDel;
 
+    private Integer udPlatformType;
+
+    private Integer udChannel;
+
+    private Integer udChannelType;
+
     public Long getUdId() {
         return udId;
     }
@@ -233,7 +239,6 @@ public class TbUserDetails {
         this.udBankCardNoChangeStatus = udBankCardNoChangeStatus;
     }
 
-
     public String getUdInterfaceMchntTxnSsn() {
         return udInterfaceMchntTxnSsn;
     }
@@ -272,5 +277,29 @@ public class TbUserDetails {
 
     public void setUdIsDel(Integer udIsDel) {
         this.udIsDel = udIsDel;
+    }
+
+    public Integer getUdPlatformType() {
+        return udPlatformType;
+    }
+
+    public void setUdPlatformType(Integer udPlatformType) {
+        this.udPlatformType = udPlatformType;
+    }
+
+    public Integer getUdChannel() {
+        return udChannel;
+    }
+
+    public void setUdChannel(Integer udChannel) {
+        this.udChannel = udChannel;
+    }
+
+    public Integer getUdChannelType() {
+        return udChannelType;
+    }
+
+    public void setUdChannelType(Integer udChannelType) {
+        this.udChannelType = udChannelType;
     }
 }

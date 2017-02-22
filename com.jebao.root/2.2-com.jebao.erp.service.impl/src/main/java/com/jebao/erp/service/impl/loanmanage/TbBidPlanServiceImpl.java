@@ -1,6 +1,5 @@
 package com.jebao.erp.service.impl.loanmanage;
 
-import com.jebao.erp.service.impl.employee.AccountServiceImpl;
 import com.jebao.erp.service.inf.loanmanage.ITbBidPlanServiceInf;
 import com.jebao.jebaodb.dao.dao.investment.TbIncomeDetailDao;
 import com.jebao.jebaodb.dao.dao.investment.TbInvestInfoDao;
@@ -8,6 +7,7 @@ import com.jebao.jebaodb.dao.dao.loanmanage.TbBidPlanDao;
 import com.jebao.jebaodb.dao.dao.loanmanage.TbThirdInterfaceLogDao;
 import com.jebao.jebaodb.dao.dao.user.TbAccountsFundsDao;
 import com.jebao.jebaodb.dao.dao.user.TbFundsDetailsDao;
+import com.jebao.jebaodb.entity.extEntity.EnumModel;
 import com.jebao.jebaodb.entity.extEntity.PageWhere;
 import com.jebao.jebaodb.entity.extEntity.ResultInfo;
 import com.jebao.jebaodb.entity.investment.TbIncomeDetail;
@@ -169,6 +169,10 @@ public class TbBidPlanServiceImpl implements ITbBidPlanServiceInf {
                         outFundsDetails.setFdBalanceStatus(2);           //支出
                         outFundsDetails.setFdSerialStatus(1);
                         outFundsDetails.setFdIsDel(1);
+                        outFundsDetails.setFdPlatform(EnumModel.Platform.pc.getValue());
+                        outFundsDetails.setFdPlatformType(EnumModel.PlatformType.pc.getValue());
+                        outFundsDetails.setFdChannel(0);
+                        outFundsDetails.setFdChannelType(0);
                         fundsDetailsDao.insert(outFundsDetails);
 
 
@@ -191,6 +195,10 @@ public class TbBidPlanServiceImpl implements ITbBidPlanServiceInf {
                         inFundsDetails.setFdBalanceStatus(1);           //收入
                         inFundsDetails.setFdSerialStatus(1);
                         inFundsDetails.setFdIsDel(1);
+                        inFundsDetails.setFdPlatform(EnumModel.Platform.pc.getValue());
+                        inFundsDetails.setFdPlatformType(EnumModel.PlatformType.pc.getValue());
+                        inFundsDetails.setFdChannel(0);
+                        inFundsDetails.setFdChannelType(0);
                         fundsDetailsDao.insert(inFundsDetails);
 
                         //更新借款人账户信息
@@ -292,6 +300,10 @@ public class TbBidPlanServiceImpl implements ITbBidPlanServiceInf {
                     inFundsDetails.setFdBalanceStatus(1);           //收入
                     inFundsDetails.setFdSerialStatus(1);
                     inFundsDetails.setFdIsDel(1);
+                    inFundsDetails.setFdPlatform(EnumModel.Platform.pc.getValue());
+                    inFundsDetails.setFdPlatformType(EnumModel.PlatformType.pc.getValue());
+                    inFundsDetails.setFdChannel(0);
+                    inFundsDetails.setFdChannelType(0);
                     fundsDetailsDao.insert(inFundsDetails);
 
                     //投资人入账
@@ -317,6 +329,10 @@ public class TbBidPlanServiceImpl implements ITbBidPlanServiceInf {
                     outFundsDetails.setFdBalanceStatus(2);           //支出
                     outFundsDetails.setFdSerialStatus(1);
                     outFundsDetails.setFdIsDel(1);
+                    outFundsDetails.setFdPlatform(EnumModel.Platform.pc.getValue());
+                    outFundsDetails.setFdPlatformType(EnumModel.PlatformType.pc.getValue());
+                    outFundsDetails.setFdChannel(0);
+                    outFundsDetails.setFdChannelType(0);
                     fundsDetailsDao.insert(outFundsDetails);
 
                 } else {

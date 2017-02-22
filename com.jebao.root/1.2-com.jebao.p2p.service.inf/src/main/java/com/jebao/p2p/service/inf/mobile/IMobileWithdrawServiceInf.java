@@ -1,5 +1,6 @@
 package com.jebao.p2p.service.inf.mobile;
 
+import com.jebao.jebaodb.entity.extEntity.EnumModel;
 import com.jebao.jebaodb.entity.extEntity.ResultInfo;
 import com.jebao.thirdPay.fuiou.app.model.withdrawDeposit.WithdrawDepositResponse;
 
@@ -26,5 +27,5 @@ public interface IMobileWithdrawServiceInf {
      * @param model
      * @return
      */
-    ResultInfo withdrawDepositByWebComplete(Long loginId, WithdrawDepositResponse model, BigDecimal fee);
+    ResultInfo withdrawDepositByWebComplete(Long loginId, WithdrawDepositResponse model, BigDecimal fee, EnumModel.Platform platform, EnumModel.PlatformType platformType);
 }

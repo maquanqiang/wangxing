@@ -15,7 +15,7 @@ $(function () {
 
     $('.project-filter dl dt').click(function () {
         //初始化本地数据
-
+        model.searchObj.bpDisplayIsPc = 1;
         model.searchObj.pageIndex = 0;
         model.searchObj.pageSize = 10;
         model.searchObj.bpInterestPayType = null;
@@ -68,7 +68,7 @@ var vm = new Vue({
     data: model,
     beforeCreate: function () {
         //初始化本地数据
-
+        model.searchObj.bpDisplayIsPc = 1;
         model.searchObj.pageIndex = 0;
         model.searchObj.pageSize = 10;
     },

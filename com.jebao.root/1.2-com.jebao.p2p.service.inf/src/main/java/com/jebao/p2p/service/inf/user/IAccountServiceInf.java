@@ -25,7 +25,7 @@ public interface IAccountServiceInf {
      * @param ip ip地址
      * @return 注册结果，用户id
      */
-    ResultData<Long> register(String username, String password, String invitationCode,String ip, EnumModel.Platform platform);
+    ResultData<Long> register(String username, String password, String invitationCode,String ip, EnumModel.Platform platform, EnumModel.PlatformType platformType);
 
     /**
      *设置新密码

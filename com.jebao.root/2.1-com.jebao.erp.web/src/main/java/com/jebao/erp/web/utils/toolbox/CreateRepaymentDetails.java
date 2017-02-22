@@ -25,9 +25,12 @@ public class CreateRepaymentDetails {
             nextRepayDate = repayDate(bpCycleType, interestSt, periods);
             RepaymentDetail interest = new RepaymentDetail();       //利息
             now.setTime(nextRepayDate);
-            if(now.get(GregorianCalendar.DAY_OF_MONTH)!=calendar.get(GregorianCalendar.DAY_OF_MONTH)){
-                now.add(Calendar.DATE,1);
+            if(bpCycleType!=1){
+                if(now.get(GregorianCalendar.DAY_OF_MONTH)!=calendar.get(GregorianCalendar.DAY_OF_MONTH)){
+                    now.add(Calendar.DATE,1);
+                }
             }
+
             interest.setRepayDate(now.getTime());
 
             interest.setIntentPeriod(1);
@@ -51,8 +54,10 @@ public class CreateRepaymentDetails {
                 loanIntent.setInterestSt(nextRepayDate);
                 Date repayDate = repayDate(bpCycleType, interestSt, i);
                 now.setTime(repayDate);
-                if(now.get(GregorianCalendar.DAY_OF_MONTH)!=calendar.get(GregorianCalendar.DAY_OF_MONTH)){
-                    now.add(Calendar.DATE, 1);
+                if(bpCycleType!=1){
+                    if(now.get(GregorianCalendar.DAY_OF_MONTH)!=calendar.get(GregorianCalendar.DAY_OF_MONTH)){
+                        now.add(Calendar.DATE, 1);
+                    }
                 }
                 int days = BetweenDays.differentDays(nextRepayDate, now.getTime());
                 nextRepayDate = now.getTime();

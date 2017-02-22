@@ -59,7 +59,7 @@ public class WithdrawServiceImpl implements IWithdrawServiceInf {
             return new ResultInfo(false, "您尚未开通第三方资金账户");
         }
         TbAccountsFunds accountsFunds = userService.getAccountsFundsInfo(loginId);
-        if(accountsFunds == null || money.compareTo(accountsFunds.getAfBalance()) == 1){
+        if (accountsFunds == null || money.compareTo(accountsFunds.getAfBalance()) == 1) {
             return new ResultInfo(false, "提现金额大于您的账户余额，请核对您的余额");
         }
         String amt = money.multiply(new BigDecimal(100)).toString();
@@ -94,7 +94,7 @@ public class WithdrawServiceImpl implements IWithdrawServiceInf {
      * @return
      */
     @Override
-    public ResultInfo withdrawDepositByWebComplete(Long loginId, WithdrawDepositResponse model, BigDecimal fee) {
+    public ResultInfo withdrawDepositByWebComplete(Long loginId, WithdrawDepositResponse model, BigDecimal fee, EnumModel.Platform platform, EnumModel.PlatformType platformType) {
         if (model != null) {
             int count = fundsDetailsService.selectBySerialNumberForPageCount(loginId, model.getMchnt_txn_ssn());
             if (count > 0) {
@@ -134,7 +134,10 @@ public class WithdrawServiceImpl implements IWithdrawServiceInf {
         fundsDetails.setFdSerialTypeName(EnumModel.SerialType.提现.name());
         fundsDetails.setFdThirdAccount(afEntity.getAfThirdAccount());
         fundsDetails.setFdIsDel(EnumModel.IsDel.有效.getValue());
-
+        fundsDetails.setFdPlatform(platform.getValue());
+        fundsDetails.setFdPlatformType(platformType.getValue());
+        fundsDetails.setFdChannel(0);
+        fundsDetails.setFdChannelType(0);
         if (model == null) {
             //更新资金收支明细状态为失败
             fundsDetails.setFdSerialStatus(EnumModel.FdSerialStatus.失败.getValue());
@@ -148,7 +151,7 @@ public class WithdrawServiceImpl implements IWithdrawServiceInf {
         fundsDetails.setFdSerialNumber(model.getMchnt_txn_ssn());//流水号
         fundsDetails.setFdThirdAccount(model.getLogin_id());
 
-        if(!FuiouConfig.Success_Code.equals(model.getResp_code())){
+        if (!FuiouConfig.Success_Code.equals(model.getResp_code())) {
             String responseMessage = model.getResp_desc();
             if (StringUtils.isBlank(responseMessage)) {
                 responseMessage = "第三方返回异常";

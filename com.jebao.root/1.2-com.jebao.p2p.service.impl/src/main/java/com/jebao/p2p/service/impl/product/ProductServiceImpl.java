@@ -7,9 +7,9 @@ import com.jebao.jebaodb.dao.dao.loanmanage.TbBidPlanDao;
 import com.jebao.jebaodb.dao.dao.loanmanage.TbBidRiskDataDao;
 import com.jebao.jebaodb.dao.dao.loanmanage.TbThirdInterfaceLogDao;
 import com.jebao.jebaodb.dao.dao.user.TbAccountsFundsDao;
-import com.jebao.jebaodb.dao.dao.user.TbFundsDetailsDao;
 import com.jebao.jebaodb.dao.dao.user.TbLoginInfoDao;
 import com.jebao.jebaodb.dao.dao.user.TbUserDetailsDao;
+import com.jebao.jebaodb.entity.extEntity.EnumModel;
 import com.jebao.jebaodb.entity.extEntity.ResultInfo;
 import com.jebao.jebaodb.entity.investment.TbIncomeDetail;
 import com.jebao.jebaodb.entity.investment.TbInvestInfo;
@@ -25,6 +25,7 @@ import com.jebao.jebaodb.entity.user.TbFundsDetails;
 import com.jebao.jebaodb.entity.user.TbLoginInfo;
 import com.jebao.jebaodb.entity.user.TbUserDetails;
 import com.jebao.p2p.service.inf.product.IProductServiceInf;
+import com.jebao.p2p.service.inf.user.IFundsDetailsServiceInf;
 import com.jebao.thirdPay.fuiou.impl.PreAuthServiceImpl;
 import com.jebao.thirdPay.fuiou.model.preAuth.PreAuthRequest;
 import com.jebao.thirdPay.fuiou.model.preAuth.PreAuthResponse;
@@ -67,7 +68,7 @@ public class ProductServiceImpl implements IProductServiceInf {
     @Autowired
     private TbAccountsFundsDao accountsFundsDao;
     @Autowired
-    private TbFundsDetailsDao fundsDetailsDao;
+    private IFundsDetailsServiceInf fundsDetailsService;
 
     private final static Logger LOGGER = LoggerFactory.getLogger(ProductServiceImpl.class);
 
@@ -88,6 +89,7 @@ public class ProductServiceImpl implements IProductServiceInf {
 
     /**
      * 投标
+     *
      * @return
      */
 //    @Override
@@ -235,7 +237,6 @@ public class ProductServiceImpl implements IProductServiceInf {
 //
 //        return result;
 //    }
-
     @Override
     public TbLoaner selectByPrimaryKey(Long lId) {
         return tbLoanerDao.selectByPrimaryKey(lId);
@@ -274,13 +275,14 @@ public class ProductServiceImpl implements IProductServiceInf {
 
     /**
      * 投标2
-     * @param outUser   投资人信息
+     *
+     * @param outUser     投资人信息
      * @param tbBidPlan
      * @param investMoney
      * @return
      */
     @Override
-    public ResultInfo investBid(TbUserDetails outUser,TbBidPlan tbBidPlan, BigDecimal investMoney) {
+    public ResultInfo investBid(TbUserDetails outUser, TbBidPlan tbBidPlan, BigDecimal investMoney, EnumModel.Platform platform, EnumModel.PlatformType platformType) {
 
         ResultInfo resultInfo = new ResultInfo(false, "投资失败");
 
@@ -291,7 +293,7 @@ public class ProductServiceImpl implements IProductServiceInf {
         map.put("investMoney", investMoney);
         map.put("nowTime", new Date());
         int count = tbBidPlanDao.investBid(map);
-        if(count>0){
+        if (count > 0) {
 
             String amt = investMoney.multiply(new BigDecimal(100)).setScale(0, BigDecimal.ROUND_DOWN).toString();
             //借款人详情
@@ -331,8 +333,11 @@ public class ProductServiceImpl implements IProductServiceInf {
             tbFundsDetails.setFdBalanceStatus(2);           //支出
             tbFundsDetails.setFdSerialStatus(0);
             tbFundsDetails.setFdIsDel(1);
-
-            fundsDetailsDao.insert(tbFundsDetails);
+            tbFundsDetails.setFdPlatform(platform.getValue());
+            tbFundsDetails.setFdPlatformType(platformType.getValue());
+            tbFundsDetails.setFdChannel(0);
+            tbFundsDetails.setFdChannelType(0);
+            fundsDetailsService.insert(tbFundsDetails);
             try {
                 PreAuthResponse response = preAuthService.post(preAuthRequest);
                 //更新日志信息
@@ -341,7 +346,7 @@ public class ProductServiceImpl implements IProductServiceInf {
                 thirdInterfaceLog.setTilRespText(respStr);
                 thirdInterfaceLogDao.updateByPrimaryKeySelective(thirdInterfaceLog);
 
-                if("0000".equals(response.getPlain().getResp_code())){  //冻结成功
+                if ("0000".equals(response.getPlain().getResp_code())) {  //冻结成功
 
                     //添加投资记录
                     TbInvestInfo tbInvestInfo = new TbInvestInfo();
@@ -360,11 +365,15 @@ public class ProductServiceImpl implements IProductServiceInf {
                     tbInvestInfo.setIiSsn(response.getPlain().getMchnt_txn_ssn());
                     tbInvestInfo.setIiUpdateTime(tbInvestInfo.getIiCreateTime());
                     tbInvestInfo.setIiThirdAccount(outUser.getUdThirdAccount());
+                    tbInvestInfo.setIiPlatform(platform.getValue());
+                    tbInvestInfo.setIiPlatformType(platformType.getValue());
+                    tbInvestInfo.setIiChannel(0);
+                    tbInvestInfo.setIiChannelType(0);
                     tbInvestInfoDao.insert(tbInvestInfo);
 
                     //更新流水记录
                     tbFundsDetails.setFdSerialStatus(1);
-                    fundsDetailsDao.updateByPrimaryKeySelective(tbFundsDetails);
+                    fundsDetailsService.update(tbFundsDetails);
 
 
                     //修改余额
@@ -377,31 +386,30 @@ public class ProductServiceImpl implements IProductServiceInf {
                     Map<String, Object> fullMap = new HashMap<>();
                     fullMap.put("bpId", tbBidPlan.getBpId());
                     fullMap.put("nowTime", new Date());
-                    if(tbBidPlan.getBpBidMoney().compareTo(investTotal) == 0){
+                    if (tbBidPlan.getBpBidMoney().compareTo(investTotal) == 0) {
                         tbBidPlanDao.fullBid(fullMap);
                     }
 
                     resultInfo.setSuccess_is_ok(true);
                     resultInfo.setMsg(investMoney.toString());
-                }else{
+                } else {
                     resultInfo.setMsg("请核实您的账户信息");
                     //更新流水记录
                     tbFundsDetails.setFdSerialStatus(-1);
-                    fundsDetailsDao.updateByPrimaryKeySelective(tbFundsDetails);
+                    fundsDetailsService.update(tbFundsDetails);
                     tbBidPlanDao.addSurplus(map);
                 }
             } catch (Exception e) {
                 resultInfo.setMsg("操作异常");
-                if(LOGGER.isErrorEnabled()){
-                    LOGGER.error("投资调用失败：流水号-{}, 异常信息：{}",preAuthRequest.getMchnt_txn_ssn(), e);
+                if (LOGGER.isErrorEnabled()) {
+                    LOGGER.error("投资调用失败：流水号-{}, 异常信息：{}", preAuthRequest.getMchnt_txn_ssn(), e);
                 }
                 tbBidPlanDao.addSurplus(map);
             }
-        }else {
+        } else {
             resultInfo.setMsg("投资金额大于剩余金额");
         }
 
         return resultInfo;
     }
-
 }

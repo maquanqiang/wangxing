@@ -65,10 +65,10 @@ public class AccountController extends _BaseController {
             currentUser.setId(resultInfo.getData());
             currentUser.setName(loginForm.getJebUsername());
 
-            if(userDetails == null){
+            if (userDetails == null) {
                 currentUser.setFundAccount(null);
                 currentUser.setLoanerId(0);
-            }else{
+            } else {
                 currentUser.setFundAccount(userDetails.getUdThirdAccount());
                 currentUser.setLoanerId(userDetails.getUdLoanerId() == null ? 0 : userDetails.getUdLoanerId());
             }
@@ -81,28 +81,30 @@ public class AccountController extends _BaseController {
             syncThirdAccount(currentUser);
             //
             return new JsonResultOk("登录成功");
-        }else {
+        } else {
             String error = resultInfo.getMsg();
             return new JsonResultError(error);
         }
 
     }
+
     @Autowired
     private IUserfundServiceInf userfundService;
 
     /**
      * 核心业务是登录
      * 同步第三方账号调用的是富友接口吃掉异常是为了减少对富友接口的依赖
+     *
      * @param currentUser
      */
-    private void syncThirdAccount(CurrentUser currentUser){
+    private void syncThirdAccount(CurrentUser currentUser) {
         try {
             if (currentUser == null) {
-                return ;
+                return;
             }
             //如果第三方账号存在，则直接返回OK
             if (!StringUtils.isBlank(currentUser.getFundAccount())) {
-                return ;
+                return;
             }
             ResultInfo result = userfundService.queryUserInfs(currentUser.getId());
             if (result.getSuccess_is_ok()) {//更新用户缓存
@@ -113,7 +115,7 @@ public class AccountController extends _BaseController {
                     LoginSessionUtil.Refresh(currentUser, request, response);//刷新
                 }
             }
-        }catch (Exception ex){
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
@@ -136,24 +138,24 @@ public class AccountController extends _BaseController {
         //图形验证码校验
         String verifyCode = CaptchaUtil.getCaptchaToken(request, response);
         if (StringUtils.isBlank(verifyCode) || !verifyCode.equalsIgnoreCase(model.getImgCode())) {
-            return new JsonResultError("图形验证码错误",ErrorEnum.imageVerifyCode.getValue());
+            return new JsonResultError("图形验证码错误", ErrorEnum.imageVerifyCode.getValue());
         }
         //短信验证码校验
         String mobile = model.getMobile();
         MessageUtil messageUtil = new MessageUtil();
         if (!messageUtil.isValidCode(mobile, model.getMessageCode())) {
-            return new JsonResultError("短信验证码错误",ErrorEnum.messageVefiryCode.getValue());
+            return new JsonResultError("短信验证码错误", ErrorEnum.messageVefiryCode.getValue());
         }
         HttpUtil httpUtil = new HttpUtil();
         String ip = httpUtil.getIpAddress(request);
         //注册
-        ResultData<Long> result = accountService.register(mobile, model.getPassword(), model.getInvitationCode(), ip, httpUtil.getPlatform(request));
+        ResultData<Long> result = accountService.register(mobile, model.getPassword(), model.getInvitationCode(), ip, httpUtil.getPlatform(request), httpUtil.getPlatformType(request));
         if (result.getSuccess_is_ok()) {
             //登录成功，设置登录状态
             CurrentUser currentUser = new CurrentUser();
             currentUser.setId(result.getData());
             currentUser.setName(mobile);
-            LoginSessionUtil.setLogin(currentUser,request,response);
+            LoginSessionUtil.setLogin(currentUser, request, response);
             return new JsonResultOk(result.getMsg());
         } else {
             return new JsonResultError(result.getMsg());
@@ -165,7 +167,7 @@ public class AccountController extends _BaseController {
         //图形验证码校验
         String verifyCode = CaptchaUtil.getCaptchaToken(request, response);
         if (StringUtils.isBlank(verifyCode) || !verifyCode.equalsIgnoreCase(imgCode)) {
-            return new JsonResultError("图形验证码错误",ErrorEnum.imageVerifyCode.getValue());
+            return new JsonResultError("图形验证码错误", ErrorEnum.imageVerifyCode.getValue());
         }
         String ip = new HttpUtil().getIpAddress(request);
         JsonResult jsonResult = new MessageUtil().sendMessageVerifyCode(mobile, ip);
@@ -173,34 +175,36 @@ public class AccountController extends _BaseController {
     }
 
     @RequestMapping("validateMobile")
-    public HashMap<String,Boolean> validateMobile(String mobile) {
-        HashMap<String,Boolean> map = new HashMap<>();
+    public HashMap<String, Boolean> validateMobile(String mobile) {
+        HashMap<String, Boolean> map = new HashMap<>();
         boolean valid = true;
-        if (!StringUtils.isBlank(mobile) && new ValidatorUtil().isMobile(mobile)){
+        if (!StringUtils.isBlank(mobile) && new ValidatorUtil().isMobile(mobile)) {
             TbLoginInfo existsUserInfo = userService.getUserLoginInfo(mobile);
             if (existsUserInfo != null) {
                 valid = false;
             }
         }
-        map.put("valid",valid);
+        map.put("valid", valid);
         //map.put("valid",true);
         return map;
     }
-    @RequestMapping(value = "forgotStep1",method = RequestMethod.POST)
-    public JsonResult forgotStep1(String mobile,String imgCode){
+
+    @RequestMapping(value = "forgotStep1", method = RequestMethod.POST)
+    public JsonResult forgotStep1(String mobile, String imgCode) {
         TbLoginInfo existsUserInfo = userService.getUserLoginInfo(mobile);
         if (existsUserInfo == null) {
-            return new JsonResultError("该手机号未注册",ErrorEnum.userNotExists.getValue());
+            return new JsonResultError("该手机号未注册", ErrorEnum.userNotExists.getValue());
         }
         //图形验证码校验
         String verifyCode = CaptchaUtil.getCaptchaToken(request, response);
         if (StringUtils.isBlank(verifyCode) || !verifyCode.equalsIgnoreCase(imgCode)) {
-            return new JsonResultError("图形验证码错误",ErrorEnum.imageVerifyCode.getValue());
+            return new JsonResultError("图形验证码错误", ErrorEnum.imageVerifyCode.getValue());
         }
         return new JsonResultOk();
     }
-    @RequestMapping(value = "forgotStep2",method = RequestMethod.POST)
-    public JsonResult forgotStep2(RegisterModel model){
+
+    @RequestMapping(value = "forgotStep2", method = RequestMethod.POST)
+    public JsonResult forgotStep2(RegisterModel model) {
         //region 验证
         ValidationResult resultValidation = ValidationUtil.validateEntity(model);
         if (resultValidation.isHasErrors()) {
@@ -212,13 +216,13 @@ public class AccountController extends _BaseController {
         //图形验证码校验
         String verifyCode = CaptchaUtil.getCaptchaToken(request, response);
         if (StringUtils.isBlank(verifyCode) || !verifyCode.equalsIgnoreCase(model.getImgCode())) {
-            return new JsonResultError("图形验证码错误",ErrorEnum.imageVerifyCode.getValue());
+            return new JsonResultError("图形验证码错误", ErrorEnum.imageVerifyCode.getValue());
         }
         //短信验证码校验
         String mobile = model.getMobile();
         MessageUtil messageUtil = new MessageUtil();
         if (!messageUtil.isValidCode(mobile, model.getMessageCode())) {
-            return new JsonResultError("短信验证码错误",ErrorEnum.messageVefiryCode.getValue());
+            return new JsonResultError("短信验证码错误", ErrorEnum.messageVefiryCode.getValue());
         }
         //endregion
 
