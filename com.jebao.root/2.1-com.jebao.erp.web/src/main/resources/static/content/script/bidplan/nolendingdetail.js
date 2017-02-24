@@ -185,11 +185,6 @@ var vm = new Vue({
                 //加载层-风格2
                 var index = layer.load(1);
                 var form = $("#defaultForm").serializeObject();
-                $.post("/api/investInfo/createRepaymentDetails",form,function(response){
-                    if (response.success_is_ok){
-                        layer.msg(response.msg);
-                    }
-                });
 
                 $.post("/api/bidPlan/doLoan",form,function(response){
                     layer.close(index);
@@ -198,6 +193,12 @@ var vm = new Vue({
                         $.post("/api/investInfo/createIncomeDetails",form,function(response){
                             if (response.success_is_ok){
                                 layer.msg(response.msg);
+                                //借款人还款
+                                $.post("/api/investInfo/createRepaymentDetails",form,function(response){
+                                    if (response.success_is_ok){
+                                        layer.msg(response.msg);
+                                    }
+                                });
                                 form.bidNumber = vm.plan.bpNumber;
                                 $.post("/contract/createDemo", form, function (response) {
                                     if(response.success_is_ok){

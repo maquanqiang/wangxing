@@ -8,6 +8,7 @@ import com.jebao.jebaodb.entity.loanmanage.TbBidPlan;
 import com.jebao.jebaodb.entity.loanmanage.search.BidPlanExtSM;
 import com.jebao.jebaodb.entity.loanmanage.search.BidPlanSM;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**

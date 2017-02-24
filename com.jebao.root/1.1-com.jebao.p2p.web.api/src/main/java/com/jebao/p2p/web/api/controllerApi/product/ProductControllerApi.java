@@ -368,4 +368,62 @@ public class ProductControllerApi extends _BaseController {
 //        }
 //    }
 
+
+    //缓存中删除标的详情数据
+    @RequestMapping("cleanProductDetail")
+    @ResponseBody
+    public JsonResult cleanProductDetail(Long bpId){
+        String keyMd5 = CachedUtil.KeyMd5(bpId);
+        ShardedRedisUtil redisUtil = ShardedRedisUtil.getInstance();
+        CachedSetting cachedSetting = Constants.CACHED_API_PRODUCT_PRODUCTDETAIL;
+        Long result = redisUtil.del(cachedSetting.getKey() + keyMd5);
+        if(result==1){
+            return new JsonResultOk();
+        }else{
+            return new JsonResultError();
+        }
+    }
+
+    /**
+     * 获取标的剩余金额 投资进度  标的状态
+     * @param bpId
+     * @return
+     */
+    @RequestMapping("surplusMoney")
+    @ResponseBody
+    public JsonResult surplusMoney(Long bpId){
+        BigDecimal surplusMoney = productService.selectSurplusMoney(bpId);
+        if(surplusMoney==null){
+            surplusMoney = BigDecimal.ZERO;
+        }
+        return new JsonResultData<>(surplusMoney);
+    }
+
+
+    public JsonResult productDetail1(Long bpId) throws Exception {
+
+        //标的详情页缓存24小时
+        String keyMd5 = CachedUtil.KeyMd5(bpId);
+        ShardedRedisUtil redisUtil = ShardedRedisUtil.getInstance();
+        CachedSetting cachedSetting = Constants.CACHED_API_PRODUCT_PRODUCTDETAIL;
+        CachedWrapper<ProductDetailVM> productDetailCached = redisUtil.getCachedWrapperByMutexKey(
+                cachedSetting.getKey() + keyMd5,
+                cachedSetting.getKeyExpireSec(),
+                cachedSetting.getNullValueExpireSec(),
+                cachedSetting.getKeyMutexExpireSec(),
+                new CachedWrapperExecutor<ProductDetailVM>() {
+
+                    @Override
+                    public ProductDetailVM execute() throws Exception {
+                        TbBidPlan tbBidPlan = productService.selectByBpId(bpId);
+                        if (tbBidPlan == null) {
+                            return null;
+                        } else {
+                            return new ProductDetailVM(tbBidPlan);
+                        }
+                    }
+                });
+        return new JsonResultData<>(productDetailCached.getData());
+
+    }
 }

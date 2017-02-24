@@ -8,6 +8,7 @@ import com.jebao.jebaodb.entity.loanmanage.TbBidPlan;
 import com.jebao.jebaodb.entity.loanmanage.search.BidPlanSM;
 import org.apache.ibatis.annotations.Param;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -59,4 +60,6 @@ public interface TbBidPlanMapper {
     List<TbBidPlan> selectByLoanerIdForPage(BidPlanExtSM model);
 
     int selectByLoanerIdForPageCount(BidPlanExtSM model);
+
+    BigDecimal selectSurplusMoney(@Param("bpId") Long bpId);
 }

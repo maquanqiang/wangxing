@@ -136,6 +136,10 @@ public class TbBidPlanDao_UnitTest extends _BaseUnitTest {
 
     }
 
-
+    @Test
+    public void surpriseMoney(){
+        BigDecimal bigDecimal = tbBidPlanDao.selectSurplusMoney(18l);
+        System.out.println(bigDecimal);
+    }
 
 }
