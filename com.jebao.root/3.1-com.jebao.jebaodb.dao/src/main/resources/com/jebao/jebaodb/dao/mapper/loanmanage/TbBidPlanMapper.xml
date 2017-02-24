@@ -1066,4 +1066,14 @@
         bp_id DESC
         LIMIT 5
     </select>
+
+    <select id="selectSurplusMoney" resultType="java.math.BigDecimal" parameterType="java.lang.Long">
+        SELECT
+            plan.bp_surplus_money
+            FROM
+            tb_bid_plan plan
+            WHERE
+            plan.bp_id = #{bpId}
+    </select>
+
 </mapper>

@@ -412,4 +412,9 @@ public class ProductServiceImpl implements IProductServiceInf {
 
         return resultInfo;
     }
+
+    @Override
+    public BigDecimal selectSurplusMoney(Long bpId) {
+        return tbBidPlanDao.selectSurplusMoney(bpId);
+    }
 }

@@ -44,4 +44,6 @@ public interface IProductServiceInf {
     List<TbInvestInfo> recentInvestment(TbInvestInfo tbInvestInfo, PageWhere pageWhere);
 
     ResultInfo investBid(TbUserDetails outUser, TbBidPlan tbBidPlan, BigDecimal investMoney, EnumModel.Platform platform, EnumModel.PlatformType platformType);
+
+    BigDecimal selectSurplusMoney(Long bpId);
 }
