@@ -61,5 +61,5 @@ public interface TbBidPlanMapper {
 
     int selectByLoanerIdForPageCount(BidPlanExtSM model);
 
-    BigDecimal selectSurplusMoney(@Param("bpId") Long bpId);
+    List<TbBidPlan> selectCacheData(@Param("ids") List ids);
 }

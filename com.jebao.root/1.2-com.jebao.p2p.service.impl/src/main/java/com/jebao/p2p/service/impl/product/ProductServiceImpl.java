@@ -414,7 +414,7 @@ public class ProductServiceImpl implements IProductServiceInf {
     }
 
     @Override
-    public BigDecimal selectSurplusMoney(Long bpId) {
-        return tbBidPlanDao.selectSurplusMoney(bpId);
+    public List<TbBidPlan> selectCacheData(List ids) {
+        return tbBidPlanDao.selectCacheData(ids);
     }
 }

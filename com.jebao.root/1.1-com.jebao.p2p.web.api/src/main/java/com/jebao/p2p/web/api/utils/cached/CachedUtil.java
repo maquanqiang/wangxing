@@ -11,4 +11,11 @@ public class CachedUtil {
         String val= FastJsonUtil.serialize(object);
         return MD5Util.encode(val,"UTF-8");
     }
+    public static String KeyMd5(String val){
+        return MD5Util.encode(val,"UTF-8");
+    }
+    public static <T> String KeySerialize(T object){
+        String val= FastJsonUtil.serialize(object);
+        return val;
+    }
 }

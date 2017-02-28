@@ -45,5 +45,5 @@ public interface IProductServiceInf {
 
     ResultInfo investBid(TbUserDetails outUser, TbBidPlan tbBidPlan, BigDecimal investMoney, EnumModel.Platform platform, EnumModel.PlatformType platformType);
 
-    BigDecimal selectSurplusMoney(Long bpId);
+    List<TbBidPlan> selectCacheData(List ids);
 }

@@ -997,13 +997,42 @@
         <![CDATA[
             UPDATE tb_bid_plan
             SET bp_status = 4,
-            bp_full_time = #{nowDate},
+            bp_full_time = DATE_SUB(bp_end_time,INTERVAL 1 SECOND),
             bp_update_time = #{nowDate}
             WHERE
             bp_status = 2
             AND bp_end_time <= #{nowDate}
         ]]>
     </update>
+
+    <select id="selectBpNumberList" resultMap="BaseResultMap" parameterType="java.lang.String">
+        SELECT
+        *
+        FROM
+        tb_bid_plan plan
+        WHERE
+        plan.bp_number LIKE ${bpNumberStr}
+        ORDER BY
+        bp_id DESC
+        LIMIT 5
+    </select>
+
+    <select id="selectCacheData" resultMap="BaseResultMap" parameterType="java.util.ArrayList">
+        SELECT
+        bp_id,
+        bp_surplus_money,
+        bp_status
+        FROM
+        tb_bid_plan
+        <where>
+          <if test="ids!=null and ids.size()>0">
+              bp_id IN
+              <foreach collection="ids" item="item" index="index"
+                             open="(" separator="," close=")">#{item}
+              </foreach>
+          </if>
+        </where>
+    </select>
     <!--==================================================借款人相关借款统计查询==================================================-->
     <resultMap id="LoanTotalResultMap" type="com.jebao.jebaodb.entity.loaner.LoanTotal">
         <result column="loaner_id" property="loanerId" jdbcType="BIGINT"/>
@@ -1053,27 +1082,5 @@
         and bp_loaner_id = #{loanerId,jdbcType=BIGINT}
         and bp_status >= #{bpStatus,jdbcType=INTEGER}
     </sql>
-
-
-    <select id="selectBpNumberList" resultMap="BaseResultMap" parameterType="java.lang.String">
-        SELECT
-        *
-        FROM
-        tb_bid_plan plan
-        WHERE
-        plan.bp_number LIKE ${bpNumberStr}
-        ORDER BY
-        bp_id DESC
-        LIMIT 5
-    </select>
-
-    <select id="selectSurplusMoney" resultType="java.math.BigDecimal" parameterType="java.lang.Long">
-        SELECT
-            plan.bp_surplus_money
-            FROM
-            tb_bid_plan plan
-            WHERE
-            plan.bp_id = #{bpId}
-    </select>
 
 </mapper>

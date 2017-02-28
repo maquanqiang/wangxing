@@ -20,10 +20,7 @@ import org.omg.CORBA.PUBLIC_MEMBER;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.math.BigDecimal;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.registerCustomDateFormat;
@@ -138,8 +135,20 @@ public class TbBidPlanDao_UnitTest extends _BaseUnitTest {
 
     @Test
     public void surpriseMoney(){
-        BigDecimal bigDecimal = tbBidPlanDao.selectSurplusMoney(18l);
-        System.out.println(bigDecimal);
+        List ids = new ArrayList<>();
+        ids.add(22);
+        ids.add(23);
+        ids.add(24);
+        List<TbBidPlan> tbBidPlans = tbBidPlanDao.selectCacheData(ids);
+        for(TbBidPlan plan : tbBidPlans){
+
+            System.out.println(plan.getBpId());
+        }
+    }
+    @Test
+    public void timeout(){
+        tbBidPlanDao.timeoutBid(new Date());
+        System.out.println("22222222222");
     }
 
 }
