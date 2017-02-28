@@ -27,12 +27,13 @@ public class NotifyController {
      * 成功页面
      */
     @RequestMapping("success")
-    public String success(String title, String content, String backUrl,String btnText, Model model){
+    public String success(String title, String content, String backUrl,String btnText, String investUrl, String btnInvestText, Model model){
         model.addAttribute("title",title);
         model.addAttribute("content",content);
         model.addAttribute("backUrl",backUrl);
         model.addAttribute("btnText",btnText);
-
+        model.addAttribute("investUrl",investUrl);
+        model.addAttribute("btnInvestText",btnInvestText);
         return "notify/success";
     }
 

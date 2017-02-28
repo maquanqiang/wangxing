@@ -247,7 +247,7 @@ public class UserController extends _BaseController {
             String backUrl = "/user/chargewithdraw?typeId=1"; // web页面内的回跳地址，可以是相对路径
             goFailedPage(title, content, backUrl);
         } else {
-            goSuccessPage("充值成功！", "", "/user/index", "查看我的账户");
+            goSuccessPage("充值成功！", "", "/user/index", "查看我的账户", "/html/product", "我要投资");
         }
         return null;
     }
@@ -322,7 +322,7 @@ public class UserController extends _BaseController {
             String backUrl = "/user/chargewithdraw?typeId=1"; // web页面内的回跳地址，可以是相对路径
             goFailedPage(title, content, backUrl);
         } else {
-            goSuccessPage("充值成功！", "", "/user/index", "查看我的账户");
+            goSuccessPage("充值成功！", "", "/user/index", "查看我的账户", "/html/product", "我要投资");
         }
         return null;
     }
@@ -397,7 +397,7 @@ public class UserController extends _BaseController {
             String backUrl = "/user/chargewithdraw?typeId=1"; // web页面内的回跳地址，可以是相对路径
             goFailedPage(title, content, backUrl);
         } else {
-            goSuccessPage("充值成功！", "", "/user/index", "查看我的账户");
+            goSuccessPage("充值成功！", "", "/user/index", "查看我的账户", "/html/product", "我要投资");
         }
         return null;
     }
@@ -475,7 +475,7 @@ public class UserController extends _BaseController {
             String backUrl = "/user/chargewithdraw?typeId=2"; // web页面内的回跳地址，可以是相对路径
             goFailedPage(title, content, backUrl);
         } else {
-            goSuccessPage("提现成功！", "", "/user/index", "查看我的账户");
+            goSuccessPage("提现成功！", "", "/user/index", "查看我的账户", "", "");
         }
         return null;
     }
@@ -509,12 +509,12 @@ public class UserController extends _BaseController {
      * @param backUrl
      * @param btnText
      */
-    private void goSuccessPage(String title, String content, String backUrl, String btnText) {
+    private void goSuccessPage(String title, String content, String backUrl, String btnText, String investUrl, String btnInvestText) {
         String webOrigin = Constants.JEBAO_WEB_ORIGIN;
         String errorUrl = webOrigin + "notify/success";
         String charset = "UTF-8";
         try {
-            String queryString = "title=" + URLEncoder.encode(title, charset) + "&content=" + URLEncoder.encode(content, charset) + "&backUrl=" + URLEncoder.encode(backUrl, charset) + "&btnText=" + URLEncoder.encode(btnText, charset);
+            String queryString = "title=" + URLEncoder.encode(title, charset) + "&content=" + URLEncoder.encode(content, charset) + "&backUrl=" + URLEncoder.encode(backUrl, charset) + "&btnText=" + URLEncoder.encode(btnText, charset)+ "&investUrl=" + URLEncoder.encode(investUrl, charset) + "&btnInvestText=" + URLEncoder.encode(btnInvestText, charset);
             String redirectUrl = errorUrl + "?" + queryString;
             response.sendRedirect(redirectUrl);
         } catch (Exception e) {
