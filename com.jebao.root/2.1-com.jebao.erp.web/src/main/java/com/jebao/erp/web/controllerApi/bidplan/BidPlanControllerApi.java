@@ -153,8 +153,6 @@ public class BidPlanControllerApi extends _BaseController {
         bidPlan.setBpLoanerType(1);                 //默认个人
         bidPlan.setBpRepayedPeriods(0);             //初始为0
         bidPlan.setBpIsDel(1);                      //有效
-        bidPlan.setBpDisplayIsPc(1);//是否PC端显示
-        bidPlan.setBpDisplayIsMobile(1);//是否手机端显示
         bidPlanService.add(bidPlan);
 
         Long rcptId = form.getRcptId();
@@ -340,7 +338,7 @@ public class BidPlanControllerApi extends _BaseController {
         tbBidPlan.setBpId(bpId);
         tbBidPlan.setBpRemark(remark);
         tbBidPlan.setBpUpdateTime(new Date());
-        if (status == TbBidPlan.STATUS_AUDITE_FAIL) {
+        if (status.equals(TbBidPlan.STATUS_AUDITE_FAIL)) {
             tbBidPlan.setBpCreateTime(tbBidPlan.getBpUpdateTime());
         }
         int result = bidPlanService.updateByBidIdSelective(tbBidPlan);

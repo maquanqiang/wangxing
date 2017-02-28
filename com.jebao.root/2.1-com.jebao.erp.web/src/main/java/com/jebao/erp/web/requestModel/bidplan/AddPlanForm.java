@@ -48,6 +48,8 @@ public class AddPlanForm {
         bidPlan.setBpType(planForm.getBpType());
         bidPlan.setBpDesc(planForm.getBpDesc());
         bidPlan.setBpUpRate(planForm.getBpUpRate());
+        bidPlan.setBpDisplayIsPc(planForm.getBpDisplayIsPc());
+        bidPlan.setBpDisplayIsMobile(planForm.getBpDisplayIsMobile());
         return bidPlan;
     }
 
@@ -115,6 +117,12 @@ public class AddPlanForm {
     private Integer bpLoanerType;
 
     private String bpUpRate;
+
+    @DecimalMin(value = "1")
+    private Integer bpDisplayIsPc;
+
+    @DecimalMin(value = "1")
+    private Integer bpDisplayIsMobile;
 
     public String getBpUpRate() {
         return bpUpRate;
@@ -371,5 +379,21 @@ public class AddPlanForm {
 
     public void setBpEndTime(Date bpEndTime) {
         this.bpEndTime = bpEndTime;
+    }
+
+    public Integer getBpDisplayIsPc() {
+        return bpDisplayIsPc;
+    }
+
+    public void setBpDisplayIsPc(Integer bpDisplayIsPc) {
+        this.bpDisplayIsPc = bpDisplayIsPc;
+    }
+
+    public Integer getBpDisplayIsMobile() {
+        return bpDisplayIsMobile;
+    }
+
+    public void setBpDisplayIsMobile(Integer bpDisplayIsMobile) {
+        this.bpDisplayIsMobile = bpDisplayIsMobile;
     }
 }

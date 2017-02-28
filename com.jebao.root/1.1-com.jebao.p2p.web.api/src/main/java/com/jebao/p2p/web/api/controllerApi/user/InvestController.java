@@ -96,14 +96,14 @@ public class InvestController extends _BaseController {
                 InvestPaymentIngVM vm = new InvestPaymentIngVM(baseList.get(i));
                 BigDecimal dueMoney = new BigDecimal(0);
                 for (int j = 0; j < makeList.size(); j++) {
-                    if (makeList.get(j).getIiId() == vm.getIiId()) {
-                        dueMoney = factList.get(j).getTotalMoney();
+                    if (makeList.get(j).getIiId().equals(vm.getIiId())) {
+                        dueMoney = makeList.get(j).getTotalMoney();
                         break;
                     }
                 }
                 for (int j = 0; j < factList.size(); j++) {
-                    if (factList.get(j).getIiId() == vm.getIiId()) {
-                        vm.setDueMoney(dueMoney.add(makeList.get(j).getTotalMoney()));
+                    if (factList.get(j).getIiId().equals(vm.getIiId())) {
+                        vm.setDueMoney(dueMoney.add(factList.get(j).getTotalMoney()));
                         vm.setNextDueDate(factList.get(j).getDateTime());
                         break;
                     }
@@ -164,14 +164,14 @@ public class InvestController extends _BaseController {
                 InvestPaymentIngVM vm = new InvestPaymentIngVM(baseList.get(i));
                 BigDecimal dueMoney = new BigDecimal(0);
                 for (int j = 0; j < makeList.size(); j++) {
-                    if (makeList.get(j).getIiId() == vm.getIiId()) {
-                        dueMoney = factList.get(j).getTotalMoney();
+                    if (makeList.get(j).getIiId().equals(vm.getIiId())) {
+                        dueMoney = makeList.get(j).getTotalMoney();
                         break;
                     }
                 }
                 for (int j = 0; j < factList.size(); j++) {
-                    if (factList.get(j).getIiId() == vm.getIiId()) {
-                        vm.setDueMoney(dueMoney.add(makeList.get(j).getTotalMoney()));
+                    if (factList.get(j).getIiId().equals(vm.getIiId())) {
+                        vm.setDueMoney(dueMoney.add(factList.get(j).getTotalMoney()));
                         vm.setNextDueDate(factList.get(j).getDateTime());
                         break;
                     }
@@ -201,14 +201,14 @@ public class InvestController extends _BaseController {
             for (int i = 0; i < baseList.size(); i++) {
                 InvestPaymentedVM vm = new InvestPaymentedVM(baseList.get(i));
                 for (int j = 0; j < factList.size(); j++) {
-                    if (factList.get(j).getIiId() == vm.getIiId()) {
+                    if (factList.get(j).getIiId().equals(vm.getIiId())) {
                         vm.setFactMoeny(factList.get(j).getTotalMoney());
                         vm.setSettleDate(factList.get(j).getDateTime());
                         break;
                     }
                 }
                 for (int j = 0; j < makeList.size(); j++) {
-                    if (makeList.get(j).getIiId() == vm.getIiId()) {
+                    if (makeList.get(j).getIiId().equals(vm.getIiId())) {
                         vm.setMakeMoney(makeList.get(j).getTotalMoney());
                         break;
                     }

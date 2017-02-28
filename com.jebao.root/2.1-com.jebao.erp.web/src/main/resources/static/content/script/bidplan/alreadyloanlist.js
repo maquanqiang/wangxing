@@ -24,7 +24,8 @@ var model = {
     bpTypeArr:[],
     bpCycleTypeArr : [],
     bpInterestPayTypeArr : [],
-    bpStatusArr : []
+    bpStatusArr : [],
+    displayArr : []
 };
 
 // 创建一个 Vue 实例 (ViewModel),它连接 View 与 Model
@@ -36,8 +37,8 @@ var vm = new Vue({
         model.bpTypeArr = ["","普通理财","新手专享","加息标"];
         model.bpCycleTypeArr = ["","日","月","季","年"];
         model.bpInterestPayTypeArr = ["","一次性还本付息","先息后本，按期付息"];
-        model.bpStatusArr = ["待审核",'审核未通过',"招标中","已满标",'已过期','','起息中','还款中','','','已结清']
-
+        model.bpStatusArr = ["待审核",'审核未通过',"招标中","已满标",'已过期','','起息中','还款中','','','已结清'];
+        model.displayArr = ["","显示","不显示"];
         //初始化本地数据
         model.searchObj = $("#defaultForm").serializeObject(); //初始化 model.search 对象
         model.searchObj.bpStatusSear = '(7,10)';

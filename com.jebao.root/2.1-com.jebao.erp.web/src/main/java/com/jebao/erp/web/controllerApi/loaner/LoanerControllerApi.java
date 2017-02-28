@@ -110,7 +110,7 @@ public class LoanerControllerApi extends _BaseController {
         for(int i = 0; i < loanerList.size(); i++){
             LoanerVM vm = new LoanerVM(loanerList.get(i));
             for (int j=0;j<loanTotalList.size();j++){
-                if(loanTotalList.get(j).getLoanerId() ==  vm.getId()){
+                if(loanTotalList.get(j).getLoanerId().equals(vm.getId())){
                     vm.setBorrowCount(loanTotalList.get(j).getTotalTrades());
                     vm.setBorrowAmount(loanTotalList.get(j).getTotalAmounts());
                     break;
