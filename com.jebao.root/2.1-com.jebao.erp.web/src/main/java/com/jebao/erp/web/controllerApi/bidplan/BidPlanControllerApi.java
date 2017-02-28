@@ -338,7 +338,7 @@ public class BidPlanControllerApi extends _BaseController {
         tbBidPlan.setBpId(bpId);
         tbBidPlan.setBpRemark(remark);
         tbBidPlan.setBpUpdateTime(new Date());
-        if (status == TbBidPlan.STATUS_AUDITE_FAIL) {
+        if (status.equals(TbBidPlan.STATUS_AUDITE_FAIL)) {
             tbBidPlan.setBpCreateTime(tbBidPlan.getBpUpdateTime());
         }
         int result = bidPlanService.updateByBidIdSelective(tbBidPlan);

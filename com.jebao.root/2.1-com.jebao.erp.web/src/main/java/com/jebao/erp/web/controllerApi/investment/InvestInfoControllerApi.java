@@ -183,7 +183,7 @@ public class InvestInfoControllerApi {
             for (TbIncomeDetail bill : incomeDetails) {
                 boolean flag = false;
                 for (TbIncomeDetail bills : bi) {
-                    if(bill.getIndPeriods()==bills.getIndPeriods()&&bill.getIndFundType()==bills.getIndFundType()){
+                    if(bill.getIndPeriods().equals(bills.getIndPeriods()) && bill.getIndFundType().equals(bills.getIndFundType())){
                         BigDecimal money = bills.getIndMoney();
                         money = money.add(bill.getIndMoney());
                         bills.setIndMoney(money);

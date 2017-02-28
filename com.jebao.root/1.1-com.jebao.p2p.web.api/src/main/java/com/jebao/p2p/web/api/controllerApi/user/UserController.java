@@ -68,7 +68,7 @@ public class UserController extends _BaseController {
 
         String newBankName = null; //更换中的银行卡
         String newBankCardNo = null;
-        if (userDetailsEntity.getUdBankCardNoChangeStatus() != null && userDetailsEntity.getUdBankCardNoChangeStatus() == EnumModel.BankCardChangeStatus.更换审核中.getValue()) {
+        if (userDetailsEntity.getUdBankCardNoChangeStatus() != null && userDetailsEntity.getUdBankCardNoChangeStatus().equals(EnumModel.BankCardChangeStatus.更换审核中.getValue())) {
             //去富友查询银行卡更换结果
             ResultInfo resultInfo = userfundService.queryChangeCardResult(user.getId());
             if (resultInfo.getSuccess_is_ok()) {

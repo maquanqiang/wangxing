@@ -216,7 +216,7 @@ public class EmployeeServiceImpl implements IEmployeeServiceInf {
         //region员工所属部门
         if (model.getTeamId() > 0) {
             TbDepartment departmentInfo = employeeInfo.getDepartment();
-            if (!(departmentInfo != null && departmentInfo.getDepId() == model.getTeamId())) { //团队关系变动
+            if (!(departmentInfo != null && departmentInfo.getDepId().equals(model.getTeamId()))) { //团队关系变动
 
                 TbEmpDepRelationship empDepRelationshipEntity = empDepRelationshipDao.selectCurrentEmpRelation(empId);//当前存在的部门关系，更新失效时间
                 if (empDepRelationshipEntity != null) {

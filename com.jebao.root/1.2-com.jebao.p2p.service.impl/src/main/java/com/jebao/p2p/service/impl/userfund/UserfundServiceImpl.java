@@ -295,7 +295,7 @@ public class UserfundServiceImpl implements IUserfundServiceInf {
         if (userDetailsEntity == null) {
             return new ResultInfo(false, "不存在的用户");
         }
-        if (userDetailsEntity.getUdBankCardNoChangeStatus() != null && userDetailsEntity.getUdBankCardNoChangeStatus() == EnumModel.BankCardChangeStatus.更换审核中.getValue()) { // 1正在更换审核中..
+        if (userDetailsEntity.getUdBankCardNoChangeStatus() != null && userDetailsEntity.getUdBankCardNoChangeStatus().equals(EnumModel.BankCardChangeStatus.更换审核中.getValue())) { // 1正在更换审核中..
             return new ResultInfo(false, "您已提交银行卡更换请求，正在审核中，请耐心等待...");
         }
         ChangeCardRequest reqData = new ChangeCardRequest();

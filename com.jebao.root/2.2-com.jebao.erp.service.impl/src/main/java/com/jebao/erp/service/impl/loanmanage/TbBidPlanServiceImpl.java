@@ -354,7 +354,7 @@ public class TbBidPlanServiceImpl implements ITbBidPlanServiceInf {
             if(tbBidPlan.getBpInterestPayType()==1){
                 tbBidPlan.setBpStatus(10);
             }else if(tbBidPlan.getBpInterestPayType()==2){      //说明已到最后一期  修改标的为完成
-                if(tbIncomeDetail.getIndPeriods() == tbBidPlan.getBpPeriods()){
+                if(tbIncomeDetail.getIndPeriods().equals(tbBidPlan.getBpPeriods())){
                     tbBidPlan.setBpStatus(10);
                 }
             }
@@ -374,7 +374,7 @@ public class TbBidPlanServiceImpl implements ITbBidPlanServiceInf {
                     if(tbBidPlan.getBpInterestPayType()==1){
                         info.setIiFreezeStatus(TbInvestInfo.STATUS_COMPLETE);
                     }else if(tbBidPlan.getBpInterestPayType()==2){      //说明已到最后一期  修改标的为完成
-                        if(tbIncomeDetail.getIndPeriods() == tbBidPlan.getBpPeriods()){
+                        if(tbIncomeDetail.getIndPeriods().equals(tbBidPlan.getBpPeriods())){
                             info.setIiFreezeStatus(TbInvestInfo.STATUS_COMPLETE);
                         }
                     }
