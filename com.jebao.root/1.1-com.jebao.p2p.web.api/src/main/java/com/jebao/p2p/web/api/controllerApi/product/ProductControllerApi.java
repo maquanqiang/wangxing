@@ -439,8 +439,12 @@ public class ProductControllerApi extends _BaseController {
     public JsonResult list(ProductForm form){
 
         PageWhere pageWhere = new PageWhere();
-        pageWhere.setPageIndex(form.getPageIndex());
-        pageWhere.setPageSize(form.getPageSize());
+        if(form.getBpInterestPayType()!=null){
+            pageWhere.setPageIndex(form.getPageIndex());
+        }
+        if(form.getPageSize()!=null){
+            pageWhere.setPageSize(form.getPageSize());
+        }
         ProductSM productSM = ProductForm.toEntity(form);
         pageWhere.setOrderBy("bp_status ASC, bp_bid_money DESC, bp_rate DESC, bp_start_time DESC");
         //产品列表缓存5分钟
