@@ -1,9 +1,5 @@
 package com.jebao.p2p.web.api.controllerApi.product;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
-import com.alibaba.fastjson.TypeReference;
 import com.jebao.common.cache.redis.sharded.ShardedRedisUtil;
 import com.jebao.common.cache.utils.wrapper.CachedWrapper;
 import com.jebao.common.cache.utils.wrapper.CachedWrapperExecutor;
@@ -37,7 +33,6 @@ import com.jebao.p2p.web.api.utils.session.CurrentUser;
 import com.jebao.p2p.web.api.utils.session.CurrentUserContextHolder;
 import com.jebao.p2p.web.api.utils.validation.ValidationResult;
 import com.jebao.p2p.web.api.utils.validation.ValidationUtil;
-import com.sun.javaws.CacheUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
