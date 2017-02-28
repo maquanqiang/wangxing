@@ -181,7 +181,7 @@ public class TbBidPlanDao {
         return tbBidPlanMapper.selectByLoanerIdForPageCount(model);
     }
 
-    public BigDecimal selectSurplusMoney(Long bpId){
-        return tbBidPlanMapper.selectSurplusMoney(bpId);
+    public List<TbBidPlan> selectCacheData(List ids){
+        return tbBidPlanMapper.selectCacheData(ids);
     }
 }

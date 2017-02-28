@@ -1,8 +1,13 @@
 package com.jebao.p2p.web.api.controllerApi.product;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.TypeReference;
 import com.jebao.common.cache.redis.sharded.ShardedRedisUtil;
 import com.jebao.common.cache.utils.wrapper.CachedWrapper;
 import com.jebao.common.cache.utils.wrapper.CachedWrapperExecutor;
+import com.jebao.common.utils.fastjson.FastJsonUtil;
 import com.jebao.jebaodb.entity.extEntity.PageWhere;
 import com.jebao.jebaodb.entity.extEntity.ResultInfo;
 import com.jebao.jebaodb.entity.investment.TbIncomeDetail;
@@ -32,6 +37,7 @@ import com.jebao.p2p.web.api.utils.session.CurrentUser;
 import com.jebao.p2p.web.api.utils.session.CurrentUserContextHolder;
 import com.jebao.p2p.web.api.utils.validation.ValidationResult;
 import com.jebao.p2p.web.api.utils.validation.ValidationUtil;
+import com.sun.javaws.CacheUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -60,18 +66,18 @@ public class ProductControllerApi extends _BaseController {
      * @param pageWhere
      * @return
      */
-    @RequestMapping("list")
-    @ResponseBody
-    public JsonResult list(ProductForm form, PageWhere pageWhere) {
-
-        ProductSM productSM = ProductForm.toEntity(form);
-        pageWhere.setOrderBy("bp_status ASC, bp_bid_money DESC, bp_rate DESC, bp_start_time DESC");
-        List<TbBidPlan> tbBidPlans = productService.selectP2PList(productSM, pageWhere);
-        List<ProductVm> productVms = new ArrayList<>();
-        tbBidPlans.forEach(o -> productVms.add(new ProductVm(o)));
-        int count = productService.selectP2PListCount(productSM);
-        return new JsonResultList<>(productVms, count);
-    }
+//    @RequestMapping("list")
+//    @ResponseBody
+//    public JsonResult list(ProductForm form, PageWhere pageWhere) {
+//
+//        ProductSM productSM = ProductForm.toEntity(form);
+//        pageWhere.setOrderBy("bp_status ASC, bp_bid_money DESC, bp_rate DESC, bp_start_time DESC");
+//        List<TbBidPlan> tbBidPlans = productService.selectP2PList(productSM, pageWhere);
+//        List<ProductVm> productVms = new ArrayList<>();
+//        tbBidPlans.forEach(o -> productVms.add(new ProductVm(o)));
+//        int count = productService.selectP2PListCount(productSM);
+//        return new JsonResultList<>(productVms, count);
+//    }
 
     /**
      * 项目详情
@@ -370,60 +376,140 @@ public class ProductControllerApi extends _BaseController {
 
 
     //缓存中删除标的详情数据
-    @RequestMapping("cleanProductDetail")
-    @ResponseBody
-    public JsonResult cleanProductDetail(Long bpId){
+//    @RequestMapping("cleanProductDetail")
+//    @ResponseBody
+//    public JsonResult cleanProductDetail(Long bpId){
+//        String keyMd5 = CachedUtil.KeyMd5(bpId);
+//        ShardedRedisUtil redisUtil = ShardedRedisUtil.getInstance();
+//        CachedSetting cachedSetting = Constants.CACHED_API_PRODUCT_PRODUCTDETAIL;
+//        Long result = redisUtil.del(cachedSetting.getKey() + keyMd5);
+//        if(result==1){
+//            return new JsonResultOk();
+//        }else{
+//            return new JsonResultError();
+//        }
+//    }
+
+
+    /**
+     * 缓存标的详情页数据  不起作用
+     * @param bpId
+     * @return
+     * @throws Exception
+     */
+    public JsonResult productDetail1(Long bpId){
+
+        //标的详情页缓存5
         String keyMd5 = CachedUtil.KeyMd5(bpId);
         ShardedRedisUtil redisUtil = ShardedRedisUtil.getInstance();
         CachedSetting cachedSetting = Constants.CACHED_API_PRODUCT_PRODUCTDETAIL;
-        Long result = redisUtil.del(cachedSetting.getKey() + keyMd5);
-        if(result==1){
-            return new JsonResultOk();
-        }else{
-            return new JsonResultError();
+        CachedWrapper<String> productDetailCached = null;
+        try {
+            productDetailCached = redisUtil.getCachedWrapperByMutexKey(
+                    cachedSetting.getKey() + keyMd5,
+                    cachedSetting.getKeyExpireSec(),
+                    cachedSetting.getNullValueExpireSec(),
+                    cachedSetting.getKeyMutexExpireSec(),
+                    new CachedWrapperExecutor<String>() {
+
+                        @Override
+                        public String execute() throws Exception {
+                            TbBidPlan tbBidPlan = productService.selectByBpId(bpId);
+                            if (tbBidPlan == null) {
+                                return null;
+                            } else {
+                                return FastJsonUtil.serialize(new ProductDetailVM(tbBidPlan));
+                            }
+                        }
+                    });
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new JsonResultData<>(null);
         }
+        ProductDetailVM productDetailVM = FastJsonUtil.deserialize(productDetailCached.getData(), ProductDetailVM.class);
+        if(productDetailVM ==null || productDetailVM.getBpStatus()!=2) return new JsonResultData<>(productDetailVM);
+
+        TbBidPlan tbBidPlan = productService.selectByBpId(bpId);
+        return new JsonResultData<>(new ProductDetailVM(tbBidPlan));
+
     }
 
     /**
-     * 获取标的剩余金额 投资进度  标的状态
-     * @param bpId
+     * 缓存标的列表数据
+     * @param form
      * @return
      */
-    @RequestMapping("surplusMoney")
+    @RequestMapping("list")
     @ResponseBody
-    public JsonResult surplusMoney(Long bpId){
-        BigDecimal surplusMoney = productService.selectSurplusMoney(bpId);
-        if(surplusMoney==null){
-            surplusMoney = BigDecimal.ZERO;
-        }
-        return new JsonResultData<>(surplusMoney);
-    }
+    public JsonResult list(ProductForm form){
 
-
-    public JsonResult productDetail1(Long bpId) throws Exception {
-
-        //标的详情页缓存24小时
-        String keyMd5 = CachedUtil.KeyMd5(bpId);
+        PageWhere pageWhere = new PageWhere();
+        pageWhere.setPageIndex(form.getPageIndex());
+        pageWhere.setPageSize(form.getPageSize());
+        ProductSM productSM = ProductForm.toEntity(form);
+        pageWhere.setOrderBy("bp_status ASC, bp_bid_money DESC, bp_rate DESC, bp_start_time DESC");
+        //产品列表缓存5分钟
+        String keyMd5 = CachedUtil.KeyMd5(form);
         ShardedRedisUtil redisUtil = ShardedRedisUtil.getInstance();
-        CachedSetting cachedSetting = Constants.CACHED_API_PRODUCT_PRODUCTDETAIL;
-        CachedWrapper<ProductDetailVM> productDetailCached = redisUtil.getCachedWrapperByMutexKey(
-                cachedSetting.getKey() + keyMd5,
-                cachedSetting.getKeyExpireSec(),
-                cachedSetting.getNullValueExpireSec(),
-                cachedSetting.getKeyMutexExpireSec(),
-                new CachedWrapperExecutor<ProductDetailVM>() {
+        CachedSetting cachedSetting = Constants.CACHED_API_PRODUCT_LIST;
+        CachedWrapper<String>  productListCached = null;
+        try {
+            productListCached = redisUtil.getCachedWrapperByMutexKey(
+                    cachedSetting.getKey() + keyMd5,
+                    cachedSetting.getKeyExpireSec(),
+                    cachedSetting.getNullValueExpireSec(),
+                    cachedSetting.getKeyMutexExpireSec(),
+                    new CachedWrapperExecutor<String>() {
+                        @Override
+                        public String execute() {
+                            pageWhere.setOrderBy("bp_status ASC, bp_bid_money DESC, bp_rate DESC, bp_start_time DESC");
+                            List<TbBidPlan> tbBidPlans = productService.selectP2PList(productSM, pageWhere);
+                            List<ProductVm> productVms = new ArrayList<>();
+                            tbBidPlans.forEach(o -> productVms.add(new ProductVm(o)));
+                            int count = productService.selectP2PListCount(productSM);
 
-                    @Override
-                    public ProductDetailVM execute() throws Exception {
-                        TbBidPlan tbBidPlan = productService.selectByBpId(bpId);
-                        if (tbBidPlan == null) {
-                            return null;
-                        } else {
-                            return new ProductDetailVM(tbBidPlan);
+                            String productListStr = FastJsonUtil.serialize(new ProductListVM(productVms,count));
+                            return productListStr;
                         }
-                    }
-                });
-        return new JsonResultData<>(productDetailCached.getData());
+                    });
 
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new JsonResultList<>(new ArrayList<ProductVm>(),0);
+        }
+        //todo 查找更新
+        String productListStr2 = productListCached.getData();
+        ProductListVM productListVM = FastJsonUtil.deserialize(productListStr2, ProductListVM.class);
+        List<ProductVm> productVmList = productListVM.getProductVmList();
+        //缓存集合为null直接返回
+        if(productVmList==null || productVmList.size()==0) return new JsonResultList<>(new ArrayList<ProductVm>(),0);
+
+        //非null查询更新
+        List prodIds = new ArrayList();
+        for(int i=0; i< productVmList.size(); i++){
+            ProductVm productVm = productVmList.get(i);
+            if(productVm.getBpStatus()==2){
+                prodIds.add(productVm.getBpId());
+            }
+        }
+        //无更新数据时直接返回
+        if(prodIds.size()==0){
+            return new JsonResultList<>(productVmList, productListVM.getCount());
+        }
+        //有更新数据时查询更新缓存数据
+        List<TbBidPlan> tbBidPlans = productService.selectCacheData(prodIds);
+
+        for (ProductVm bill : productVmList) {
+            for (TbBidPlan bills : tbBidPlans) {
+                if(bill.getBpId().equals(bills.getBpId())){
+                    bill.setBpSurplusMoney(bills.getBpSurplusMoney());
+                    bill.setBpStatus(bills.getBpStatus());
+                    bill.setProgress((bill.getBpBidMoney().subtract(bill.getBpSurplusMoney()).multiply(new BigDecimal(100)).divide(bill.getBpBidMoney(),0, BigDecimal.ROUND_DOWN).toString()));
+                }
+            }
+        }
+
+        return new JsonResultList<>(productVmList, productListVM.getCount());
     }
 }

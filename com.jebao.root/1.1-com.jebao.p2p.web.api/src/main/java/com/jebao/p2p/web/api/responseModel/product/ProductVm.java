@@ -13,6 +13,9 @@ import java.util.Date;
  */
 public class ProductVm extends ViewModel {
 
+    public ProductVm() {
+    }
+
     public ProductVm(TbBidPlan plan){
         this.bpId=plan.getBpId();
         this.bpBidMoney=plan.getBpBidMoney();
