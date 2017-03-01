@@ -22,12 +22,16 @@
         <h4>${title}</h4>
         <p>$!{content}</p>
         #if($btnText && "$btnText"!="")
-        <p class="result-btn clearfix">
-            #if($btnInvestText && "$btnInvestText"!="")
-            <a href="${investUrl}" class="go-btn fl">${btnInvestText}</a>
-            #end
+        #if($btnInvestText && "$btnInvestText"!="")
+        <p class="result-btn clearfix" style="width: 320px">
+            <a href="${investUrl}" class="go-btn fl" style="margin: 20px 10px;">${btnInvestText}</a>
             <a href="${backUrl}" class="go-account fl">${btnText}</a>
-            <a href="/" class="go-btn fr">首页</a>
+            <a href="/" class="go-btn fr" style="margin: 20px 10px;">首页</a>
+        #else
+        <p class="result-btn clearfix">
+        <a href="${backUrl}" class="go-account fl">${btnText}</a>
+        <a href="/" class="go-btn fr">首页</a>
+        #end
         </p>
         #else
         <a href="/" class="go-btn">首页</a>
