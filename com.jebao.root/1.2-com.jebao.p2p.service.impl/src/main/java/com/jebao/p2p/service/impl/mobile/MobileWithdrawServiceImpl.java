@@ -58,7 +58,7 @@ public class MobileWithdrawServiceImpl implements IMobileWithdrawServiceInf {
         if(accountsFunds == null || money.compareTo(accountsFunds.getAfBalance()) == 1){
             return new ResultInfo(false, "提现金额大于您的账户余额，请核对您的余额");
         }
-        String amt = money.multiply(new BigDecimal(100)).toString();
+        String amt = money.multiply(new BigDecimal(100)).setScale(0, BigDecimal.ROUND_DOWN).toString();
         WithdrawDepositRequest reqData = new WithdrawDepositRequest();
         reqData.setLogin_id(userDetails.getUdThirdAccount());
         reqData.setAmt(amt);
