@@ -439,7 +439,7 @@ public class ProductControllerApi extends _BaseController {
     public JsonResult list(ProductForm form){
 
         PageWhere pageWhere = new PageWhere();
-        if(form.getBpInterestPayType()!=null){
+        if(form.getPageIndex()!=null){
             pageWhere.setPageIndex(form.getPageIndex());
         }
         if(form.getPageSize()!=null){
