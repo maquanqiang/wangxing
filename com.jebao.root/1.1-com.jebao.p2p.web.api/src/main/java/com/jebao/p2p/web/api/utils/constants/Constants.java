@@ -34,7 +34,7 @@ public class Constants {
     public static CachedSetting CACHED_API_ARTICLE_LIST=new CachedSetting(DOMAIN+"api_article_list",60*10,10,5,"文章列表缓存10分钟(url=/api/article/list)");
     public static CachedSetting CACHED_API_ARTICLE_LIST_COUNT=new CachedSetting(DOMAIN+"api_article_list_count",60*10,10,5,"文章列表总数缓存10分钟(url=/api/article/list)");
     public static CachedSetting CACHED_API_RECENTINVEST_INDEX=new CachedSetting(DOMAIN+"api_product_recentInvestment",60*10,10,5,"首页最近投资缓存10分钟(url=/api/product/recentInvestment)");
-    public static CachedSetting CACHED_API_PRODUCT_PRODUCTDETAIL = new CachedSetting(DOMAIN+"api_product_productDetail",60*5,10,5,"标的详情页缓存24小时(url=/api/product/productDetail/*)");
-    public static CachedSetting CACHED_API_PRODUCT_LIST = new CachedSetting(DOMAIN+"api_product_list",60*5,10,5,"产品列表缓存10分钟(url=/api/product/list)");
+    public static CachedSetting CACHED_API_PRODUCT_PRODUCTDETAIL = new CachedSetting(DOMAIN+"api_product_productDetail",60*5,10,5,"标的详情页缓存5分钟(url=/api/product/productDetail/*)");
+    public static CachedSetting CACHED_API_PRODUCT_LIST = new CachedSetting(DOMAIN+"api_product_list",60*5,10,5,"产品列表缓存5分钟(url=/api/product/list)");
 
 }

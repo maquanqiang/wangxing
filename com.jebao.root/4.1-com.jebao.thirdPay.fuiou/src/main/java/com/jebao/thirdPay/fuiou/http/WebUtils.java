@@ -6,7 +6,7 @@ public class WebUtils {
         String outStr="";
         try {
             String charSet="UTF-8";
-            String timeOut ="200000";//自行配置
+            String timeOut ="30000";//自行配置
             outStr = HttpClientHelper.doHttp(url,charSet,parameters, timeOut);
             if(outStr==null){
                 throw new Exception("请求接口失败!");
