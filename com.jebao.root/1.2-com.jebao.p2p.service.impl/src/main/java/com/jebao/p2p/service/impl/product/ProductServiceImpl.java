@@ -339,6 +339,7 @@ public class ProductServiceImpl implements IProductServiceInf {
             tbFundsDetails.setFdChannelType(0);
             fundsDetailsService.insert(tbFundsDetails);
             try {
+                int a = 1/0;
                 PreAuthResponse response = preAuthService.post(preAuthRequest);
                 //更新日志信息
                 String respStr = XmlUtil.toXML(response);
@@ -404,6 +405,9 @@ public class ProductServiceImpl implements IProductServiceInf {
                 if (LOGGER.isErrorEnabled()) {
                     LOGGER.error("投资调用失败：流水号-{}, 异常信息：{}", preAuthRequest.getMchnt_txn_ssn(), e);
                 }
+                //更新流水记录
+                tbFundsDetails.setFdSerialStatus(-1);
+                fundsDetailsService.update(tbFundsDetails);
                 tbBidPlanDao.addSurplus(map);
             }
         } else {
