@@ -19,11 +19,21 @@ import org.springframework.stereotype.Service;
 @Service
 public class PreAuthServiceImpl {
 
-    public PreAuthResponse post(PreAuthRequest reqData) throws Exception {
+    public PreAuthResponse post(PreAuthRequest reqData) {
         String httpUrl= FuiouConfig.url+"preAuth.action";
         System.out.println(reqData.requestSignPlain());
         String signatureStr = SecurityUtils.sign(reqData.requestSignPlain());
         reqData.setSignature(signatureStr);
+
+        try {
+            return post(httpUrl, reqData);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    public PreAuthResponse post(String httpUrl, PreAuthRequest reqData) throws Exception {
+
         String xmlData = WebUtils.sendHttp(httpUrl, reqData);
         PrintUtil.printLn(xmlData);
         PreAuthResponse preAuthResponse= XmlUtil.fromXML(xmlData, PreAuthResponse.class);

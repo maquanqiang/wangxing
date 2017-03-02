@@ -282,7 +282,7 @@ public class ProductServiceImpl implements IProductServiceInf {
      * @return
      */
     @Override
-    public ResultInfo investBid(TbUserDetails outUser, TbBidPlan tbBidPlan, BigDecimal investMoney, EnumModel.Platform platform, EnumModel.PlatformType platformType) {
+    public ResultInfo investBid(TbUserDetails outUser, TbBidPlan tbBidPlan, BigDecimal investMoney, EnumModel.Platform platform, EnumModel.PlatformType platformType){
 
         ResultInfo resultInfo = new ResultInfo(false, "投资失败");
 
@@ -338,9 +338,9 @@ public class ProductServiceImpl implements IProductServiceInf {
             tbFundsDetails.setFdChannel(0);
             tbFundsDetails.setFdChannelType(0);
             fundsDetailsService.insert(tbFundsDetails);
-            try {
-                int a = 1/0;
-                PreAuthResponse response = preAuthService.post(preAuthRequest);
+            PreAuthResponse response = preAuthService.post(preAuthRequest);
+
+            if(response!=null && response.getPlain()!=null){
                 //更新日志信息
                 String respStr = XmlUtil.toXML(response);
                 thirdInterfaceLog.setTilReturnCode(response.getPlain().getResp_code());
@@ -400,11 +400,8 @@ public class ProductServiceImpl implements IProductServiceInf {
                     fundsDetailsService.update(tbFundsDetails);
                     tbBidPlanDao.addSurplus(map);
                 }
-            } catch (Exception e) {
-                resultInfo.setMsg("操作异常");
-                if (LOGGER.isErrorEnabled()) {
-                    LOGGER.error("投资调用失败：流水号-{}, 异常信息：{}", preAuthRequest.getMchnt_txn_ssn(), e);
-                }
+            }else{
+                resultInfo.setMsg("系统忙");
                 //更新流水记录
                 tbFundsDetails.setFdSerialStatus(-1);
                 fundsDetailsService.update(tbFundsDetails);
