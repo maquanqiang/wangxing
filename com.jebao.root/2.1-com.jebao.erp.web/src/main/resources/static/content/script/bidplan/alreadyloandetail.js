@@ -55,7 +55,7 @@ var vm = new Vue({
                 dateEt = dateEt.valueOf();
                 dateEt = dateEt - 24 * 60 * 60 * 1000;
                 var dateEtStr = new Date(dateEt).toFormatString("yyyy-MM-dd");
-                $("#bpInterestEt").val(dateStr)
+                $("#bpInterestEt").val(dateEtStr)
             }
         });
         $.get("/api/bidRiskData/getRiskDataListForPage", dataVal, function (response) {
