@@ -247,7 +247,7 @@ public class UserController extends _BaseController {
             String backUrl = "/user/chargewithdraw?typeId=1"; // web页面内的回跳地址，可以是相对路径
             goFailedPage(title, content, backUrl);
         } else {
-            goSuccessPage("充值成功！", "", "/user/index", "查看我的账户", "/html/product", "我要投资");
+            goSuccessPage("充值成功！", "您的本次充值金额为" + new BigDecimal(model.getAmt()).divide(new BigDecimal(100)) + "元", "/user/index", "查看我的账户", "/html/product", "我要投资");
         }
         return null;
     }
@@ -322,7 +322,7 @@ public class UserController extends _BaseController {
             String backUrl = "/user/chargewithdraw?typeId=1"; // web页面内的回跳地址，可以是相对路径
             goFailedPage(title, content, backUrl);
         } else {
-            goSuccessPage("充值成功！", "", "/user/index", "查看我的账户", "/html/product", "我要投资");
+            goSuccessPage("充值成功！", "您的本次充值金额为" + new BigDecimal(model.getAmt()).divide(new BigDecimal(100)) + "元", "/user/index", "查看我的账户", "/html/product", "我要投资");
         }
         return null;
     }
@@ -397,7 +397,7 @@ public class UserController extends _BaseController {
             String backUrl = "/user/chargewithdraw?typeId=1"; // web页面内的回跳地址，可以是相对路径
             goFailedPage(title, content, backUrl);
         } else {
-            goSuccessPage("充值成功！", "", "/user/index", "查看我的账户", "/html/product", "我要投资");
+            goSuccessPage("充值成功！", "您的本次充值金额为" + new BigDecimal(model.getAmt()).divide(new BigDecimal(100)) + "元", "/user/index", "查看我的账户", "/html/product", "我要投资");
         }
         return null;
     }
@@ -475,7 +475,7 @@ public class UserController extends _BaseController {
             String backUrl = "/user/chargewithdraw?typeId=2"; // web页面内的回跳地址，可以是相对路径
             goFailedPage(title, content, backUrl);
         } else {
-            goSuccessPage("提现成功！", "", "/user/index", "查看我的账户", "", "");
+            goSuccessPage("提现成功！", "预计资金于提现申请日的下个工作日到账", "/user/index", "查看我的账户", "/html/product", "我要投资");
         }
         return null;
     }

@@ -59,10 +59,6 @@ var vm = new Vue({
                         validators: {
                             notEmpty: {
                                 message: '金额不能为空'
-                            },
-                            regexp: {
-                                regexp: /^[0-9]\d*$/,
-                                message: '请输入整数，金额不能有小数点'
                             }
                         }
                     }

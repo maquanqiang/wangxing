@@ -27,14 +27,37 @@
             font-size: 0.8rem;
             color:#999999 ;
             margin-bottom: .3rem;
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+        }
+        .wrap a {
+            width: 8rem;
+            height: 2.2rem;
+            background-color: #4c7ee9;
+            color: #fff;
+            display: block;
+            font-size: .7rem;
+            font-weight: bold;
+            text-align: center;
+            line-height: 2.2rem;
+            border-radius: .25rem;
+            margin: 2rem 2rem .5rem 0;
+        }
+        .wrap p a:last-child{
+            margin-right: 0;
+            margin-left: 2rem;
         }
     </style>
 </head>
 <body>
 <div class="wrap">
     <h1>${title}</h1>
-    <p>$!{content}</p>
-    <p>请稍后再试或咨询<span>010-65006966</span></p>
+    <p>${content}</p>
+    <p>
+        <a href="/account/">返回我的账户</a>
+        <a href="/">立即投资</a>
+    </p>
 </div>
 </body>
 </html>

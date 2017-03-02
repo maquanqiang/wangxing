@@ -100,7 +100,7 @@ public class MobileChargeWithdrawController extends _BaseController {
             String content = resultInfo.getMsg();
             goFailedPage(title, content);
         } else {
-            goSuccessPage("充值成功！", "");
+            goSuccessPage("充值成功！", "您的本次充值金额为" + new BigDecimal(model.getAmt()).divide(new BigDecimal(100)) + "元");
         }
         return null;
     }
@@ -173,7 +173,7 @@ public class MobileChargeWithdrawController extends _BaseController {
             String content = resultInfo.getMsg();
             goFailedPage(title, content);
         } else {
-            goSuccessPage("充值成功！", "");
+            goSuccessPage("充值成功！", "您的本次充值金额为" + new BigDecimal(model.getAmt()).divide(new BigDecimal(100)) + "元");
         }
         return null;
     }
@@ -249,7 +249,7 @@ public class MobileChargeWithdrawController extends _BaseController {
             String content = resultInfo.getMsg();
             goFailedPage(title, content);
         } else {
-            goSuccessPage("提现成功！", "");
+            goSuccessPage("提现成功！", "预计资金于提现申请日的下个工作日到账");
         }
         return null;
     }

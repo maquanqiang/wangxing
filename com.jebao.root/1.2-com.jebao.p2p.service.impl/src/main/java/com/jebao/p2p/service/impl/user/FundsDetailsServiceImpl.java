@@ -2,6 +2,7 @@ package com.jebao.p2p.service.impl.user;
 
 import com.jebao.jebaodb.dao.dao.investment.TbIncomeDetailDao;
 import com.jebao.jebaodb.dao.dao.user.TbFundsDetailsDao;
+import com.jebao.jebaodb.entity.extEntity.EnumModel;
 import com.jebao.jebaodb.entity.extEntity.PageWhere;
 import com.jebao.jebaodb.entity.investment.FundDetailSM;
 import com.jebao.jebaodb.entity.investment.TbIncomeDetail;
@@ -30,6 +31,7 @@ public class FundsDetailsServiceImpl implements IFundsDetailsServiceInf {
     public List<TbFundsDetails> selectFundsDetailsByLoginIdForPage(Long loginId, PageWhere page) {
         TbFundsDetails record = new TbFundsDetails();
         record.setFdLoginId(loginId);
+        record.setFdSerialStatus(EnumModel.FdSerialStatus.成功.getValue());
         return tbFundsDetailsDao.selectByParamsForPage(record, page);
     }
 
@@ -37,6 +39,7 @@ public class FundsDetailsServiceImpl implements IFundsDetailsServiceInf {
     public int selectFundsDetailsByLoginIdForPageCount(Long loginId) {
         TbFundsDetails record = new TbFundsDetails();
         record.setFdLoginId(loginId);
+        record.setFdSerialStatus(EnumModel.FdSerialStatus.成功.getValue());
         return tbFundsDetailsDao.selectByParamsForPageCount(record);
     }
 
