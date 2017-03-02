@@ -55,9 +55,17 @@
     <h1>${title}</h1>
     <p>${content}</p>
     <p>
-        <a href="/account/">返回我的账户</a>
-        <a href="/">立即投资</a>
+        <a href="/account/" onclick="goAccount">返回我的账户</a>
+        <a href="/" onclick="goProduct">立即投资</a>
     </p>
 </div>
 </body>
 </html>
+<script>
+    function goAccount(){
+        app.goAccount();
+    }
+    function goProduct(){
+        app.goProduct();
+    }
+</script>
