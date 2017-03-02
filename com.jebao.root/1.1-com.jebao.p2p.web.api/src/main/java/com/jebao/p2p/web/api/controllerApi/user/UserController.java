@@ -514,7 +514,10 @@ public class UserController extends _BaseController {
         String errorUrl = webOrigin + "notify/success";
         String charset = "UTF-8";
         try {
-            String queryString = "title=" + URLEncoder.encode(title, charset) + "&content=" + URLEncoder.encode(content, charset) + "&backUrl=" + URLEncoder.encode(backUrl, charset) + "&btnText=" + URLEncoder.encode(btnText, charset)+ "&investUrl=" + URLEncoder.encode(investUrl, charset) + "&btnInvestText=" + URLEncoder.encode(btnInvestText, charset);
+            String queryString = "title=" + URLEncoder.encode(title, charset) + "&content=" + URLEncoder.encode(content, charset) + "&backUrl=" + URLEncoder.encode(backUrl, charset) + "&btnText=" + URLEncoder.encode(btnText, charset);
+            if(StringUtils.isNotBlank(investUrl) && StringUtils.isNotBlank(btnInvestText)){
+                queryString += "&investUrl=" + URLEncoder.encode(investUrl, charset) + "&btnInvestText=" + URLEncoder.encode(btnInvestText, charset);
+            }
             String redirectUrl = errorUrl + "?" + queryString;
             response.sendRedirect(redirectUrl);
         } catch (Exception e) {

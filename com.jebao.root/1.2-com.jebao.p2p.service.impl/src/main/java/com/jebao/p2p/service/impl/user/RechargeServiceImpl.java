@@ -60,7 +60,7 @@ public class RechargeServiceImpl implements IRechargeServiceInf {
         if (userDetails == null || StringUtils.isBlank(userDetails.getUdThirdAccount())) {
             return new ResultInfo(false, "您尚未开通第三方资金账户");
         }
-        String amt = money.multiply(new BigDecimal(100)).toString();
+        String amt = money.multiply(new BigDecimal(100)).setScale(0, BigDecimal.ROUND_DOWN).toString();
         PersonQuickPayRequest reqData = new PersonQuickPayRequest();
         reqData.setLogin_id(userDetails.getUdThirdAccount());
         reqData.setAmt(amt);
@@ -197,7 +197,7 @@ public class RechargeServiceImpl implements IRechargeServiceInf {
         if (userDetails == null || StringUtils.isBlank(userDetails.getUdThirdAccount())) {
             return new ResultInfo(false, "您尚未开通第三方资金账户");
         }
-        String amt = money.multiply(new BigDecimal(100)).toString();
+        String amt = money.multiply(new BigDecimal(100)).setScale(0, BigDecimal.ROUND_DOWN).toString();
         FastRechargeRequest reqData = new FastRechargeRequest();
         reqData.setLogin_id(userDetails.getUdThirdAccount());
         reqData.setAmt(amt);
@@ -337,7 +337,7 @@ public class RechargeServiceImpl implements IRechargeServiceInf {
         if (userDetails == null || StringUtils.isBlank(userDetails.getUdThirdAccount())) {
             return new ResultInfo(false, "您尚未开通第三方资金账户");
         }
-        String amt = money.multiply(new BigDecimal(100)).toString();
+        String amt = money.multiply(new BigDecimal(100)).setScale(0, BigDecimal.ROUND_DOWN).toString();
         OnlineBankRechargeRequest reqData = new OnlineBankRechargeRequest();
         reqData.setLogin_id(userDetails.getUdThirdAccount());
         reqData.setAmt(amt);
