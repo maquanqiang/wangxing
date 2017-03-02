@@ -457,7 +457,7 @@
         <if test="record.bpStatusSear != null and record.bpStatusSear != ''" >
             AND bp_status IN ${record.bpStatusSear}
         </if>
-        AND bp_is_del = 1
+        AND bp_is_del = 1 AND ind_is_del = 1
     </sql>
 
     <select id="selectPostLoanDetail" resultMap="myResultMap">
