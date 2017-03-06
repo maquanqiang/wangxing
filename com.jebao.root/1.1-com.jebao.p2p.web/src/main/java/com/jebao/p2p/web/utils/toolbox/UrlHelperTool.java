@@ -68,6 +68,14 @@ public class UrlHelperTool {
         return apiOrgin;
     }
 
+    public String getH5Origin() {
+        String h5Orgin = Constants.H5_ORGIN;
+        if (h5Orgin.charAt(h5Orgin.length() - 1) == '/'){
+            h5Orgin = h5Orgin.substring(0,h5Orgin.length() - 1);
+        }
+        return h5Orgin;
+    }
+
     /**
      * 手续费（提现）
      *

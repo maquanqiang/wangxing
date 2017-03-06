@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     #set($filePath = $UrlHelperTool.getStaticFilePath())
+    #set($h5Origin = $UrlHelperTool.getH5Origin())
     <meta http-equiv="Content-Type" content="text/html" charset="UTF-8">
     <title>操作成功 -金额宝</title>
     <meta name="keywords" content="">
@@ -55,8 +56,8 @@
     <h1>${title}</h1>
     <p>${content}</p>
     <p>
-        <a href="http://m.jebao.cc/account/" onclick="goAccount()">返回我的账户</a>
-        <a href="http://m.jebao.cc/" onclick="goProduct()">立即投资</a>
+        <a href="${h5Origin}/account/" onclick="goAccount()">返回我的账户</a>
+        <a href="${h5Origin}/" onclick="goProduct()">立即投资</a>
     </p>
 </div>
 <script type="text/javascript">

@@ -19,6 +19,7 @@ public class Constants {
     public static final String LOGIN_SESSION_COOKIE_NAME = DOMAIN + "LS";
     //配置信息
     public static final String WebApiOrgin = ProjectSetting.getConfigProperty("project.webapi.origin");
+    public static final String H5_ORGIN = ProjectSetting.getConfigProperty("project.h5.origin");
     //手续费
     public static String COMMISSION_CHARGE = ProjectSetting.getConfigProperty("project.commission_charge") == null ? "0" : ProjectSetting.getConfigProperty("project.commission_charge");
     //静态资源文件的路径
