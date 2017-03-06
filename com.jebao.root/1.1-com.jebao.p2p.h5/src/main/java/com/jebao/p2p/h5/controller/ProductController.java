@@ -46,5 +46,10 @@ public class ProductController {
         model.addAttribute("investMoney", investMoney);
         return "product/productSuccess";
     }
+    @RequestMapping("productimg/{bpId}")
+    public String productimg(@PathVariable("bpId") Long bpId, Model model){
+        model.addAttribute("bpId", bpId);
+        return "product/productimg";
+    }
 
 }
