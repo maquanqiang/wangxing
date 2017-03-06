@@ -22,6 +22,7 @@
         <module>2.2-com.jebao.erp.service.impl</module>
         <module>2.2-com.jebao.erp.service.inf</module>
         <module>5.1-com.jebao.file.web</module>
+        <module>1.1-com.jebao.p2p.h5</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>
