@@ -11,6 +11,14 @@
                     <img src="${filePath}/images/header-code.jpg">
                 </div>
             </li>
+            <li class="spacer"></li>
+            <li>
+                <span><i></i>手机客户端</span>
+                <div class="weixin-content">
+                    <div class="triangle-inner"></div>
+                    <img src="${filePath}/images/header-download.jpg">
+                </div>
+            </li>
         </ul>
 
         #if($_loginUser_header_.isLogin)
@@ -24,7 +32,8 @@
             <li class="spacer"></li>
             <li class="fore">
                 <a href="/account/logout">
-                    <em class="header-exit"></em>退出
+                    <!--<em class="header-exit"></em>-->
+                    退出
                 </a>
             </li>
         </ul>
@@ -32,7 +41,8 @@
         <ul class="header_login fr">
             <li class="fore">
                 <a href="/account/login" id="header_login_link">
-                    <em class="header-user"></em>登录
+                    <!--<em class="header-user"></em>-->
+                    登录
                 </a>
                 <script>
                     document.getElementById("header_login_link").href += "?redirect="+window.location.pathname;
@@ -41,7 +51,8 @@
             <li class="spacer"></li>
             <li class="fore">
                 <a href="/account/register">
-                    <em class="header-pen"></em>免费注册
+                    <!--<em class="header-pen"></em>-->
+                    免费注册
                 </a>
             </li>
         </ul>
