@@ -1,7 +1,9 @@
 package com.jebao.erp.web.conf;
 
+import com.sun.jna.Platform;
 import org.springframework.boot.context.embedded.EmbeddedServletContainerFactory;
 import org.springframework.boot.context.embedded.tomcat.TomcatEmbeddedServletContainerFactory;
+import org.springframework.boot.web.servlet.MultipartConfigFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.util.AntPathMatcher;
@@ -12,6 +14,8 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.view.velocity.VelocityToolboxView;
 import org.springframework.web.servlet.view.velocity.VelocityViewResolver;
+
+import javax.servlet.MultipartConfigElement;
 
 /**
  * Created by Administrator on 2016/10/11.
