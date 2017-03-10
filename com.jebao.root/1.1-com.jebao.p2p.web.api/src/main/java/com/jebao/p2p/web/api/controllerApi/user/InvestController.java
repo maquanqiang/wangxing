@@ -35,7 +35,6 @@ public class InvestController extends _BaseController {
     @Autowired
     private IInvestServiceInf investService;
 
-
     /**
      * 账户总览-资金统计
      *

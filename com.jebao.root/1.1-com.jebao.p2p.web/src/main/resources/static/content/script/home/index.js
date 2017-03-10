@@ -112,6 +112,7 @@ var vm = new Vue({
     }
 });
 
+//公司动态
 var aVm = new Vue({
     el: ".new-announcement",
     data: {
@@ -129,6 +130,7 @@ var aVm = new Vue({
     }
 });
 
+//媒体报道
 var mVm = new Vue({
     el: ".media",
     data: {},
