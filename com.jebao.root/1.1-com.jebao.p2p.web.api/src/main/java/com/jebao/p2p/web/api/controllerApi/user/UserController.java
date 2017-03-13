@@ -135,6 +135,10 @@ public class UserController extends _BaseController {
         return new JsonResultOk();
     }
 
+    /**
+     * 同步第三方账户余额
+     * @return
+     */
     @RequestMapping("syncUserBalance")
     public JsonResult syncUserBalance() {
         CurrentUser user = CurrentUserContextHolder.get();
