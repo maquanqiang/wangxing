@@ -25,6 +25,8 @@ public class PlanMaterialForm {
     }
     private Long bpId;
 
+    private Long rcptId;    //项目模板id
+
     private String bpBorrowDesc;
 
     private String bpFundsPurpose;
@@ -38,6 +40,15 @@ public class PlanMaterialForm {
     private String bpRiskOpinion;
 
     private String bpDesc;
+
+
+    public Long getRcptId() {
+        return rcptId;
+    }
+
+    public void setRcptId(Long rcptId) {
+        this.rcptId = rcptId;
+    }
 
     public Long getBpId() {
         return bpId;

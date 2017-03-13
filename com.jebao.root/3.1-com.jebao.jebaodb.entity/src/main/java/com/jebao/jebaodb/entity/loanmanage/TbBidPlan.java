@@ -109,6 +109,16 @@ public class TbBidPlan {
 
     private Integer bpDisplayIsMobile;
 
+    private Integer bpMonthTerm;   //月周期           由日、月、季、年转换来
+
+    public Integer getBpMonthTerm() {
+        return bpMonthTerm;
+    }
+
+    public void setBpMonthTerm(Integer bpMonthTerm) {
+        this.bpMonthTerm = bpMonthTerm;
+    }
+
     public String getBpUpRate() {
         return bpUpRate;
     }

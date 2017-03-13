@@ -62,4 +62,6 @@ public interface TbBidPlanMapper {
     int selectByLoanerIdForPageCount(BidPlanExtSM model);
 
     List<TbBidPlan> selectCacheData(@Param("ids") List ids);
+
+    BigDecimal selectIncomeCount(@Param("dateSearType")Integer dateSearType);
 }

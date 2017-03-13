@@ -47,6 +47,17 @@ public class UpdatePlanForm{
         bidPlan.setBpSurplusMoney(planForm.getBpBidMoney());
         bidPlan.setBpDisplayIsPc(planForm.getBpDisplayIsPc());
         bidPlan.setBpDisplayIsMobile(planForm.getBpDisplayIsMobile());
+        //换算周期为月
+        int periods = planForm.getBpPeriods();
+        if(planForm.getBpCycleType()==1){
+            bidPlan.setBpMonthTerm(periods%30 == 0 ? periods / 30 : periods/30 + 1);
+        }else if(planForm.getBpCycleType() == 2){
+            bidPlan.setBpMonthTerm(periods);
+        }else if(planForm.getBpCycleType() == 3){
+            bidPlan.setBpMonthTerm(periods * 3);
+        }else if(planForm.getBpCycleType() == 4){
+            bidPlan.setBpMonthTerm(periods * 12);
+        }
         return bidPlan;
     }
     private Long bpId;

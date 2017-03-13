@@ -59,4 +59,6 @@ public interface ITbBidPlanServiceInf {
     List<TbBidPlan> selectLoanRecordByLoanerIdForPage(BidPlanExtSM model);
 
     int selectLoanRecordByLoanerIdForPageCount(BidPlanExtSM model);
+
+    BigDecimal selectIncomeCount(int dateSearType);
 }

@@ -14,6 +14,9 @@ import java.util.Date;
  */
 public class IncomeDetailsVM extends ViewModel {
 
+    public IncomeDetailsVM() {
+    }
+
     public IncomeDetailsVM(TbIncomeDetail entity) {
 
         Integer days = 0;

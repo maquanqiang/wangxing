@@ -48,6 +48,7 @@
         <result column="bp_up_rate" property="bpUpRate" jdbcType="VARCHAR" />
         <result column="bp_display_is_pc" property="bpDisplayIsPc" jdbcType="INTEGER" />
         <result column="bp_display_is_mobile" property="bpDisplayIsMobile" jdbcType="INTEGER" />
+        <result column="bp_month_term" property="bpMonthTerm" jdbcType="INTEGER" />
     </resultMap>
     <resultMap id="ResultMapWithBLOBs" type="com.jebao.jebaodb.entity.loanmanage.TbBidPlan" extends="BaseResultMap" >
         <result column="bp_desc" property="bpDesc" jdbcType="LONGVARCHAR" />
@@ -60,7 +61,7 @@
         bp_open_time, bp_interest_st, bp_expect_loan_date, bp_expect_repay_date, bp_service_charge_rate,
         bp_late_rate, bp_borrow_desc, bp_funds_purpose, bp_repaying_source, bp_personal_credit,
         bp_mortgage_info, bp_risk_opinion, bp_repayed_periods, bp_remark, bp_status, bp_create_time,
-        bp_update_time, bp_is_del, bp_up_rate, bp_display_is_pc, bp_display_is_mobile
+        bp_update_time, bp_is_del, bp_up_rate, bp_display_is_pc, bp_display_is_mobile, bp_month_term
     </sql>
     <sql id="Blob_Column_List" >
         bp_desc
@@ -92,7 +93,7 @@
         bp_risk_opinion, bp_repayed_periods, bp_remark,
         bp_status, bp_create_time, bp_update_time,
         bp_is_del, bp_up_rate, bp_display_is_pc,
-        bp_display_is_mobile, bp_desc)
+        bp_display_is_mobile, bp_month_term, bp_desc)
         values (#{bpLoanerId,jdbcType=BIGINT}, #{bpLoanerType,jdbcType=INTEGER}, #{bpTrueName,jdbcType=VARCHAR},
         #{bpLoginId,jdbcType=BIGINT}, #{bpType,jdbcType=INTEGER}, #{bpNumber,jdbcType=VARCHAR},
         #{bpName,jdbcType=VARCHAR}, #{bpPeriodsDisplay,jdbcType=INTEGER}, #{bpPeriods,jdbcType=INTEGER},
@@ -108,7 +109,7 @@
         #{bpRiskOpinion,jdbcType=VARCHAR}, #{bpRepayedPeriods,jdbcType=INTEGER}, #{bpRemark,jdbcType=VARCHAR},
         #{bpStatus,jdbcType=INTEGER}, #{bpCreateTime,jdbcType=TIMESTAMP}, #{bpUpdateTime,jdbcType=TIMESTAMP},
         #{bpIsDel,jdbcType=INTEGER}, #{bpUpRate,jdbcType=VARCHAR}, #{bpDisplayIsPc,jdbcType=INTEGER},
-        #{bpDisplayIsMobile,jdbcType=INTEGER}, #{bpDesc,jdbcType=LONGVARCHAR})
+        #{bpDisplayIsMobile,jdbcType=INTEGER}, #{bpMonthTerm,jdbcType=INTEGER}, #{bpDesc,jdbcType=LONGVARCHAR})
     </insert>
     <insert id="insertSelective" parameterType="com.jebao.jebaodb.entity.loanmanage.TbBidPlan" >
         <selectKey resultType="java.lang.Long" keyProperty="bpId" order="AFTER" >
@@ -251,6 +252,9 @@
             <if test="bpDisplayIsMobile != null" >
                 bp_display_is_mobile,
             </if>
+            <if test="bpMonthTerm != null" >
+                bp_month_term,
+            </if>
             <if test="bpDesc != null" >
                 bp_desc,
             </if>
@@ -390,6 +394,9 @@
             </if>
             <if test="bpDisplayIsMobile != null" >
                 #{bpDisplayIsMobile,jdbcType=INTEGER},
+            </if>
+            <if test="bpMonthTerm != null" >
+                #{bpMonthTerm,jdbcType=INTEGER},
             </if>
             <if test="bpDesc != null" >
                 #{bpDesc,jdbcType=LONGVARCHAR},
@@ -534,6 +541,9 @@
             <if test="bpDisplayIsMobile != null" >
                 bp_display_is_mobile = #{bpDisplayIsMobile,jdbcType=INTEGER},
             </if>
+            <if test="bpMonthTerm != null" >
+                bp_month_term = #{bpMonthTerm,jdbcType=INTEGER},
+            </if>
             <if test="bpDesc != null" >
                 bp_desc = #{bpDesc,jdbcType=LONGVARCHAR},
             </if>
@@ -587,6 +597,7 @@
         bp_up_rate = #{bpUpRate,jdbcType=VARCHAR},
         bp_display_is_pc = #{bpDisplayIsPc,jdbcType=INTEGER},
         bp_display_is_mobile = #{bpDisplayIsMobile,jdbcType=INTEGER},
+        bp_month_term = #{bpMonthTerm,jdbcType=INTEGER},
         bp_desc = #{bpDesc,jdbcType=LONGVARCHAR}
         where bp_id = #{bpId,jdbcType=BIGINT}
     </update>
@@ -636,7 +647,8 @@
         bp_is_del = #{bpIsDel,jdbcType=INTEGER},
         bp_up_rate = #{bpUpRate,jdbcType=VARCHAR},
         bp_display_is_pc = #{bpDisplayIsPc,jdbcType=INTEGER},
-        bp_display_is_mobile = #{bpDisplayIsMobile,jdbcType=INTEGER}
+        bp_display_is_mobile = #{bpDisplayIsMobile,jdbcType=INTEGER},
+        bp_month_term = #{bpMonthTerm,jdbcType=INTEGER}
         where bp_id = #{bpId,jdbcType=BIGINT}
     </update>
     <!--==================================================华丽分割线==================================================-->
@@ -770,6 +782,9 @@
         <if test="record.bpUpRate != null" >
             AND bp_up_rate = #{record.bpUpRate,jdbcType=VARCHAR}
         </if>
+        <if test="record.bpMonthTerm != null" >
+            AND bp_month_term = #{record.bpMonthTerm,jdbcType=INTEGER}
+        </if>
         AND bp_is_del = 1
     </sql>
     <sql id="selectBySelfCondition_Where_Clause">
@@ -856,6 +871,9 @@
             <![CDATA[
               AND bp_bid_money  <=  #{record.searchMoneyEnd,jdbcType=DECIMAL}
             ]]>
+        </if>
+        <if test="record.bpMonthTerm != null" >
+              AND bp_month_term  =  #{record.bpMonthTerm,jdbcType=INTEGER}
         </if>
         <!--<if test="record.bpIsDel != null" >-->
         <!--AND bp_is_del = #{record.bpIsDel,jdbcType=INTEGER}-->
@@ -1033,6 +1051,31 @@
           </if>
         </where>
     </select>
+    
+    
+    <select id="selectIncomeCount" resultType="java.math.BigDecimal" parameterType="java.lang.Integer">
+
+        SELECT
+          sum(ind_money)
+        FROM
+        tb_income_detail detail
+        WHERE
+        detail.ind_is_del = 1
+        AND detail.ind_status = 1
+
+        <if test="dateSearType == 1">
+        <![CDATA[
+          AND ind_date_time <= NOW()
+        ]]>
+        </if>
+        <if test="dateSearType == 2">
+        <![CDATA[
+            AND ind_date_time <= DATE_SUB(NOW(),INTERVAL 1 DAY)
+        ]]>
+        </if>
+
+    </select>
+    
     <!--==================================================借款人相关借款统计查询==================================================-->
     <resultMap id="LoanTotalResultMap" type="com.jebao.jebaodb.entity.loaner.LoanTotal">
         <result column="loaner_id" property="loanerId" jdbcType="BIGINT"/>

@@ -17,6 +17,7 @@ import com.jebao.erp.web.responseModel.bidplan.BidPlanVM;
 import com.jebao.erp.web.responseModel.bidplan.LoanIntentVM;
 import com.jebao.erp.web.responseModel.bidplan.ProjTempNameVM;
 import com.jebao.erp.web.responseModel.bidplan.ProjectTempVM;
+import com.jebao.erp.web.responseModel.postLoan.IncomeDetailsVM;
 import com.jebao.erp.web.utils.contract.UpCaseRMB;
 import com.jebao.erp.web.utils.excel.ExcelUtil;
 import com.jebao.erp.web.utils.toolbox.BetweenDays;
@@ -42,6 +43,7 @@ import com.jebao.thirdPay.fuiou.model.transferBu.TransferBuResponse;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -461,11 +463,41 @@ public class BidPlanControllerApi extends _BaseController {
         TbBidPlan bidPlan = PlanMaterialForm.toEntity(form);
         bidPlan.setBpUpdateTime(new Date());
         int count = bidPlanService.updateByBidIdSelective(bidPlan);
+
         if (count > 0) {
+            //查询到材料 标识为删除
+            TbBidRiskData riskData = new TbBidRiskData();
+            riskData.setBrdBpId(bidPlan.getBpId());
+            List<TbBidRiskData> tbBidRiskDatas = riskDataService.selectByConditionForPage(riskData, new PageWhere(0, 100));
+
+            if(tbBidRiskDatas!=null && tbBidRiskDatas.size()>0){
+                for(TbBidRiskData data:tbBidRiskDatas){
+                    data.setBrdUpdateTime(new Date());
+                    data.setBrdIsDel(2);
+                    riskDataService.updateByBidIdSelective(data);
+                }
+            }
+            Long rcptId = form.getRcptId();
+            //保存风控信息
+            if (rcptId != null) {
+                List<TbRcpMaterialsTemp> materialsTemps = loanerService.selectRcpMaterialsTempByPrjIdForPage(rcptId, null);
+                if (materialsTemps != null && materialsTemps.size() > 0) {
+                    for (TbRcpMaterialsTemp temp : materialsTemps) {
+                        Date cDate = new Date();
+                        TbBidRiskData nRiskData = TbBidRiskData.toEntity(temp);
+                        nRiskData.setBrdCreateTime(cDate);
+                        nRiskData.setBrdUpdateTime(cDate);
+                        nRiskData.setBrdIsDel(1);
+                        nRiskData.setBrdBpId(bidPlan.getBpId());
+                        riskDataService.add(nRiskData);
+                    }
+                }
+            }
             return new JsonResultOk("信息修改成功");
         } else {
             return new JsonResultError("信息修改失败");
         }
+
     }
 
     @RequestMapping("selectBpNumberList")
@@ -566,5 +598,16 @@ public class BidPlanControllerApi extends _BaseController {
         new ExcelUtil().outputFile(response, "标的列表.xlsx",viewModelList);
     }
 
+    /**
+     * 查询到期金额  应还款金额
+     * @return
+     */
+    @RequestMapping("incomeCount/{type}")
+    @ResponseBody
+    public JsonResult incomeCount(@PathVariable("type")Integer type){
+        BigDecimal dueTotal = bidPlanService.selectIncomeCount(type);
+
+        return new JsonResultData<>(dueTotal);
+    }
 }
 

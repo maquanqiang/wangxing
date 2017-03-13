@@ -20,6 +20,7 @@ import org.omg.CORBA.PUBLIC_MEMBER;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -149,6 +150,28 @@ public class TbBidPlanDao_UnitTest extends _BaseUnitTest {
     public void timeout(){
         tbBidPlanDao.timeoutBid(new Date());
         System.out.println("22222222222");
+    }
+
+    @Test
+    public void test_selectIncomeCount(){
+
+        List<TbBidPlan> tbBidPlans = tbBidPlanDao.selectForPage(new PageWhere(0, 1000));
+        for(TbBidPlan plan:tbBidPlans){
+            if(plan.getBpCycleType()==1){
+                plan.setBpMonthTerm(plan.getBpPeriods()%30==0?plan.getBpPeriods()/30:plan.getBpPeriods()/30+1);
+            }else if(plan.getBpCycleType()==2){
+                plan.setBpMonthTerm(plan.getBpPeriods());
+            }else if(plan.getBpCycleType()==3){
+                plan.setBpMonthTerm(plan.getBpPeriods()*3);
+            }else if(plan.getBpCycleType()==4){
+                plan.setBpMonthTerm(plan.getBpPeriods()*12);
+            }
+            tbBidPlanDao.updateByPrimaryKeySelective(plan);
+        }
+
+        System.out.println("2222222");
+
+
     }
 
 }

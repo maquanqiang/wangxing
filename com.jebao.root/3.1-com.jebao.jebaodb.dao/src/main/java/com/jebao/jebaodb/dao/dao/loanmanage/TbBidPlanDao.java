@@ -184,4 +184,11 @@ public class TbBidPlanDao {
     public List<TbBidPlan> selectCacheData(List ids){
         return tbBidPlanMapper.selectCacheData(ids);
     }
+
+    /**
+     * 查询未还金额
+     * @param dateSearType     1:到期金额   2 应还金额
+     * @return
+     */
+    public BigDecimal selectIncomeCount(Integer dateSearType){return tbBidPlanMapper.selectIncomeCount(dateSearType); }
 }

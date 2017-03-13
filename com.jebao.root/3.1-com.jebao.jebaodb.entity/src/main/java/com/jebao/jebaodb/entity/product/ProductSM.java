@@ -17,6 +17,16 @@ public class ProductSM {
     private Integer bpPeriods;
     private Integer bpDisplayIsPc;
     private Integer bpDisplayIsMobile;
+    private Integer bpMonthTerm;            //月期限
+
+
+    public Integer getBpMonthTerm() {
+        return bpMonthTerm;
+    }
+
+    public void setBpMonthTerm(Integer bpMonthTerm) {
+        this.bpMonthTerm = bpMonthTerm;
+    }
 
     public Integer getBpInterestPayType() {
         return bpInterestPayType;

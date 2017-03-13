@@ -431,4 +431,9 @@ public class TbBidPlanServiceImpl implements ITbBidPlanServiceInf {
     public int selectLoanRecordByLoanerIdForPageCount(BidPlanExtSM model) {
         return bidPlanDao.selectByLoanerIdForPageCount(model);
     }
+
+    @Override
+    public BigDecimal selectIncomeCount(int dateSearType) {
+        return bidPlanDao.selectIncomeCount(dateSearType);
+    }
 }

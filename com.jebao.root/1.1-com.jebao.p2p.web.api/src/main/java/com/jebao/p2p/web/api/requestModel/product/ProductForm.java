@@ -11,10 +11,14 @@ import java.math.BigDecimal;
 public class ProductForm {
     public static ProductSM toEntity(ProductForm form){
         ProductSM productSM = new ProductSM();
+//        if(StringUtils.isNotBlank(form.getBpPeriodStr())){
+//            String[] periodStr = form.getBpPeriodStr().split("-");
+//            productSM.setBpPeriods(Integer.parseInt(periodStr[0]));
+//            productSM.setBpCycleType(Integer.parseInt(periodStr[1]));
+//        }
         if(StringUtils.isNotBlank(form.getBpPeriodStr())){
             String[] periodStr = form.getBpPeriodStr().split("-");
-            productSM.setBpPeriods(Integer.parseInt(periodStr[0]));
-            productSM.setBpCycleType(Integer.parseInt(periodStr[1]));
+            productSM.setBpMonthTerm(Integer.parseInt(periodStr[0]));
         }
         if(StringUtils.isNotBlank(form.getSearchMoneyStr())){
             String[] searchMoney = form.getSearchMoneyStr().split("-");
